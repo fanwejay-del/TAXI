@@ -14354,8 +14354,8 @@ function calcTotal(){
   }
   document.getElementById('typeCountText').textContent = typeTextArr.join("｜");
   document.getElementById('dayTotal').textContent     = stat.daySum;
-  document.getElementById('dayCount').textContent     = stat.tripCount;
-  document.getElementById('cashTotal').textContent    = stat.cashSum;
+  
+ document.getElementById('cashTotal').textContent    = stat.cashSum;
   document.getElementById('nonCashTotal').textContent = stat.nonCashSum;
   document.getElementById('feeTotal').textContent     = Math.round(stat.feeSum);
 }
