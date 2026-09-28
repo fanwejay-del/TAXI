@@ -16,10 +16,10 @@
 }
 body{
   background:#f1f5f9;
-  padding:14px;
-  font-size:16px;
+  padding:10px;
+  font-size:13px;
   color:#1e293b;
-  line-height:1.45;
+  line-height:1.35;
 }
 .page{display:none;}
 .page.active{display:block;}
@@ -126,8 +126,8 @@ body{
 .item-text{
   flex:1;
   min-width:0;
-  font-size:15px;
-  line-height:1.4;
+  font-size:13px;
+  line-height:1.3;
   word-break:break-all;
 }
 .editBtn{
@@ -436,10 +436,10 @@ body{
 }
 .pay-cash{color:#16a34a;font-weight:bold;}
 .pay-noncash{color:#dc2626;font-weight:bold;}
-#pageHome .card{font-size:18px;font-weight:bold;}
+#pageHome .card{font-size:13px;font-weight:bold;}
 #pageHome .card span{font-weight:bold;}
-#pageHome .item-text{font-size:17px;font-weight:bold;}
-#pageHome .empty-tip{font-size:17px;font-weight:bold;}
+#pageHome .item-text{font-size:13px;font-weight:bold;}
+#pageHome .empty-tip{font-size:13px;font-weight:bold;}
 
 /* 輸入金額視窗：剛好一屏、精簡 */
 #inputModal #modalTitle{
@@ -575,24 +575,26 @@ body{
 <!-- 首頁 -->
 <div id="pageHome" class="page active">
   <div id="typeBtnWrap" class="row2"></div>
-  <div class="card card-row">
-    <div style="flex:1;min-width:0;">
-      <div style="font-size:18px;font-weight:700;margin-bottom:6px;">
-        營業額：<span id="dayTotal" style="color:#2563eb;font-size:22px;font-weight:bold;">0</span>
-        ｜載客：<span id="dayCount">0</span>趟
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+      <div style="flex:1;min-width:0;font-size:13px;font-weight:700;line-height:1.5;">
+        <div>
+          營業額：<span id="dayTotal" style="color:#2563eb;font-size:16px;font-weight:bold;">0</span>
+          ｜載客：<span id="dayCount">0</span>趟
+        </div>
+        <div style="color:#475569;margin-top:2px;">
+          <span id="typeCountText"></span>
+        </div>
+        <div style="color:#64748b;margin-top:2px;">
+          現金：<span id="cashTotal">0</span>
+          ｜非現金：<span id="nonCashTotal">0</span>
+          ｜手續費：<span id="feeTotal">0</span>
+        </div>
       </div>
-      <div style="font-size:17px;color:#475569;margin-bottom:4px;font-weight:bold;">
-        <span id="typeCountText"></span>
+      <div style="display:flex;gap:2px;flex-shrink:0;">
+        <span class="stat-icon" onclick="showPage('pageStat')">📊</span>
+        <span class="set-icon" onclick="showPage('pageSetting')">⚙️</span>
       </div>
-      <div style="font-size:16px;color:#64748b;font-weight:bold;">
-        現金：<span id="cashTotal">0</span>
-        ｜非現金：<span id="nonCashTotal">0</span>
-        ｜手續費：<span id="feeTotal">0</span>
-      </div>
-    </div>
-    <div class="head-row">
-      <span class="stat-icon" onclick="showPage('pageStat')">📊</span>
-      <span class="set-icon" onclick="showPage('pageSetting')">⚙️</span>
     </div>
   </div>
   <div class="section-title">
@@ -632,7 +634,7 @@ body{
   <div class="card">
     <div style="font-size:15px;font-weight:600;margin-bottom:6px;">
       營業額：<span id="ddTotal" style="color:#2563eb;">0</span>
-         ｜載客：<span id="ddTrip">0</span>趟
+      ｜載客：<span id="ddTrip">0</span>趟
     </div>
     <div style="font-size:14px;color:#475569;margin-bottom:4px;"><span id="ddTypeText"></span></div>
     <div style="font-size:13px;color:#64748b;">
@@ -697,11 +699,11 @@ body{
     <div class="alert-mode-list">
       <label class="alert-mode-item">
         <input type="radio" name="alertMode" value="camera">
-        有測速照相時警示
+        只前方有測速照相時警示
       </label>
       <label class="alert-mode-item">
         <input type="radio" name="alertMode" value="overspeed">
-        有測速照相且超速時警示
+        只在前方有測速照相且超速時警示
       </label>
       <label class="alert-mode-item">
         <input type="radio" name="alertMode" value="off">
@@ -14378,11 +14380,11 @@ function renderTodayList(){
     const payClass = isCashPay(item.pay) ? "pay-cash" : "pay-noncash";
     const div = document.createElement('div');
     div.className = "item";
-    div.innerHTML = `
+        div.innerHTML = `
       <div class="item-text">
-        ${idToNo[item.id]}.${item.time}【${typeChar}】<span class="${payClass}">${payChar}</span>${item.raw}淨${item.net}
+        ${idToNo[item.id]}.${item.time}【${typeChar}】<span class="${payClass}">${payChar}</span>${item.raw}/${item.net}
       </div>
-      <button class="editBtn" onclick="openEdit(${item.id})">修改</button>
+      <button class="editBtn" onclick="openEdit(${item.id})">改</button>
     `;
     wrap.appendChild(div);
   });
