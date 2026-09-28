@@ -49,12 +49,13 @@ body{
   flex-shrink:0;
 }
 .stat-icon,.set-icon{
-  font-size:26px;
+  font-size:14px;
   color:#475569;
-  padding:6px;
+  padding:3px 5px;
   cursor:pointer;
-  border-radius:8px;
+  border-radius:6px;
   transition:background 0.15s;
+  line-height:1;
 }
 .stat-icon:active,.set-icon:active{background:#e2e8f0;}
 .bigBtn{
@@ -576,10 +577,11 @@ body{
 <div id="pageHome" class="page active">
 
   <!-- 頂欄：標題 + 圖標 -->
-  <div class="card" style="padding:10px 14px;margin-bottom:10px;">
+    <!-- 頂欄：標題 + 圖標 -->
+  <div class="card" style="padding:4px 12px;margin-bottom:8px;">
     <div style="display:flex;justify-content:space-between;align-items:center;">
-      <div style="font-size:14px;font-weight:700;color:#0f172a;">計程車記帳</div>
-      <div style="display:flex;gap:2px;">
+      <div style="font-size:14px;font-weight:700;color:#0f172a;line-height:1;">計程車記帳</div>
+      <div style="display:flex;gap:2px;align-items:center;">
         <span class="stat-icon" onclick="showPage('pageStat')">📊</span>
         <span class="set-icon" onclick="showPage('pageSetting')">⚙️</span>
       </div>
