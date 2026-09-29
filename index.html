@@ -15,7 +15,7 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .row2{display:grid;grid-template-columns:repeat(auto-fit, minmax(90px, 1fr));gap:8px;margin-bottom:12px;}
 .card{background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:4px;}
 
-/* 頂欄（放大標題與圖標） */
+/* 頂欄 */
 .topbar{background:#fff;border-radius:12px;padding:8px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:8px;}
 .topbar-inner{display:flex;justify-content:space-between;align-items:center;}
 .topbar-title{font-size:calc(1.25px * var(--fs-num));font-weight:700;color:#0f172a;line-height:1;}
@@ -29,11 +29,8 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .numBtn{padding:18px 8px;font-size:22px;font-weight:600;border-radius:12px;border:none;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.08);color:#1e293b;}
 .numBtn:active{background:#f1f5f9;}
 .payKey{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px;}
-
-/* 付款按鈕放大 */
 .payBtn{padding:24px 12px;border:none;border-radius:12px;color:#fff;font-size:calc(1.3px * var(--fs-num));font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.15);}
 .payBtn:active{opacity:0.9;transform:scale(0.98);}
-
 .editBtn{color:#2563eb;border:none;background:#eff6ff;font-size:calc(0.95px * var(--fs-num));font-weight:600;padding:6px 10px;border-radius:8px;flex-shrink:0;}
 .editBtn:active{background:#dbeafe;}
 .delBtn{color:#dc2626;border:none;background:#fef2f2;font-size:calc(0.9px * var(--fs-num));font-weight:600;padding:4px 8px;border-radius:6px;}
@@ -53,9 +50,6 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .modal{position:fixed;top:0;left:0;width:100%;height:100%;height:100dvh;max-height:100dvh;background:#fff;display:none;align-items:stretch;justify-content:center;padding:6px;z-index:100;overflow:hidden;box-sizing:border-box;}
 .modal.active{display:flex;}
 .modal-card{width:100%;height:100%;max-height:100%;padding:6px;display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box;background:#fff;border-radius:0;box-shadow:none;}
-.set-action-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
-.save-set-btn{background:#16a34a !important;padding:12px !important;font-size:calc(1.1px * var(--fs-num)) !important;}
-.reset-set-btn{background:#64748b !important;padding:12px !important;font-size:calc(1.1px * var(--fs-num)) !important;}
 .backup-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
 .backup-btn{padding:8px 10px;border:none;border-radius:8px;color:#fff;font-size:calc(1.05px * var(--fs-num));font-weight:600;}
 .exportBtn{background:#16a34a;}
@@ -70,32 +64,47 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 #typeListSet input:not([type="number"]),#payListSet input:not([type="number"]),.setBlock .item input:not([type="number"]){flex:1;min-width:0;}
 .item{background:#fff;padding:2px 8px;margin:2px 0;border-radius:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,0.05);gap:8px;}
 
-/* 今日明細：欄位對齊 */
+/* 今日明細：表頭 + 每一行 */
+.today-head,
 .today-row{
   display:grid;
-  grid-template-columns:60px 1fr 30px 62px 44px 58px;
+  grid-template-columns:52px 36px 30px 44px 40px 50px 30px;
   align-items:center;
-  background:#fff;
-  padding:8px 8px;
-  margin:3px 0;
-  border-radius:10px;
-  box-shadow:0 1px 4px rgba(0,0,0,0.05);
-  font-size:calc(1.05px * var(--fs-num));
+  gap:1px;
+  padding:6px 6px;
+  font-size:calc(0.85px * var(--fs-num));
   font-weight:700;
-  gap:2px;
 }
-.today-row .col-idx{color:#0f172a;font-size:calc(0.95px * var(--fs-num));}
-.today-row .col-type{font-size:calc(1.1px * var(--fs-num));font-weight:700;}
-.today-row .col-pay{font-size:calc(1.1px * var(--fs-num));font-weight:700;text-align:center;}
-.today-row .col-amt{text-align:right;color:#0f172a;}
-.today-row .col-fee{text-align:right;color:#dc2626;font-size:calc(1px * var(--fs-num));}
-.today-row .col-cum{text-align:right;color:#7e22ce;font-size:calc(1px * var(--fs-num));}
-.today-row .editBtn{display:none;}
-
-/* 今日明細：點擊時顯示修改按鈕（保留原有行為） */
-.today-item{background:#fff;border-radius:10px;margin:3px 0;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
-.today-item .today-row{padding:8px 4px 8px 8px;margin:0;box-shadow:none;background:transparent;}
-.today-item .editBtn{margin-right:6px;}
+.today-head{
+  background:#f8fafc;
+  border-radius:10px 10px 0 0;
+  color:#64748b;
+  font-size:calc(0.7px * var(--fs-num));
+  font-weight:600;
+  padding-top:5px;
+  padding-bottom:5px;
+}
+.today-head span{text-align:center;}
+.today-head span:nth-child(1){text-align:left;}
+.today-head span:nth-child(4){text-align:right;}
+.today-head span:nth-child(5){text-align:right;}
+.today-head span:nth-child(6){text-align:right;}
+.today-row{
+  background:#fff;
+  border-bottom:1px solid #f1f5f9;
+  margin:0;
+  padding-top:9px;
+  padding-bottom:9px;
+}
+.today-row:last-child{border-radius:0 0 10px 10px;border-bottom:none;}
+.today-row:active{background:#f8fafc;}
+.today-row .col-idx{color:#0f172a;font-size:calc(0.75px * var(--fs-num));text-align:left;}
+.today-row .col-type{font-weight:700;text-align:center;font-size:calc(0.85px * var(--fs-num));}
+.today-row .col-pay{font-weight:700;text-align:center;font-size:calc(0.85px * var(--fs-num));}
+.today-row .col-amt{text-align:right;color:#0f172a;font-size:calc(0.85px * var(--fs-num));}
+.today-row .col-fee{text-align:right;color:#dc2626;font-size:calc(0.8px * var(--fs-num));}
+.today-row .col-cum{text-align:right;color:#7e22ce;font-size:calc(0.85px * var(--fs-num));}
+.today-row .editBtn{padding:3px 5px;font-size:calc(0.7px * var(--fs-num));}
 
 /* 統計頁 - 年份/月份卡片 */
 .stat-card{background:#fff;border-radius:12px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:8px;cursor:pointer;transition:transform 0.1s;}
@@ -156,7 +165,6 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 <body>
 <input type="file" id="fileImport" style="display:none" accept=".json">
 
-<!-- 輸入金額 Modal -->
 <div id="inputModal" class="modal">
   <div class="modal-card">
     <h3 id="modalTitle" style="text-align:center;margin-bottom:8px;font-size:22px;font-weight:bold;">路招</h3>
@@ -180,7 +188,6 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   </div>
 </div>
 
-<!-- 修改 Modal -->
 <div id="editModal" class="modal">
   <div class="modal-card">
     <h3 style="text-align:center;margin-bottom:16px;font-size:18px;">修改紀錄</h3>
@@ -198,7 +205,6 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   </div>
 </div>
 
-<!-- 首頁 -->
 <div id="pageHome" class="page active">
   <div class="topbar">
     <div class="topbar-inner">
@@ -233,26 +239,22 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   <div id="listToday"></div>
 </div>
 
-<!-- 統計頁 -->
 <div id="pageStat" class="page">
   <div class="backHomeBar">
     <button class="navBtn" onclick="goBack()">返回</button>
     <button class="navBtn" onclick="showPage('pageHome')">首頁</button>
   </div>
 
-  <!-- 年份卡片列表 -->
   <div id="statYearView">
     <h3 style="margin-bottom:10px;font-size:16px;">營業統計</h3>
     <div id="statYearList"></div>
   </div>
 
-  <!-- 月份卡片列表 -->
   <div id="statMonthView" style="display:none;">
     <h3 id="statMonthTitle" style="margin-bottom:10px;font-size:16px;"></h3>
     <div id="statMonthList"></div>
   </div>
 
-  <!-- 每日表格 -->
   <div id="statDayView" style="display:none;">
     <h3 id="statDayTitle" style="margin-bottom:10px;font-size:16px;"></h3>
     <div class="list-card">
@@ -268,7 +270,6 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   </div>
 </div>
 
-<!-- 單日明細 -->
 <div id="pageDayDetail" class="page">
   <div class="backHomeBar">
     <button class="navBtn" onclick="goBack()">返回</button>
@@ -284,23 +285,17 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   <div id="dayDetailList"></div>
 </div>
 
-<!-- 設定頁 -->
 <div id="pageSetting" class="page">
   <div class="backHomeBar">
     <button class="navBtn" onclick="goBack()">返回</button>
     <button class="navBtn" onclick="showPage('pageHome')">首頁</button>
   </div>
 
-  <div class="set-action-bar" style="margin-top:0;margin-bottom:10px;">
-    <button class="setBlock save-set-btn" onclick="saveAllSetting()">✅ 儲存設定</button>
-    <button class="setBlock reset-set-btn" onclick="revertSetting()">↩️ 還原</button>
-  </div>
-
   <div class="setBlock">
     <h4>字型大小</h4>
     <div class="fs-wrap">
       <span class="fs-label">小</span>
-      <input type="range" id="fontSizeSlider" min="11" max="20" step="1" value="13" oninput="updateFontSizeLabel(this.value)">
+      <input type="range" id="fontSizeSlider" min="11" max="20" step="1" value="13" oninput="updateFontSizeLabel(this.value); autoSaveFontSize(this.value);">
       <span class="fs-label" style="font-size:calc(1.3px * var(--fs-num));font-weight:700;">大</span>
       <span id="fontSizeValue" class="fs-value">13</span>
     </div>
@@ -310,9 +305,9 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
     <h4>營業時間</h4>
     <div style="display:flex;gap:8px;align-items:center;font-size:calc(1.05px * var(--fs-num));">
       <span>開始</span>
-      <input id="setStartHour" type="number" min="0" max="23" oninput="updateHourPreview()" style="width:56px;padding:6px;text-align:center;font-size:14px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;">
+      <input id="setStartHour" type="number" min="0" max="23" oninput="updateHourPreview(); autoSaveHourSetting();" style="width:56px;padding:6px;text-align:center;font-size:14px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;">
       <span>結束</span>
-      <input id="setEndHour" type="number" min="0" max="23" oninput="updateHourPreview()" style="width:56px;padding:6px;text-align:center;font-size:14px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;">
+      <input id="setEndHour" type="number" min="0" max="23" oninput="updateHourPreview(); autoSaveHourSetting();" style="width:56px;padding:6px;text-align:center;font-size:14px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;">
     </div>
     <div id="hourPreview" class="hour-preview">請輸入開始與結束時間</div>
   </div>
@@ -354,9 +349,9 @@ let historyStack = [];
 let modalAmount = "";
 let sortNewFirst = true;
 
-/* 統計頁目前檢視 */
 let statViewYear = null;
 let statViewMonth = null;
+let statViewDay = null;
 
 let config = JSON.parse(localStorage.getItem('taxiConfig')) || {
   typeList:[
@@ -522,6 +517,24 @@ function updateHourPreview(){
   else{ box.innerHTML = `<strong>${String(start).padStart(2,'0')}:00 ～ ${String(end).padStart(2,'0')}:00</strong>`; }
 }
 
+/* 自動儲存營業時間 */
+function autoSaveHourSetting(){
+  const start = Number(document.getElementById('setStartHour').value);
+  const end   = Number(document.getElementById('setEndHour').value);
+  if(!Number.isInteger(start) || start < 0 || start > 23) return;
+  if(!Number.isInteger(end) || end < 0 || end > 23) return;
+  config.businessHour = { start, end };
+  saveConfig();
+}
+
+/* 自動儲存字型大小 */
+function autoSaveFontSize(val){
+  const n = Number(val);
+  if(isNaN(n)) return;
+  config.fontSize = n;
+  saveConfig();
+}
+
 /* ===== 輸入金額 Modal ===== */
 const modal = document.getElementById('inputModal');
 function openInputModal(type){
@@ -550,6 +563,12 @@ function renderPayBtn(){
     btn.onclick = ()=>saveRecord(p);
     wrap.appendChild(btn);
   });
+}
+
+function renderPayBtnIfOpen(){
+  if(document.getElementById('inputModal').classList.contains('active')){
+    renderPayBtn();
+  }
 }
 
 /* ===== 儲存紀錄 ===== */
@@ -617,7 +636,6 @@ function renderTodayList(){
   const todayRec = recs.filter(r => r.date === today);
   if(todayRec.length === 0){ wrap.innerHTML = `<div class="empty-tip">今日尚無紀錄</div>`; return; }
 
-  /* 編號（按時間順序） */
   const idToNo = {};
   const idToCum = {};
   let cum = 0;
@@ -629,39 +647,41 @@ function renderTodayList(){
 
   const displayList = [...todayRec].sort((a,b)=> sortNewFirst ? b.id-a.id : a.id-b.id);
 
+  /* 表頭 */
+  const head = document.createElement('div');
+  head.className = "today-head";
+  head.innerHTML = `
+    <span>編號</span>
+    <span>類別</span>
+    <span>付款</span>
+    <span>金額</span>
+    <span>手續費</span>
+    <span>實收累計</span>
+    <span></span>
+  `;
+  wrap.appendChild(head);
+
   displayList.forEach(item=>{
-    const typeStr = (item.type || "").slice(0, 2);
-    const payStr  = (item.pay  || "").slice(0, 1);
     const typeItem = config.typeList.find(t => t.name === item.type);
     const payItem  = config.payList.find(p => p.name === item.pay);
     const typeColor = typeItem ? typeItem.color : "#0f172a";
     const payColor  = payItem  ? payItem.color  : "#0f172a";
     const feeNum = Math.round(item.fee || 0);
+    const typeStr = (item.type || "").slice(0, 2);
+    const payStr  = (item.pay  || "").slice(0, 2);
 
     const div = document.createElement('div');
-    div.className = "today-item";
+    div.className = "today-row";
     div.innerHTML = `
-      <div class="today-row">
-        <span class="col-idx">${idToNo[item.id]}.${item.time}</span>
-        <span class="col-type" style="color:${typeColor};">${typeStr}</span>
-        <span class="col-pay" style="color:${payColor};">${payStr}</span>
-        <span class="col-amt">${item.raw}</span>
-        <span class="col-fee">${feeNum > 0 ? feeNum : ''}</span>
-        <span class="col-cum">${idToCum[item.id]}</span>
-      </div>
+      <span class="col-idx">${idToNo[item.id]}.${item.time}</span>
+      <span class="col-type" style="color:${typeColor};">${typeStr}</span>
+      <span class="col-pay" style="color:${payColor};">${payStr}</span>
+      <span class="col-amt">${item.raw}</span>
+      <span class="col-fee">${feeNum}</span>
+      <span class="col-cum">${idToCum[item.id]}</span>
       <button class="editBtn" onclick="openEdit(${item.id})">改</button>
     `;
-    /* 修改按鈕放在外層絕對定位 */
     wrap.appendChild(div);
-  });
-
-  /* 修改按鈕改為點整行 */
-  wrap.querySelectorAll('.today-item').forEach((el, idx)=>{
-    const item = displayList[idx];
-    el.querySelector('.editBtn').addEventListener('click', (e)=>{
-      e.stopPropagation();
-      openEdit(item.id);
-    });
   });
 }
 
@@ -932,24 +952,45 @@ function renderSetting(){
     const div = document.createElement('div');
     div.className = "item";
     div.innerHTML = `
-      <input value="${escapeHtml(t.name)}" oninput="tempConfig.typeList[${idx}].name=this.value.trim()" placeholder="類別名稱">
-      <input type="number" value="${t.deduct}" oninput="tempConfig.typeList[${idx}].deduct=Number(this.value)||0" placeholder="扣除">
+      <input value="${escapeHtml(t.name)}" oninput="updateTypeTemp(${idx}, 'name', this.value.trim())" placeholder="類別名稱">
+      <input type="number" value="${t.deduct}" oninput="updateTypeTemp(${idx}, 'deduct', Number(this.value)||0)" placeholder="扣除">
       <button class="delBtn" onclick="delTypeTemp(${idx})">刪除</button>
     `;
     typeWrap.appendChild(div);
   });
+
   const payWrap = document.getElementById('payListSet');
   payWrap.innerHTML = "";
   tempConfig.payList.forEach((p, idx)=>{
     const div = document.createElement('div');
     div.className = "item";
     div.innerHTML = `
-      <input value="${escapeHtml(p.name)}" oninput="tempConfig.payList[${idx}].name=this.value.trim()" placeholder="付款名稱">
-      <input type="number" value="${p.rate}" oninput="tempConfig.payList[${idx}].rate=Number(this.value)||0" placeholder="趴數">
+      <input value="${escapeHtml(p.name)}" oninput="updatePayTemp(${idx}, 'name', this.value.trim())" placeholder="付款名稱">
+      <input type="number" value="${p.rate}" oninput="updatePayTemp(${idx}, 'rate', Number(this.value)||0)" placeholder="趴數">
       <button class="delBtn" onclick="delPayTemp(${idx})">刪除</button>
     `;
     payWrap.appendChild(div);
   });
+}
+
+/* 類別即時更新 + 自動儲存 */
+function updateTypeTemp(idx, field, value){
+  if(!tempConfig.typeList[idx]) return;
+  tempConfig.typeList[idx][field] = value;
+  config.typeList = cloneObj(tempConfig.typeList);
+  saveConfig();
+  renderHomeTypeBtn();
+  calcTotal();
+  renderTodayList();
+}
+
+/* 付款方式即時更新 + 自動儲存 */
+function updatePayTemp(idx, field, value){
+  if(!tempConfig.payList[idx]) return;
+  tempConfig.payList[idx][field] = value;
+  config.payList = cloneObj(tempConfig.payList);
+  saveConfig();
+  renderPayBtnIfOpen();
 }
 
 function addNewTypeTemp(){
@@ -957,50 +998,41 @@ function addNewTypeTemp(){
   const deduct = Number(document.getElementById('newTypeDeduct').value) || 0;
   if(!name){ alert("請輸入類別名稱"); return; }
   tempConfig.typeList.push({name, deduct, color:"#5577aa"});
+  config.typeList = cloneObj(tempConfig.typeList);
+  saveConfig();
   renderSetting();
+  renderHomeTypeBtn();
+  calcTotal();
+  renderTodayList();
   document.getElementById('newTypeName').value = "";
   document.getElementById('newTypeDeduct').value = "";
 }
-function delTypeTemp(idx){ tempConfig.typeList.splice(idx,1); renderSetting(); }
+function delTypeTemp(idx){
+  tempConfig.typeList.splice(idx,1);
+  config.typeList = cloneObj(tempConfig.typeList);
+  saveConfig();
+  renderSetting();
+  renderHomeTypeBtn();
+  calcTotal();
+  renderTodayList();
+}
 
 function addNewPayTemp(){
   const name = document.getElementById('newPayName').value.trim();
   const rate = Number(document.getElementById('newPayRate').value) || 0;
   if(!name){ alert("請輸入名稱"); return; }
   tempConfig.payList.push({name, rate, color:"#557799"});
+  config.payList = cloneObj(tempConfig.payList);
+  saveConfig();
   renderSetting();
   document.getElementById('newPayName').value = "";
   document.getElementById('newPayRate').value = "";
 }
-function delPayTemp(idx){ tempConfig.payList.splice(idx,1); renderSetting(); }
-
-function saveAllSetting(){
-  let start = Number(document.getElementById('setStartHour').value);
-  let end   = Number(document.getElementById('setEndHour').value);
-  if(!Number.isInteger(start) || start < 0 || start > 23){ alert("營業開始時間必須是 0～23 的整數"); return; }
-  if(!Number.isInteger(end) || end < 0 || end > 23){ alert("營業結束時間必須是 0～23 的整數"); return; }
-  tempConfig.businessHour = {start, end};
-  tempConfig.fontSize = Number(document.getElementById('fontSizeSlider').value) || 13;
-  config = cloneObj(tempConfig);
+function delPayTemp(idx){
+  tempConfig.payList.splice(idx,1);
+  config.payList = cloneObj(tempConfig.payList);
   saveConfig();
-  applyFontSize(config.fontSize);
-  renderHomeTypeBtn();
-  calcTotal();
-  renderTodayList();
-  alert("✅ 設定已儲存！");
-}
-
-function revertSetting(){
-  tempConfig = cloneObj(config);
-  if(!tempConfig.businessHour) tempConfig.businessHour = {start:22, end:8};
-  if(!tempConfig.fontSize) tempConfig.fontSize = 13;
-  document.getElementById('setStartHour').value = tempConfig.businessHour.start;
-  document.getElementById('setEndHour').value   = tempConfig.businessHour.end;
-  document.getElementById('fontSizeSlider').value = tempConfig.fontSize;
-  document.getElementById('fontSizeValue').textContent = tempConfig.fontSize;
-  updateHourPreview();
   renderSetting();
-  alert("↩️ 修改已還原");
 }
 
 /* ===== 啟動 ===== */
