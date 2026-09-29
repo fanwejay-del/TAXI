@@ -710,11 +710,11 @@ body{
     <div class="alert-mode-list">
       <label class="alert-mode-item">
         <input type="radio" name="alertMode" value="camera">
-        只前方有測速照相時警示
+        有測速照相時警示
       </label>
       <label class="alert-mode-item">
         <input type="radio" name="alertMode" value="overspeed">
-        只在前方有測速照相且超速時警示
+        有測速照相且超速時警示
       </label>
       <label class="alert-mode-item">
         <input type="radio" name="alertMode" value="off">
@@ -14362,7 +14362,7 @@ function calcTotal(){
 
 function toggleSort(){
   sortNewFirst = !sortNewFirst;
-  document.getElementById('sortBtn').textContent = sortNewFirst ? "新→舊 ⇅" : "舊→新 ⇅";
+  document.getElementById('sortBtn').textContent = sortNewFirst ? " ⇅" : " ⇅";
   renderTodayList();
 }
 
