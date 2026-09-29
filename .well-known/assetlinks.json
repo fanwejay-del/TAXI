@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.fanwejay.taxi",
+    "sha256_cert_fingerprints": ["02:F7:F7:34:BF:2C:2D:D1:C5:93:F2:04:04:B6:E7:C0:45:38:0E:41:65:74:1F:81:37:32:C1:79:2B:FF:8A:BC"]
+  }
+}]
