@@ -7,107 +7,156 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2563eb">
 <style>
+:root{--fs-num:13;}
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent;}
-body{background:#f1f5f9;padding:10px;font-size:13px;color:#1e293b;line-height:1.35;}
+body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#1e293b;line-height:1.35;}
 .page{display:none;}
 .page.active{display:block;}
 .row2{display:grid;grid-template-columns:repeat(auto-fit, minmax(90px, 1fr));gap:8px;margin-bottom:12px;}
 .card{background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:4px;}
-.stat-icon,.set-icon{font-size:14px;color:#475569;padding:3px 5px;cursor:pointer;border-radius:6px;transition:background 0.15s;line-height:1;}
+
+/* 頂欄（放大標題與圖標） */
+.topbar{background:#fff;border-radius:12px;padding:8px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:8px;}
+.topbar-inner{display:flex;justify-content:space-between;align-items:center;}
+.topbar-title{font-size:calc(1.25px * var(--fs-num));font-weight:700;color:#0f172a;line-height:1;}
+.topbar-icons{display:flex;gap:6px;align-items:center;}
+.stat-icon,.set-icon{font-size:calc(1.4px * var(--fs-num));color:#475569;padding:4px 6px;cursor:pointer;border-radius:8px;transition:background 0.15s;line-height:1;}
 .stat-icon:active,.set-icon:active{background:#e2e8f0;}
-.bigBtn{padding:12px 6px;border:none;border-radius:12px;font-size:14px;font-weight:700;color:#fff;box-shadow:0 3px 8px rgba(0,0,0,0.12);transition:transform 0.1s, opacity 0.1s;}
+.bigBtn{padding:12px 6px;border:none;border-radius:12px;font-size:calc(1.05px * var(--fs-num));font-weight:700;color:#fff;box-shadow:0 3px 8px rgba(0,0,0,0.12);transition:transform 0.1s, opacity 0.1s;}
 .bigBtn:active{transform:scale(0.97);opacity:0.92;}
 .inputBox{width:100%;padding:16px;font-size:28px;font-weight:600;text-align:center;border:2px solid #e2e8f0;border-radius:12px;margin:14px 0;background:#f8fafc;color:#0f172a;}
 .numKey{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
 .numBtn{padding:18px 8px;font-size:22px;font-weight:600;border-radius:12px;border:none;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.08);color:#1e293b;}
 .numBtn:active{background:#f1f5f9;}
 .payKey{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px;}
-.payBtn{padding:18px 10px;border:none;border-radius:12px;color:#fff;font-size:17px;font-weight:600;box-shadow:0 2px 6px rgba(0,0,0,0.15);}
+
+/* 付款按鈕放大 */
+.payBtn{padding:24px 12px;border:none;border-radius:12px;color:#fff;font-size:calc(1.3px * var(--fs-num));font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.15);}
 .payBtn:active{opacity:0.9;transform:scale(0.98);}
-.item{background:#fff;padding:2px 8px;margin:2px 0;border-radius:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,0.05);gap:8px;}
-.item-text{flex:1;min-width:0;font-size:13px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.editBtn{color:#2563eb;border:none;background:#eff6ff;font-size:12px;font-weight:600;padding:6px 10px;border-radius:8px;flex-shrink:0;}
+
+.editBtn{color:#2563eb;border:none;background:#eff6ff;font-size:calc(0.95px * var(--fs-num));font-weight:600;padding:6px 10px;border-radius:8px;flex-shrink:0;}
 .editBtn:active{background:#dbeafe;}
-.delBtn{color:#dc2626;border:none;background:#fef2f2;font-size:11px;font-weight:600;padding:4px 8px;border-radius:6px;}
+.delBtn{color:#dc2626;border:none;background:#fef2f2;font-size:calc(0.9px * var(--fs-num));font-weight:600;padding:4px 8px;border-radius:6px;}
 .delBtn:active{background:#fee2e2;}
 .backHomeBar{display:flex;gap:10px;margin-bottom:14px;}
-.navBtn{flex:1;padding:12px;border:none;border-radius:10px;background:#e2e8f0;font-size:14px;font-weight:600;color:#334155;}
+.navBtn{flex:1;padding:12px;border:none;border-radius:10px;background:#e2e8f0;font-size:calc(1.05px * var(--fs-num));font-weight:600;color:#334155;}
 .navBtn:active{background:#cbd5e1;}
 .setBlock{margin:8px 0;padding:10px 12px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
-.setBlock h4{margin-bottom:6px;font-size:13px;color:#0f172a;}
-.setBlock label{display:block;font-size:12px;color:#64748b;margin-top:6px;margin-bottom:3px;}
-.setBlock input[type="number"],.setBlock input[type="text"]{width:100%;padding:8px 10px;margin:3px 0 6px;border-radius:8px;border:1.5px solid #e2e8f0;font-size:13px;background:#f8fafc;}
+.setBlock h4{margin-bottom:6px;font-size:calc(1.05px * var(--fs-num));color:#0f172a;}
+.setBlock label{display:block;font-size:calc(0.95px * var(--fs-num));color:#64748b;margin-top:6px;margin-bottom:3px;}
+.setBlock input[type="number"],.setBlock input[type="text"]{width:100%;padding:8px 10px;margin:3px 0 6px;border-radius:8px;border:1.5px solid #e2e8f0;font-size:calc(1.05px * var(--fs-num));background:#f8fafc;}
 .setBlock input:focus{outline:none;border-color:#2563eb;background:#fff;}
-.setBlock button{padding:8px 12px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-size:13px;font-weight:600;margin-top:6px;}
+.setBlock button{padding:8px 12px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-size:calc(1.05px * var(--fs-num));font-weight:600;margin-top:6px;}
 .setBlock button:active{opacity:0.9;}
-.alert-mode-list{display:flex;flex-direction:column;gap:5px;margin:4px 0 8px;}
-.alert-mode-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:#f8fafc;border:1.2px solid #e2e8f0;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;color:#1e293b;transition:background 0.15s, border-color 0.15s;}
-.alert-mode-item:has(input:checked){background:#eff6ff;border-color:#2563eb;}
-.alert-mode-item input[type="radio"]{width:16px;height:16px;accent-color:#2563eb;flex-shrink:0;}
-.hour-preview{margin-top:6px;padding:8px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;font-size:12px;color:#0c4a6e;line-height:1.4;}
+.hour-preview{margin-top:6px;padding:8px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;font-size:calc(0.95px * var(--fs-num));color:#0c4a6e;line-height:1.4;}
 .hour-preview strong{color:#0369a1;}
 .modal{position:fixed;top:0;left:0;width:100%;height:100%;height:100dvh;max-height:100dvh;background:#fff;display:none;align-items:stretch;justify-content:center;padding:6px;z-index:100;overflow:hidden;box-sizing:border-box;}
 .modal.active{display:flex;}
 .modal-card{width:100%;height:100%;max-height:100%;padding:6px;display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box;background:#fff;border-radius:0;box-shadow:none;}
 .set-action-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
-.save-set-btn{background:#16a34a !important;padding:12px !important;font-size:14px !important;}
-.reset-set-btn{background:#64748b !important;padding:12px !important;font-size:14px !important;}
+.save-set-btn{background:#16a34a !important;padding:12px !important;font-size:calc(1.1px * var(--fs-num)) !important;}
+.reset-set-btn{background:#64748b !important;padding:12px !important;font-size:calc(1.1px * var(--fs-num)) !important;}
 .backup-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
-.backup-btn{padding:8px 10px;border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:600;}
+.backup-btn{padding:8px 10px;border:none;border-radius:8px;color:#fff;font-size:calc(1.05px * var(--fs-num));font-weight:600;}
 .exportBtn{background:#16a34a;}
 .importBtn{background:#7c3aed;}
-.statSummary{background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:12px;}
-.statSummary .bigNum{font-size:16px;font-weight:700;color:#2563eb;}
-.statThreeCol{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
-.statCol{background:#fff;border-radius:12px;padding:10px 6px;min-height:320px;max-height:480px;overflow-y:auto;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
-.statCol h4{text-align:center;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #e2e8f0;font-size:13px;color:#475569;}
-.statItem{padding:8px 6px;border-bottom:1px solid #f1f5f9;cursor:pointer;border-radius:8px;font-size:12px;transition:background 0.15s;line-height:1.5;}
-.statItem:active,.statItem.active{background:#dbeafe;}
-.sortBtn{border:none;background:#e0f2fe;color:#0369a1;font-size:12px;font-weight:600;cursor:pointer;padding:5px 10px;border-radius:20px;display:flex;align-items:center;gap:4px;}
-.sortBtn:active{background:#bae6fd;}
-.empty-tip{text-align:center;color:#94a3b8;padding:24px 16px;font-size:13px;}
+.empty-tip{text-align:center;color:#94a3b8;padding:24px 16px;font-size:calc(1.05px * var(--fs-num));}
 .section-title{display:flex;justify-content:space-between;align-items:center;margin:12px 0 6px;}
-.section-title h3{font-size:15px;color:#0f172a;font-weight:bold;}
-#typeListSet input,#payListSet input,.setBlock .item input{font-size:12px;padding:4px 8px;height:26px;box-sizing:border-box;border-radius:6px;border:1.2px solid #e2e8f0;background:#f8fafc;margin:0;width:auto;}
+.section-title h3{font-size:calc(1.15px * var(--fs-num));color:#0f172a;font-weight:bold;}
+.sortBtn{border:none;background:#e0f2fe;color:#0369a1;font-size:calc(0.95px * var(--fs-num));font-weight:600;cursor:pointer;padding:5px 10px;border-radius:20px;display:flex;align-items:center;gap:4px;}
+.sortBtn:active{background:#bae6fd;}
+#typeListSet input,#payListSet input,.setBlock .item input{font-size:calc(0.95px * var(--fs-num));padding:4px 8px;height:26px;box-sizing:border-box;border-radius:6px;border:1.2px solid #e2e8f0;background:#f8fafc;margin:0;width:auto;}
 #typeListSet input[type="number"],#payListSet input[type="number"],.setBlock .item input[type="number"]{width:4.5em;max-width:72px;text-align:center;flex-shrink:0;}
 #typeListSet input:not([type="number"]),#payListSet input:not([type="number"]),.setBlock .item input:not([type="number"]){flex:1;min-width:0;}
-.pay-cash{color:#16a34a;font-weight:bold;}
-.pay-noncash{color:#dc2626;font-weight:bold;}
-#pageHome .card{font-size:13px;font-weight:bold;}
-#pageHome .card span{font-weight:bold;}
-#pageHome .item-text{font-size:13px;font-weight:bold;}
-#pageHome .empty-tip{font-size:13px;font-weight:bold;}
-#inputModal #modalTitle{font-size:18px !important;margin:0 0 2px !important;flex-shrink:0;text-align:center;font-weight:700;}
+.item{background:#fff;padding:2px 8px;margin:2px 0;border-radius:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,0.05);gap:8px;}
+
+/* 今日明細：欄位對齊 */
+.today-row{
+  display:grid;
+  grid-template-columns:60px 1fr 30px 62px 44px 58px;
+  align-items:center;
+  background:#fff;
+  padding:8px 8px;
+  margin:3px 0;
+  border-radius:10px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.05);
+  font-size:calc(1.05px * var(--fs-num));
+  font-weight:700;
+  gap:2px;
+}
+.today-row .col-idx{color:#0f172a;font-size:calc(0.95px * var(--fs-num));}
+.today-row .col-type{font-size:calc(1.1px * var(--fs-num));font-weight:700;}
+.today-row .col-pay{font-size:calc(1.1px * var(--fs-num));font-weight:700;text-align:center;}
+.today-row .col-amt{text-align:right;color:#0f172a;}
+.today-row .col-fee{text-align:right;color:#dc2626;font-size:calc(1px * var(--fs-num));}
+.today-row .col-cum{text-align:right;color:#7e22ce;font-size:calc(1px * var(--fs-num));}
+.today-row .editBtn{display:none;}
+
+/* 今日明細：點擊時顯示修改按鈕（保留原有行為） */
+.today-item{background:#fff;border-radius:10px;margin:3px 0;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
+.today-item .today-row{padding:8px 4px 8px 8px;margin:0;box-shadow:none;background:transparent;}
+.today-item .editBtn{margin-right:6px;}
+
+/* 統計頁 - 年份/月份卡片 */
+.stat-card{background:#fff;border-radius:12px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:8px;cursor:pointer;transition:transform 0.1s;}
+.stat-card:active{transform:scale(0.98);background:#f8fafc;}
+.stat-card-title{font-size:calc(1.2px * var(--fs-num));font-weight:700;color:#2563eb;margin-bottom:6px;}
+.stat-card-row{font-size:calc(1px * var(--fs-num));color:#475569;margin-top:2px;font-weight:600;}
+.stat-card-row.hl{color:#0f172a;font-weight:700;}
+.stat-card-row.fee{color:#dc2626;font-weight:700;}
+
+/* 統計頁 - 每日表格 */
+.list-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.table-head{
+  display:grid;
+  grid-template-columns:62px 1fr 72px 62px 68px;
+  padding:8px 6px;
+  gap:2px;
+  background:#f8fafc;
+  font-size:calc(0.8px * var(--fs-num));
+  color:#64748b;
+  font-weight:600;
+}
+.table-head > span:nth-child(1){text-align:left;}
+.table-head > span:nth-child(2){text-align:right;}
+.table-head > span:nth-child(3){text-align:center;}
+.table-head > span:nth-child(4){text-align:right;}
+.table-head > span:nth-child(5){text-align:right;}
+.day-row{display:grid;grid-template-columns:62px 1fr 72px 62px 68px;align-items:center;padding:10px 6px;border-bottom:1px solid #e2e8f0;gap:2px;font-size:calc(1.05px * var(--fs-num));font-weight:700;cursor:pointer;}
+.day-row:last-child{border-bottom:none;}
+.day-row:active{background:#f1f5f9;}
+.col-date{color:#0f172a;font-size:calc(1.05px * var(--fs-num));}
+.col-amount{color:#1e40af;font-size:calc(1.15px * var(--fs-num));text-align:right;}
+.col-trips{color:#0f172a;font-size:calc(1.05px * var(--fs-num));text-align:center;}
+.col-net{color:#7e22ce;font-size:calc(1.05px * var(--fs-num));text-align:right;}
+.col-total{color:#0f172a;font-size:calc(1px * var(--fs-num));text-align:right;}
+.sep{color:#94a3b8;font-weight:400;margin:0 1px;}
+
+/* 字型滑桿 */
+.fs-wrap{display:flex;align-items:center;gap:10px;margin-top:6px;}
+.fs-wrap .fs-label{font-size:calc(0.95px * var(--fs-num));color:#64748b;flex-shrink:0;}
+.fs-wrap input[type="range"]{flex:1;-webkit-appearance:none;appearance:none;height:6px;border-radius:3px;background:#e2e8f0;outline:none;}
+.fs-wrap input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:#2563eb;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,0.2);}
+.fs-wrap input[type="range"]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#2563eb;cursor:pointer;border:none;box-shadow:0 2px 4px rgba(0,0,0,0.2);}
+.fs-value{font-size:calc(1.1px * var(--fs-num));color:#2563eb;font-weight:700;min-width:34px;text-align:right;}
+
+#inputModal #modalTitle{font-size:calc(1.4px * var(--fs-num)) !important;margin:0 0 2px !important;flex-shrink:0;text-align:center;font-weight:700;}
 #inputModal .inputBox{font-size:clamp(26px, 7vw, 32px);padding:8px 10px;margin:4px 0 6px;flex-shrink:0;}
 #inputModal .numKey{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:repeat(4, 1fr);gap:5px;margin:0;}
 #inputModal .numBtn{padding:0;margin:0;font-size:clamp(16px, 5vw, 22px);font-weight:700;height:100%;min-height:0;border-radius:8px;}
-#inputModal .payKey{flex-shrink:0;margin-top:6px;gap:6px;}
-#inputModal .payBtn{padding:10px 6px;font-size:clamp(13px, 3.5vw, 15px);font-weight:700;}
-#inputModal > .modal-card > button{flex-shrink:0;margin-top:6px !important;padding:10px !important;font-size:15px !important;font-weight:700;}
-.drag-win{position:fixed;z-index:200;user-select:none;cursor:move;touch-action:none;}
-#cameraAlertPopup{top:80px;right:15px;background:#ea8224;color:#fff;font-size:17px;font-weight:bold;padding:12px 16px;border-radius:12px;display:none;line-height:1.5;box-shadow:0 4px 12px rgba(0,0,0,0.25);}
+#inputModal .payKey{flex-shrink:0;margin-top:8px;gap:10px;}
+#inputModal .payBtn{padding:18px 8px;font-size:calc(1.2px * var(--fs-num));font-weight:700;}
+#inputModal > .modal-card > button{flex-shrink:0;margin-top:6px !important;padding:10px !important;font-size:calc(1.1px * var(--fs-num)) !important;font-weight:700;}
 @media(max-width:600px){
   body{padding:8px;}
-  .statThreeCol{gap:6px;}
-  .statCol{padding:8px 4px;}
-  .statItem{font-size:12px;padding:8px 4px;}
-  .bigBtn{padding:12px 6px;font-size:14px;}
+  .bigBtn{padding:12px 6px;}
 }
 </style>
 </head>
 <body>
 <input type="file" id="fileImport" style="display:none" accept=".json">
 
-<audio id="audioCameraWarn" preload="auto">
-  <source src="cameraWarn.mp3" type="audio/mpeg">
-</audio>
-
-<div id="cameraAlertPopup" class="drag-win">
-  ⚠️前方測速照相<br>
-  剩餘距離：<span id="cameraRemainText">0</span> m<br>
-  限速 <span id="cameraLimitText">0</span> km/h
-</div>
-
+<!-- 輸入金額 Modal -->
 <div id="inputModal" class="modal">
   <div class="modal-card">
     <h3 id="modalTitle" style="text-align:center;margin-bottom:8px;font-size:22px;font-weight:bold;">路招</h3>
@@ -127,10 +176,11 @@ body{background:#f1f5f9;padding:10px;font-size:13px;color:#1e293b;line-height:1.
       <button class="numBtn" onclick="pressNum('00')">00</button>
     </div>
     <div id="payBtnWrap" class="payKey"></div>
-    <button style="width:100%;margin-top:18px;padding:18px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:18px;font-weight:700;" onclick="closeInputModal()">取消</button>
+    <button style="width:100%;margin-top:14px;padding:16px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:18px;font-weight:700;" onclick="closeInputModal()">取消</button>
   </div>
 </div>
 
+<!-- 修改 Modal -->
 <div id="editModal" class="modal">
   <div class="modal-card">
     <h3 style="text-align:center;margin-bottom:16px;font-size:18px;">修改紀錄</h3>
@@ -148,11 +198,12 @@ body{background:#f1f5f9;padding:10px;font-size:13px;color:#1e293b;line-height:1.
   </div>
 </div>
 
+<!-- 首頁 -->
 <div id="pageHome" class="page active">
-  <div class="card" style="padding:4px 12px;margin-bottom:8px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;">
-      <div style="font-size:14px;font-weight:700;color:#0f172a;line-height:1;">計程車記帳</div>
-      <div style="display:flex;gap:2px;align-items:center;">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-title">計程車記帳</div>
+      <div class="topbar-icons">
         <span class="stat-icon" onclick="showPage('pageStat')">📊</span>
         <span class="set-icon" onclick="showPage('pageSetting')">⚙️</span>
       </div>
@@ -162,13 +213,13 @@ body{background:#f1f5f9;padding:10px;font-size:13px;color:#1e293b;line-height:1.
   <div id="typeBtnWrap" class="row2"></div>
 
   <div class="card">
-    <div style="font-size:13px;font-weight:700;line-height:1.5;">
-      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-        <span>營業額：<span id="dayTotal" style="color:#2563eb;font-size:16px;font-weight:bold;">0</span></span>
+    <div style="font-size:calc(1.05px * var(--fs-num));font-weight:700;line-height:1.5;">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <span>營業額：<span id="dayTotal" style="color:#2563eb;font-size:calc(1.3px * var(--fs-num));font-weight:bold;">0</span></span>
         <span>現金：<span id="cashTotal">0</span></span>
         <span>非現金：<span id="nonCashTotal">0</span></span>
       </div>
-      <div style="margin-top:2px;display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+      <div style="margin-top:2px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
         <span id="typeCountText" style="color:#475569;"></span>
         <span style="color:#64748b;">手續費：<span id="feeTotal">0</span></span>
       </div>
@@ -182,23 +233,42 @@ body{background:#f1f5f9;padding:10px;font-size:13px;color:#1e293b;line-height:1.
   <div id="listToday"></div>
 </div>
 
+<!-- 統計頁 -->
 <div id="pageStat" class="page">
   <div class="backHomeBar">
     <button class="navBtn" onclick="goBack()">返回</button>
     <button class="navBtn" onclick="showPage('pageHome')">首頁</button>
   </div>
-  <h3 style="margin-bottom:12px;font-size:16px;">營業統計</h3>
-  <div class="statSummary" id="statSummaryBox">
-    <div class="bigNum">請選擇年份/月份</div>
-    <div style="margin-top:8px;font-size:13px;color:#475569;">淨營業額：0｜趟次：0｜手續費：0</div>
+
+  <!-- 年份卡片列表 -->
+  <div id="statYearView">
+    <h3 style="margin-bottom:10px;font-size:16px;">營業統計</h3>
+    <div id="statYearList"></div>
   </div>
-  <div class="statThreeCol">
-    <div class="statCol"><h4>年份</h4><div id="colYear"></div></div>
-    <div class="statCol"><h4>月份</h4><div id="colMonth"></div></div>
-    <div class="statCol"><h4>日期</h4><div id="colDay"></div></div>
+
+  <!-- 月份卡片列表 -->
+  <div id="statMonthView" style="display:none;">
+    <h3 id="statMonthTitle" style="margin-bottom:10px;font-size:16px;"></h3>
+    <div id="statMonthList"></div>
+  </div>
+
+  <!-- 每日表格 -->
+  <div id="statDayView" style="display:none;">
+    <h3 id="statDayTitle" style="margin-bottom:10px;font-size:16px;"></h3>
+    <div class="list-card">
+      <div class="table-head">
+        <span>日期</span>
+        <span>營業額+費</span>
+        <span>類別</span>
+        <span>實收</span>
+        <span>累計</span>
+      </div>
+      <div id="statDayList"></div>
+    </div>
   </div>
 </div>
 
+<!-- 單日明細 -->
 <div id="pageDayDetail" class="page">
   <div class="backHomeBar">
     <button class="navBtn" onclick="goBack()">返回</button>
@@ -206,14 +276,15 @@ body{background:#f1f5f9;padding:10px;font-size:13px;color:#1e293b;line-height:1.
   </div>
   <h3 id="dayDetailTitle" style="margin-bottom:12px;font-size:16px;">單日明細</h3>
   <div class="card">
-    <div style="font-size:13px;font-weight:600;margin-bottom:6px;">營業額：<span id="ddTotal" style="color:#2563eb;">0</span>｜載客：<span id="ddTrip">0</span>趟</div>
-    <div style="font-size:13px;color:#475569;margin-bottom:4px;"><span id="ddTypeText"></span></div>
-    <div style="font-size:12px;color:#64748b;">現金：<span id="ddCash">0</span>｜非現金：<span id="ddNonCash">0</span>｜手續費：<span id="ddFee">0</span></div>
+    <div style="font-size:calc(1.05px * var(--fs-num));font-weight:600;margin-bottom:6px;">營業額：<span id="ddTotal" style="color:#2563eb;">0</span>｜載客：<span id="ddTrip">0</span>趟</div>
+    <div style="font-size:calc(1.05px * var(--fs-num));color:#475569;margin-bottom:4px;"><span id="ddTypeText"></span></div>
+    <div style="font-size:calc(1px * var(--fs-num));color:#64748b;">現金：<span id="ddCash">0</span>｜非現金：<span id="ddNonCash">0</span>｜手續費：<span id="ddFee">0</span></div>
   </div>
   <h4 style="margin:14px 0 8px;font-size:14px;">該日每筆紀錄</h4>
   <div id="dayDetailList"></div>
 </div>
 
+<!-- 設定頁 -->
 <div id="pageSetting" class="page">
   <div class="backHomeBar">
     <button class="navBtn" onclick="goBack()">返回</button>
@@ -226,8 +297,18 @@ body{background:#f1f5f9;padding:10px;font-size:13px;color:#1e293b;line-height:1.
   </div>
 
   <div class="setBlock">
+    <h4>字型大小</h4>
+    <div class="fs-wrap">
+      <span class="fs-label">小</span>
+      <input type="range" id="fontSizeSlider" min="11" max="20" step="1" value="13" oninput="updateFontSizeLabel(this.value)">
+      <span class="fs-label" style="font-size:calc(1.3px * var(--fs-num));font-weight:700;">大</span>
+      <span id="fontSizeValue" class="fs-value">13</span>
+    </div>
+  </div>
+
+  <div class="setBlock">
     <h4>營業時間</h4>
-    <div style="display:flex;gap:8px;align-items:center;font-size:13px;">
+    <div style="display:flex;gap:8px;align-items:center;font-size:calc(1.05px * var(--fs-num));">
       <span>開始</span>
       <input id="setStartHour" type="number" min="0" max="23" oninput="updateHourPreview()" style="width:56px;padding:6px;text-align:center;font-size:14px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;">
       <span>結束</span>
@@ -235,6 +316,7 @@ body{background:#f1f5f9;padding:10px;font-size:13px;color:#1e293b;line-height:1.
     </div>
     <div id="hourPreview" class="hour-preview">請輸入開始與結束時間</div>
   </div>
+
   <div class="setBlock">
     <h4>營業類別</h4>
     <div id="typeListSet"></div>
@@ -244,6 +326,7 @@ body{background:#f1f5f9;padding:10px;font-size:13px;color:#1e293b;line-height:1.
       <button onclick="addNewTypeTemp()" style="padding:6px 10px;font-size:13px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-weight:600;">＋</button>
     </div>
   </div>
+
   <div class="setBlock">
     <h4>付款方式</h4>
     <div id="payListSet"></div>
@@ -253,23 +336,7 @@ body{background:#f1f5f9;padding:10px;font-size:13px;color:#1e293b;line-height:1.
       <button onclick="addNewPayTemp()" style="padding:6px 10px;font-size:13px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-weight:600;">＋</button>
     </div>
   </div>
-  <div class="setBlock">
-    <h4>測速預警</h4>
-    <div class="alert-mode-list">
-      <label class="alert-mode-item"><input type="radio" name="alertMode" value="camera">有測速照相時警示</label>
-      <label class="alert-mode-item"><input type="radio" name="alertMode" value="overspeed">有測速照相且超速時警示</label>
-      <label class="alert-mode-item"><input type="radio" name="alertMode" value="off">關閉功能</label>
-    </div>
-    <div style="display:flex;gap:8px;align-items:center;font-size:13px;margin-bottom:8px;">
-      <span>預警距離</span>
-      <input id="setCamAlertDist" type="number" min="0" max="9999" style="width:80px;padding:6px;text-align:center;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;">
-      <span>公尺</span>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-      <button id="btnStartGps" style="padding:8px;font-size:13px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-weight:600;">啟動GPS</button>
-      <button id="btnStopGps" style="padding:8px;font-size:13px;border:none;border-radius:8px;background:#dc2626;color:#fff;font-weight:600;">停止GPS</button>
-    </div>
-  </div>
+
   <div class="setBlock">
     <h4>資料備份</h4>
     <div class="backup-bar">
@@ -278,7 +345,6 @@ body{background:#f1f5f9;padding:10px;font-size:13px;color:#1e293b;line-height:1.
     </div>
   </div>
 </div>
-
 <script>
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
 
@@ -286,20 +352,11 @@ let currentType = "";
 let editId = null;
 let historyStack = [];
 let modalAmount = "";
-let selectedYear = null;
-let selectedMonth = null;
-let selectedDay = null;
 let sortNewFirst = true;
 
-let gpsWatchId = null;
-let currentGPS = {lat:0, lng:0, speed:0, bearing:0};
-let lastCamAlertKey = null;
-
-let speedCameraList = [];
-fetch('cameras.json')
-  .then(r => r.json())
-  .then(data => { speedCameraList = data; console.log('測速點載入：', speedCameraList.length, '筆'); })
-  .catch(err => { console.warn('cameras.json 載入失敗：', err); });
+/* 統計頁目前檢視 */
+let statViewYear = null;
+let statViewMonth = null;
 
 let config = JSON.parse(localStorage.getItem('taxiConfig')) || {
   typeList:[
@@ -314,14 +371,26 @@ let config = JSON.parse(localStorage.getItem('taxiConfig')) || {
     { name:"好孕券", rate:0, color:"#0891b2" }
   ],
   businessHour:{ start:22, end:8 },
-  speedAlert:{ mode:"overspeed", camDist:300 }
+  fontSize: 13
 };
 
 if(!config.businessHour) config.businessHour = {start:22, end:8};
-if(!config.speedAlert) config.speedAlert = { mode:"overspeed", camDist:300 };
+if(!config.fontSize) config.fontSize = 13;
 
 let tempConfig = null;
 
+/* ===== 字型 ===== */
+function applyFontSize(size){
+  document.documentElement.style.setProperty('--fs-num', size);
+}
+applyFontSize(config.fontSize);
+
+function updateFontSizeLabel(val){
+  document.getElementById('fontSizeValue').textContent = val;
+  applyFontSize(Number(val));
+}
+
+/* ===== 基本工具 ===== */
 function saveConfig(){ localStorage.setItem('taxiConfig', JSON.stringify(config)); }
 function cloneObj(o){ return JSON.parse(JSON.stringify(o)); }
 function getRecords(){ return JSON.parse(localStorage.getItem('taxiRec')) || []; }
@@ -346,6 +415,7 @@ function getBizDate(dt){
   return `${y}-${mo}-${d}`;
 }
 
+/* ===== 備份 ===== */
 function exportBackup(){
   const backupData = { saveTime: new Date().toISOString(), config: config, records: getRecords() };
   const blob = new Blob([JSON.stringify(backupData, null, 2)], {type:'application/json'});
@@ -369,8 +439,9 @@ document.getElementById("fileImport").onchange = function(e){
       if(!confirm("⚠️ 匯入將覆蓋現在全部記錄與設定，確定繼續？")) return;
       config = data.config;
       if(!config.businessHour) config.businessHour = {start:22, end:8};
-      if(!config.speedAlert) config.speedAlert = { mode:"overspeed", camDist:300 };
+      if(!config.fontSize) config.fontSize = 13;
       saveConfig(); saveRecords(data.records);
+      applyFontSize(config.fontSize);
       alert("✅ 匯入成功！");
       renderHomeTypeBtn(); calcTotal(); renderTodayList();
     }catch(err){ alert("❌ 檔案讀取失敗"); }
@@ -379,6 +450,7 @@ document.getElementById("fileImport").onchange = function(e){
   this.value = null;
 };
 
+/* ===== 首頁按鈕 ===== */
 function renderHomeTypeBtn(){
   const wrap = document.getElementById("typeBtnWrap");
   wrap.innerHTML = "";
@@ -392,6 +464,7 @@ function renderHomeTypeBtn(){
   });
 }
 
+/* ===== 頁面切換 ===== */
 function showPage(pageId){
   const current = document.querySelector('.page.active');
   if(current && current.id !== pageId && pageId !== "pageHome"){
@@ -399,16 +472,17 @@ function showPage(pageId){
   }
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(pageId).classList.add('active');
+
   if(pageId === "pageSetting"){
     tempConfig = cloneObj(config);
     document.getElementById('setStartHour').value = tempConfig.businessHour.start;
     document.getElementById('setEndHour').value   = tempConfig.businessHour.end;
-    document.getElementById('setCamAlertDist').value = tempConfig.speedAlert.camDist;
-    setAlertModeUI(tempConfig.speedAlert.mode || "overspeed");
+    document.getElementById('fontSizeSlider').value = tempConfig.fontSize || 13;
+    document.getElementById('fontSizeValue').textContent = tempConfig.fontSize || 13;
     updateHourPreview();
     renderSetting();
   }
-  if(pageId === "pageStat"){ selectedYear = selectedMonth = selectedDay = null; renderStatPage(); }
+  if(pageId === "pageStat"){ showStatYearView(); }
   if(pageId === "pageDayDetail") renderDayDetail();
   if(pageId === "pageHome") renderHomeTypeBtn();
 }
@@ -418,14 +492,14 @@ function goBack(){
     const previous = historyStack.pop();
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     document.getElementById(previous).classList.add('active');
-    if(previous === "pageStat") renderStatPage();
+    if(previous === "pageStat") showStatYearView();
     if(previous === "pageDayDetail") renderDayDetail();
     if(previous === "pageSetting"){
       tempConfig = cloneObj(config);
       document.getElementById('setStartHour').value = tempConfig.businessHour.start;
       document.getElementById('setEndHour').value   = tempConfig.businessHour.end;
-      document.getElementById('setCamAlertDist').value = tempConfig.speedAlert.camDist;
-      setAlertModeUI(tempConfig.speedAlert.mode || "overspeed");
+      document.getElementById('fontSizeSlider').value = tempConfig.fontSize || 13;
+      document.getElementById('fontSizeValue').textContent = tempConfig.fontSize || 13;
       updateHourPreview();
       renderSetting();
     }
@@ -435,14 +509,7 @@ function goBack(){
   document.getElementById('pageHome').classList.add('active');
 }
 
-function setAlertModeUI(mode){
-  document.querySelectorAll('input[name="alertMode"]').forEach(r=>{ r.checked = (r.value === mode); });
-}
-function getAlertModeUI(){
-  const checked = document.querySelector('input[name="alertMode"]:checked');
-  return checked ? checked.value : "overspeed";
-}
-
+/* ===== 營業時間 ===== */
 function updateHourPreview(){
   const start = Number(document.getElementById('setStartHour').value);
   const end   = Number(document.getElementById('setEndHour').value);
@@ -455,6 +522,7 @@ function updateHourPreview(){
   else{ box.innerHTML = `<strong>${String(start).padStart(2,'0')}:00 ～ ${String(end).padStart(2,'0')}:00</strong>`; }
 }
 
+/* ===== 輸入金額 Modal ===== */
 const modal = document.getElementById('inputModal');
 function openInputModal(type){
   currentType = type; modalAmount = "";
@@ -484,6 +552,7 @@ function renderPayBtn(){
   });
 }
 
+/* ===== 儲存紀錄 ===== */
 function saveRecord(payItem){
   const amount = Number(modalAmount);
   if(!amount || amount <= 0){ alert("請輸入金額"); return; }
@@ -502,6 +571,7 @@ function saveRecord(payItem){
   renderTodayList();
 }
 
+/* ===== 今日統計 ===== */
 function calcDayStats(recs, targetDate){
   let daySum = 0, cashSum = 0, nonCashSum = 0, tripCount = 0, feeSum = 0;
   const typeCount = {};
@@ -532,6 +602,7 @@ function calcTotal(){
   document.getElementById('feeTotal').textContent     = Math.round(stat.feeSum);
 }
 
+/* ===== 今日明細 ===== */
 function toggleSort(){
   sortNewFirst = !sortNewFirst;
   document.getElementById('sortBtn').textContent = sortNewFirst ? "新→舊 ⇅" : "舊→新 ⇅";
@@ -545,140 +616,257 @@ function renderTodayList(){
   wrap.innerHTML = "";
   const todayRec = recs.filter(r => r.date === today);
   if(todayRec.length === 0){ wrap.innerHTML = `<div class="empty-tip">今日尚無紀錄</div>`; return; }
+
+  /* 編號（按時間順序） */
   const idToNo = {};
-  [...todayRec].sort((a,b)=>a.id-b.id).forEach((item,idx)=>{ idToNo[item.id] = idx + 1; });
+  const idToCum = {};
+  let cum = 0;
+  [...todayRec].sort((a,b)=>a.id-b.id).forEach((item,idx)=>{
+    idToNo[item.id] = idx + 1;
+    cum += Number(item.net || 0);
+    idToCum[item.id] = cum;
+  });
+
   const displayList = [...todayRec].sort((a,b)=> sortNewFirst ? b.id-a.id : a.id-b.id);
+
   displayList.forEach(item=>{
     const typeStr = (item.type || "").slice(0, 2);
     const payStr  = (item.pay  || "").slice(0, 1);
-    const payClass = isCashPay(item.pay) ? "pay-cash" : "pay-noncash";
+    const typeItem = config.typeList.find(t => t.name === item.type);
+    const payItem  = config.payList.find(p => p.name === item.pay);
+    const typeColor = typeItem ? typeItem.color : "#0f172a";
+    const payColor  = payItem  ? payItem.color  : "#0f172a";
     const feeNum = Math.round(item.fee || 0);
-    const feeHtml = feeNum > 0 ? ` <span style="color:#dc2626;font-weight:bold;">${feeNum}</span>` : '';
+
     const div = document.createElement('div');
-    div.className = "item";
-    div.innerHTML = `<div class="item-text">${idToNo[item.id]}.${item.time}【${typeStr}】<span class="${payClass}">${payStr}</span> ${item.raw}${feeHtml}</div><button class="editBtn" onclick="openEdit(${item.id})">改</button>`;
+    div.className = "today-item";
+    div.innerHTML = `
+      <div class="today-row">
+        <span class="col-idx">${idToNo[item.id]}.${item.time}</span>
+        <span class="col-type" style="color:${typeColor};">${typeStr}</span>
+        <span class="col-pay" style="color:${payColor};">${payStr}</span>
+        <span class="col-amt">${item.raw}</span>
+        <span class="col-fee">${feeNum > 0 ? feeNum : ''}</span>
+        <span class="col-cum">${idToCum[item.id]}</span>
+      </div>
+      <button class="editBtn" onclick="openEdit(${item.id})">改</button>
+    `;
+    /* 修改按鈕放在外層絕對定位 */
     wrap.appendChild(div);
+  });
+
+  /* 修改按鈕改為點整行 */
+  wrap.querySelectorAll('.today-item').forEach((el, idx)=>{
+    const item = displayList[idx];
+    el.querySelector('.editBtn').addEventListener('click', (e)=>{
+      e.stopPropagation();
+      openEdit(item.id);
+    });
   });
 }
 
+/* ===== 單日明細 ===== */
 function renderDayDetail(){
-  if(!selectedYear || !selectedMonth || !selectedDay) return;
-  const targetDate = `${selectedYear}-${selectedMonth}-${selectedDay}`;
+  if(!statViewYear || !statViewMonth || !statViewDay) return;
+  const targetDate = `${statViewYear}-${statViewMonth}-${statViewDay}`;
   document.getElementById("dayDetailTitle").textContent = `${targetDate} 營業明細`;
+
   const list = getRecords().filter(r => r.date === targetDate);
   const stat = calcDayStats(list, targetDate);
   const typeTextArr = [];
   for(const k in stat.typeCount) typeTextArr.push(`${k}:${stat.typeCount[k]}趟`);
+
   document.getElementById("ddTotal").textContent   = stat.daySum;
   document.getElementById("ddTrip").textContent    = stat.tripCount;
   document.getElementById("ddTypeText").textContent= typeTextArr.join("｜");
   document.getElementById("ddCash").textContent    = stat.cashSum;
   document.getElementById("ddNonCash").textContent = stat.nonCashSum;
   document.getElementById("ddFee").textContent     = Math.round(stat.feeSum);
+
   const wrap = document.getElementById("dayDetailList");
   wrap.innerHTML = "";
   if(list.length === 0){ wrap.innerHTML = `<div class="empty-tip">此日尚無紀錄</div>`; return; }
+
   list.sort((a,b)=>a.id-b.id).forEach(item=>{
+    const typeItem = config.typeList.find(t => t.name === item.type);
+    const payItem  = config.payList.find(p => p.name === item.pay);
+    const typeColor = typeItem ? typeItem.color : "#0f172a";
+    const payColor  = payItem  ? payItem.color  : "#0f172a";
     const typeStr = (item.type || "").slice(0, 2);
     const payStr  = (item.pay  || "").slice(0, 1);
-    const payClass = isCashPay(item.pay) ? "pay-cash" : "pay-noncash";
     const feeNum = Math.round(item.fee || 0);
-    const feeHtml = feeNum > 0 ? ` <span style="color:#dc2626;font-weight:bold;">${feeNum}</span>` : '';
+
     const div = document.createElement('div');
     div.className = "item";
-    div.innerHTML = `<div class="item-text">${item.time}【${typeStr}】<span class="${payClass}">${payStr}</span> ${item.raw}${feeHtml}</div><button class="editBtn" onclick="openEdit(${item.id})">改</button>`;
+    div.innerHTML = `
+      <div class="item-text">
+        ${item.time}　
+        <span style="color:${typeColor};font-weight:700;">${typeStr}</span>　
+        <span style="color:${payColor};font-weight:700;">${payStr}</span>　
+        ${item.raw}
+        ${feeNum > 0 ? `<span style="color:#dc2626;font-weight:700;">（費${feeNum}）</span>` : ''}
+        淨${item.net}
+      </div>
+      <button class="editBtn" onclick="openEdit(${item.id})">改</button>
+    `;
     wrap.appendChild(div);
   });
 }
 
-function calcRangeData(records, filterType, y, m, d){
-  let sumNet = 0, tripTotal = 0, feeTotal = 0;
-  const typeCounter = {}, payCounter = {};
-  config.typeList.forEach(t => typeCounter[t.name] = 0);
-  config.payList.forEach(p => payCounter[p.name] = 0);
-  records.forEach(r=>{
-    const [ry, rm, rd] = r.date.split("-");
-    let ok = false;
-    if(filterType === "year")  ok = ry === y;
-    if(filterType === "month") ok = ry === y && rm === m;
-    if(filterType === "day")   ok = ry === y && rm === m && rd === d;
-    if(!ok) return;
-    tripTotal++;
-    sumNet   += Number(r.net || 0);
-    feeTotal += Number(r.fee || 0);
-    typeCounter[r.type] = (typeCounter[r.type] || 0) + 1;
-    payCounter[r.pay]   = (payCounter[r.pay] || 0) + Number(r.raw || 0);
-  });
-  return { sumNet, tripTotal, feeTotal, typeCounter, payCounter };
+/* ===== 統計頁：年份 / 月份 / 每日 ===== */
+function showStatYearView(){
+  document.getElementById('statYearView').style.display = '';
+  document.getElementById('statMonthView').style.display = 'none';
+  document.getElementById('statDayView').style.display = 'none';
+  renderStatYearList();
 }
 
-function renderStatPage(){
+function renderStatYearList(){
   const recs = getRecords();
   const group = {};
   recs.forEach(r=>{
-    const [y, m, d] = r.date.split("-");
-    if(!group[y]){ group[y] = {sum:0, trip:0, fee:0, typeCount:{}, paySum:{}, months:{}}; config.typeList.forEach(t => group[y].typeCount[t.name] = 0); config.payList.forEach(p => group[y].paySum[p.name] = 0); }
-    if(!group[y].months[m]){ group[y].months[m] = {sum:0, trip:0, fee:0, typeCount:{}, paySum:{}, days:{}}; config.typeList.forEach(t => group[y].months[m].typeCount[t.name] = 0); config.payList.forEach(p => group[y].months[m].paySum[p.name] = 0); }
-    if(!group[y].months[m].days[d]){ group[y].months[m].days[d] = {sum:0, trip:0}; }
-    group[y].sum += Number(r.net||0); group[y].trip++; group[y].fee += Number(r.fee||0);
+    const [y] = r.date.split("-");
+    if(!group[y]){
+      group[y] = {sum:0, net:0, trip:0, fee:0, typeCount:{}, paySum:{}};
+      config.typeList.forEach(t => group[y].typeCount[t.name] = 0);
+      config.payList.forEach(p => group[y].paySum[p.name] = 0);
+    }
+    group[y].sum += Number(r.raw||0);
+    group[y].net += Number(r.net||0);
+    group[y].trip++;
+    group[y].fee += Number(r.fee||0);
     group[y].typeCount[r.type] = (group[y].typeCount[r.type]||0)+1;
     group[y].paySum[r.pay] = (group[y].paySum[r.pay]||0) + Number(r.raw||0);
-    group[y].months[m].sum += Number(r.net||0); group[y].months[m].trip++; group[y].months[m].fee += Number(r.fee||0);
-    group[y].months[m].typeCount[r.type] = (group[y].months[m].typeCount[r.type]||0)+1;
-    group[y].months[m].paySum[r.pay] = (group[y].months[m].paySum[r.pay]||0) + Number(r.raw||0);
-    group[y].months[m].days[d].sum += Number(r.net||0);
-    group[y].months[m].days[d].trip++;
   });
-  const colY = document.getElementById("colYear");
-  colY.innerHTML = "";
-  Object.keys(group).sort().forEach(y=>{
-    const div = document.createElement('div');
-    div.className = "statItem" + (selectedYear === y ? " active" : "");
-    div.textContent = `${y}年`;
-    div.onclick = ()=>{ selectedYear = y; selectedMonth = null; selectedDay = null; renderSummaryBox(`${y}年`, calcRangeData(recs, "year", y)); renderStatPage(); };
-    colY.appendChild(div);
+
+  const list = document.getElementById('statYearList');
+  list.innerHTML = '';
+  const years = Object.keys(group).sort().reverse();
+  if(years.length === 0){ list.innerHTML = '<div class="empty-tip">尚無紀錄</div>'; return; }
+
+  years.forEach(y=>{
+    const g = group[y];
+    const typeText = config.typeList.map(t => `${t.name}:${g.typeCount[t.name]||0}`).join('　');
+    const payText = config.payList.map(p => `${p.name}:${g.paySum[p.name]||0}`).join('　');
+    const card = document.createElement('div');
+    card.className = 'stat-card';
+    card.innerHTML = `
+      <div class="stat-card-title">📅 ${y} 年</div>
+      <div class="stat-card-row hl">營業額：${g.sum}　淨：${g.net}　趟：${g.trip}</div>
+      <div class="stat-card-row">${typeText}</div>
+      <div class="stat-card-row">${payText}</div>
+      <div class="stat-card-row fee">手續費：${Math.round(g.fee)}</div>
+    `;
+    card.onclick = ()=> showStatMonthView(y);
+    list.appendChild(card);
   });
-  const colM = document.getElementById("colMonth");
-  colM.innerHTML = "";
-  if(selectedYear && group[selectedYear]){
-    Object.keys(group[selectedYear].months).sort().forEach(m=>{
-      const g = group[selectedYear].months[m];
-      const div = document.createElement('div');
-      div.className = "statItem" + (selectedMonth === m ? " active" : "");
-      div.innerHTML = `${m}月｜${g.sum}｜${g.trip}趟`;
-      div.onclick = ()=>{ selectedMonth = m; selectedDay = null; renderSummaryBox(`${selectedYear}-${m}`, calcRangeData(recs, "month", selectedYear, m)); renderStatPage(); };
-      colM.appendChild(div);
-    });
-  }
-  const colD = document.getElementById("colDay");
-  colD.innerHTML = "";
-  if(selectedYear && selectedMonth && group[selectedYear]?.months[selectedMonth]){
-    Object.keys(group[selectedYear].months[selectedMonth].days).sort().forEach(d=>{
-      const dayData = group[selectedYear].months[selectedMonth].days[d];
-      const div = document.createElement('div');
-      div.className = "statItem";
-      div.innerHTML = `${d}｜${dayData.sum}｜${dayData.trip}趟`;
-      div.onclick = ()=>{ selectedDay = d; renderSummaryBox(`${selectedYear}-${selectedMonth}-${d}`, calcRangeData(recs, "day", selectedYear, selectedMonth, d)); showPage("pageDayDetail"); };
-      colD.appendChild(div);
-    });
-  }
 }
 
-function renderSummaryBox(title, stat){
-  const totalRaw = Object.values(stat.payCounter).reduce((a,b)=>a+b, 0);
-  const typeText = config.typeList.map(t => {
-    return `${t.name}:${stat.typeCounter[t.name] || 0}`;
-  }).join(' ');
-  const payText = config.payList.map(p => {
-    return `${p.name}：${stat.payCounter[p.name] || 0}`;
-  }).join('　');
-  document.getElementById("statSummaryBox").innerHTML = `
-    <div class="bigNum">${title} 總統計</div>
-    <div style="margin-top:8px;font-size:12px;color:#475569;line-height:1.6;">營業額：${totalRaw}｜淨：${stat.sumNet}｜趟：${stat.tripTotal}｜${typeText}</div>
-    <div style="margin-top:6px;font-size:12px;color:#64748b;line-height:1.6;word-break:break-all;">${payText}</div>
-  `;
+function showStatMonthView(year){
+  document.getElementById('statYearView').style.display = 'none';
+  document.getElementById('statMonthView').style.display = '';
+  document.getElementById('statDayView').style.display = 'none';
+  document.getElementById('statMonthTitle').textContent = year + ' 年';
+  renderStatMonthList(year);
 }
 
+function renderStatMonthList(year){
+  const recs = getRecords();
+  const group = {};
+  recs.forEach(r=>{
+    const [y, m] = r.date.split("-");
+    if(y !== year) return;
+    if(!group[m]){
+      group[m] = {sum:0, net:0, trip:0, fee:0, typeCount:{}, paySum:{}};
+      config.typeList.forEach(t => group[m].typeCount[t.name] = 0);
+      config.payList.forEach(p => group[m].paySum[p.name] = 0);
+    }
+    group[m].sum += Number(r.raw||0);
+    group[m].net += Number(r.net||0);
+    group[m].trip++;
+    group[m].fee += Number(r.fee||0);
+    group[m].typeCount[r.type] = (group[m].typeCount[r.type]||0)+1;
+    group[m].paySum[r.pay] = (group[m].paySum[r.pay]||0) + Number(r.raw||0);
+  });
+
+  const list = document.getElementById('statMonthList');
+  list.innerHTML = '';
+  const months = Object.keys(group).sort().reverse();
+  if(months.length === 0){ list.innerHTML = '<div class="empty-tip">此年尚無紀錄</div>'; return; }
+
+  months.forEach(m=>{
+    const g = group[m];
+    const typeText = config.typeList.map(t => `${t.name}:${g.typeCount[t.name]||0}`).join('　');
+    const payText = config.payList.map(p => `${p.name}:${g.paySum[p.name]||0}`).join('　');
+    const card = document.createElement('div');
+    card.className = 'stat-card';
+    card.innerHTML = `
+      <div class="stat-card-title">📆 ${m} 月</div>
+      <div class="stat-card-row hl">營業額：${g.sum}　淨：${g.net}　趟：${g.trip}</div>
+      <div class="stat-card-row">${typeText}</div>
+      <div class="stat-card-row">${payText}</div>
+      <div class="stat-card-row fee">手續費：${Math.round(g.fee)}</div>
+    `;
+    card.onclick = ()=> showStatDayView(year, m);
+    list.appendChild(card);
+  });
+}
+
+function showStatDayView(year, month){
+  document.getElementById('statYearView').style.display = 'none';
+  document.getElementById('statMonthView').style.display = 'none';
+  document.getElementById('statDayView').style.display = '';
+  document.getElementById('statDayTitle').textContent = year + '-' + month + ' 每日營收';
+  renderStatDayList(year, month);
+}
+
+function renderStatDayList(year, month){
+  const recs = getRecords();
+  const dayMap = {};
+  recs.forEach(r=>{
+    const [y, m, d] = r.date.split("-");
+    if(y !== year || m !== month) return;
+    if(!dayMap[d]){
+      dayMap[d] = {sum:0, net:0, trip:0, fee:0, typeCount:{}};
+      config.typeList.forEach(t => dayMap[d].typeCount[t.name] = 0);
+    }
+    dayMap[d].sum += Number(r.raw||0);
+    dayMap[d].net += Number(r.net||0);
+    dayMap[d].trip++;
+    dayMap[d].fee += Number(r.fee||0);
+    dayMap[d].typeCount[r.type] = (dayMap[d].typeCount[r.type]||0)+1;
+  });
+
+  const list = document.getElementById('statDayList');
+  list.innerHTML = '';
+  const days = Object.keys(dayMap).sort();
+  if(days.length === 0){ list.innerHTML = '<div class="empty-tip">此月尚無紀錄</div>'; return; }
+
+  let cumulative = 0;
+  days.forEach(d=>{
+    const g = dayMap[d];
+    cumulative += g.sum;
+    const typeTrips = config.typeList.map(t => g.typeCount[t.name]||0).join('/');
+    const row = document.createElement('div');
+    row.className = 'day-row';
+    row.innerHTML = `
+      <div class="col-date">${month}-${d}</div>
+      <div class="col-amount">${g.sum}<span class="sep">+</span>${Math.round(g.fee)}</div>
+      <div class="col-trips">${typeTrips}</div>
+      <div class="col-net">${g.net}</div>
+      <div class="col-total">${cumulative}</div>
+    `;
+    row.onclick = ()=>{
+      statViewYear = year;
+      statViewMonth = month;
+      statViewDay = d;
+      showPage('pageDayDetail');
+    };
+    list.appendChild(row);
+  });
+}
+
+/* ===== 修改紀錄 ===== */
 const editModal = document.getElementById('editModal');
 function openEdit(id){
   editId = id;
@@ -734,9 +922,10 @@ function deleteRec(){
   if(document.getElementById("pageDayDetail").classList.contains("active")){ renderDayDetail(); }
 }
 
+/* ===== 設定頁 ===== */
 function renderSetting(){
   if(!tempConfig.businessHour) tempConfig.businessHour = {start:22, end:8};
-  if(!tempConfig.speedAlert)   tempConfig.speedAlert   = {mode:"overspeed", camDist:300};
+
   const typeWrap = document.getElementById('typeListSet');
   typeWrap.innerHTML = "";
   tempConfig.typeList.forEach((t, idx)=>{
@@ -791,9 +980,10 @@ function saveAllSetting(){
   if(!Number.isInteger(start) || start < 0 || start > 23){ alert("營業開始時間必須是 0～23 的整數"); return; }
   if(!Number.isInteger(end) || end < 0 || end > 23){ alert("營業結束時間必須是 0～23 的整數"); return; }
   tempConfig.businessHour = {start, end};
-  tempConfig.speedAlert = { mode: getAlertModeUI(), camDist: Number(document.getElementById('setCamAlertDist').value) || 300 };
+  tempConfig.fontSize = Number(document.getElementById('fontSizeSlider').value) || 13;
   config = cloneObj(tempConfig);
   saveConfig();
+  applyFontSize(config.fontSize);
   renderHomeTypeBtn();
   calcTotal();
   renderTodayList();
@@ -803,112 +993,22 @@ function saveAllSetting(){
 function revertSetting(){
   tempConfig = cloneObj(config);
   if(!tempConfig.businessHour) tempConfig.businessHour = {start:22, end:8};
-  if(!tempConfig.speedAlert)   tempConfig.speedAlert   = {mode:"overspeed", camDist:300};
+  if(!tempConfig.fontSize) tempConfig.fontSize = 13;
   document.getElementById('setStartHour').value = tempConfig.businessHour.start;
   document.getElementById('setEndHour').value   = tempConfig.businessHour.end;
-  document.getElementById('setCamAlertDist').value = tempConfig.speedAlert.camDist;
-  setAlertModeUI(tempConfig.speedAlert.mode || "overspeed");
+  document.getElementById('fontSizeSlider').value = tempConfig.fontSize;
+  document.getElementById('fontSizeValue').textContent = tempConfig.fontSize;
   updateHourPreview();
   renderSetting();
   alert("↩️ 修改已還原");
 }
 
-function makeDraggable(el){
-  let pos1=0, pos2=0, pos3=0, pos4=0;
-  el.onmousedown = dragMouseDown;
-  el.ontouchstart = dragTouchStart;
-  function dragMouseDown(e){ e.preventDefault(); pos3 = e.clientX; pos4 = e.clientY; document.onmouseup = closeDrag; document.onmousemove = dragMove; }
-  function dragTouchStart(e){ const t = e.touches[0]; pos3 = t.clientX; pos4 = t.clientY; document.ontouchend = closeDrag; document.ontouchmove = dragTouchMove; }
-  function dragMove(e){ e.preventDefault(); pos1 = pos3 - e.clientX; pos2 = pos4 - e.clientY; pos3 = e.clientX; pos4 = e.clientY; el.style.top = (el.offsetTop - pos2) + "px"; el.style.left = (el.offsetLeft - pos1) + "px"; el.style.right = "auto"; }
-  function dragTouchMove(e){ e.preventDefault(); const t = e.touches[0]; pos1 = pos3 - t.clientX; pos2 = pos4 - t.clientY; pos3 = t.clientX; pos4 = t.clientY; el.style.top = (el.offsetTop - pos2) + "px"; el.style.left = (el.offsetLeft - pos1) + "px"; el.style.right = "auto"; }
-  function closeDrag(){ document.onmouseup = document.onmousemove = null; document.ontouchend = document.ontouchmove = null; }
-}
-
-function getDistanceMeter(lat1,lon1,lat2,lon2){
-  const R = 6371000;
-  const rLat1 = lat1 * Math.PI/180, rLat2 = lat2 * Math.PI/180;
-  const dLat = (lat2-lat1)*Math.PI/180, dLon = (lon2-lon1)*Math.PI/180;
-  const a = Math.sin(dLat/2)**2 + Math.cos(rLat1)*Math.cos(rLat2)*Math.sin(dLon/2)**2;
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-}
-
-function getBearing(lat1,lng1,lat2,lng2){
-  const rLat1 = lat1*Math.PI/180, rLat2 = lat2*Math.PI/180;
-  const dLon = (lng2-lng1)*Math.PI/180;
-  const y = Math.sin(dLon)*Math.cos(rLat2);
-  const x = Math.cos(rLat1)*Math.sin(rLat2) - Math.sin(rLat1)*Math.cos(rLat2)*Math.cos(dLon);
-  return (Math.atan2(y,x)*180/Math.PI + 360) % 360;
-}
-
-function angleDiffOk(carBrg, cameraBrg){
-  let diff = Math.abs(carBrg - cameraBrg);
-  if(diff > 180) diff = 360 - diff;
-  return diff <= 45;
-}
-
-function startGPSWatch(){
-  if(!navigator.geolocation){ alert("裝置不支援GPS"); return; }
-  if(gpsWatchId){ alert("GPS已經啟動"); return; }
-  gpsWatchId = navigator.geolocation.watchPosition(
-    function(pos){
-      const speedMS = pos.coords.speed ?? 0;
-      const speedKMH = Math.round(speedMS * 3.6);
-      currentGPS.lat = pos.coords.latitude;
-      currentGPS.lng = pos.coords.longitude;
-      currentGPS.speed = speedKMH;
-      currentGPS.bearing = (pos.coords.heading != null && !isNaN(pos.coords.heading)) ? pos.coords.heading : currentGPS.bearing;
-      scanNearbyCamera(currentGPS, speedKMH);
-    },
-    function(err){ console.error("GPS錯誤", err); },
-    {enableHighAccuracy:true, maximumAge:1000, timeout:5000}
-  );
-  alert("GPS預警已啟動");
-}
-
-function stopGPSWatch(){
-  if(gpsWatchId){ navigator.geolocation.clearWatch(gpsWatchId); gpsWatchId = null; }
-  document.getElementById('cameraAlertPopup').style.display = 'none';
-  lastCamAlertKey = null;
-  alert("GPS預警已停止");
-}
-
-function scanNearbyCamera(gps, mySpeed){
-  const mode = config.speedAlert?.mode || "overspeed";
-  const popup = document.getElementById('cameraAlertPopup');
-  if(mode === "off"){ popup.style.display = "none"; return; }
-  const alertDist = config.speedAlert?.camDist ?? 300;
-  const searchRange = alertDist + 100;
-  let nearestCam = null, nearestDist = 999999;
-  for(const cam of speedCameraList){
-    const dist = getDistanceMeter(gps.lat, gps.lng, cam.lat, cam.lng);
-    if(dist > searchRange) continue;
-    const camBrg = getBearing(gps.lat, gps.lng, cam.lat, cam.lng);
-    if(!angleDiffOk(gps.bearing, camBrg)) continue;
-    if(dist < nearestDist){ nearestDist = dist; nearestCam = cam; }
-  }
-  if(!nearestCam || nearestDist > alertDist){ popup.style.display = "none"; return; }
-  let shouldAlert = false;
-  if(mode === "camera"){ shouldAlert = true; }
-  else if(mode === "overspeed"){ shouldAlert = (mySpeed > nearestCam.limit); }
-  if(shouldAlert){
-    const camKey = nearestCam.lat + "_" + nearestCam.lng;
-    if(lastCamAlertKey !== camKey){
-      lastCamAlertKey = camKey;
-      try{ const a = document.getElementById('audioCameraWarn'); a.currentTime = 0; a.play(); }catch(e){}
-    }
-    document.getElementById('cameraRemainText').textContent = Math.round(nearestDist);
-    document.getElementById('cameraLimitText').textContent  = nearestCam.limit;
-    popup.style.display = "block";
-  }else{ popup.style.display = "none"; }
-}
-
+/* ===== 啟動 ===== */
 window.onload = function(){
+  applyFontSize(config.fontSize);
   renderHomeTypeBtn();
   calcTotal();
   renderTodayList();
-  makeDraggable(document.getElementById('cameraAlertPopup'));
-  document.getElementById("btnStartGps").addEventListener("click", startGPSWatch);
-  document.getElementById("btnStopGps").addEventListener("click", stopGPSWatch);
 };
 </script>
 </body>
