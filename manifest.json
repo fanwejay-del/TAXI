@@ -1,8 +1,8 @@
 {
   "name": "計程車記帳",
   "short_name": "計程車記帳",
-  "start_url": "./index.html",
-  "display": "standalone",
+  "start_url": "./",
+"scope": "./",
   "background_color": "#f1f5f9",
   "theme_color": "#2563eb",
   "orientation": "portrait",
