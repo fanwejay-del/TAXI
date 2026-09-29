@@ -89,6 +89,21 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .fs-wrap input[type="range"]{flex:1;-webkit-appearance:none;height:6px;border-radius:3px;background:#e2e8f0;outline:none;}
 .fs-wrap input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#2563eb;cursor:pointer;}
 .fs-value{font-size:calc(1.05px * var(--fs-num));color:#2563eb;min-width:34px;text-align:right;}
+#inputModal #modalTitle{font-size:calc(1.4px * var(--fs-num));margin:0 0 2px;text-align:center;}
+#inputModal .inputBox{font-size:clamp(26px, 7vw, 32px);padding:8px 10px;margin:4px 0 6px;flex-shrink:0;}
+#inputModal .numKey{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:repeat(4, 1fr);gap:5px;margin:0;}
+#inputModal .numBtn{padding:0;margin:0;font-size:clamp(16px, 5vw, 22px);height:100%;min-height:0;border-radius:8px;}
+#inputModal .payKey{flex-shrink:0;margin-top:8px;gap:8px;}
+#inputModal .payBtn{padding:14px 6px;font-size:calc(1.05px * var(--fs-num));}
+#inputModal > .modal-card > button{flex-shrink:0;margin-top:6px;padding:10px;font-size:calc(1.05px * var(--fs-num));}
+/* 支出輸入視窗 - 按鈕縮小 */
+#expInputModal .inputBox{font-size:clamp(24px, 6.5vw, 30px);padding:8px 10px;margin:4px 0 6px;flex-shrink:0;}
+#expInputModal .numKey{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:repeat(4, 1fr);gap:5px;margin:0;flex:1;min-height:0;}
+#expInputModal .numBtn{padding:0;margin:0;font-size:clamp(16px, 5vw, 22px);height:100%;min-height:0;border-radius:8px;}
+#expInputModal .payKey{flex:0 0 auto;margin-top:6px;gap:6px;grid-template-columns:repeat(3, 1fr);}
+#expInputModal .payBtn{padding:10px 4px;font-size:calc(0.95px * var(--fs-num));}
+#expInputModal .noteInput{flex:0 0 auto;margin-top:8px;}
+#expInputModal > .modal-card > button{flex:0 0 auto;margin-top:8px;padding:10px;font-size:calc(1.05px * var(--fs-num));}
 @media(max-width:600px){body{padding:8px;}}
 </style>
 </head>
@@ -138,7 +153,7 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
     </div>
     <div id="expCatWrap" class="payKey"></div>
     <input id="expNoteInput" class="noteInput" placeholder="備註（選填）">
-    <button style="width:100%;margin-top:12px;padding:14px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:17px;" onclick="closeExpInputModal()">取消</button>
+    <button style="width:100%;margin-top:8px;padding:10px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:calc(1.05px * var(--fs-num));" onclick="closeExpInputModal()">取消</button>
   </div>
 </div>
 
@@ -445,14 +460,12 @@ document.getElementById("fileImport").onchange = function(e){
 function renderHomeTypeBtn(){
   const wrap = document.getElementById("typeBtnWrap");
   wrap.innerHTML = "";
-  // 支出按鈕（最左）
   const expBtn = document.createElement('button');
   expBtn.className = "bigBtn";
   expBtn.style.background = "#dc2626";
   expBtn.textContent = "支出";
   expBtn.onclick = ()=>openExpInputModal();
   wrap.appendChild(expBtn);
-  // 營業類別
   config.typeList.forEach(t=>{
     const btn = document.createElement('button');
     btn.className = "bigBtn";
@@ -515,7 +528,6 @@ function updateHourPreview(){
   b.innerHTML = `<strong>${String(s).padStart(2,'0')}:00 ～ ${s>e?'隔日 ':''}${String(e).padStart(2,'0')}:00</strong>`;
 }
 
-/* ===== 收入 Modal ===== */
 const modal = document.getElementById('inputModal');
 function openInputModal(type){ currentType = type; modalAmount = ""; document.getElementById('modalTitle').textContent = type; document.getElementById('amountShow').textContent = "0"; renderPayBtn(); modal.classList.add('active'); }
 function closeInputModal(){ modal.classList.remove('active'); }
@@ -558,7 +570,6 @@ function saveRecord(payItem){
   closeInputModal(); calcTotal(); renderTodayList();
 }
 
-/* ===== 支出 Modal ===== */
 const expModal = document.getElementById('expInputModal');
 function openExpInputModal(){ expModalAmount = ""; document.getElementById('expAmountShow').textContent = "0"; document.getElementById('expNoteInput').value = ""; renderExpCatBtn(); expModal.classList.add('active'); }
 function closeExpInputModal(){ expModal.classList.remove('active'); }
@@ -585,7 +596,6 @@ function saveExpense(cat){
   alert("✅ 支出已記錄");
 }
 
-/* ===== 首頁統計 ===== */
 function calcDayStats(recs, targetDate){
   let daySum=0, cashSum=0, nonCashSum=0, tripCount=0, feeSum=0, deductSum=0;
   const typeCount = {};
@@ -682,7 +692,6 @@ function renderDayDetail(){
   });
 }
 
-/* ===== 收入統計 ===== */
 function showStatYearView(){
   document.getElementById('statYearView').style.display = '';
   document.getElementById('statMonthView').style.display = 'none';
@@ -791,7 +800,6 @@ function showStatDayView(y, m){
   });
 }
 
-/* ===== 支出統計 ===== */
 function showExpYearView(){
   document.getElementById('expYearView').style.display = '';
   document.getElementById('expMonthView').style.display = 'none';
@@ -804,9 +812,7 @@ function buildExpCardHtml(title, netIncome, expTotal){
   const balance = netIncome - expTotal;
   return `
     <div class="stat-card-title">${title}</div>
-    <div class="stat-card-row hl">淨收入：${netIncome}</div>
-    <div class="stat-card-row fee">支出：${expTotal}</div>
-    <div class="stat-card-row" style="color:#16a34a;">餘額：${balance}</div>
+    <div class="stat-card-row hl">淨收入：${netIncome}　支出：<span style="color:#dc2626;">${expTotal}</span>　餘額：<span style="color:#16a34a;">${balance}</span></div>
   `;
 }
 function renderExpYearList(){
@@ -882,7 +888,6 @@ function showExpDayView(y, m){
   });
 }
 
-/* ===== 修改收入 ===== */
 const editModal = document.getElementById('editModal');
 function openEdit(id){
   editId = id;
@@ -926,7 +931,6 @@ function deleteRec(){
   if(document.getElementById("pageDayDetail").classList.contains("active")) renderDayDetail();
 }
 
-/* ===== 修改支出 ===== */
 function openEditExp(id){
   editExpId = id;
   const e = getExpenses().find(x => x.id === id);
@@ -977,7 +981,6 @@ function deleteExp(){
   }
 }
 
-/* ===== 設定頁 ===== */
 function renderSetting(){
   const tw = document.getElementById('typeListSet'); tw.innerHTML = "";
   config.typeList.forEach((t, i)=>{
