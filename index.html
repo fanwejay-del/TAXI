@@ -61,36 +61,86 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 #typeListSet input[type="number"],#payListSet input[type="number"],.setBlock .item input[type="number"]{width:4.5em;max-width:72px;text-align:center;flex-shrink:0;}
 #typeListSet input:not([type="number"]),#payListSet input:not([type="number"]),.setBlock .item input:not([type="number"]){flex:1;min-width:0;}
 .item{background:#fff;padding:2px 8px;margin:2px 0;border-radius:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,0.05);gap:8px;}
-.today-item{display:flex;align-items:center;background:#fff;border-radius:10px;margin:4px 0;box-shadow:0 1px 4px rgba(0,0,0,0.05);padding:2px 8px;}
-.today-row{flex:1;display:grid;grid-template-columns:62px 1fr 26px 58px 44px 60px;align-items:center;padding:8px 4px;gap:4px;font-size:calc(1.05px * var(--fs-num));font-weight:700;}
-.today-row .col-idx{color:#0f172a;font-size:calc(0.95px * var(--fs-num));}
-.today-row .col-type{font-size:calc(1.1px * var(--fs-num));font-weight:700;}
-.today-row .col-pay{font-size:calc(1.1px * var(--fs-num));font-weight:700;text-align:center;}
-.today-row .col-amt{text-align:right;color:#0f172a;}
-.today-row .col-fee{text-align:right;color:#dc2626;font-size:calc(1px * var(--fs-num));}
-.today-row .col-cum{text-align:right;color:#7e22ce;font-size:calc(1px * var(--fs-num));}
-.today-item .editBtn{flex-shrink:0;margin-left:6px;}
+
+/* 明細行：編號.時間 (類)付 金額 -費 淨 X 累計 X */
+.detail-row{
+  display:flex;
+  align-items:center;
+  background:#fff;
+  border-radius:10px;
+  margin:4px 0;
+  padding:8px 10px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.05);
+  font-size:calc(1.05px * var(--fs-num));
+  font-weight:700;
+  gap:8px;
+}
+.detail-row .dr-left{
+  flex-shrink:0;
+  color:#0f172a;
+  font-size:calc(0.95px * var(--fs-num));
+  white-space:nowrap;
+}
+.detail-row .dr-type{font-weight:700;flex-shrink:0;}
+.detail-row .dr-pay{font-weight:700;flex-shrink:0;margin-left:-2px;}
+.detail-row .dr-nums{
+  flex:1;
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:8px;
+  white-space:nowrap;
+}
+.detail-row .dr-amt{color:#0f172a;text-align:right;}
+.detail-row .dr-fee{color:#dc2626;text-align:right;}
+.detail-row .dr-net{color:#0f172a;text-align:right;}
+.detail-row .dr-cum{color:#7e22ce;text-align:right;margin-left:6px;}
+.detail-row .editBtn{margin-left:6px;}
+
+/* 統計頁每日列表（每天 1 行） */
+.day-summary-row{
+  display:flex;
+  align-items:center;
+  background:#fff;
+  border-radius:10px;
+  margin:4px 0;
+  padding:10px 12px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.05);
+  font-size:calc(1.05px * var(--fs-num));
+  font-weight:700;
+  cursor:pointer;
+  gap:8px;
+}
+.day-summary-row:active{background:#f1f5f9;}
+.day-summary-row .ds-date{color:#0f172a;flex-shrink:0;}
+.day-summary-row .ds-type{color:#475569;font-size:calc(0.95px * var(--fs-num));flex-shrink:0;}
+.day-summary-row .ds-nums{
+  flex:1;
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  white-space:nowrap;
+}
+.day-summary-row .ds-amt{color:#1e40af;text-align:right;}
+.day-summary-row .ds-fee{color:#dc2626;text-align:right;}
+.day-summary-row .ds-net{color:#7e22ce;text-align:right;}
+.day-summary-row .ds-cum{color:#0f172a;text-align:right;}
+
+/* 統計頁 年/月卡片 */
 .stat-card{background:#fff;border-radius:12px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:8px;cursor:pointer;transition:transform 0.1s;}
 .stat-card:active{transform:scale(0.98);background:#f8fafc;}
 .stat-card-title{font-size:calc(1.2px * var(--fs-num));font-weight:700;color:#2563eb;margin-bottom:6px;}
 .stat-card-row{font-size:calc(1px * var(--fs-num));color:#475569;margin-top:2px;font-weight:600;}
 .stat-card-row.hl{color:#0f172a;font-weight:700;}
 .stat-card-row.fee{color:#dc2626;font-weight:700;}
-.list-card{background:transparent;}
-.day-row{display:grid;grid-template-columns:62px 1fr 52px 62px 68px;align-items:center;background:#fff;padding:10px 12px;margin:4px 0;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.05);gap:4px;font-size:calc(1.05px * var(--fs-num));font-weight:700;cursor:pointer;}
-.day-row:active{background:#f1f5f9;}
-.col-date{color:#0f172a;font-size:calc(1.05px * var(--fs-num));font-weight:700;}
-.col-amount{color:#1e40af;font-size:calc(1.15px * var(--fs-num));text-align:right;}
-.col-trips{color:#0f172a;font-size:calc(1.05px * var(--fs-num));text-align:center;}
-.col-net{color:#7e22ce;font-size:calc(1.05px * var(--fs-num));text-align:right;}
-.col-total{color:#0f172a;font-size:calc(1px * var(--fs-num));text-align:right;}
-.sep{color:#94a3b8;font-weight:400;margin:0 1px;}
+
 .fs-wrap{display:flex;align-items:center;gap:10px;margin-top:6px;}
 .fs-wrap .fs-label{font-size:calc(0.95px * var(--fs-num));color:#64748b;flex-shrink:0;}
 .fs-wrap input[type="range"]{flex:1;-webkit-appearance:none;appearance:none;height:6px;border-radius:3px;background:#e2e8f0;outline:none;}
 .fs-wrap input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:#2563eb;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,0.2);}
 .fs-wrap input[type="range"]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#2563eb;cursor:pointer;border:none;box-shadow:0 2px 4px rgba(0,0,0,0.2);}
 .fs-value{font-size:calc(1.1px * var(--fs-num));color:#2563eb;font-weight:700;min-width:34px;text-align:right;}
+
 #inputModal #modalTitle{font-size:calc(1.4px * var(--fs-num)) !important;margin:0 0 2px !important;flex-shrink:0;text-align:center;font-weight:700;}
 #inputModal .inputBox{font-size:clamp(26px, 7vw, 32px);padding:8px 10px;margin:4px 0 6px;flex-shrink:0;}
 #inputModal .numKey{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:repeat(4, 1fr);gap:5px;margin:0;}
@@ -199,9 +249,7 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 
   <div id="statDayView" style="display:none;">
     <h3 id="statDayTitle" style="margin-bottom:10px;font-size:16px;"></h3>
-    <div class="list-card">
-      <div id="statDayList"></div>
-    </div>
+    <div id="statDayList"></div>
   </div>
 </div>
 
@@ -216,8 +264,7 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
     <div style="font-size:calc(1.05px * var(--fs-num));color:#475569;margin-bottom:4px;"><span id="ddTypeText"></span></div>
     <div style="font-size:calc(1px * var(--fs-num));color:#64748b;">現金：<span id="ddCash">0</span>｜非現金：<span id="ddNonCash">0</span>｜手續費：<span id="ddFee">0</span></div>
   </div>
-  <h4 style="margin:14px 0 8px;font-size:14px;">該日每筆紀錄</h4>
-  <div id="dayDetailList"></div>
+  <div id="dayDetailList" style="margin-top:10px;"></div>
 </div>
 
 <div id="pageSetting" class="page">
@@ -312,6 +359,29 @@ function applyFontSize(size){
 }
 applyFontSize(config.fontSize);
 
+function saveConfig(){ localStorage.setItem('taxiConfig', JSON.stringify(config)); }
+function getRecords(){ return JSON.parse(localStorage.getItem('taxiRec')) || []; }
+function saveRecords(list){ localStorage.setItem('taxiRec', JSON.stringify(list)); }
+function fmtTime(){ const d = new Date(); return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0'); }
+function escapeHtml(value){ return String(value ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
+function isCashPay(payName){
+  if(payName === "現金") return true;
+  const p = config.payList.find(x => x.name === payName);
+  return p && Number(p.rate) === 0 && /現/.test(payName);
+}
+
+function getBizDate(dt){
+  const h = dt.getHours();
+  const startH = Number(config.businessHour?.start ?? 22);
+  const endH   = Number(config.businessHour?.end ?? 8);
+  let bizDate = new Date(dt);
+  if(startH > endH && h < endH) bizDate.setDate(bizDate.getDate() - 1);
+  const y  = bizDate.getFullYear();
+  const mo = String(bizDate.getMonth()+1).padStart(2,'0');
+  const d  = String(bizDate.getDate()).padStart(2,'0');
+  return `${y}-${mo}-${d}`;
+}
+
 function onFontSizeChange(val){
   document.getElementById('fontSizeValue').textContent = val;
   applyFontSize(Number(val));
@@ -349,30 +419,6 @@ function onPayRateChange(idx, val){
   if(!config.payList[idx]) return;
   config.payList[idx].rate = Number(val) || 0;
   saveConfig();
-}
-
-function saveConfig(){ localStorage.setItem('taxiConfig', JSON.stringify(config)); }
-function cloneObj(o){ return JSON.parse(JSON.stringify(o)); }
-function getRecords(){ return JSON.parse(localStorage.getItem('taxiRec')) || []; }
-function saveRecords(list){ localStorage.setItem('taxiRec', JSON.stringify(list)); }
-function fmtTime(){ const d = new Date(); return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0'); }
-function escapeHtml(value){ return String(value ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
-function isCashPay(payName){
-  if(payName === "現金") return true;
-  const p = config.payList.find(x => x.name === payName);
-  return p && Number(p.rate) === 0 && /現/.test(payName);
-}
-
-function getBizDate(dt){
-  const h = dt.getHours();
-  const startH = Number(config.businessHour?.start ?? 22);
-  const endH   = Number(config.businessHour?.end ?? 8);
-  let bizDate = new Date(dt);
-  if(startH > endH && h < endH) bizDate.setDate(bizDate.getDate() - 1);
-  const y  = bizDate.getFullYear();
-  const mo = String(bizDate.getMonth()+1).padStart(2,'0');
-  const d  = String(bizDate.getDate()).padStart(2,'0');
-  return `${y}-${mo}-${d}`;
 }
 
 function exportBackup(){
@@ -559,6 +605,34 @@ function toggleSort(){
   renderTodayList();
 }
 
+/* ===== 產生一行明細的 HTML ===== */
+function buildDetailRow(item, idx, cum, showCum){
+  const typeStr = (item.type || "").charAt(0);
+  const payStr  = (item.pay  || "").charAt(0);
+  const typeItem = config.typeList.find(t => t.name === item.type);
+  const payItem  = config.payList.find(p => p.name === item.pay);
+  const typeColor = typeItem ? typeItem.color : "#0f172a";
+  const payColor  = payItem  ? payItem.color  : "#0f172a";
+  const feeNum = Math.round(item.fee || 0);
+
+  const idxStr = idx !== null ? `${idx}.` : '';
+  const cumHtml = showCum ? `<span class="dr-cum">累計 ${cum}</span>` : '';
+  const feeHtml = feeNum > 0 ? `<span class="dr-fee">-${feeNum}</span>` : '';
+
+  return `
+    <span class="dr-left">${idxStr}${item.time}</span>
+    <span class="dr-type" style="color:${typeColor};">(${typeStr})</span>
+    <span class="dr-pay" style="color:${payColor};">${payStr}</span>
+    <span class="dr-nums">
+      <span class="dr-amt">${item.raw}</span>
+      ${feeHtml}
+      <span class="dr-net">淨 ${item.net}</span>
+      ${cumHtml}
+    </span>
+  `;
+}
+
+/* ===== 首頁今日明細 ===== */
 function renderTodayList(){
   const recs = getRecords();
   const today = getBizDate(new Date());
@@ -579,31 +653,15 @@ function renderTodayList(){
   const displayList = [...todayRec].sort((a,b)=> sortNewFirst ? b.id-a.id : a.id-b.id);
 
   displayList.forEach(item=>{
-    const typeStr = (item.type || "").slice(0, 2);
-    const payStr  = (item.pay  || "").slice(0, 1);
-    const typeItem = config.typeList.find(t => t.name === item.type);
-    const payItem  = config.payList.find(p => p.name === item.pay);
-    const typeColor = typeItem ? typeItem.color : "#0f172a";
-    const payColor  = payItem  ? payItem.color  : "#0f172a";
-    const feeNum = Math.round(item.fee || 0);
-
     const div = document.createElement('div');
-    div.className = "today-item";
-    div.innerHTML = `
-      <div class="today-row">
-        <span class="col-idx">${idToNo[item.id]}.${item.time}</span>
-        <span class="col-type" style="color:${typeColor};">${typeStr}</span>
-        <span class="col-pay" style="color:${payColor};">${payStr}</span>
-        <span class="col-amt">${item.raw}</span>
-        <span class="col-fee">${feeNum > 0 ? '-' + feeNum : ''}</span>
-        <span class="col-cum">${idToCum[item.id]}</span>
-      </div>
-      <button class="editBtn" onclick="openEdit(${item.id})">改</button>
-    `;
+    div.className = "detail-row";
+    div.innerHTML = buildDetailRow(item, idToNo[item.id], idToCum[item.id], true) +
+      `<button class="editBtn" onclick="openEdit(${item.id})">改</button>`;
     wrap.appendChild(div);
   });
 }
 
+/* ===== 單日明細 ===== */
 function renderDayDetail(){
   if(!statViewYear || !statViewMonth || !statViewDay) return;
   const targetDate = `${statViewYear}-${statViewMonth}-${statViewDay}`;
@@ -625,32 +683,18 @@ function renderDayDetail(){
   wrap.innerHTML = "";
   if(list.length === 0){ wrap.innerHTML = `<div class="empty-tip">此日尚無紀錄</div>`; return; }
 
-  list.sort((a,b)=>a.id-b.id).forEach(item=>{
-    const typeItem = config.typeList.find(t => t.name === item.type);
-    const payItem  = config.payList.find(p => p.name === item.pay);
-    const typeColor = typeItem ? typeItem.color : "#0f172a";
-    const payColor  = payItem  ? payItem.color  : "#0f172a";
-    const typeStr = (item.type || "").slice(0, 2);
-    const payStr  = (item.pay  || "").slice(0, 1);
-    const feeNum = Math.round(item.fee || 0);
-
+  list.sort((a,b)=>a.id-b.id).forEach((item, idx)=>{
+    let cum = 0;
+    for(let i=0; i<=idx; i++) cum += Number(list[i].net || 0);
     const div = document.createElement('div');
-    div.className = "item";
-    div.innerHTML = `
-      <div class="item-text">
-        ${item.time}　
-        <span style="color:${typeColor};font-weight:700;">${typeStr}</span>　
-        <span style="color:${payColor};font-weight:700;">${payStr}</span>　
-        ${item.raw}
-        ${feeNum > 0 ? `<span style="color:#dc2626;font-weight:700;">（-${feeNum}）</span>` : ''}
-        淨${item.net}
-      </div>
-      <button class="editBtn" onclick="openEdit(${item.id})">改</button>
-    `;
+    div.className = "detail-row";
+    div.innerHTML = buildDetailRow(item, idx+1, cum, true) +
+      `<button class="editBtn" onclick="openEdit(${item.id})">改</button>`;
     wrap.appendChild(div);
   });
 }
 
+/* ===== 統計頁 年/月/日 ===== */
 function showStatYearView(){
   document.getElementById('statYearView').style.display = '';
   document.getElementById('statMonthView').style.display = 'none';
@@ -783,15 +827,21 @@ function renderStatDayList(year, month){
   days.forEach(d=>{
     const g = dayMap[d];
     cumulative += g.sum;
-    const typeTrips = config.typeList.map(t => g.typeCount[t.name]||0).join('/');
+    const typeText = config.typeList.map(t => `${t.name.charAt(0)}:${g.typeCount[t.name]||0}`).join(' ');
+    const feeNum = Math.round(g.fee);
+    const feeHtml = feeNum > 0 ? `-${feeNum}` : '';
+
     const row = document.createElement('div');
-    row.className = 'day-row';
+    row.className = 'day-summary-row';
     row.innerHTML = `
-      <div class="col-date">${month}-${d}</div>
-      <div class="col-amount">${g.sum}<span class="sep">-</span>${Math.round(g.fee)}</div>
-      <div class="col-trips">${typeTrips}</div>
-      <div class="col-net">${g.net}</div>
-      <div class="col-total">${cumulative}</div>
+      <span class="ds-date">${month}-${d}</span>
+      <span class="ds-type">(${typeText})</span>
+      <span class="ds-nums">
+        <span class="ds-amt">${g.sum}</span>
+        <span class="ds-fee">${feeHtml}</span>
+        <span class="ds-net">淨 ${g.net}</span>
+        <span class="ds-cum">累計 ${cumulative}</span>
+      </span>
     `;
     row.onclick = ()=>{
       statViewYear = year;
@@ -803,6 +853,7 @@ function renderStatDayList(year, month){
   });
 }
 
+/* ===== 修改紀錄 ===== */
 const editModal = document.getElementById('editModal');
 function openEdit(id){
   editId = id;
