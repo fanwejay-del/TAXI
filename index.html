@@ -1,828 +1,182 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>計程車記帳</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#2563eb">
-<style>
-:root{--fs-num:13;--fw-num:700;}
-*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent;}
-body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#1e293b;line-height:1.35;font-weight:var(--fw-num);}
-.page{display:none;}
-.page.active{display:block;}
-.row2{display:grid;grid-template-columns:repeat(auto-fit, minmax(90px, 1fr));gap:8px;margin-bottom:12px;}
-.card{background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:4px;}
-.topbar{background:#fff;border-radius:12px;padding:8px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:8px;}
-.topbar-inner{display:flex;justify-content:space-between;align-items:center;}
-.topbar-title{font-size:calc(1.25px * var(--fs-num));color:#0f172a;line-height:1;}
-.topbar-icons{display:flex;gap:6px;align-items:center;}
-.stat-icon,.set-icon,.exp-icon{font-size:calc(1.4px * var(--fs-num));color:#475569;padding:4px 6px;cursor:pointer;border-radius:8px;}
-.stat-icon:active,.set-icon:active,.exp-icon:active{background:#e2e8f0;}
-.bigBtn{padding:12px 6px;border:none;border-radius:12px;font-size:calc(1.05px * var(--fs-num));color:#fff;box-shadow:0 3px 8px rgba(0,0,0,0.12);}
-.bigBtn:active{transform:scale(0.97);opacity:0.92;}
-.inputBox{width:100%;padding:16px;font-size:28px;text-align:center;border:2px solid #e2e8f0;border-radius:12px;margin:14px 0;background:#f8fafc;color:#0f172a;}
-.numKey{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
-.numBtn{padding:18px 8px;font-size:22px;border-radius:12px;border:none;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.08);color:#1e293b;}
-.numBtn:active{background:#e2e8f0;}
-.payKey{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
-.noteInput{width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:15px;background:#f8fafc;margin-top:8px;}
-.modal{position:fixed;top:0;left:0;width:100%;height:100%;height:100dvh;background:#fff;display:none;align-items:stretch;justify-content:center;padding:6px;z-index:100;overflow:hidden;box-sizing:border-box;}
-.modal.active{display:flex;}
-.modal-card{width:100%;height:100%;padding:6px;display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box;background:#fff;}
-.backup-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
-.backup-btn{padding:8px 10px;border:none;border-radius:8px;color:#fff;font-size:14px;}
-.exportBtn{background:#16a34a;}
-.importBtn{background:#7c3aed;}
-.empty-tip{text-align:center;color:#94a3b8;padding:24px 16px;font-size:calc(1.05px * var(--fs-num));}
-.section-title{display:flex;justify-content:space-between;align-items:center;margin:12px 0 6px;}
-.section-title h3{font-size:calc(1.15px * var(--fs-num));color:#0f172a;}
-.sortBtn{border:none;background:#e0f2fe;color:#0369a1;padding:4px 10px;border-radius:16px;font-size:13px;cursor:pointer;}
-.detail-row{display:flex;align-items:center;gap:6px;background:#fff;border-radius:10px;padding:9px 10px;margin:4px 0;box-shadow:0 1px 3px #00000010;}
-.detail-row > div{flex:1;font-size:calc(1px * var(--fs-num));}
-.editBtn{color:#2563eb;border:none;background:#eff6ff;font-size:12px;padding:4px 8px;border-radius:6px;flex-shrink:0;cursor:pointer;}
-.editBtn:active{background:#dbeafe;}
-.delBtn{color:#dc2626;border:none;background:#fef2f2;font-size:12px;padding:3px 6px;border-radius:6px;cursor:pointer;}
-.delBtn:active{background:#fee2e2;}
-.card{background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:8px;}
-.setBlock{margin:8px 0;padding:10px 12px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
-.setBlock h4{margin:0 0 8px 0;font-size:15px;color:#0f172a;}
-.itemRow{background:#f8fafc;border-radius:8px;padding:6px 8px;margin:4px 0;display:flex;gap:6px;align-items:center;}
-.itemRow input{padding:5px 8px;border:1px solid #e2e8f0;border-radius:6px;background:#fff;font-size:14px;}
-.backHomeBar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
-.navBtn{padding:12px;border:none;border-radius:10px;background:#e2e8f0;font-size:15px;color:#334155;}
-.hour-preview{margin-top:6px;padding:8px 10px;background:#f0fdf4;border-radius:8px;font-size:13px;color:#065f46;}
-.fs-wrap{display:flex;align-items:center;gap:10px;margin-top:6px;}
-.fs-wrap input[type="range"]{flex:1;-webkit-appearance:none;height:6px;border-radius:3px;background:#e2e8f0;outline:none;}
-.fs-wrap input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#2563eb;cursor:pointer;}
-.fs-value{font-size:calc(1.05px * var(--fs-num));color:#2563eb;min-width:34px;text-align:right;}
-@media(max-width:600px){body{padding:8px;}}
+<template>
+  <div class="app-container">
+    <!-- 路由模拟：首页 / 支出页 / 支出统计页 / 支出输入页 -->
+    <div class="tab-nav">
+      <button @click="currentPage = 'home'">首页</button>
+      <button @click="currentPage = 'expensePage'">支出页面</button>
+      <button @click="currentPage = 'statPage'">支出统计</button>
+      <button @click="currentPage = 'inputPage'">支出输入</button>
+    </div>
+
+    <!-- ========== 首页 ========== -->
+    <div v-if="currentPage === 'home'" class="page home-page">
+      <h2>首页</h2>
+      <!-- ✅ 已移除首页上方的支出按钮 -->
+      <div class="home-content">
+        <p>首页原有内容</p>
+      </div>
+    </div>
+
+    <!-- ========== 支出页面（把支出按钮移到本页上方） ========== -->
+    <div v-if="currentPage === 'expensePage'" class="page expense-page">
+      <!-- ✅ 移到支出页面上方的支出按钮 -->
+      <button class="expense-top-btn">支出</button>
+      <h2>支出页面</h2>
+      <div class="expense-list">
+        <div>支出记录1：120元</div>
+        <div>支出记录2：350元</div>
+      </div>
+    </div>
+
+    <!-- ========== 支出统计页面 淨收入、支出、餘額同一行 ========== -->
+    <div v-if="currentPage === 'statPage'" class="page stat-page">
+      <h2>支出统计页面</h2>
+      <div class="ym-card">
+        <div class="ym-select">
+          <select v-model="statYear">
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+          </select>
+          <select v-model="statMonth">
+            <option value="1">1月</option>
+            <option value="9">9月</option>
+          </select>
+        </div>
+        <!-- ✅ 淨收入、支出、餘額 同一行 flex横向排列 -->
+        <div class="stat-data-row">
+          <div class="stat-item">淨收入：{{netIncome}}</div>
+          <div class="stat-item">支出：{{expenseTotal}}</div>
+          <div class="stat-item">餘額：{{balance}}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== 支出输入页面 数字按钮高度翻倍 ========== -->
+    <div v-if="currentPage === 'inputPage'" class="page input-page">
+      <h2>支出输入页面</h2>
+      <div class="input-display">{{inputValue}}</div>
+      <div class="keyboard-wrap">
+        <div class="key-row">
+          <!-- ✅ 数字按钮 class="num-btn" 高度翻倍；功能按钮维持原有高度 -->
+          <button class="num-btn" @click="pressNum(1)">1</button>
+          <button class="num-btn" @click="pressNum(2)">2</button>
+          <button class="num-btn" @click="pressNum(3)">3</button>
+          <button class="func-btn">删除</button>
+        </div>
+        <div class="key-row">
+          <button class="num-btn" @click="pressNum(4)">4</button>
+          <button class="num-btn" @click="pressNum(5)">5</button>
+          <button class="num-btn" @click="pressNum(6)">6</button>
+          <button class="func-btn">清空</button>
+        </div>
+        <div class="key-row">
+          <button class="num-btn" @click="pressNum(7)">7</button>
+          <button class="num-btn" @click="pressNum(8)">8</button>
+          <button class="num-btn" @click="pressNum(9)">9</button>
+          <button class="func-btn">确认</button>
+        </div>
+        <div class="key-row">
+          <button class="num-btn" @click="pressNum(0)">0</button>
+          <button class="num-btn" @click="pressNum('.')">.</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import {ref} from 'vue'
+const currentPage = ref('home')
+//统计页模拟数据
+const statYear = ref('2026')
+const statMonth = ref('9')
+const netIncome = ref(12000)
+const expenseTotal = ref(5600)
+const balance = ref(6400)
+//输入键盘
+const inputValue = ref('0')
+const pressNum = (n)=>{
+  if(inputValue.value === '0') inputValue.value = ''
+  inputValue.value += n
+}
+</script>
+
+<style scoped>
+.app-container{
+  max-width: 420px;
+  margin: 0 auto;
+}
+.tab-nav{
+  display:flex;
+  gap:4px;
+  margin-bottom:12px;
+}
+.page{
+  padding:12px;
+  border:1px solid #eee;
+}
+
+/* 支出页面顶部按钮 */
+.expense-top-btn{
+  padding:8px 16px;
+  background:#409eff;
+  color:#fff;
+  border:none;
+  border-radius:4px;
+  margin-bottom:10px;
+}
+
+/* ========= 支出统计：年月卡片，三数据同一行 ========= */
+.ym-card{
+  border:1px solid #ddd;
+  padding:12px;
+  border-radius:6px;
+}
+.ym-select{
+  display:flex;
+  gap:10px;
+  margin-bottom:10px;
+}
+/* ✅ 横向同一行 */
+.stat-data-row{
+  display:flex;
+  justify-content: space-between;
+  gap:8px;
+}
+.stat-item{
+  flex:1;
+  text-align:center;
+}
+
+/* ========= 支出输入页面键盘样式 ========= */
+.input-display{
+  font-size:24px;
+  text-align:right;
+  padding:10px;
+  border:1px solid #ccc;
+  margin-bottom:8px;
+}
+.keyboard-wrap{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.key-row{
+  display:flex;
+  gap:6px;
+}
+/* 数字按钮：✅高度翻倍 */
+.num-btn{
+  flex:1;
+  /* 原始高度40px → 翻倍80px */
+  height:80px;
+  font-size:20px;
+}
+/* 功能按钮保持原本高度，不变化 */
+.func-btn{
+  flex:1;
+  height:40px;
+  font-size:16px;
+  background:#eee;
+}
 </style>
-</head>
-<body>
-<input type="file" id="fileImport" style="display:none" accept=".json">
-
-<!-- 收入輸入 Modal -->
-<div id="inputModal" class="modal">
-  <div class="modal-card">
-    <h3 id="modalTitle" style="text-align:center;margin:4px 0 6px;font-size:20px;"></h3>
-    <div id="amountShow" class="inputBox">0</div>
-    <div class="numKey">
-      <button class="numBtn" onclick="pressNum('1')">1</button>
-      <button class="numBtn" onclick="pressNum('2')">2</button>
-      <button class="numBtn" onclick="pressNum('3')">3</button>
-      <button class="numBtn" onclick="pressNum('4')">4</button>
-      <button class="numBtn" onclick="pressNum('5')">5</button>
-      <button class="numBtn" onclick="pressNum('6')">6</button>
-      <button class="numBtn" onclick="pressNum('7')">7</button>
-      <button class="numBtn" onclick="pressNum('8')">8</button>
-      <button class="numBtn" onclick="pressNum('9')">9</button>
-      <button class="numBtn" onclick="clearNum()">清除</button>
-      <button class="numBtn" onclick="pressNum('0')">0</button>
-      <button class="numBtn" onclick="pressNum('00')">00</button>
-    </div>
-    <div id="payBtnWrap" class="payKey"></div>
-    <button style="width:100%;margin-top:10px;padding:12px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:16px;" onclick="closeInputModal()">取消</button>
-  </div>
-</div>
-
-<!-- 支出輸入 Modal -->
-<div id="expInputModal" class="modal">
-  <div class="modal-card">
-    <h3 id="expModalTitle" style="text-align:center;margin:4px 0 6px;font-size:20px;">支出</h3>
-    <div id="expAmountShow" class="inputBox">0</div>
-    <div class="numKey">
-      <button class="numBtn" onclick="pressExpNum('1')">1</button>
-      <button class="numBtn" onclick="pressExpNum('2')">2</button>
-      <button class="numBtn" onclick="pressExpNum('3')">3</button>
-      <button class="numBtn" onclick="pressExpNum('4')">4</button>
-      <button class="numBtn" onclick="pressExpNum('5')">5</button>
-      <button class="numBtn" onclick="pressExpNum('6')">6</button>
-      <button class="numBtn" onclick="pressExpNum('7')">7</button>
-      <button class="numBtn" onclick="pressExpNum('8')">8</button>
-      <button class="numBtn" onclick="pressExpNum('9')">9</button>
-      <button class="numBtn" onclick="clearExpNum()">清除</button>
-      <button class="numBtn" onclick="pressExpNum('0')">0</button>
-      <button class="numBtn" onclick="pressExpNum('00')">00</button>
-    </div>
-    <div id="expCatWrap" class="payKey"></div>
-    <input class="noteInput" id="expNoteInput" placeholder="備註（選填）">
-    <button style="width:100%;margin-top:8px;padding:12px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:16px;" onclick="closeExpInputModal()">取消</button>
-  </div>
-</div>
-
-<!-- 修改紀錄 Modal -->
-<div id="editModal" class="modal">
-  <div class="modal-card">
-    <h3 style="text-align:center;margin:8px 0 12px;font-size:18px;">修改紀錄</h3>
-    <label style="font-size:14px;">類別</label>
-    <select id="editType" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid #e2e8f0;margin:4px 0 10px;font-size:15px;"></select>
-    <label style="font-size:14px;">付款方式</label>
-    <select id="editPay" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid #e2e8f0;margin:4px 0 10px;font-size:15px;"></select>
-    <label style="font-size:14px;">金額</label>
-    <input id="editAmount" type="number" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid #e2e8f0;margin:4px 0 12px;font-size:16px;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto;">
-      <button onclick="closeEditModal()" style="padding:12px;border:none;border-radius:10px;background:#e2e8f0;">取消</button>
-      <button onclick="saveEdit()" style="padding:12px;border:none;border-radius:10px;background:#2563eb;color:#fff;">儲存</button>
-    </div>
-    <button onclick="deleteRec()" style="width:100%;margin-top:8px;padding:10px;border:none;border-radius:10px;background:#dc2626;color:#fff;">刪除此筆</button>
-  </div>
-</div>
-
-<!-- 首頁 -->
-<div id="pageHome" class="page active">
-  <div class="topbar">
-    <div class="topbar-inner">
-      <div class="topbar-title">計程車記帳</div>
-      <div class="topbar-icons">
-        <span class="exp-icon" onclick="showPage('pageExpStat')">💸</span>
-        <span class="stat-icon" onclick="showPage('pageStat')">📊</span>
-        <span class="set-icon" onclick="showPage('pageSetting')">⚙️</span>
-      </div>
-    </div>
-  </div>
-  <div id="typeBtnWrap" class="row2"></div>
-  <div class="card">
-    <div style="font-size:calc(1.05px * var(--fs-num));line-height:1.7;">
-      <div>營業額：<span id="dayTotal" style="color:#2563eb;font-size:calc(1.3px * var(--fs-num));">0</span>　現金：<span id="cashTotal">0</span>　非現金：<span id="nonCashTotal">0</span></div>
-      <div>手續費：<span id="feeTotal">0</span>　派遣費：<span id="deductTotal">0</span>　<span id="typeCountText" style="color:#475569;"></span></div>
-    </div>
-  </div>
-  <div class="section-title">
-    <h3>今日明細</h3>
-    <button class="sortBtn" id="sortBtn" onclick="toggleSort()">新→舊 ⇅</button>
-  </div>
-  <div id="listToday"></div>
-</div>
-
-<!-- 收入統計頁 -->
-<div id="pageStat" class="page">
-  <div class="backHomeBar">
-    <button class="navBtn" onclick="goBack()">返回</button>
-    <button class="navBtn" onclick="showPage('pageHome')">首頁</button>
-  </div>
-  <div id="statYearView">
-    <h3 style="margin-bottom:10px;font-size:16px;">營業統計</h3>
-    <div id="statYearList"></div>
-  </div>
-  <div id="statMonthView" style="display:none;">
-    <h3 id="statMonthTitle" style="margin-bottom:10px;font-size:16px;"></h3>
-    <div id="statMonthList"></div>
-  </div>
-  <div id="statDayView" style="display:none;">
-    <h3 id="statDayTitle" style="margin-bottom:10px;font-size:16px;"></h3>
-    <div id="statDayList"></div>
-  </div>
-</div>
-
-<!-- 單日明細 -->
-<div id="pageDayDetail" class="page">
-  <div class="backHomeBar">
-    <button class="navBtn" onclick="goBack()">返回</button>
-    <button class="navBtn" onclick="showPage('pageHome')">首頁</button>
-  </div>
-  <h3 id="dayDetailTitle" style="margin-bottom:12px;font-size:16px;">單日明細</h3>
-  <div class="card">
-    <div style="font-size:calc(1.05px * var(--fs-num));">營業額：<span id="ddTotal">0</span>｜載客：<span id="ddTrip">0</span>趟</div>
-  </div>
-  <div id="dayDetailList"></div>
-</div>
-
-<!-- 支出統計頁 -->
-<div id="pageExpStat" class="page">
-  <div class="backHomeBar">
-    <button class="navBtn" onclick="goBack()">返回</button>
-    <button class="navBtn" onclick="showPage('pageHome')">首頁</button>
-  </div>
-  <div id="expYearView">
-    <h3 style="margin-bottom:10px;font-size:16px;">支出統計</h3>
-    <div id="expYearList"></div>
-  </div>
-  <div id="expMonthView" style="display:none;">
-    <h3 id="expMonthTitle" style="margin-bottom:10px;font-size:16px;"></h3>
-    <div id="expMonthList"></div>
-  </div>
-  <div id="expDayView" style="display:none;">
-    <h3 id="expDayTitle" style="margin-bottom:10px;font-size:16px;"></h3>
-    <div id="expDayList"></div>
-  </div>
-</div>
-
-<!-- 設定頁 -->
-<div id="pageSetting" class="page">
-  <div class="backHomeBar">
-    <button class="navBtn" onclick="goBack()">返回</button>
-    <button class="navBtn" onclick="showPage('pageHome')">首頁</button>
-  </div>
-  <div class="setBlock">
-    <h4>字型大小</h4>
-    <div class="fs-wrap">
-      <span>小</span>
-      <input type="range" id="fontSizeSlider" min="11" max="20" step="1" value="13" oninput="onFontSizeChange(this.value)">
-      <span>大</span>
-      <span id="fontSizeValue" class="fs-value">13</span>
-    </div>
-  </div>
-  <div class="setBlock">
-    <h4>字型粗細</h4>
-    <div class="fs-wrap">
-      <span>細</span>
-      <input type="range" id="fontWeightSlider" min="300" max="900" step="100" value="700" oninput="onFontWeightChange(this.value)">
-      <span>粗</span>
-      <span id="fontWeightValue" class="fs-value">700</span>
-    </div>
-  </div>
-  <div class="setBlock">
-    <h4>營業時間（跨日營業）</h4>
-    <div style="display:flex;gap:8px;align-items:center;">
-      <span>開始</span>
-      <input id="setStartHour" type="number" min="0" max="23" style="width:60px;padding:6px;">
-      <span>結束</span>
-      <input id="setEndHour" type="number" min="0" max="23" style="width:60px;padding:6px;">
-    </div>
-    <div id="hourPreview" class="hour-preview">請輸入開始與結束時間</div>
-  </div>
-  <div class="setBlock">
-    <h4>營業類別</h4>
-    <div id="typeListSet"></div>
-    <div style="display:flex;gap:6px;margin-top:8px;">
-      <input id="newTypeName" placeholder="名稱" style="flex:1;padding:6px;">
-      <input id="newTypeDeduct" placeholder="扣除" type="number" style="width:70px;padding:6px;">
-      <button onclick="addNewTypeTemp()" style="padding:6px 10px;border:none;background:#2563eb;color:#fff;border-radius:6px;">+</button>
-    </div>
-  </div>
-  <div class="setBlock">
-    <h4>付款方式</h4>
-    <div id="payListSet"></div>
-    <div style="display:flex;gap:6px;margin-top:8px;">
-      <input id="newPayName" placeholder="名稱" style="flex:1;padding:6px;">
-      <input id="newPayRate" placeholder="手續費%" type="number" style="width:70px;padding:6px;">
-      <button onclick="addNewPayTemp()" style="padding:6px 10px;border:none;background:#2563eb;color:#fff;border-radius:6px;">+</button>
-    </div>
-  </div>
-  <div class="setBlock">
-    <h4>支出類型</h4>
-    <div id="expListSet"></div>
-    <div style="display:flex;gap:6px;margin-top:8px;">
-      <input id="newExpName" placeholder="支出名稱" style="flex:1;padding:6px;">
-      <button onclick="addNewExpTemp()" style="padding:6px 10px;border:none;background:#2563eb;color:#fff;border-radius:6px;">+</button>
-    </div>
-  </div>
-  <div class="setBlock">
-    <h4>資料備份</h4>
-    <div class="backup-bar">
-      <button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出備份</button>
-      <button class="backup-btn importBtn" onclick="document.getElementById('fileImport').click()">📥 匯入還原</button>
-    </div>
-  </div>
-</div>
-
-<script>
-if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
-let currentType = "";
-let editId = null;
-let historyStack = [];
-let modalAmount = "";
-let expModalAmount = "";
-let sortNewFirst = true;
-let statViewYear, statViewMonth, statViewDay;
-
-let config = JSON.parse(localStorage.getItem('taxiConfig')) || {
-  typeList:[
-    { name:"路招", deduct:0, color:"#2563eb" },
-    { name:"派遣", deduct:10, color:"#ea580c" }
-  ],
-  payList:[
-    { name:"現金", rate:0, color:"#16a34a" },
-    { name:"信用卡", rate:3, color:"#7c3aed" },
-    { name:"行動支付", rate:2.5, color:"#0891b2" },
-    { name:"好孕券", rate:0, color:"#db2777" }
-  ],
-  expList:[
-    { name:"加油", color:"#dc2626" },
-    { name:"維修", color:"#ea580c" },
-    { name:"停車", color:"#78716c" },
-    { name:"其他", color:"#475569" }
-  ],
-  businessHour:{ start:22, end:8 },
-  fontSize:13,
-  fontWeight:700
-};
-if(!config.businessHour) config.businessHour = {start:22, end:8};
-if(!config.fontSize) config.fontSize =13;
-if(!config.fontWeight) config.fontWeight=700;
-if(!config.expList) config.expList = [{name:"加油",color:"#dc2626"},{name:"其他",color:"#475569"}];
-
-function applyFontSize(v){ document.documentElement.style.setProperty('--fs-num', v); }
-function applyFontWeight(v){ document.documentElement.style.setProperty('--fw-num', v); }
-applyFontSize(config.fontSize);
-applyFontWeight(config.fontWeight);
-
-function onFontSizeChange(v){
-  document.getElementById('fontSizeValue').textContent = v;
-  applyFontSize(Number(v));
-  config.fontSize = Number(v)||13;
-  saveConfig();
-}
-function onFontWeightChange(v){
-  document.getElementById('fontWeightValue').textContent = v;
-  applyFontWeight(Number(v));
-  config.fontWeight = Number(v)||700;
-  saveConfig();
-}
-function onHourChange(){
-  updateHourPreview();
-  const s = Number(document.getElementById('setStartHour').value);
-  const e = Number(document.getElementById('setEndHour').value);
-  if(!Number.isInteger(s)||s<0||s>23) return;
-  if(!Number.isInteger(e)||e<0||e>23) return;
-  config.businessHour = {start:s, end:e};
-  saveConfig();
-}
-
-function saveConfig(){ localStorage.setItem('taxiConfig', JSON.stringify(config)); }
-function getRecords(){ return JSON.parse(localStorage.getItem('taxiRec'))||[]; }
-function saveRecords(arr){ localStorage.setItem('taxiRec', JSON.stringify(arr)); }
-function getExpenses(){ return JSON.parse(localStorage.getItem('taxiExp'))||[]; }
-function saveExpenses(arr){ localStorage.setItem('taxiExp', JSON.stringify(arr)); }
-
-function getBizDate(dt){
-  const h = dt.getHours();
-  const sh = Number(config.businessHour.start);
-  const eh = Number(config.businessHour.end);
-  let d = new Date(dt);
-  if(sh > eh && h < eh){ d.setDate(d.getDate()-1); }
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
-
-function fmtTime(){
-  const d=new Date();
-  return String(d.getHours()).padStart(2,'0')+":"+String(d.getMinutes()).padStart(2,'0');
-}
-
-function escapeHtml(str){
-  if(str===null||str===undefined) return "";
-  return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
-}
-
-// 備份匯出匯入
-function exportBackup(){
-  const payload = {
-    saveTime:new Date().toISOString(),
-    config:config,
-    records:getRecords(),
-    expenses:getExpenses()
-  };
-  const blob = new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `計程車記帳備份_${new Date().toISOString().slice(0,10)}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-  alert("✅ 備份已下載");
-}
-document.getElementById("fileImport").onchange = function(ev){
-  const f = ev.target.files[0]; if(!f) return;
-  const fr = new FileReader();
-  fr.onload = function(e){
-    try{
-      const data = JSON.parse(e.target.result);
-      if(!data.config||!Array.isArray(data.records)){ alert("❌ 備份檔格式錯誤"); return; }
-      if(!confirm("⚠️ 匯入會覆蓋全部現有資料，確定繼續？")) return;
-      config = data.config;
-      if(!config.businessHour) config.businessHour={start:22,end:8};
-      if(!config.fontSize) config.fontSize=13;
-      if(!config.fontWeight) config.fontWeight=700;
-      if(!config.expList) config.expList = [{name:"加油",color:"#dc2626"},{name:"其他",color:"#475569"}];
-      saveConfig();
-      saveRecords(data.records);
-      if(Array.isArray(data.expenses)) saveExpenses(data.expenses);
-      applyFontSize(config.fontSize);
-      applyFontWeight(config.fontWeight);
-      alert("✅ 匯入完成");
-      renderHomeTypeBtn(); calcTotal(); renderTodayList();
-    }catch(err){ alert("❌ 讀取失敗，檔案損壞"); }
-  };
-  fr.readAsText(f);
-  this.value=null;
-};
-
-// 頁面切換
-function showPage(pageId){
-  const curPage = document.querySelector(".page.active");
-  if(curPage && curPage.id !== pageId && pageId!=='pageHome'){
-    if(historyStack[historyStack.length-1] !== curPage.id) historyStack.push(curPage.id);
-  }
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  document.getElementById(pageId).classList.add("active");
-
-  if(pageId === "pageSetting"){
-    document.getElementById("setStartHour").value = config.businessHour.start;
-    document.getElementById("setEndHour").value = config.businessHour.end;
-    document.getElementById("fontSizeSlider").value = config.fontSize;
-    document.getElementById("fontSizeValue").textContent = config.fontSize;
-    document.getElementById("fontWeightSlider").value = config.fontWeight;
-    document.getElementById("fontWeightValue").textContent = config.fontWeight;
-    updateHourPreview(); renderSetting();
-  }
-  if(pageId === "pageStat") showStatYearView();
-  if(pageId === "pageExpStat") showExpYearView();
-  if(pageId === "pageDayDetail") renderDayDetail();
-  if(pageId === "pageHome") renderHomeTypeBtn();
-}
-function goBack(){
-  if(historyStack.length>0){
-    const prev = historyStack.pop();
-    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-    document.getElementById(prev).classList.add("active");
-    if(prev==="pageStat") showStatYearView();
-    if(prev==="pageExpStat") showExpYearView();
-    if(prev==="pageDayDetail") renderDayDetail();
-    if(prev==="pageSetting"){
-      document.getElementById("setStartHour").value = config.businessHour.start;
-      document.getElementById("setEndHour").value = config.businessHour.end;
-      updateHourPreview(); renderSetting();
-    }
-    return;
-  }
-  showPage("pageHome");
-}
-
-function renderHomeTypeBtn(){
-  const wrap = document.getElementById("typeBtnWrap");
-  wrap.innerHTML="";
-  config.typeList.forEach(t=>{
-    const btn = document.createElement("button");
-    btn.className="bigBtn";
-    btn.style.background = t.color||"#5577aa";
-    btn.textContent = t.name;
-    btn.onclick = ()=>openInputModal(t.name);
-    wrap.appendChild(btn);
-  });
-  const expBtn = document.createElement("button");
-  expBtn.className="bigBtn";
-  expBtn.style.background="#dc2626";
-  expBtn.textContent="支出";
-  expBtn.onclick=()=>openExpInputModal();
-  wrap.appendChild(expBtn);
-}
-
-// 收入輸入彈窗
-const inputModal = document.getElementById("inputModal");
-function openInputModal(typeName){
-  currentType = typeName;
-  modalAmount = "";
-  document.getElementById("modalTitle").textContent = typeName;
-  document.getElementById("amountShow").textContent="0";
-  renderPayButtons();
-  inputModal.classList.add("active");
-}
-function closeInputModal(){ inputModal.classList.remove("active"); }
-function pressNum(n){
-  if(modalAmount==="0") modalAmount="";
-  modalAmount += n;
-  document.getElementById("amountShow").textContent = modalAmount||"0";
-}
-function clearNum(){ modalAmount=""; document.getElementById("amountShow").textContent="0"; }
-function renderPayButtons(){
-  const w = document.getElementById("payBtnWrap"); w.innerHTML="";
-  config.payList.forEach(p=>{
-    const b = document.createElement("button");
-    b.className="bigBtn";
-    b.style.background = p.color||"#667788";
-    b.textContent = p.name;
-    b.onclick = ()=>saveRecordWithPay(p);
-    w.appendChild(b);
-  });
-}
-function saveRecordWithPay(payItem){
-  const rawAmt = Number(modalAmount);
-  if(!rawAmt||rawAmt<=0){ alert("請輸入金額"); return; }
-  const typeObj = config.typeList.find(t=>t.name===currentType);
-  if(!typeObj) return;
-  let rec;
-  if(payItem.name === "好孕券" && rawAmt>250){
-    rec = {
-      id:Date.now(),
-      type:currentType,
-      pay:"好孕券",
-      raw:rawAmt,
-      fee:0,
-      date:getBizDate(new Date()),
-      time:fmtTime(),
-      splits:[{pay:"好孕券",amount:250},{pay:"現金",amount:rawAmt-250}]
-    };
-    let net = rawAmt - typeObj.deduct;
-    rec.net = Math.max(0, Math.round(net));
-  }else{
-    const fee = rawAmt * Number(payItem.rate||0)/100;
-    let net = rawAmt - fee - typeObj.deduct;
-    net = Math.max(0, Math.round(net));
-    rec = {
-      id:Date.now(),
-      type:currentType,
-      pay:payItem.name,
-      raw:rawAmt,
-      fee:fee,
-      net:net,
-      date:getBizDate(new Date()),
-      time:fmtTime()
-    };
-  }
-  const list = getRecords();
-  list.unshift(rec);
-  saveRecords(list);
-  closeInputModal();
-  calcTotal(); renderTodayList();
-}
-
-// 支出彈窗
-const expInputModal = document.getElementById("expInputModal");
-function openExpInputModal(){
-  expModalAmount = "";
-  document.getElementById("expAmountShow").textContent="0";
-  document.getElementById("expNoteInput").value="";
-  renderExpCatButtons();
-  expInputModal.classList.add("active");
-}
-function closeExpInputModal(){ expInputModal.classList.remove("active"); }
-function pressExpNum(n){
-  if(expModalAmount==="0") expModalAmount="";
-  expModalAmount += n;
-  document.getElementById("expAmountShow").textContent = expModalAmount||"0";
-}
-function clearExpNum(){ expModalAmount=""; document.getElementById("expAmountShow").textContent="0"; }
-function renderExpCatButtons(){
-  const wrap = document.getElementById("expCatWrap"); wrap.innerHTML="";
-  config.expList.forEach(cat=>{
-    const b = document.createElement("button");
-    b.className="bigBtn";
-    b.style.background = cat.color;
-    b.textContent = cat.name;
-    b.onclick = ()=>saveExpense(cat);
-    wrap.appendChild(b);
-  });
-}
-function saveExpense(catObj){
-  const amt = Number(expModalAmount);
-  if(!amt||amt<=0){ alert("請輸入支出金額"); return; }
-  const note = document.getElementById("expNoteInput").value.trim();
-  const exp = {
-    id:Date.now(),
-    cat:catObj.name,
-    raw:amt,
-    note:note,
-    color:catObj.color,
-    date:getBizDate(new Date()),
-    time:fmtTime()
-  };
-  const arr = getExpenses();
-  arr.unshift(exp);
-  saveExpenses(arr);
-  closeExpInputModal();
-}
-
-// 計算單日營收統計
-function calcDayStats(recList, targetDate){
-  let sumRaw=0, cash=0, nonCash=0, trip=0, feeSum=0, deductSum=0;
-  const typeCounter = {};
-  config.typeList.forEach(t=>typeCounter[t.name]=0);
-  recList.forEach(r=>{
-    if(r.date !== targetDate) return;
-    trip++;
-    sumRaw += Number(r.raw||0);
-    feeSum += Number(r.fee||0);
-    const tItem = config.typeList.find(x=>x.name===r.type);
-    if(tItem) deductSum += Number(tItem.deduct||0);
-    typeCounter[r.type] = (typeCounter[r.type]||0)+1;
-    if(r.splits && Array.isArray(r.splits)){
-      r.splits.forEach(s=>{
-        if(s.pay === "現金") cash += Number(s.amount);
-        else nonCash += Number(s.amount);
-      });
-    }else{
-      const pItem = config.payList.find(p=>p.name===r.pay);
-      if(pItem && pItem.rate===0 && pItem.name==="現金"){
-        cash += Number(r.raw);
-      }else{
-        nonCash += Number(r.raw);
-      }
-    }
-  });
-  return {sumRaw,cash,nonCash,trip,feeSum,deductSum,typeCounter};
-}
-
-function calcTotal(){
-  const today = getBizDate(new Date());
-  const s = calcDayStats(getRecords(), today);
-  const txt = Object.entries(s.typeCounter).filter(([k,v])=>v>0).map(([k,v])=>`${k}:${v}`).join(" ");
-  document.getElementById("dayTotal").textContent = s.sumRaw;
-  document.getElementById("cashTotal").textContent = s.cash;
-  document.getElementById("nonCashTotal").textContent = s.nonCash;
-  document.getElementById("feeTotal").textContent = Math.round(s.feeSum);
-  document.getElementById("deductTotal").textContent = Math.round(s.deductSum);
-  document.getElementById("typeCountText").textContent = txt;
-}
-
-function toggleSort(){ sortNewFirst = !sortNewFirst; document.getElementById("sortBtn").textContent = sortNewFirst?"新→舊 ⇅":"舊→新 ⇅"; renderTodayList(); }
-
-function renderTodayList(){
-  const today = getBizDate(new Date());
-  const allRec = getRecords();
-  const dayRec = allRec.filter(r=>r.date===today);
-  const wrap = document.getElementById("listToday");
-  wrap.innerHTML="";
-  if(dayRec.length===0){ wrap.innerHTML = `<div class="empty-tip">今日尚無紀錄</div>`; return; }
-
-  const sorted = [...dayRec].sort((a,b)=> sortNewFirst ? b.id-a.id : a.id-b.id);
-  sorted.forEach(r=>{
-    const div = document.createElement("div");
-    div.className = "detail-row";
-    div.innerHTML = `
-      <div>
-        <div style="font-weight:bold;">${escapeHtml(r.type)}｜${escapeHtml(r.pay)}</div>
-        <div style="font-size:12px;color:#64748b;">${r.time}｜金額 ${r.raw}｜淨 ${r.net}</div>
-      </div>
-      <button class="editBtn" onclick="openEdit(${r.id})">改</button>
-    `;
-    wrap.appendChild(div);
-  });
-}
-
-// 修改紀錄
-const editModal = document.getElementById("editModal");
-function openEdit(id){
-  editId = id;
-  const rec = getRecords().find(x=>x.id===id);
-  if(!rec) return;
-  const tSel = document.getElementById("editType");
-  const pSel = document.getElementById("editPay");
-  tSel.innerHTML=""; pSel.innerHTML="";
-  config.typeList.forEach(t=>{
-    const opt = document.createElement("option"); opt.value=t.name; opt.textContent=t.name; tSel.appendChild(opt);
-  });
-  config.payList.forEach(p=>{
-    const opt = document.createElement("option"); opt.value=p.name; opt.textContent=p.name; pSel.appendChild(opt);
-  });
-  tSel.value = rec.type;
-  pSel.value = rec.pay;
-  document.getElementById("editAmount").value = rec.raw;
-  editModal.classList.add("active");
-}
-function closeEditModal(){ editModal.classList.remove("active"); editId=null; }
-function saveEdit(){
-  const arr = getRecords();
-  const idx = arr.findIndex(x=>x.id===editId);
-  if(idx<0) return;
-  const typeVal = document.getElementById("editType").value;
-  const payVal = document.getElementById("editPay").value;
-  const rawVal = Number(document.getElementById("editAmount").value);
-  if(!rawVal||rawVal<=0){ alert("金額錯誤"); return; }
-  const tObj = config.typeList.find(t=>t.name===typeVal);
-  const pObj = config.payList.find(p=>p.name===payVal);
-  if(!tObj||!pObj) return;
-
-  let updated;
-  if(pObj.name === "好孕券" && rawVal>250){
-    updated = {
-      ...arr[idx],
-      type:typeVal, pay:payVal, raw:rawVal, fee:0,
-      splits:[{pay:"好孕券",amount:250},{pay:"現金",amount:rawVal-250}]
-    };
-    let net = rawVal - tObj.deduct;
-    updated.net = Math.max(0,Math.round(net));
-    delete updated.fee;
-  }else{
-    const fee = rawVal * Number(pObj.rate||0)/100;
-    let net = rawVal - fee - tObj.deduct;
-    net = Math.max(0, Math.round(net));
-    updated = {...arr[idx], type:typeVal,pay:payVal,raw:rawVal,fee:fee,net:net};
-    delete updated.splits;
-  }
-  arr[idx] = updated;
-  saveRecords(arr);
-  closeEditModal();
-  calcTotal(); renderTodayList();
-  if(document.getElementById("pageDayDetail").classList.contains("active")) renderDayDetail();
-}
-function deleteRec(){
-  if(!editId) return;
-  if(!confirm("確定刪除此筆？")) return;
-  saveRecords(getRecords().filter(r=>r.id!==editId));
-  closeEditModal(); calcTotal(); renderTodayList();
-  if(document.getElementById("pageDayDetail").classList.contains("active")) renderDayDetail();
-}
-
-// 營業統計
-function showStatYearView(){
-  document.getElementById("statYearView").style.display="";
-  document.getElementById("statMonthView").style.display="none";
-  document.getElementById("statDayView").style.display="none";
-  renderStatYear();
-}
-function renderStatYear(){
-  const recs = getRecords();
-  const years = [...new Set(recs.map(r=>r.date.split("-")[0]))].sort().reverse();
-  const wrap = document.getElementById("statYearList"); wrap.innerHTML="";
-  if(years.length===0){ wrap.innerHTML=`<div class="empty-tip">尚無紀錄</div>`; return; }
-  years.forEach(y=>{
-    const yearRec = recs.filter(r=>r.date.startsWith(y+"-"));
-    const sumRaw = yearRec.reduce((s,i)=>s+Number(i.raw||0),0);
-    const trips = yearRec.length;
-    const card = document.createElement("div");
-    card.className="stat-card card";
-    card.innerHTML = `<div style="font-weight:bold;">${y} 年</div><div>營業：${sumRaw}元｜${trips}趟</div>`;
-    card.style.cursor="pointer";
-    card.onclick = ()=>showStatMonth(y);
-    wrap.appendChild(card);
-  });
-}
-function showStatMonth(y){
-  statViewYear = y;
-  document.getElementById("statYearView").style.display="none";
-  document.getElementById("statMonthView").style.display="";
-  document.getElementById("statDayView").style.display="none";
-  document.getElementById("statMonthTitle").textContent = `${y} 年 - 按月統計`;
-  renderStatMonth(y);
-}
-function renderStatMonth(y){
-  const recs = getRecords().filter(r=>r.date.startsWith(y+"-"));
-  const monthSet = [...new Set(recs.map(r=>r.date.slice(0,7)))].sort().reverse();
-  const wrap = document.getElementById("statMonthList"); wrap.innerHTML="";
-  monthSet.forEach(ym=>{
-    const mRec = recs.filter(r=>r.date.slice(0,7)===ym);
-    const sumRaw = mRec.reduce((s,i)=>s+Number(i.raw||0),0);
-    const trips = mRec.length;
-    const card = document.createElement("div");
-    card.className="stat-card card";
-    card.innerHTML = `<div style="font-weight:bold;">${ym}</div><div>營業：${sumRaw}元｜${trips}趟</div>`;
-    card.style.cursor="pointer";
-    const [yy,mm] = ym.split("-");
-    card.onclick = ()=>showStatDay(yy,mm);
-    wrap.appendChild(card);
-  });
-}
-function showStatDay(y,m){
-  statViewYear=y; statViewMonth=m;
-  document.getElementById("statYearView").style.display="none";
-  document.getElementById("statMonthView").style.display="none";
-  document.getElementById("statDayView").style.display="";
-  document.getElementById("statDayTitle").textContent = `${y}-${m} 每日營收`;
-  renderStatDay(y,m);
-}
-function renderStatDay(y,m){
-  const targetPrefix = `${y}-${m}`;
-  const recs = getRecords().filter(r=>r.date.startsWith(targetPrefix));
-  const daySet = [...new Set(recs.map(r=>r.date))].sort().reverse();
-  const wrap = document.getElementById("statDayList"); wrap.innerHTML="";
-  daySet.forEach(dStr=>{
-    const dRec = recs.filter(r=>r.date===dStr);
-    const sumRaw = dRec.reduce((s,i)=>s+Number(i.raw||0),0);
-    const trips = dRec.length;
-    const card = document.createElement("div");
-    card.className="stat-card card";
-    card.innerHTML = `<div style="font-weight:bold;">${dStr}</div><div>營業：${sumRaw}元｜${trips}趟</div>`;
-    card.style.cursor="pointer";
-    const [yy,mm,dd] = dStr.split("-");
-    card.onclick = ()=>{ statViewYear=yy; statViewMonth=mm; statViewDay=dd; showPage("pageDayDetail"); };
-    wrap.appendChild(card);
-  });
-}
-
-function renderDayDetail(){
-  const dStr = `${statViewYear}-${statViewMonth}-${statViewDay}`;
-  document.getElementById("dayDetailTitle").textContent = `${dStr} 營業明細`;
-  const recs = getRecords().filter(r=>r.date===dStr);
-  const s = calcDayStats(recs, dStr);
-  document.getElementById("ddTotal").textContent = s.sumRaw;
-  document.getElementById("ddTrip").textContent = s.trip;
-  const wrap = document.getElementById("dayDetailList"); wrap.innerHTML="";
-  if(recs.length===0){ wrap.innerHTML=`<div class="empty-tip">該日無紀錄</div>`; return; }
-  recs.sort((a,b)=>a.id-b.id).forEach(r=>{
-    const div = document.createElement("div");
-    div.className = "detail-row";
-    div.innerHTML = `
-      <div>
-        <div style="font-weight:bold;">${escapeHtml(r.type)}｜${escapeHtml(r.pay)}</div>
-        <div style="font-size:12px;color:#64748b;">${r.time}｜金額 ${r.raw}｜淨 ${r.net}</div>
-      </div>
-      <button class="editBtn" onclick="openEdit(${r.id})">改</button>
-    `;
-    wrap.appendChild(div);
-  });
-}
-
-// 支出統計
-function showExpYearView(){
-  document.getElementById("expYearView").style.display="";
-  document.getElementById("expMonthView").style.display="none";
-  document.getElementById("expDayView").style.display="none";
-  renderExpYear();
-}
-function renderExpYear(){
-  const exps = getExpenses();
-  const years = [...new Set(exps.map(e=>e.date.split("-")[0]))].sort().reverse();
-  const wrap = document.getElementById("expYearList"); wrap.innerHTML="";
-  if(years.length===0){ wrap.innerHTML=`<div class="empty-tip
