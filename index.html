@@ -1,182 +1,1100 @@
-<template>
-  <div class="app-container">
-    <!-- 路由模拟：首页 / 支出页 / 支出统计页 / 支出输入页 -->
-    <div class="tab-nav">
-      <button @click="currentPage = 'home'">首页</button>
-      <button @click="currentPage = 'expensePage'">支出页面</button>
-      <button @click="currentPage = 'statPage'">支出统计</button>
-      <button @click="currentPage = 'inputPage'">支出输入</button>
-    </div>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>計程車記帳</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2563eb">
+<style>
+:root{--fs-num:13;--fw-num:700;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent;}
+body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#1e293b;line-height:1.35;font-weight:var(--fw-num);}
+.page{display:none;}
+.page.active{display:block;}
+.row2{display:grid;grid-template-columns:repeat(auto-fit, minmax(90px, 1fr));gap:8px;margin-bottom:12px;}
+.card{background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:4px;}
+.topbar{background:#fff;border-radius:12px;padding:8px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:8px;}
+.topbar-inner{display:flex;justify-content:space-between;align-items:center;}
+.topbar-title{font-size:calc(1.25px * var(--fs-num));color:#0f172a;line-height:1;}
+.topbar-icons{display:flex;gap:6px;align-items:center;}
+.stat-icon,.set-icon,.exp-icon{font-size:calc(1.4px * var(--fs-num));color:#475569;padding:4px 6px;cursor:pointer;border-radius:8px;line-height:1;}
+.stat-icon:active,.set-icon:active,.exp-icon:active{background:#e2e8f0;}
+.bigBtn{padding:12px 6px;border:none;border-radius:12px;font-size:calc(1.05px * var(--fs-num));color:#fff;box-shadow:0 3px 8px rgba(0,0,0,0.12);}
+.bigBtn:active{transform:scale(0.97);opacity:0.92;}
+.inputBox{width:100%;padding:16px;font-size:28px;text-align:center;border:2px solid #e2e8f0;border-radius:12px;margin:14px 0;background:#f8fafc;color:#0f172a;}
+.numKey{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.numBtn{padding:18px 8px;font-size:22px;border-radius:12px;border:none;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.08);color:#1e293b;}
+.numBtn:active{background:#f1f5f9;}
+.payKey{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
+.payBtn{padding:20px 10px;border:none;border-radius:12px;color:#fff;font-size:calc(1.2px * var(--fs-num));box-shadow:0 2px 6px rgba(0,0,0,0.15);}
+.payBtn:active{opacity:0.9;transform:scale(0.98);}
+.noteInput{width:100%;padding:10px 12px;margin-top:10px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:calc(1.05px * var(--fs-num));background:#f8fafc;}
+.noteInput:focus{outline:none;border-color:#2563eb;background:#fff;}
+.editBtn{color:#2563eb;border:none;background:#eff6ff;font-size:calc(0.9px * var(--fs-num));padding:6px 8px;border-radius:8px;flex-shrink:0;}
+.editBtn:active{background:#dbeafe;}
+.delBtn{color:#dc2626;border:none;background:#fef2f2;font-size:calc(0.85px * var(--fs-num));padding:4px 8px;border-radius:6px;}
+.delBtn:active{background:#fee2e2;}
+.backHomeBar{display:flex;gap:10px;margin-bottom:14px;}
+.navBtn{flex:1;padding:12px;border:none;border-radius:10px;background:#e2e8f0;font-size:calc(1.05px * var(--fs-num));color:#334155;}
+.navBtn:active{background:#cbd5e1;}
+.setBlock{margin:8px 0;padding:10px 12px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+.setBlock h4{margin-bottom:6px;font-size:calc(1.05px * var(--fs-num));color:#0f172a;}
+.setBlock label{display:block;font-size:calc(0.95px * var(--fs-num));color:#64748b;margin-top:6px;margin-bottom:3px;}
+.setBlock input[type="number"],.setBlock input[type="text"]{width:100%;padding:8px 10px;margin:3px 0 6px;border-radius:8px;border:1.5px solid #e2e8f0;font-size:calc(1.05px * var(--fs-num));background:#f8fafc;}
+.setBlock input:focus{outline:none;border-color:#2563eb;background:#fff;}
+.setBlock button{padding:8px 12px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-size:calc(1.05px * var(--fs-num));margin-top:6px;}
+.hour-preview{margin-top:6px;padding:8px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;font-size:calc(0.95px * var(--fs-num));color:#0c4a6e;line-height:1.4;}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;height:100dvh;background:#fff;display:none;align-items:stretch;justify-content:center;padding:6px;z-index:100;overflow:hidden;box-sizing:border-box;}
+.modal.active{display:flex;}
+.modal-card{width:100%;height:100%;padding:6px;display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box;background:#fff;}
+.backup-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
+.backup-btn{padding:8px 10px;border:none;border-radius:8px;color:#fff;font-size:calc(1.05px * var(--fs-num));}
+.exportBtn{background:#16a34a;}
+.importBtn{background:#7c3aed;}
+.empty-tip{text-align:center;color:#94a3b8;padding:24px 16px;font-size:calc(1.05px * var(--fs-num));}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:12px 0 6px;}
+.section-title h3{font-size:calc(1.15px * var(--fs-num));color:#0f172a;}
+.sortBtn{border:none;background:#e0f2fe;color:#0369a1;font-size:calc(0.9px * var(--fs-num));padding:5px 10px;border-radius:20px;}
+#typeListSet input,#payListSet input,#expListSet input,.setBlock .item input{font-size:calc(0.95px * var(--fs-num));padding:4px 8px;height:26px;border-radius:6px;border:1.2px solid #e2e8f0;background:#f8fafc;margin:0;}
+#typeListSet input[type="number"],#payListSet input[type="number"],#expListSet input[type="number"],.setBlock .item input[type="number"]{width:4.5em;max-width:72px;text-align:center;flex-shrink:0;}
+#typeListSet input:not([type="number"]),#payListSet input:not([type="number"]),#expListSet input:not([type="number"]),.setBlock .item input:not([type="number"]){flex:1;min-width:0;}
+.item{background:#fff;padding:2px 8px;margin:2px 0;border-radius:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,0.05);gap:8px;}
 
-    <!-- ========== 首页 ========== -->
-    <div v-if="currentPage === 'home'" class="page home-page">
-      <h2>首页</h2>
-      <!-- ✅ 已移除首页上方的支出按钮 -->
-      <div class="home-content">
-        <p>首页原有内容</p>
-      </div>
-    </div>
+/* 明細行 */
+.detail-row{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:10px;margin:4px 0;padding:8px 10px;box-shadow:0 1px 4px rgba(0,0,0,0.05);font-size:calc(1.05px * var(--fs-num));gap:6px;}
+.dr-left{color:#0f172a;font-size:calc(0.9px * var(--fs-num));white-space:nowrap;}
+.dr-type,.dr-pay{white-space:nowrap;}
+.dr-amt,.dr-fee,.dr-net,.dr-cum{text-align:right;white-space:nowrap;}
+.dr-fee{color:#dc2626;}
+.dr-cum{color:#7e22ce;}
 
-    <!-- ========== 支出页面（把支出按钮移到本页上方） ========== -->
-    <div v-if="currentPage === 'expensePage'" class="page expense-page">
-      <!-- ✅ 移到支出页面上方的支出按钮 -->
-      <button class="expense-top-btn">支出</button>
-      <h2>支出页面</h2>
-      <div class="expense-list">
-        <div>支出记录1：120元</div>
-        <div>支出记录2：350元</div>
-      </div>
-    </div>
+/* 統計頁年/月卡片 */
+.stat-card{background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:8px;cursor:pointer;}
+.stat-card:active{transform:scale(0.98);background:#f8fafc;}
+.stat-card-title{font-size:calc(1.15px * var(--fs-num));color:#2563eb;margin-bottom:6px;}
+.stat-card-row{font-size:calc(0.98px * var(--fs-num));color:#475569;margin-top:2px;}
+.stat-card-row.hl{color:#0f172a;}
+.stat-card-row.fee{color:#dc2626;}
 
-    <!-- ========== 支出统计页面 淨收入、支出、餘額同一行 ========== -->
-    <div v-if="currentPage === 'statPage'" class="page stat-page">
-      <h2>支出统计页面</h2>
-      <div class="ym-card">
-        <div class="ym-select">
-          <select v-model="statYear">
-            <option value="2025">2025</option>
-            <option value="2026">2026</option>
-          </select>
-          <select v-model="statMonth">
-            <option value="1">1月</option>
-            <option value="9">9月</option>
-          </select>
-        </div>
-        <!-- ✅ 淨收入、支出、餘額 同一行 flex横向排列 -->
-        <div class="stat-data-row">
-          <div class="stat-item">淨收入：{{netIncome}}</div>
-          <div class="stat-item">支出：{{expenseTotal}}</div>
-          <div class="stat-item">餘額：{{balance}}</div>
-        </div>
-      </div>
-    </div>
+/* 每日列表（統計頁） */
+.day-summary-row{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:10px;margin:4px 0;padding:10px 12px;box-shadow:0 1px 4px rgba(0,0,0,0.05);font-size:calc(1.05px * var(--fs-num));cursor:pointer;gap:6px;}
+.day-summary-row:active{background:#f1f5f9;}
+.ds-date{color:#0f172a;}
+.ds-type{color:#475569;font-size:calc(0.9px * var(--fs-num));}
+.ds-amt{color:#1e40af;text-align:right;}
+.ds-fee{color:#dc2626;text-align:right;}
+.ds-net{color:#7e22ce;text-align:right;}
+.ds-cum{color:#0f172a;text-align:right;}
 
-    <!-- ========== 支出输入页面 数字按钮高度翻倍 ========== -->
-    <div v-if="currentPage === 'inputPage'" class="page input-page">
-      <h2>支出输入页面</h2>
-      <div class="input-display">{{inputValue}}</div>
-      <div class="keyboard-wrap">
-        <div class="key-row">
-          <!-- ✅ 数字按钮 class="num-btn" 高度翻倍；功能按钮维持原有高度 -->
-          <button class="num-btn" @click="pressNum(1)">1</button>
-          <button class="num-btn" @click="pressNum(2)">2</button>
-          <button class="num-btn" @click="pressNum(3)">3</button>
-          <button class="func-btn">删除</button>
-        </div>
-        <div class="key-row">
-          <button class="num-btn" @click="pressNum(4)">4</button>
-          <button class="num-btn" @click="pressNum(5)">5</button>
-          <button class="num-btn" @click="pressNum(6)">6</button>
-          <button class="func-btn">清空</button>
-        </div>
-        <div class="key-row">
-          <button class="num-btn" @click="pressNum(7)">7</button>
-          <button class="num-btn" @click="pressNum(8)">8</button>
-          <button class="num-btn" @click="pressNum(9)">9</button>
-          <button class="func-btn">确认</button>
-        </div>
-        <div class="key-row">
-          <button class="num-btn" @click="pressNum(0)">0</button>
-          <button class="num-btn" @click="pressNum('.')">.</button>
-        </div>
+/* 支出明細行 */
+.exp-row{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:10px;margin:4px 0;padding:8px 10px;box-shadow:0 1px 4px rgba(0,0,0,0.05);font-size:calc(1.05px * var(--fs-num));gap:6px;}
+.exp-row .er-time{color:#64748b;font-size:calc(0.9px * var(--fs-num));}
+.exp-row .er-cat{white-space:nowrap;}
+.exp-row .er-note{color:#475569;font-size:calc(0.9px * var(--fs-num));flex:1;text-align:left;padding:0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.exp-row .er-amt{color:#dc2626;text-align:right;}
+
+/* 支出輸入視窗：緊湊排版，數字按鈕變小、類型按鈕變大 */
+#expInputModal .modal-card{padding:4px 6px;display:flex;flex-direction:column;height:100%;}
+#expInputModal #expModalTitle{font-size:calc(1.2px * var(--fs-num)) !important;margin:0 0 4px !important;flex-shrink:0;text-align:center;}
+#expInputModal .inputBox{font-size:calc(1.8px * var(--fs-num));padding:8px;margin:4px 0;flex-shrink:0;}
+#expInputModal .numKey{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin:0;}
+#expInputModal .numBtn{padding:6px 4px;font-size:calc(1.1px * var(--fs-num));border-radius:8px;}
+#expInputModal .payKey{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;max-height:150px;overflow-y:auto;}
+#expInputModal .payBtn{padding:16px 8px;font-size:calc(1.25px * var(--fs-num));border-radius:10px;}
+#expInputModal .noteInput{flex-shrink:0;margin-top:8px !important;padding:14px 12px;font-size:calc(1.15px * var(--fs-num));}
+#expInputModal > .modal-card > button{flex-shrink:0;margin-top:6px !important;padding:12px !important;font-size:calc(1.1px * var(--fs-num)) !important;}
+
+/* 字型滑桿 */
+.fs-wrap{display:flex;align-items:center;gap:10px;margin-top:6px;}
+.fs-wrap input[type="range"]{flex:1;-webkit-appearance:none;height:6px;border-radius:3px;background:#e2e8f0;outline:none;}
+.fs-wrap input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#2563eb;cursor:pointer;}
+.fs-value{font-size:calc(1.05px * var(--fs-num));color:#2563eb;min-width:34px;text-align:right;}
+
+#inputModal #modalTitle{font-size:calc(1.3px * var(--fs-num)) !important;margin:0 0 2px !important;flex-shrink:0;text-align:center;}
+#inputModal .inputBox{font-size:clamp(26px, 7vw, 32px);padding:8px 10px;margin:4px 0 6px;flex-shrink:0;}
+#inputModal .numKey{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:repeat(4, 1fr);gap:5px;margin:0;}
+#inputModal .numBtn{padding:0;margin:0;font-size:clamp(16px, 5vw, 22px);height:100%;min-height:0;border-radius:8px;}
+#inputModal .payKey{flex-shrink:0;margin-top:8px;gap:10px;}
+#inputModal .payBtn{padding:18px 8px;font-size:calc(1.2px * var(--fs-num));}
+#inputModal > .modal-card > button{flex-shrink:0;margin-top:6px !important;padding:10px !important;font-size:calc(1.1px * var(--fs-num)) !important;}
+@media(max-width:600px){body{padding:8px;}}
+</style>
+</head>
+<body>
+<input type="file" id="fileImport" style="display:none" accept=".json">
+
+<!-- 收入輸入 Modal -->
+<div id="inputModal" class="modal">
+  <div class="modal-card">
+    <h3 id="modalTitle" style="text-align:center;margin-bottom:8px;font-size:22px;">路招</h3>
+    <div id="amountShow" class="inputBox">0</div>
+    <div class="numKey">
+      <button class="numBtn" onclick="pressNum('1')">1</button>
+      <button class="numBtn" onclick="pressNum('2')">2</button>
+      <button class="numBtn" onclick="pressNum('3')">3</button>
+      <button class="numBtn" onclick="pressNum('4')">4</button>
+      <button class="numBtn" onclick="pressNum('5')">5</button>
+      <button class="numBtn" onclick="pressNum('6')">6</button>
+      <button class="numBtn" onclick="pressNum('7')">7</button>
+      <button class="numBtn" onclick="pressNum('8')">8</button>
+      <button class="numBtn" onclick="pressNum('9')">9</button>
+      <button class="numBtn" onclick="clearNum()">清除</button>
+      <button class="numBtn" onclick="pressNum('0')">0</button>
+      <button class="numBtn" onclick="pressNum('00')">00</button>
+    </div>
+    <div id="payBtnWrap" class="payKey"></div>
+    <button style="width:100%;margin-top:12px;padding:14px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:17px;" onclick="closeInputModal()">取消</button>
+  </div>
+</div>
+
+<!-- 支出輸入 Modal -->
+<div id="expInputModal" class="modal">
+  <div class="modal-card">
+    <h3 id="expModalTitle" style="text-align:center;margin-bottom:8px;font-size:22px;">支出</h3>
+    <div id="expAmountShow" class="inputBox">0</div>
+    <div class="numKey">
+      <button class="numBtn" onclick="pressExpNum('1')">1</button>
+      <button class="numBtn" onclick="pressExpNum('2')">2</button>
+      <button class="numBtn" onclick="pressExpNum('3')">3</button>
+      <button class="numBtn" onclick="pressExpNum('4')">4</button>
+      <button class="numBtn" onclick="pressExpNum('5')">5</button>
+      <button class="numBtn" onclick="pressExpNum('6')">6</button>
+      <button class="numBtn" onclick="pressExpNum('7')">7</button>
+      <button class="numBtn" onclick="pressExpNum('8')">8</button>
+      <button class="numBtn" onclick="pressExpNum('9')">9</button>
+      <button class="numBtn" onclick="clearExpNum()">清除</button>
+      <button class="numBtn" onclick="pressExpNum('0')">0</button>
+      <button class="numBtn" onclick="pressExpNum('00')">00</button>
+    </div>
+    <div id="expCatWrap" class="payKey"></div>
+    <input id="expNoteInput" class="noteInput" placeholder="備註（選填）">
+    <button style="width:100%;margin-top:8px;padding:12px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:16px;" onclick="closeExpInputModal()">取消</button>
+  </div>
+</div>
+
+<!-- 修改 Modal -->
+<div id="editModal" class="modal">
+  <div class="modal-card">
+    <h3 style="text-align:center;margin-bottom:16px;font-size:18px;">修改紀錄</h3>
+    <label style="font-size:13px;color:#64748b;">類別</label>
+    <select id="editType" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:10px;border:1.5px solid #e2e8f0;font-size:14px;background:#f8fafc;"></select>
+    <label style="font-size:13px;color:#64748b;">金額</label>
+    <input id="editAmount" type="number" class="inputBox" style="font-size:22px;padding:14px;margin:6px 0 12px;">
+    <label style="font-size:13px;color:#64748b;">付款方式</label>
+    <select id="editPay" style="width:100%;padding:12px;margin:6px 0 16px;border-radius:10px;border:1.5px solid #e2e8f0;font-size:14px;background:#f8fafc;"></select>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <button onclick="saveEdit()" style="padding:12px;border:none;border-radius:12px;background:#2563eb;color:#fff;font-size:14px;">儲存</button>
+      <button onclick="closeEditModal()" style="padding:12px;border:none;border-radius:12px;background:#94a3b8;color:#fff;font-size:14px;">取消</button>
+    </div>
+    <button onclick="deleteRec()" style="width:100%;margin-top:12px;padding:12px;border:none;border-radius:12px;background:#dc2626;color:#fff;font-size:14px;">刪除此筆</button>
+  </div>
+</div>
+
+<!-- 首頁 -->
+<div id="pageHome" class="page active">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-title">計程車記帳</div>
+      <div class="topbar-icons">
+        <span class="exp-icon" onclick="showPage('pageExpStat')">💸</span>
+        <span class="stat-icon" onclick="showPage('pageStat')">📊</span>
+        <span class="set-icon" onclick="showPage('pageSetting')">⚙️</span>
       </div>
     </div>
   </div>
-</template>
 
-<script setup>
-import {ref} from 'vue'
-const currentPage = ref('home')
-//统计页模拟数据
-const statYear = ref('2026')
-const statMonth = ref('9')
-const netIncome = ref(12000)
-const expenseTotal = ref(5600)
-const balance = ref(6400)
-//输入键盘
-const inputValue = ref('0')
-const pressNum = (n)=>{
-  if(inputValue.value === '0') inputValue.value = ''
-  inputValue.value += n
+  <div id="typeBtnWrap" class="row2"></div>
+
+  <div class="card">
+    <div style="font-size:calc(1.05px * var(--fs-num));line-height:1.6;">
+      <div>營業額：<span id="dayTotal" style="color:#2563eb;font-size:calc(1.3px * var(--fs-num));">0</span>　現金：<span id="cashTotal">0</span>　非現金：<span id="nonCashTotal">0</span></div>
+      <div>手續費：<span id="feeTotal">0</span>　派遣費：<span id="deductTotal">0</span>　<span id="typeCountText" style="color:#475569;"></span></div>
+    </div>
+  </div>
+
+  <div class="section-title">
+    <h3>今日明細</h3>
+    <button class="sortBtn" id="sortBtn" onclick="toggleSort()">新→舊 ⇅</button>
+  </div>
+  <div id="listToday"></div>
+</div>
+
+<!-- 收入統計頁 -->
+<div id="pageStat" class="page">
+  <div class="backHomeBar">
+    <button class="navBtn" onclick="goBack()">返回</button>
+    <button class="navBtn" onclick="showPage('pageHome')">首頁</button>
+  </div>
+  <div id="statYearView">
+    <h3 style="margin-bottom:10px;font-size:16px;">營業統計</h3>
+    <div id="statYearList"></div>
+  </div>
+  <div id="statMonthView" style="display:none;">
+    <h3 id="statMonthTitle" style="margin-bottom:10px;font-size:16px;"></h3>
+    <div id="statMonthList"></div>
+  </div>
+  <div id="statDayView" style="display:none;">
+    <h3 id="statDayTitle" style="margin-bottom:10px;font-size:16px;"></h3>
+    <div id="statDayList"></div>
+  </div>
+</div>
+
+<!-- 單日明細 -->
+<div id="pageDayDetail" class="page">
+  <div class="backHomeBar">
+    <button class="navBtn" onclick="goBack()">返回</button>
+    <button class="navBtn" onclick="showPage('pageHome')">首頁</button>
+  </div>
+  <h3 id="dayDetailTitle" style="margin-bottom:12px;font-size:16px;">單日明細</h3>
+  <div class="card">
+    <div style="font-size:calc(1.05px * var(--fs-num));margin-bottom:4px;">營業額：<span id="ddTotal" style="color:#2563eb;">0</span>｜載客：<span id="ddTrip">0</span>趟</div>
+    <div style="font-size:calc(1.05px * var(--fs-num));color:#475569;margin-bottom:4px;"><span id="ddTypeText"></span></div>
+    <div style="font-size:calc(1px * var(--fs-num));color:#64748b;">現金：<span id="ddCash">0</span>｜非現金：<span id="ddNonCash">0</span>｜手續費：<span id="ddFee">0</span></div>
+  </div>
+  <div id="dayDetailList" style="margin-top:10px;"></div>
+</div>
+
+<!-- 支出統計頁 -->
+<div id="pageExpStat" class="page">
+  <div class="backHomeBar">
+    <button class="navBtn" onclick="goBack()">返回</button>
+    <button class="navBtn" onclick="showPage('pageHome')">首頁</button>
+  </div>
+  <div id="expYearView">
+    <h3 style="margin-bottom:10px;font-size:16px;">支出統計</h3>
+    <div id="expYearList"></div>
+  </div>
+  <div id="expMonthView" style="display:none;">
+    <h3 id="expMonthTitle" style="margin-bottom:10px;font-size:16px;"></h3>
+    <div id="expMonthList"></div>
+  </div>
+  <div id="expDayView" style="display:none;">
+    <h3 id="expDayTitle" style="margin-bottom:10px;font-size:16px;"></h3>
+    <div id="expDayList"></div>
+  </div>
+</div>
+
+<!-- 設定頁 -->
+<div id="pageSetting" class="page">
+  <div class="backHomeBar">
+    <button class="navBtn" onclick="goBack()">返回</button>
+    <button class="navBtn" onclick="showPage('pageHome')">首頁</button>
+  </div>
+
+  <div class="setBlock">
+    <h4>字型大小</h4>
+    <div class="fs-wrap">
+      <span style="font-size:calc(0.9px * var(--fs-num));">小</span>
+      <input type="range" id="fontSizeSlider" min="11" max="20" step="1" value="13" oninput="onFontSizeChange(this.value)">
+      <span style="font-size:calc(1.3px * var(--fs-num));">大</span>
+      <span id="fontSizeValue" class="fs-value">13</span>
+    </div>
+  </div>
+
+  <div class="setBlock">
+    <h4>字型粗細</h4>
+    <div class="fs-wrap">
+      <span style="font-size:calc(0.9px * var(--fs-num));">細</span>
+      <input type="range" id="fontWeightSlider" min="300" max="900" step="100" value="700" oninput="onFontWeightChange(this.value)">
+      <span style="font-size:calc(1.3px * var(--fs-num));">粗</span>
+      <span id="fontWeightValue" class="fs-value">700</span>
+    </div>
+  </div>
+
+  <div class="setBlock">
+    <h4>營業時間</h4>
+    <div style="display:flex;gap:8px;align-items:center;font-size:calc(1.05px * var(--fs-num));">
+      <span>開始</span>
+      <input id="setStartHour" type="number" min="0" max="23" oninput="onHourChange()" style="width:56px;padding:6px;text-align:center;font-size:14px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;">
+      <span>結束</span>
+      <input id="setEndHour" type="number" min="0" max="23" oninput="onHourChange()" style="width:56px;padding:6px;text-align:center;font-size:14px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;">
+    </div>
+    <div id="hourPreview" class="hour-preview">請輸入開始與結束時間</div>
+  </div>
+
+  <div class="setBlock">
+    <h4>營業類別</h4>
+    <div id="typeListSet"></div>
+    <div style="display:flex;gap:6px;margin-top:6px;">
+      <input id="newTypeName" placeholder="名稱" style="flex:1;padding:6px 8px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;">
+      <input id="newTypeDeduct" type="number" placeholder="扣除" style="width:56px;padding:6px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;">
+      <button onclick="addNewTypeTemp()" style="padding:6px 10px;font-size:13px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button>
+    </div>
+  </div>
+
+  <div class="setBlock">
+    <h4>付款方式</h4>
+    <div id="payListSet"></div>
+    <div style="display:flex;gap:6px;margin-top:6px;">
+      <input id="newPayName" placeholder="名稱" style="flex:1;padding:6px 8px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;">
+      <input id="newPayRate" type="number" placeholder="%" style="width:56px;padding:6px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;">
+      <button onclick="addNewPayTemp()" style="padding:6px 10px;font-size:13px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button>
+    </div>
+  </div>
+
+  <div class="setBlock">
+    <h4>支出類型</h4>
+    <div id="expListSet"></div>
+    <div style="display:flex;gap:6px;margin-top:6px;">
+      <input id="newExpName" placeholder="名稱" style="flex:1;padding:6px 8px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;">
+      <button onclick="addNewExpTemp()" style="padding:6px 10px;font-size:13px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button>
+    </div>
+  </div>
+
+  <div class="setBlock">
+    <h4>資料備份</h4>
+    <div class="backup-bar">
+      <button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出</button>
+      <button class="backup-btn importBtn" onclick="document.getElementById('fileImport').click()">📥 匯入</button>
+    </div>
+  </div>
+</div>
+
+<script>
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+
+let currentType = "";
+let editId = null;
+let historyStack = [];
+let modalAmount = "";
+let expModalAmount = "";
+let sortNewFirst = true;
+let statViewYear, statViewMonth, statViewDay;
+
+let config = JSON.parse(localStorage.getItem('taxiConfig')) || {
+  typeList:[
+    { name:"路招", deduct:0, color:"#2563eb" },
+    { name:"派遣", deduct:10, color:"#ea580c" }
+  ],
+  payList:[
+    { name:"現金", rate:0, color:"#16a34a" },
+    { name:"悠遊卡", rate:3, color:"#22aabb" },
+    { name:"信用卡", rate:3, color:"#7c3aed" },
+    { name:"企業簽單", rate:15, color:"#9333ea" },
+    { name:"好孕券", rate:0, color:"#0891b2" }
+  ],
+  expList:[
+    { name:"加油", color:"#dc2626" },
+    { name:"維修", color:"#ea580c" },
+    { name:"餐費", color:"#9333ea" },
+    { name:"停車", color:"#0891b2" },
+    { name:"其他", color:"#475569" }
+  ],
+  businessHour:{ start:22, end:8 },
+  fontSize: 13,
+  fontWeight: 700
+};
+if(!config.businessHour) config.businessHour = {start:22, end:8};
+if(!config.fontSize) config.fontSize = 13;
+if(!config.fontWeight) config.fontWeight = 700;
+if(!config.expList) config.expList = [{ name:"加油", color:"#dc2626" },{ name:"維修", color:"#ea580c" },{ name:"其他", color:"#475569" }];
+
+function applyFontSize(v){ document.documentElement.style.setProperty('--fs-num', v); }
+function applyFontWeight(v){ document.documentElement.style.setProperty('--fw-num', v); }
+applyFontSize(config.fontSize);
+applyFontWeight(config.fontWeight);
+
+function onFontSizeChange(v){ document.getElementById('fontSizeValue').textContent = v; applyFontSize(Number(v)); config.fontSize = Number(v)||13; saveConfig(); }
+function onFontWeightChange(v){ document.getElementById('fontWeightValue').textContent = v; applyFontWeight(Number(v)); config.fontWeight = Number(v)||700; saveConfig(); }
+function onHourChange(){
+  updateHourPreview();
+  const s = Number(document.getElementById('setStartHour').value);
+  const e = Number(document.getElementById('setEndHour').value);
+  if(!Number.isInteger(s)||s<0||s>23) return;
+  if(!Number.isInteger(e)||e<0||e>23) return;
+  config.businessHour = {start:s, end:e};
+  saveConfig();
 }
+function onTypeNameChange(i,v){ if(config.typeList[i]){ config.typeList[i].name = v.trim(); saveConfig(); renderHomeTypeBtn(); } }
+function onTypeDeductChange(i,v){ if(config.typeList[i]){ config.typeList[i].deduct = Number(v)||0; saveConfig(); } }
+function onPayNameChange(i,v){ if(config.payList[i]){ config.payList[i].name = v.trim(); saveConfig(); } }
+function onPayRateChange(i,v){ if(config.payList[i]){ config.payList[i].rate = Number(v)||0; saveConfig(); } }
+function onExpNameChange(i,v){ if(config.expList[i]){ config.expList[i].name = v.trim(); saveConfig(); } }
+
+function saveConfig(){ localStorage.setItem('taxiConfig', JSON.stringify(config)); }
+function getRecords(){ return JSON.parse(localStorage.getItem('taxiRec')) || []; }
+function saveRecords(l){ localStorage.setItem('taxiRec', JSON.stringify(l)); }
+function getExpenses(){ return JSON.parse(localStorage.getItem('taxiExp')) || []; }
+function saveExpenses(l){ localStorage.setItem('taxiExp', JSON.stringify(l)); }
+function fmtTime(){ const d=new Date(); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+function escapeHtml(v){ return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
+function isCashPay(p){ if(p==="現金") return true; const x=config.payList.find(i=>i.name===p); return x && Number(x.rate)===0 && /現/.test(p); }
+
+function getBizDate(dt){
+  const h = dt.getHours();
+  const sh = Number(config.businessHour?.start ?? 22);
+  const eh = Number(config.businessHour?.end ?? 8);
+  let d = new Date(dt);
+  if(sh > eh && h < eh) d.setDate(d.getDate() - 1);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function exportBackup(){
+  const data = { saveTime: new Date().toISOString(), config, records: getRecords(), expenses: getExpenses() };
+  const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `計程車記帳備份_${new Date().toISOString().slice(0,10)}.json`;
+  a.click(); URL.revokeObjectURL(url);
+  alert("✅ 備份檔已下載！");
+}
+
+document.getElementById("fileImport").onchange = function(e){
+  const f = e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = function(ev){
+    try{
+      const d = JSON.parse(ev.target.result);
+      if(!d.config || !Array.isArray(d.records)){ alert("❌ 備份檔格式錯誤"); return; }
+      if(!confirm("⚠️ 匯入將覆蓋現在全部記錄與設定，確定繼續？")) return;
+      config = d.config;
+      if(!config.businessHour) config.businessHour = {start:22,end:8};
+      if(!config.fontSize) config.fontSize = 13;
+      if(!config.fontWeight) config.fontWeight = 700;
+      if(!config.expList) config.expList = [{name:"加油",color:"#dc2626"},{name:"其他",color:"#475569"}];
+      saveConfig();
+      saveRecords(d.records);
+      if(Array.isArray(d.expenses)) saveExpenses(d.expenses);
+      applyFontSize(config.fontSize);
+      applyFontWeight(config.fontWeight);
+      alert("✅ 匯入成功！");
+      renderHomeTypeBtn(); calcTotal(); renderTodayList();
+    }catch(err){ alert("❌ 檔案讀取失敗"); }
+  };
+  r.readAsText(f); this.value = null;
+};
+
+function renderHomeTypeBtn(){
+  const wrap = document.getElementById("typeBtnWrap");
+  wrap.innerHTML = "";
+  config.typeList.forEach(t=>{
+    const btn = document.createElement('button');
+    btn.className = "bigBtn";
+    btn.style.background = t.color || "#5577aa";
+    btn.textContent = t.name;
+    btn.onclick = ()=>openInputModal(t.name);
+    wrap.appendChild(btn);
+  });
+  const expBtn = document.createElement('button');
+  expBtn.className = "bigBtn";
+  expBtn.style.background = "#dc2626";
+  expBtn.textContent = "支出";
+  expBtn.onclick = ()=>openExpInputModal();
+  wrap.appendChild(expBtn);
+}
+
+function showPage(id){
+  const cur = document.querySelector('.page.active');
+  if(cur && cur.id !== id && id !== "pageHome"){
+    if(historyStack[historyStack.length-1] !== cur.id) historyStack.push(cur.id);
+  }
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id === "pageSetting"){
+    document.getElementById('setStartHour').value = config.businessHour.start;
+    document.getElementById('setEndHour').value = config.businessHour.end;
+    document.getElementById('fontSizeSlider').value = config.fontSize;
+    document.getElementById('fontSizeValue').textContent = config.fontSize;
+    document.getElementById('fontWeightSlider').value = config.fontWeight;
+    document.getElementById('fontWeightValue').textContent = config.fontWeight;
+    updateHourPreview(); renderSetting();
+  }
+  if(id === "pageStat") showStatYearView();
+  if(id === "pageExpStat") showExpYearView();
+  if(id === "pageDayDetail") renderDayDetail();
+  if(id === "pageHome") renderHomeTypeBtn();
+}
+
+function goBack(){
+  if(historyStack.length > 0){
+    const p = historyStack.pop();
+    document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+    document.getElementById(p).classList.add('active');
+    if(p === "pageStat") showStatYearView();
+    if(p === "pageExpStat") showExpYearView();
+    if(p === "pageDayDetail") renderDayDetail();
+    if(p === "pageSetting"){
+      document.getElementById('setStartHour').value = config.businessHour.start;
+      document.getElementById('setEndHour').value = config.businessHour.end;
+      document.getElementById('fontSizeSlider').value = config.fontSize;
+      document.getElementById('fontSizeValue').textContent = config.fontSize;
+      document.getElementById('fontWeightSlider').value = config.fontWeight;
+      document.getElementById('fontWeightValue').textContent = config.fontWeight;
+      updateHourPreview(); renderSetting();
+    }
+    return;
+  }
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('pageHome').classList.add('active');
+}
+
+function updateHourPreview(){
+  const s = Number(document.getElementById('setStartHour').value);
+  const e = Number(document.getElementById('setEndHour').value);
+  const b = document.getElementById('hourPreview');
+  if(!Number.isInteger(s)||s<0||s>23||!Number.isInteger(e)||e<0||e>23){ b.innerHTML = "請輸入 0～23"; return; }
+  if(s === e){ b.innerHTML = `<strong>全天 24 小時</strong>`; return; }
+  b.innerHTML = `<strong>${String(s).padStart(2,'0')}:00 ～ ${s>e?'隔日 ':''}${String(e).padStart(2,'0')}:00</strong>`;
+}
+
+/* ===== 收入 Modal ===== */
+const modal = document.getElementById('inputModal');
+function openInputModal(type){ currentType = type; modalAmount = ""; document.getElementById('modalTitle').textContent = type; document.getElementById('amountShow').textContent = "0"; renderPayBtn(); modal.classList.add('active'); }
+function closeInputModal(){ modal.classList.remove('active'); }
+function pressNum(n){ if(modalAmount === "0") modalAmount = ""; modalAmount += n; document.getElementById('amountShow').textContent = modalAmount || "0"; }
+function clearNum(){ modalAmount = ""; document.getElementById('amountShow').textContent = "0"; }
+function renderPayBtn(){
+  const w = document.getElementById('payBtnWrap'); w.innerHTML = "";
+  config.payList.forEach(p=>{
+    const b = document.createElement('button');
+    b.className = "payBtn"; b.style.background = p.color || "#557799";
+    b.textContent = p.name; b.onclick = ()=>saveRecord(p);
+    w.appendChild(b);
+  });
+}
+
+function saveRecord(payItem){
+  const amt = Number(modalAmount);
+  if(!amt || amt <= 0){ alert("請輸入金額"); return; }
+  const now = new Date();
+  const typeItem = config.typeList.find(t => t.name === currentType);
+
+  if(payItem.name === "好孕券" && amt > 250){
+    const yunPart = 250, cashPart = amt - 250;
+    const fee = 0;
+    let net = amt - fee;
+    if(typeItem) net -= Number(typeItem.deduct||0);
+    if(net < 0) net = 0;
+    const list = getRecords();
+    list.unshift({
+      id: Date.now(),
+      type: currentType,
+      pay: "好孕券",
+      raw: amt,
+      fee: fee,
+      net: Math.round(net),
+      date: getBizDate(now),
+      time: fmtTime(),
+      splits: [
+        { pay: "好孕券", amount: yunPart },
+        { pay: "現金", amount: cashPart }
+      ]
+    });
+    saveRecords(list);
+  } else {
+    const fee = amt * Number(payItem.rate||0) / 100;
+    let net = amt - fee;
+    if(typeItem) net -= Number(typeItem.deduct||0);
+    if(net < 0) net = 0;
+    const list = getRecords();
+    list.unshift({ id: Date.now(), type: currentType, pay: payItem.name, raw: amt, fee, net: Math.round(net), date: getBizDate(now), time: fmtTime() });
+    saveRecords(list);
+  }
+  closeInputModal(); calcTotal(); renderTodayList();
+}
+
+/* ===== 支出 Modal ===== */
+const expModal = document.getElementById('expInputModal');
+function openExpInputModal(){ expModalAmount = ""; document.getElementById('expAmountShow').textContent = "0"; document.getElementById('expNoteInput').value = ""; renderExpCatBtn(); expModal.classList.add('active'); }
+function closeExpInputModal(){ expModal.classList.remove('active'); }
+function pressExpNum(n){ if(expModalAmount === "0") expModalAmount = ""; expModalAmount += n; document.getElementById('expAmountShow').textContent = expModalAmount || "0"; }
+function clearExpNum(){ expModalAmount = ""; document.getElementById('expAmountShow').textContent = "0"; }
+function renderExpCatBtn(){
+  const w = document.getElementById('expCatWrap'); w.innerHTML = "";
+  config.expList.forEach(c=>{
+    const b = document.createElement('button');
+    b.className = "payBtn"; b.style.background = c.color || "#dc2626";
+    b.textContent = c.name; b.onclick = ()=>saveExpense(c);
+    w.appendChild(b);
+  });
+}
+function saveExpense(cat){
+  const amt = Number(expModalAmount);
+  if(!amt || amt <= 0){ alert("請輸入金額"); return; }
+  const note = document.getElementById('expNoteInput').value.trim();
+  const now = new Date();
+  const list = getExpenses();
+  list.unshift({ id: Date.now(), cat: cat.name, color: cat.color, raw: amt, note, date: getBizDate(now), time: fmtTime() });
+  saveExpenses(list);
+  closeExpInputModal();
+}
+
+/* ===== 首頁統計 ===== */
+function calcDayStats(recs, targetDate){
+  let daySum=0, cashSum=0, nonCashSum=0, tripCount=0, feeSum=0, deductSum=0;
+  const typeCount = {};
+  config.typeList.forEach(t => typeCount[t.name] = 0);
+  recs.forEach(r=>{
+    if(r.date !== targetDate) return;
+    tripCount++;
+    daySum += Number(r.net||0);
+    feeSum += Number(r.fee||0);
+    typeCount[r.type] = (typeCount[r.type]||0)+1;
+    const ti = config.typeList.find(t => t.name === r.type);
+    if(ti && Number(ti.deduct) > 0) deductSum += Number(ti.deduct);
+    if(r.splits && Array.isArray(r.splits)){
+      r.splits.forEach(s => {
+        if(isCashPay(s.pay)) cashSum += Number(s.amount||0);
+        else nonCashSum += Number(s.amount||0);
+      });
+    } else {
+      if(isCashPay(r.pay)) cashSum += Number(r.raw||0);
+      else nonCashSum += Number(r.raw||0);
+    }
+  });
+  return { daySum, cashSum, nonCashSum, tripCount, feeSum, deductSum, typeCount };
+}
+function calcTotal(){
+  const today = getBizDate(new Date());
+  const s = calcDayStats(getRecords(), today);
+  const typeArr = [];
+  for(const k in s.typeCount) typeArr.push(`${k}:${s.typeCount[k]}`);
+  document.getElementById('typeCountText').textContent = typeArr.join(" ");
+  document.getElementById('dayTotal').textContent = s.daySum;
+  document.getElementById('cashTotal').textContent = s.cashSum;
+  document.getElementById('nonCashTotal').textContent = s.nonCashSum;
+  document.getElementById('feeTotal').textContent = Math.round(s.feeSum);
+  document.getElementById('deductTotal').textContent = Math.round(s.deductSum);
+}
+
+function toggleSort(){ sortNewFirst = !sortNewFirst; document.getElementById('sortBtn').textContent = sortNewFirst ? "新→舊 ⇅" : "舊→新 ⇅"; renderTodayList(); }
+
+function buildDetailRow(item, idx, cum){
+  const typeStr = (item.type||"").charAt(0);
+  const typeItem = config.typeList.find(t => t.name === item.type);
+  const typeColor = typeItem ? typeItem.color : "#0f172a";
+  const feeN = Math.round(item.fee||0);
+  const idxStr = idx !== null ? `${idx}.` : '';
+  const feeHtml = feeN > 0 ? `<span class="dr-fee">-${feeN}</span>` : '';
+  const cumHtml = cum !== null ? `<span class="dr-cum">累計 ${cum}</span>` : '';
+
+  let payHtml = '';
+  if(item.splits && Array.isArray(item.splits)){
+    let inner = '';
+    item.splits.forEach((s, i) => {
+      const pItem = config.payList.find(p => p.name === s.pay);
+      const pColor = pItem ? pItem.color : "#0f172a";
+      const name = s.pay === "好孕券" ? "好" : "";
+      const prefix = i === 0 ? "" : "+";
+      inner += `${prefix}<span style="color:${pColor};">${name}${s.amount}</span>`;
+    });
+    payHtml = `<span class="dr-pay">${inner}</span>`;
+  } else {
+    const payStr = (item.pay || "").charAt(0);
+    const payItem = config.payList.find(p => p.name === item.pay);
+    const payColor = payItem ? payItem.color : "#0f172a";
+    payHtml = `<span class="dr-pay" style="color:${payColor};">${payStr}</span>`;
+  }
+
+  return `
+    <span class="dr-left">${idxStr}${item.time}</span>
+    <span class="dr-type" style="color:${typeColor};">(${typeStr})</span>
+    ${payHtml}
+    <span class="dr-amt">${item.raw}</span>
+    ${feeHtml}
+    <span class="dr-net">淨 ${item.net}</span>
+    ${cumHtml}
+  `;
+}
+
+function renderTodayList(){
+  const recs = getRecords();
+  const today = getBizDate(new Date());
+  const wrap = document.getElementById('listToday');
+  wrap.innerHTML = "";
+  const tr = recs.filter(r => r.date === today);
+  if(tr.length === 0){ wrap.innerHTML = `<div class="empty-tip">今日尚無紀錄</div>`; return; }
+  const idToNo = {}, idToCum = {};
+  let cum = 0;
+  [...tr].sort((a,b)=>a.id-b.id).forEach((it,i)=>{ idToNo[it.id]=i+1; cum+=Number(it.net||0); idToCum[it.id]=cum; });
+  const dl = [...tr].sort((a,b)=> sortNewFirst ? b.id-a.id : a.id-b.id);
+  dl.forEach(item=>{
+    const div = document.createElement('div');
+    div.className = "detail-row";
+    div.innerHTML = buildDetailRow(item, idToNo[item.id], idToCum[item.id]) + `<button class="editBtn" onclick="openEdit(${item.id})">改</button>`;
+    wrap.appendChild(div);
+  });
+}
+
+function renderDayDetail(){
+  if(!statViewYear || !statViewMonth || !statViewDay) return;
+  const td = `${statViewYear}-${statViewMonth}-${statViewDay}`;
+  document.getElementById("dayDetailTitle").textContent = `${td} 營業明細`;
+  const list = getRecords().filter(r => r.date === td);
+  const s = calcDayStats(list, td);
+  const ta = [];
+  for(const k in s.typeCount) ta.push(`${k}:${s.typeCount[k]}趟`);
+  document.getElementById("ddTotal").textContent = s.daySum;
+  document.getElementById("ddTrip").textContent = s.tripCount;
+  document.getElementById("ddTypeText").textContent = ta.join("｜");
+  document.getElementById("ddCash").textContent = s.cashSum;
+  document.getElementById("ddNonCash").textContent = s.nonCashSum;
+  document.getElementById("ddFee").textContent = Math.round(s.feeSum);
+  const wrap = document.getElementById("dayDetailList");
+  wrap.innerHTML = "";
+  if(list.length === 0){ wrap.innerHTML = `<div class="empty-tip">此日尚無紀錄</div>`; return; }
+  list.sort((a,b)=>a.id-b.id).forEach((item, i)=>{
+    let cum = 0; for(let j=0; j<=i; j++) cum += Number(list[j].net||0);
+    const div = document.createElement('div');
+    div.className = "detail-row";
+    div.innerHTML = buildDetailRow(item, i+1, cum) + `<button class="editBtn" onclick="openEdit(${item.id})">改</button>`;
+    wrap.appendChild(div);
+  });
+}
+
+/* ===== 收入統計 ===== */
+function showStatYearView(){
+  document.getElementById('statYearView').style.display = '';
+  document.getElementById('statMonthView').style.display = 'none';
+  document.getElementById('statDayView').style.display = 'none';
+  renderStatYearList();
+}
+function calcStatCard(recs, filterFn){
+  const g = {sum:0, net:0, trip:0, fee:0, deduct:0, typeCount:{}, paySum:{}};
+  config.typeList.forEach(t => g.typeCount[t.name] = 0);
+  config.payList.forEach(p => g.paySum[p.name] = 0);
+  recs.forEach(r=>{
+    if(!filterFn(r)) return;
+    g.sum += Number(r.raw||0);
+    g.net += Number(r.net||0);
+    g.trip++;
+    g.fee += Number(r.fee||0);
+    const ti = config.typeList.find(t=>t.name===r.type);
+    if(ti && Number(ti.deduct)>0) g.deduct += Number(ti.deduct);
+    g.typeCount[r.type] = (g.typeCount[r.type]||0)+1;
+    if(r.splits && Array.isArray(r.splits)){
+      r.splits.forEach(s => {
+        g.paySum[s.pay] = (g.paySum[s.pay]||0) + Number(s.amount||0);
+      });
+    } else {
+      g.paySum[r.pay] = (g.paySum[r.pay]||0) + Number(r.raw||0);
+    }
+  });
+  return g;
+}
+function buildStatCardHtml(title, g){
+  const tParts = config.typeList.map(t => `${t.name}:${g.typeCount[t.name]||0}`).join('　');
+  const pParts = config.payList.map(p => `${p.name}:${g.paySum[p.name]||0}`).join('　');
+  return `
+    <div class="stat-card-title">${title}</div>
+    <div class="stat-card-row hl">營業額：${g.sum}　淨：${g.net}</div>
+    <div class="stat-card-row">趟：${g.trip}　${tParts}　派遣費：${g.deduct}　手續費：${g.fee}</div>
+    <div class="stat-card-row">${pParts}</div>
+  `;
+}
+function renderStatYearList(){
+  const recs = getRecords();
+  const years = [...new Set(recs.map(r => r.date.split("-")[0]))].sort().reverse();
+  const wrap = document.getElementById('statYearList');
+  wrap.innerHTML = "";
+  if(years.length === 0){ wrap.innerHTML = `<div class="empty-tip">尚無紀錄</div>`; return; }
+  years.forEach(y=>{
+    const g = calcStatCard(recs, r => r.date.startsWith(y+"-"));
+    const card = document.createElement('div');
+    card.className = "stat-card";
+    card.innerHTML = buildStatCardHtml(y + " 年", g);
+    card.onclick = ()=> showStatMonthView(y);
+    wrap.appendChild(card);
+  });
+}
+function showStatMonthView(y){
+  document.getElementById('statYearView').style.display = 'none';
+  document.getElementById('statMonthView').style.display = '';
+  document.getElementById('statDayView').style.display = 'none';
+  document.getElementById('statMonthTitle').textContent = y + " 年";
+  const recs = getRecords().filter(r => r.date.startsWith(y+"-"));
+  const months = [...new Set(recs.map(r => r.date.split("-")[1]))].sort().reverse();
+  const wrap = document.getElementById('statMonthList');
+  wrap.innerHTML = "";
+  if(months.length === 0){ wrap.innerHTML = `<div class="empty-tip">此年尚無紀錄</div>`; return; }
+  months.forEach(m=>{
+    const g = calcStatCard(getRecords(), r => r.date.startsWith(y+"-"+m+"-"));
+    const card = document.createElement('div');
+    card.className = "stat-card";
+    card.innerHTML = buildStatCardHtml(m + " 月", g);
+    card.onclick = ()=> showStatDayView(y, m);
+    wrap.appendChild(card);
+  });
+}
+function showStatDayView(y, m){
+  document.getElementById('statYearView').style.display = 'none';
+  document.getElementById('statMonthView').style.display = 'none';
+  document.getElementById('statDayView').style.display = '';
+  document.getElementById('statDayTitle').textContent = y + "-" + m + " 每日營收";
+  const recs = getRecords();
+  const dayMap = {};
+  recs.forEach(r=>{
+    const [yy,mm,dd] = r.date.split("-");
+    if(yy !== y || mm !== m) return;
+    if(!dayMap[dd]){ dayMap[dd] = {sum:0, net:0, trip:0, fee:0, typeCount:{}}; config.typeList.forEach(t => dayMap[dd].typeCount[t.name]=0); }
+    dayMap[dd].sum += Number(r.raw||0);
+    dayMap[dd].net += Number(r.net||0);
+    dayMap[dd].trip++;
+    dayMap[dd].fee += Number(r.fee||0);
+    dayMap[dd].typeCount[r.type] = (dayMap[dd].typeCount[r.type]||0)+1;
+  });
+  const wrap = document.getElementById('statDayList');
+  wrap.innerHTML = "";
+  const days = Object.keys(dayMap).sort();
+  if(days.length === 0){ wrap.innerHTML = `<div class="empty-tip">此月尚無紀錄</div>`; return; }
+  let cumu = 0;
+  days.forEach(d=>{
+    const g = dayMap[d];
+    cumu += g.sum;
+    const tt = config.typeList.map(t => `${t.name.charAt(0)}:${g.typeCount[t.name]||0}`).join(' ');
+    const feeN = Math.round(g.fee);
+    const feeH = feeN > 0 ? `-${feeN}` : '';
+    const row = document.createElement('div');
+    row.className = "day-summary-row";
+    row.innerHTML = `
+      <span class="ds-date">${m}-${d}</span>
+      <span class="ds-type">(${tt})</span>
+      <span class="ds-amt">${g.sum}</span>
+      <span class="ds-fee">${feeH}</span>
+      <span class="ds-net">淨 ${g.net}</span>
+      <span class="ds-cum">累計 ${cumu}</span>
+    `;
+    row.onclick = ()=>{ statViewYear = y; statViewMonth = m; statViewDay = d; showPage('pageDayDetail'); };
+    wrap.appendChild(row);
+  });
+}
+
+/* ===== 支出統計 ===== */
+function showExpYearView(){
+  document.getElementById('expYearView').style.display = '';
+  document.getElementById('expMonthView').style.display = 'none';
+  document.getElementById('expDayView').style.display = 'none';
+  renderExpYearList();
+}
+function calcExpTotal(exps, filterFn){
+  let total = 0;
+  exps.forEach(e=>{ if(filterFn(e)) total += Number(e.raw||0); });
+  return total;
+}
+function calcNetIncome(recs, filterFn){
+  let net = 0;
+  recs.forEach(r=>{ if(filterFn(r)) net += Number(r.net||0); });
+  return net;
+}
+function buildExpCardHtml(title, netIncome, expTotal){
+  const balance = netIncome - expTotal;
+  return `
+    <div class="stat-card-title">${title}</div>
+    <div class="stat-card-row hl">淨收入：${netIncome}</div>
+    <div class="stat-card-row fee">支出：${expTotal}</div>
+    <div class="stat-card-row" style="color:#16a34a;">餘額：${balance}</div>
+  `;
+}
+function renderExpYearList(){
+  const exps = getExpenses();
+  const recs = getRecords();
+  const years = [...new Set(exps.map(e => e.date.split("-")[0]))].sort().reverse();
+  const wrap = document.getElementById('expYearList');
+  wrap.innerHTML = "";
+  if(years.length === 0){ wrap.innerHTML = `<div class="empty-tip">尚無支出紀錄</div>`; return; }
+  years.forEach(y=>{
+    const total = calcExpTotal(exps, e => e.date.startsWith(y+"-"));
+    const net = calcNetIncome(recs, r => r.date.startsWith(y+"-"));
+    const card = document.createElement('div');
+    card.className = "stat-card";
+    card.innerHTML = buildExpCardHtml(y + " 年", net, total);
+    card.onclick = ()=> showExpMonthView(y);
+    wrap.appendChild(card);
+  });
+}
+function showExpMonthView(y){
+  document.getElementById('expYearView').style.display = 'none';
+  document.getElementById('expMonthView').style.display = '';
+  document.getElementById('expDayView').style.display = 'none';
+  document.getElementById('expMonthTitle').textContent = y + " 年";
+  const exps = getExpenses();
+  const recs = getRecords();
+  const months = [...new Set(exps.filter(e=>e.date.startsWith(y+"-")).map(e => e.date.split("-")[1]))].sort().reverse();
+  const wrap = document.getElementById('expMonthList');
+  wrap.innerHTML = "";
+  if(months.length === 0){ wrap.innerHTML = `<div class="empty-tip">此年尚無支出</div>`; return; }
+  months.forEach(m=>{
+    const total = calcExpTotal(exps, e => e.date.startsWith(y+"-"+m+"-"));
+    const net = calcNetIncome(recs, r => r.date.startsWith(y+"-"+m+"-"));
+    const card = document.createElement('div');
+    card.className = "stat-card";
+    card.innerHTML = buildExpCardHtml(m + " 月", net, total);
+    card.onclick = ()=> showExpDayView(y, m);
+    wrap.appendChild(card);
+  });
+}
+function showExpDayView(y, m){
+  document.getElementById('expYearView').style.display = 'none';
+  document.getElementById('expMonthView').style.display = 'none';
+  document.getElementById('expDayView').style.display = '';
+  document.getElementById('expDayTitle').textContent = y + "-" + m + " 每日支出";
+  const exps = getExpenses().filter(e => e.date.startsWith(y+"-"+m+"-"));
+  const dayMap = {};
+  exps.forEach(e=>{
+    const dd = e.date.split("-")[2];
+    if(!dayMap[dd]) dayMap[dd] = [];
+    dayMap[dd].push(e);
+  });
+  const wrap = document.getElementById('expDayList');
+  wrap.innerHTML = "";
+  const days = Object.keys(dayMap).sort();
+  if(days.length === 0){ wrap.innerHTML = `<div class="empty-tip">此月尚無支出</div>`; return; }
+  days.forEach(d=>{
+    const items = dayMap[d];
+    const total = items.reduce((s, e)=> s + Number(e.raw||0), 0);
+    const dayCard = document.createElement('div');
+    dayCard.style.marginBottom = "10px";
+    let rowsHtml = items.sort((a,b)=>a.id-b.id).map(e=>`
+      <div class="exp-row">
+        <span class="er-time">${e.time}</span>
+        <span class="er-cat" style="color:${e.color||'#dc2626'};">${e.cat}</span>
+        <span class="er-note">${escapeHtml(e.note||'')}</span>
+        <span class="er-amt">${e.raw}</span>
+      </div>
+    `).join('');
+    dayCard.innerHTML = `<div style="font-size:14px;margin:6px 0;color:#0f172a;">${m}-${d} 　支出合計：<span style="color:#dc2626;">${total}</span></div>${rowsHtml}`;
+    wrap.appendChild(dayCard);
+  });
+}
+
+/* ===== 修改紀錄 ===== */
+const editModal = document.getElementById('editModal');
+function openEdit(id){
+  editId = id;
+  const r = getRecords().find(x => x.id === id);
+  if(!r) return;
+  const ts = document.getElementById('editType'); ts.innerHTML = "";
+  config.typeList.forEach(t=>{ const o = document.createElement('option'); o.textContent = t.name; o.value = t.name; ts.appendChild(o); });
+  ts.value = r.type;
+  const ps = document.getElementById('editPay'); ps.innerHTML = "";
+  config.payList.forEach(p=>{ const o = document.createElement('option'); o.textContent = p.name; o.value = p.name; ps.appendChild(o); });
+  ps.value = r.pay;
+  document.getElementById('editAmount').value = r.raw;
+  editModal.classList.add('active');
+}
+function closeEditModal(){ editModal.classList.remove('active'); editId = null; }
+function saveEdit(){
+  const recs = getRecords();
+  const idx = recs.findIndex(r => r.id === editId);
+  if(idx < 0) return;
+  const type = document.getElementById('editType').value;
+  const payName = document.getElementById('editPay').value;
+  const raw = Number(document.getElementById('editAmount').value);
+  if(!raw || raw <= 0){ alert("金額錯誤"); return; }
+  const pi = config.payList.find(p => p.name === payName);
+  const ti = config.typeList.find(t => t.name === type);
+  if(!pi) return;
+
+  if(payName === "好孕券" && raw > 250){
+    const yunPart = 250, cashPart = raw - 250;
+    const fee = 0;
+    let net = raw - fee;
+    if(ti) net -= Number(ti.deduct||0);
+    if(net < 0) net = 0;
+    recs[idx].type = type;
+    recs[idx].pay = "好孕券";
+    recs[idx].raw = raw;
+    recs[idx].fee = fee;
+    recs[idx].net = Math.round(net);
+    recs[idx].splits = [
+      { pay: "好孕券", amount: yunPart },
+      { pay: "現金", amount: cashPart }
+    ];
+  } else {
+    const fee = raw * Number(pi.rate||0) / 100;
+    let net = raw - fee;
+    if(ti) net -= Number(ti.deduct||0);
+    if(net < 0) net = 0;
+    recs[idx].type = type;
+    recs[idx].pay = payName;
+    recs[idx].raw = raw;
+    recs[idx].fee = fee;
+    recs[idx].net = Math.round(net);
+    delete recs[idx].splits;
+  }
+
+  saveRecords(recs);
+  closeEditModal(); calcTotal(); renderTodayList();
+  if(document.getElementById("pageDayDetail").classList.contains("active")) renderDayDetail();
+}
+function deleteRec(){
+  if(editId === null) return;
+  if(!confirm("確定要刪除這筆紀錄嗎？")) return;
+  saveRecords(getRecords().filter(r => r.id !== editId));
+  closeEditModal(); calcTotal(); renderTodayList();
+  if(document.getElementById("pageDayDetail").classList.contains("active")) renderDayDetail();
+}
+
+/* ===== 設定頁 ===== */
+function renderSetting(){
+  const tw = document.getElementById('typeListSet'); tw.innerHTML = "";
+  config.typeList.forEach((t, i)=>{
+    const d = document.createElement('div');
+    d.className = "item";
+    d.innerHTML = `
+      <input value="${escapeHtml(t.name)}" oninput="onTypeNameChange(${i},this.value)" placeholder="類別名稱">
+      <input type="number" value="${t.deduct}" oninput="onTypeDeductChange(${i},this.value)" placeholder="扣除">
+      <button class="delBtn" onclick="delTypeTemp(${i})">刪除</button>
+    `;
+    tw.appendChild(d);
+  });
+  const pw = document.getElementById('payListSet'); pw.innerHTML = "";
+  config.payList.forEach((p, i)=>{
+    const d = document.createElement('div');
+    d.className = "item";
+    d.innerHTML = `
+      <input value="${escapeHtml(p.name)}" oninput="onPayNameChange(${i},this.value)" placeholder="付款名稱">
+      <input type="number" value="${p.rate}" oninput="onPayRateChange(${i},this.value)" placeholder="趴數">
+      <button class="delBtn" onclick="delPayTemp(${i})">刪除</button>
+    `;
+    pw.appendChild(d);
+  });
+  const ew = document.getElementById('expListSet'); ew.innerHTML = "";
+  config.expList.forEach((e, i)=>{
+    const d = document.createElement('div');
+    d.className = "item";
+    d.innerHTML = `
+      <input value="${escapeHtml(e.name)}" oninput="onExpNameChange(${i},this.value)" placeholder="支出名稱">
+      <button class="delBtn" onclick="delExpTemp(${i})">刪除</button>
+    `;
+    ew.appendChild(d);
+  });
+}
+function addNewTypeTemp(){
+  const n = document.getElementById('newTypeName').value.trim();
+  const d = Number(document.getElementById('newTypeDeduct').value)||0;
+  if(!n){ alert("請輸入名稱"); return; }
+  config.typeList.push({name:n, deduct:d, color:"#5577aa"});
+  saveConfig(); renderSetting(); renderHomeTypeBtn();
+  document.getElementById('newTypeName').value = ""; document.getElementById('newTypeDeduct').value = "";
+}
+function delTypeTemp(i){ config.typeList.splice(i,1); saveConfig(); renderSetting(); renderHomeTypeBtn(); }
+function addNewPayTemp(){
+  const n = document.getElementById('newPayName').value.trim();
+  const r = Number(document.getElementById('newPayRate').value)||0;
+  if(!n){ alert("請輸入名稱"); return; }
+  config.payList.push({name:n, rate:r, color:"#557799"});
+  saveConfig(); renderSetting();
+  document.getElementById('newPayName').value = ""; document.getElementById('newPayRate').value = "";
+}
+function delPayTemp(i){ config.payList.splice(i,1); saveConfig(); renderSetting(); }
+function addNewExpTemp(){
+  const n = document.getElementById('newExpName').value.trim();
+  if(!n){ alert("請輸入名稱"); return; }
+  config.expList.push({name:n, color:"#dc2626"});
+  saveConfig(); renderSetting();
+  document.getElementById('newExpName').value = "";
+}
+function delExpTemp(i){ config.expList.splice(i,1); saveConfig(); renderSetting(); }
+
+window.onload = function(){
+  applyFontSize(config.fontSize);
+  applyFontWeight(config.fontWeight);
+  renderHomeTypeBtn();
+  calcTotal();
+  renderTodayList();
+};
 </script>
-
-<style scoped>
-.app-container{
-  max-width: 420px;
-  margin: 0 auto;
-}
-.tab-nav{
-  display:flex;
-  gap:4px;
-  margin-bottom:12px;
-}
-.page{
-  padding:12px;
-  border:1px solid #eee;
-}
-
-/* 支出页面顶部按钮 */
-.expense-top-btn{
-  padding:8px 16px;
-  background:#409eff;
-  color:#fff;
-  border:none;
-  border-radius:4px;
-  margin-bottom:10px;
-}
-
-/* ========= 支出统计：年月卡片，三数据同一行 ========= */
-.ym-card{
-  border:1px solid #ddd;
-  padding:12px;
-  border-radius:6px;
-}
-.ym-select{
-  display:flex;
-  gap:10px;
-  margin-bottom:10px;
-}
-/* ✅ 横向同一行 */
-.stat-data-row{
-  display:flex;
-  justify-content: space-between;
-  gap:8px;
-}
-.stat-item{
-  flex:1;
-  text-align:center;
-}
-
-/* ========= 支出输入页面键盘样式 ========= */
-.input-display{
-  font-size:24px;
-  text-align:right;
-  padding:10px;
-  border:1px solid #ccc;
-  margin-bottom:8px;
-}
-.keyboard-wrap{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
-.key-row{
-  display:flex;
-  gap:6px;
-}
-/* 数字按钮：✅高度翻倍 */
-.num-btn{
-  flex:1;
-  /* 原始高度40px → 翻倍80px */
-  height:80px;
-  font-size:20px;
-}
-/* 功能按钮保持原本高度，不变化 */
-.func-btn{
-  flex:1;
-  height:40px;
-  font-size:16px;
-  background:#eee;
-}
-</style>
+</body>
+</html>
