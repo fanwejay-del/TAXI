@@ -104,15 +104,77 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .exp-row .er-amt{color:#dc2626;text-align:right;}
 
 /* 支出輸入視窗：緊湊排版 */
-#expInputModal .modal-card{padding:4px 6px;display:flex;flex-direction:column;height:100%;}
-#expInputModal #expModalTitle{font-size:calc(1.2px * var(--fs-num)) !important;margin:0 0 4px !important;flex-shrink:0;text-align:center;}
-#expInputModal .inputBox{font-size:calc(1.8px * var(--fs-num));padding:8px;margin:4px 0;flex-shrink:0;}
-#expInputModal .numKey{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin:0;}
-#expInputModal .numBtn{padding:6px 4px;font-size:calc(1.1px * var(--fs-num));border-radius:8px;}
-#expInputModal .payKey{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;max-height:150px;overflow-y:auto;}
-#expInputModal .payBtn{padding:16px 8px;font-size:calc(1.25px * var(--fs-num));border-radius:10px;}
-#expInputModal .noteInput{flex-shrink:0;margin-top:8px !important;padding:14px 12px;font-size:calc(1.15px * var(--fs-num));}
-#expInputModal > .modal-card > button{flex-shrink:0;margin-top:6px !important;padding:12px !important;font-size:calc(1.1px * var(--fs-num)) !important;}
+/* ===== 支出輸入視窗：數字鍵盤加高一倍、其他等比放大、不超出螢幕 ===== */
+#expInputModal .modal-card{
+  padding:4px 6px;
+  display:flex;
+  flex-direction:column;
+  height:100%;
+  min-height:0;           /* 防止子項溢出 */
+  gap:6px;                /* 區塊間距統一 */
+}
+#expInputModal #expModalTitle{
+  font-size:calc(1.3px * var(--fs-num)) !important;
+  margin:0 !important;
+  flex-shrink:0;
+  text-align:center;
+}
+#expInputModal .inputBox{
+  font-size:calc(2px * var(--fs-num));
+  padding:10px;
+  margin:0;
+  flex-shrink:0;
+}
+
+/* 數字鍵盤：撐滿剩餘空間，按鈕高度自動 = 原本兩倍以上 */
+#expInputModal .numKey{
+  flex:1 1 auto;
+  min-height:0;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  grid-template-rows:repeat(4, 1fr);   /* 4 列平均撐滿 */
+  gap:6px;
+  margin:0;
+}
+#expInputModal .numBtn{
+  padding:0;
+  font-size:calc(1.3px * var(--fs-num));
+  border-radius:10px;
+  height:100%;
+  min-height:0;
+}
+
+/* 類型按鈕：比原本高，佔固定比例，可滾動 */
+#expInputModal .payKey{
+  flex:0 0 auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin:0;
+  max-height:26vh;          /* 最多佔畫面 26% */
+  overflow-y:auto;
+}
+#expInputModal .payBtn{
+  padding:14px 8px;
+  font-size:calc(1.2px * var(--fs-num));
+  border-radius:10px;
+}
+
+/* 備註：加大 */
+#expInputModal .noteInput{
+  flex-shrink:0;
+  margin:0 !important;
+  padding:14px 12px;
+  font-size:calc(1.2px * var(--fs-num));
+}
+
+/* 取消按鈕 */
+#expInputModal > .modal-card > button{
+  flex-shrink:0;
+  margin:0 !important;
+  padding:14px !important;
+  font-size:calc(1.15px * var(--fs-num)) !important;
+}
 
 /* 字型滑桿 */
 .fs-wrap{display:flex;align-items:center;gap:10px;margin-top:6px;}
