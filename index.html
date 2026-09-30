@@ -612,6 +612,19 @@ function showPage(id){
 
 /* 頁面層級的「返回」按鈕（頁面間） */
 function navBack(){
+  // 1. 若在營業統計頁，且有統計層堆疊 → 先回統計上一層
+  if(document.getElementById('pageStat').classList.contains('active') && statViewStack.length > 1){
+    statViewStack.pop();
+    renderStatView();
+    return;
+  }
+  // 2. 若在支出統計頁，且有統計層堆疊 → 先回統計上一層
+  if(document.getElementById('pageExpStat').classList.contains('active') && expViewStack.length > 1){
+    expViewStack.pop();
+    renderExpView();
+    return;
+  }
+  // 3. 否則回頁面堆疊
   if(historyStack.length > 0){
     const p = historyStack.pop();
     document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
@@ -629,6 +642,7 @@ function navBack(){
     }
     return;
   }
+  // 4. 都沒有 → 回首頁
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.getElementById('pageHome').classList.add('active');
 }
@@ -903,7 +917,7 @@ function renderStatView(){
 }
 
 function statBarHtml(){
-  return `<div class="stat-bar"><button class="stat-btn" onclick="statBack()">← 返回</button></div>`;
+  return '';
 }
 
 function renderStatDayList(monthStr){
@@ -1103,7 +1117,7 @@ function renderExpView(){
 }
 
 function expBarHtml(){
-  return `<div class="stat-bar"><button class="stat-btn" onclick="expBack()">← 返回</button></div>`;
+  return '';
 }
 
 function renderExpDayList(monthStr){
