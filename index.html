@@ -60,18 +60,24 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 #typeListSet input[type="number"],#payListSet input[type="number"],#expListSet input[type="number"],.setBlock .item input[type="number"]{width:4.5em;max-width:72px;text-align:center;flex-shrink:0;}
 #typeListSet input:not([type="number"]),#payListSet input:not([type="number"]),#expListSet input:not([type="number"]),.setBlock .item input:not([type="number"]){flex:1;min-width:0;}
 .item{background:#fff;padding:2px 8px;margin:2px 0;border-radius:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,0.05);gap:8px;}
+
+/* 明細行 */
 .detail-row{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:10px;margin:4px 0;padding:8px 10px;box-shadow:0 1px 4px rgba(0,0,0,0.05);font-size:calc(1.05px * var(--fs-num));gap:6px;}
 .dr-left{color:#0f172a;font-size:calc(0.9px * var(--fs-num));white-space:nowrap;}
 .dr-type,.dr-pay{white-space:nowrap;}
 .dr-amt,.dr-fee,.dr-net,.dr-cum{text-align:right;white-space:nowrap;}
 .dr-fee{color:#dc2626;}
 .dr-cum{color:#7e22ce;}
+
+/* 統計頁年/月卡片 */
 .stat-card{background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:8px;cursor:pointer;}
 .stat-card:active{transform:scale(0.98);background:#f8fafc;}
 .stat-card-title{font-size:calc(1.15px * var(--fs-num));color:#2563eb;margin-bottom:6px;}
 .stat-card-row{font-size:calc(0.98px * var(--fs-num));color:#475569;margin-top:2px;}
 .stat-card-row.hl{color:#0f172a;}
 .stat-card-row.fee{color:#dc2626;}
+
+/* 每日列表（統計頁） */
 .day-summary-row{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:10px;margin:4px 0;padding:10px 12px;box-shadow:0 1px 4px rgba(0,0,0,0.05);font-size:calc(1.05px * var(--fs-num));cursor:pointer;gap:6px;}
 .day-summary-row:active{background:#f1f5f9;}
 .ds-date{color:#0f172a;}
@@ -80,36 +86,45 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .ds-fee{color:#dc2626;text-align:right;}
 .ds-net{color:#7e22ce;text-align:right;}
 .ds-cum{color:#0f172a;text-align:right;}
+
+/* 支出明細行 */
 .exp-row{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:10px;margin:4px 0;padding:8px 10px;box-shadow:0 1px 4px rgba(0,0,0,0.05);font-size:calc(1.05px * var(--fs-num));gap:6px;}
 .exp-row .er-time{color:#64748b;font-size:calc(0.9px * var(--fs-num));}
 .exp-row .er-cat{white-space:nowrap;}
-.exp-row .er-note{color:#475569;font-size:calc(0.9px * var(--fs-num));flex:1;padding:0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;}
-.exp-row .er-amt{color:#dc2626;text-align:right;white-space:nowrap;}
+.exp-row .er-note{color:#475569;font-size:calc(0.9px * var(--fs-num));flex:1;text-align:left;padding:0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.exp-row .er-amt{color:#dc2626;text-align:right;}
+
+/* 支出輸入視窗：緊湊排版，數字按鈕變小、類型按鈕變大 */
+#expInputModal .modal-card{padding:4px 6px;display:flex;flex-direction:column;height:100%;}
+#expInputModal #expModalTitle{font-size:calc(1.2px * var(--fs-num)) !important;margin:0 0 4px !important;flex-shrink:0;text-align:center;}
+#expInputModal .inputBox{font-size:calc(1.8px * var(--fs-num));padding:8px;margin:4px 0;flex-shrink:0;}
+#expInputModal .numKey{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin:0;}
+#expInputModal .numBtn{padding:6px 4px;font-size:calc(1.1px * var(--fs-num));border-radius:8px;}
+#expInputModal .payKey{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;max-height:150px;overflow-y:auto;}
+#expInputModal .payBtn{padding:16px 8px;font-size:calc(1.25px * var(--fs-num));border-radius:10px;}
+#expInputModal .noteInput{flex-shrink:0;margin-top:8px !important;padding:14px 12px;font-size:calc(1.15px * var(--fs-num));}
+#expInputModal > .modal-card > button{flex-shrink:0;margin-top:6px !important;padding:12px !important;font-size:calc(1.1px * var(--fs-num)) !important;}
+
+/* 字型滑桿 */
 .fs-wrap{display:flex;align-items:center;gap:10px;margin-top:6px;}
 .fs-wrap input[type="range"]{flex:1;-webkit-appearance:none;height:6px;border-radius:3px;background:#e2e8f0;outline:none;}
 .fs-wrap input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#2563eb;cursor:pointer;}
 .fs-value{font-size:calc(1.05px * var(--fs-num));color:#2563eb;min-width:34px;text-align:right;}
-#inputModal #modalTitle{font-size:calc(1.4px * var(--fs-num));margin:0 0 2px;text-align:center;}
+
+#inputModal #modalTitle{font-size:calc(1.3px * var(--fs-num)) !important;margin:0 0 2px !important;flex-shrink:0;text-align:center;}
 #inputModal .inputBox{font-size:clamp(26px, 7vw, 32px);padding:8px 10px;margin:4px 0 6px;flex-shrink:0;}
 #inputModal .numKey{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:repeat(4, 1fr);gap:5px;margin:0;}
 #inputModal .numBtn{padding:0;margin:0;font-size:clamp(16px, 5vw, 22px);height:100%;min-height:0;border-radius:8px;}
-#inputModal .payKey{flex-shrink:0;margin-top:8px;gap:8px;}
-#inputModal .payBtn{padding:14px 6px;font-size:calc(1.05px * var(--fs-num));}
-#inputModal > .modal-card > button{flex-shrink:0;margin-top:6px;padding:10px;font-size:calc(1.05px * var(--fs-num));}
-/* 支出輸入視窗 - 按鈕縮小 */
-#expInputModal .inputBox{font-size:clamp(24px, 6.5vw, 30px);padding:8px 10px;margin:4px 0 6px;flex-shrink:0;}
-#expInputModal .numKey{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:repeat(4, 1fr);gap:5px;margin:0;flex:1;min-height:0;}
-#expInputModal .numBtn{padding:0;margin:0;font-size:clamp(16px, 5vw, 22px);height:100%;min-height:0;border-radius:8px;}
-#expInputModal .payKey{flex:0 0 auto;margin-top:6px;gap:6px;grid-template-columns:repeat(3, 1fr);}
-#expInputModal .payBtn{padding:10px 4px;font-size:calc(0.95px * var(--fs-num));}
-#expInputModal .noteInput{flex:0 0 auto;margin-top:8px;}
-#expInputModal > .modal-card > button{flex:0 0 auto;margin-top:8px;padding:10px;font-size:calc(1.05px * var(--fs-num));}
+#inputModal .payKey{flex-shrink:0;margin-top:8px;gap:10px;}
+#inputModal .payBtn{padding:18px 8px;font-size:calc(1.2px * var(--fs-num));}
+#inputModal > .modal-card > button{flex-shrink:0;margin-top:6px !important;padding:10px !important;font-size:calc(1.1px * var(--fs-num)) !important;}
 @media(max-width:600px){body{padding:8px;}}
 </style>
 </head>
 <body>
 <input type="file" id="fileImport" style="display:none" accept=".json">
 
+<!-- 收入輸入 Modal -->
 <div id="inputModal" class="modal">
   <div class="modal-card">
     <h3 id="modalTitle" style="text-align:center;margin-bottom:8px;font-size:22px;">路招</h3>
@@ -133,6 +148,7 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   </div>
 </div>
 
+<!-- 支出輸入 Modal -->
 <div id="expInputModal" class="modal">
   <div class="modal-card">
     <h3 id="expModalTitle" style="text-align:center;margin-bottom:8px;font-size:22px;">支出</h3>
@@ -153,10 +169,11 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
     </div>
     <div id="expCatWrap" class="payKey"></div>
     <input id="expNoteInput" class="noteInput" placeholder="備註（選填）">
-    <button style="width:100%;margin-top:8px;padding:10px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:calc(1.05px * var(--fs-num));" onclick="closeExpInputModal()">取消</button>
+    <button style="width:100%;margin-top:8px;padding:12px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:16px;" onclick="closeExpInputModal()">取消</button>
   </div>
 </div>
 
+<!-- 修改 Modal -->
 <div id="editModal" class="modal">
   <div class="modal-card">
     <h3 style="text-align:center;margin-bottom:16px;font-size:18px;">修改紀錄</h3>
@@ -174,23 +191,7 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   </div>
 </div>
 
-<div id="editExpModal" class="modal">
-  <div class="modal-card">
-    <h3 style="text-align:center;margin-bottom:16px;font-size:18px;">修改支出</h3>
-    <label style="font-size:13px;color:#64748b;">支出類型</label>
-    <select id="editExpCat" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:10px;border:1.5px solid #e2e8f0;font-size:14px;background:#f8fafc;"></select>
-    <label style="font-size:13px;color:#64748b;">金額</label>
-    <input id="editExpAmount" type="number" class="inputBox" style="font-size:22px;padding:14px;margin:6px 0 12px;">
-    <label style="font-size:13px;color:#64748b;">備註</label>
-    <input id="editExpNote" type="text" style="width:100%;padding:12px;margin:6px 0 16px;border-radius:10px;border:1.5px solid #e2e8f0;font-size:14px;background:#f8fafc;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-      <button onclick="saveEditExp()" style="padding:12px;border:none;border-radius:12px;background:#2563eb;color:#fff;font-size:14px;">儲存</button>
-      <button onclick="closeEditExpModal()" style="padding:12px;border:none;border-radius:12px;background:#94a3b8;color:#fff;font-size:14px;">取消</button>
-    </div>
-    <button onclick="deleteExp()" style="width:100%;margin-top:12px;padding:12px;border:none;border-radius:12px;background:#dc2626;color:#fff;font-size:14px;">刪除此筆</button>
-  </div>
-</div>
-
+<!-- 首頁 -->
 <div id="pageHome" class="page active">
   <div class="topbar">
     <div class="topbar-inner">
@@ -219,6 +220,7 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   <div id="listToday"></div>
 </div>
 
+<!-- 收入統計頁 -->
 <div id="pageStat" class="page">
   <div class="backHomeBar">
     <button class="navBtn" onclick="goBack()">返回</button>
@@ -238,6 +240,7 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   </div>
 </div>
 
+<!-- 單日明細 -->
 <div id="pageDayDetail" class="page">
   <div class="backHomeBar">
     <button class="navBtn" onclick="goBack()">返回</button>
@@ -252,6 +255,7 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   <div id="dayDetailList" style="margin-top:10px;"></div>
 </div>
 
+<!-- 支出統計頁 -->
 <div id="pageExpStat" class="page">
   <div class="backHomeBar">
     <button class="navBtn" onclick="goBack()">返回</button>
@@ -271,6 +275,7 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   </div>
 </div>
 
+<!-- 設定頁 -->
 <div id="pageSetting" class="page">
   <div class="backHomeBar">
     <button class="navBtn" onclick="goBack()">返回</button>
@@ -351,7 +356,6 @@ if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catc
 
 let currentType = "";
 let editId = null;
-let editExpId = null;
 let historyStack = [];
 let modalAmount = "";
 let expModalAmount = "";
@@ -384,12 +388,13 @@ let config = JSON.parse(localStorage.getItem('taxiConfig')) || {
 if(!config.businessHour) config.businessHour = {start:22, end:8};
 if(!config.fontSize) config.fontSize = 13;
 if(!config.fontWeight) config.fontWeight = 700;
-if(!config.expList) config.expList = [{name:"加油", color:"#dc2626"},{name:"其他", color:"#475569"}];
+if(!config.expList) config.expList = [{ name:"加油", color:"#dc2626" },{ name:"維修", color:"#ea580c" },{ name:"其他", color:"#475569" }];
 
 function applyFontSize(v){ document.documentElement.style.setProperty('--fs-num', v); }
 function applyFontWeight(v){ document.documentElement.style.setProperty('--fw-num', v); }
 applyFontSize(config.fontSize);
 applyFontWeight(config.fontWeight);
+
 function onFontSizeChange(v){ document.getElementById('fontSizeValue').textContent = v; applyFontSize(Number(v)); config.fontSize = Number(v)||13; saveConfig(); }
 function onFontWeightChange(v){ document.getElementById('fontWeightValue').textContent = v; applyFontWeight(Number(v)); config.fontWeight = Number(v)||700; saveConfig(); }
 function onHourChange(){
@@ -401,11 +406,11 @@ function onHourChange(){
   config.businessHour = {start:s, end:e};
   saveConfig();
 }
-function onTypeNameChange(i,v){ if(config.typeList[i]){ config.typeList[i].name=v.trim(); saveConfig(); renderHomeTypeBtn(); } }
-function onTypeDeductChange(i,v){ if(config.typeList[i]){ config.typeList[i].deduct=Number(v)||0; saveConfig(); } }
-function onPayNameChange(i,v){ if(config.payList[i]){ config.payList[i].name=v.trim(); saveConfig(); } }
-function onPayRateChange(i,v){ if(config.payList[i]){ config.payList[i].rate=Number(v)||0; saveConfig(); } }
-function onExpNameChange(i,v){ if(config.expList[i]){ config.expList[i].name=v.trim(); saveConfig(); } }
+function onTypeNameChange(i,v){ if(config.typeList[i]){ config.typeList[i].name = v.trim(); saveConfig(); renderHomeTypeBtn(); } }
+function onTypeDeductChange(i,v){ if(config.typeList[i]){ config.typeList[i].deduct = Number(v)||0; saveConfig(); } }
+function onPayNameChange(i,v){ if(config.payList[i]){ config.payList[i].name = v.trim(); saveConfig(); } }
+function onPayRateChange(i,v){ if(config.payList[i]){ config.payList[i].rate = Number(v)||0; saveConfig(); } }
+function onExpNameChange(i,v){ if(config.expList[i]){ config.expList[i].name = v.trim(); saveConfig(); } }
 
 function saveConfig(){ localStorage.setItem('taxiConfig', JSON.stringify(config)); }
 function getRecords(){ return JSON.parse(localStorage.getItem('taxiRec')) || []; }
@@ -434,6 +439,7 @@ function exportBackup(){
   a.click(); URL.revokeObjectURL(url);
   alert("✅ 備份檔已下載！");
 }
+
 document.getElementById("fileImport").onchange = function(e){
   const f = e.target.files[0]; if(!f) return;
   const r = new FileReader();
@@ -447,9 +453,11 @@ document.getElementById("fileImport").onchange = function(e){
       if(!config.fontSize) config.fontSize = 13;
       if(!config.fontWeight) config.fontWeight = 700;
       if(!config.expList) config.expList = [{name:"加油",color:"#dc2626"},{name:"其他",color:"#475569"}];
-      saveConfig(); saveRecords(d.records);
+      saveConfig();
+      saveRecords(d.records);
       if(Array.isArray(d.expenses)) saveExpenses(d.expenses);
-      applyFontSize(config.fontSize); applyFontWeight(config.fontWeight);
+      applyFontSize(config.fontSize);
+      applyFontWeight(config.fontWeight);
       alert("✅ 匯入成功！");
       renderHomeTypeBtn(); calcTotal(); renderTodayList();
     }catch(err){ alert("❌ 檔案讀取失敗"); }
@@ -460,12 +468,6 @@ document.getElementById("fileImport").onchange = function(e){
 function renderHomeTypeBtn(){
   const wrap = document.getElementById("typeBtnWrap");
   wrap.innerHTML = "";
-  const expBtn = document.createElement('button');
-  expBtn.className = "bigBtn";
-  expBtn.style.background = "#dc2626";
-  expBtn.textContent = "支出";
-  expBtn.onclick = ()=>openExpInputModal();
-  wrap.appendChild(expBtn);
   config.typeList.forEach(t=>{
     const btn = document.createElement('button');
     btn.className = "bigBtn";
@@ -474,6 +476,12 @@ function renderHomeTypeBtn(){
     btn.onclick = ()=>openInputModal(t.name);
     wrap.appendChild(btn);
   });
+  const expBtn = document.createElement('button');
+  expBtn.className = "bigBtn";
+  expBtn.style.background = "#dc2626";
+  expBtn.textContent = "支出";
+  expBtn.onclick = ()=>openExpInputModal();
+  wrap.appendChild(expBtn);
 }
 
 function showPage(id){
@@ -497,6 +505,7 @@ function showPage(id){
   if(id === "pageDayDetail") renderDayDetail();
   if(id === "pageHome") renderHomeTypeBtn();
 }
+
 function goBack(){
   if(historyStack.length > 0){
     const p = historyStack.pop();
@@ -519,6 +528,7 @@ function goBack(){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.getElementById('pageHome').classList.add('active');
 }
+
 function updateHourPreview(){
   const s = Number(document.getElementById('setStartHour').value);
   const e = Number(document.getElementById('setEndHour').value);
@@ -528,6 +538,7 @@ function updateHourPreview(){
   b.innerHTML = `<strong>${String(s).padStart(2,'0')}:00 ～ ${s>e?'隔日 ':''}${String(e).padStart(2,'0')}:00</strong>`;
 }
 
+/* ===== 收入 Modal ===== */
 const modal = document.getElementById('inputModal');
 function openInputModal(type){ currentType = type; modalAmount = ""; document.getElementById('modalTitle').textContent = type; document.getElementById('amountShow').textContent = "0"; renderPayBtn(); modal.classList.add('active'); }
 function closeInputModal(){ modal.classList.remove('active'); }
@@ -542,21 +553,34 @@ function renderPayBtn(){
     w.appendChild(b);
   });
 }
+
 function saveRecord(payItem){
   const amt = Number(modalAmount);
   if(!amt || amt <= 0){ alert("請輸入金額"); return; }
   const now = new Date();
   const typeItem = config.typeList.find(t => t.name === currentType);
+
   if(payItem.name === "好孕券" && amt > 250){
-    const yunPart = 250;
-    const cashPart = amt - 250;
-    const fee1 = yunPart * Number(payItem.rate||0) / 100;
-    let net1 = yunPart - fee1;
-    if(typeItem) net1 -= Number(typeItem.deduct||0);
-    if(net1 < 0) net1 = 0;
+    const yunPart = 250, cashPart = amt - 250;
+    const fee = 0;
+    let net = amt - fee;
+    if(typeItem) net -= Number(typeItem.deduct||0);
+    if(net < 0) net = 0;
     const list = getRecords();
-    list.unshift({ id: Date.now()+1, type: currentType, pay: payItem.name, raw: yunPart, fee: fee1, net: Math.round(net1), date: getBizDate(now), time: fmtTime() });
-    list.unshift({ id: Date.now()+2, type: currentType, pay: "現金", raw: cashPart, fee: 0, net: cashPart, date: getBizDate(now), time: fmtTime() });
+    list.unshift({
+      id: Date.now(),
+      type: currentType,
+      pay: "好孕券",
+      raw: amt,
+      fee: fee,
+      net: Math.round(net),
+      date: getBizDate(now),
+      time: fmtTime(),
+      splits: [
+        { pay: "好孕券", amount: yunPart },
+        { pay: "現金", amount: cashPart }
+      ]
+    });
     saveRecords(list);
   } else {
     const fee = amt * Number(payItem.rate||0) / 100;
@@ -570,6 +594,7 @@ function saveRecord(payItem){
   closeInputModal(); calcTotal(); renderTodayList();
 }
 
+/* ===== 支出 Modal ===== */
 const expModal = document.getElementById('expInputModal');
 function openExpInputModal(){ expModalAmount = ""; document.getElementById('expAmountShow').textContent = "0"; document.getElementById('expNoteInput').value = ""; renderExpCatBtn(); expModal.classList.add('active'); }
 function closeExpInputModal(){ expModal.classList.remove('active'); }
@@ -593,9 +618,9 @@ function saveExpense(cat){
   list.unshift({ id: Date.now(), cat: cat.name, color: cat.color, raw: amt, note, date: getBizDate(now), time: fmtTime() });
   saveExpenses(list);
   closeExpInputModal();
-  alert("✅ 支出已記錄");
 }
 
+/* ===== 首頁統計 ===== */
 function calcDayStats(recs, targetDate){
   let daySum=0, cashSum=0, nonCashSum=0, tripCount=0, feeSum=0, deductSum=0;
   const typeCount = {};
@@ -608,8 +633,15 @@ function calcDayStats(recs, targetDate){
     typeCount[r.type] = (typeCount[r.type]||0)+1;
     const ti = config.typeList.find(t => t.name === r.type);
     if(ti && Number(ti.deduct) > 0) deductSum += Number(ti.deduct);
-    if(isCashPay(r.pay)) cashSum += Number(r.raw||0);
-    else nonCashSum += Number(r.raw||0);
+    if(r.splits && Array.isArray(r.splits)){
+      r.splits.forEach(s => {
+        if(isCashPay(s.pay)) cashSum += Number(s.amount||0);
+        else nonCashSum += Number(s.amount||0);
+      });
+    } else {
+      if(isCashPay(r.pay)) cashSum += Number(r.raw||0);
+      else nonCashSum += Number(r.raw||0);
+    }
   });
   return { daySum, cashSum, nonCashSum, tripCount, feeSum, deductSum, typeCount };
 }
@@ -625,29 +657,47 @@ function calcTotal(){
   document.getElementById('feeTotal').textContent = Math.round(s.feeSum);
   document.getElementById('deductTotal').textContent = Math.round(s.deductSum);
 }
+
 function toggleSort(){ sortNewFirst = !sortNewFirst; document.getElementById('sortBtn').textContent = sortNewFirst ? "新→舊 ⇅" : "舊→新 ⇅"; renderTodayList(); }
 
 function buildDetailRow(item, idx, cum){
   const typeStr = (item.type||"").charAt(0);
-  const payStr  = (item.pay ||"").charAt(0);
-  const ti = config.typeList.find(t => t.name === item.type);
-  const pi = config.payList.find(p => p.name === item.pay);
-  const tc = ti ? ti.color : "#0f172a";
-  const pc = pi ? pi.color : "#0f172a";
+  const typeItem = config.typeList.find(t => t.name === item.type);
+  const typeColor = typeItem ? typeItem.color : "#0f172a";
   const feeN = Math.round(item.fee||0);
   const idxStr = idx !== null ? `${idx}.` : '';
   const feeHtml = feeN > 0 ? `<span class="dr-fee">-${feeN}</span>` : '';
   const cumHtml = cum !== null ? `<span class="dr-cum">累計 ${cum}</span>` : '';
+
+  let payHtml = '';
+  if(item.splits && Array.isArray(item.splits)){
+    let inner = '';
+    item.splits.forEach((s, i) => {
+      const pItem = config.payList.find(p => p.name === s.pay);
+      const pColor = pItem ? pItem.color : "#0f172a";
+      const name = s.pay === "好孕券" ? "好" : "";
+      const prefix = i === 0 ? "" : "+";
+      inner += `${prefix}<span style="color:${pColor};">${name}${s.amount}</span>`;
+    });
+    payHtml = `<span class="dr-pay">${inner}</span>`;
+  } else {
+    const payStr = (item.pay || "").charAt(0);
+    const payItem = config.payList.find(p => p.name === item.pay);
+    const payColor = payItem ? payItem.color : "#0f172a";
+    payHtml = `<span class="dr-pay" style="color:${payColor};">${payStr}</span>`;
+  }
+
   return `
     <span class="dr-left">${idxStr}${item.time}</span>
-    <span class="dr-type" style="color:${tc};">(${typeStr})</span>
-    <span class="dr-pay" style="color:${pc};">${payStr}</span>
+    <span class="dr-type" style="color:${typeColor};">(${typeStr})</span>
+    ${payHtml}
     <span class="dr-amt">${item.raw}</span>
     ${feeHtml}
     <span class="dr-net">淨 ${item.net}</span>
     ${cumHtml}
   `;
 }
+
 function renderTodayList(){
   const recs = getRecords();
   const today = getBizDate(new Date());
@@ -666,6 +716,7 @@ function renderTodayList(){
     wrap.appendChild(div);
   });
 }
+
 function renderDayDetail(){
   if(!statViewYear || !statViewMonth || !statViewDay) return;
   const td = `${statViewYear}-${statViewMonth}-${statViewDay}`;
@@ -692,6 +743,7 @@ function renderDayDetail(){
   });
 }
 
+/* ===== 收入統計 ===== */
 function showStatYearView(){
   document.getElementById('statYearView').style.display = '';
   document.getElementById('statMonthView').style.display = 'none';
@@ -711,7 +763,13 @@ function calcStatCard(recs, filterFn){
     const ti = config.typeList.find(t=>t.name===r.type);
     if(ti && Number(ti.deduct)>0) g.deduct += Number(ti.deduct);
     g.typeCount[r.type] = (g.typeCount[r.type]||0)+1;
-    g.paySum[r.pay] = (g.paySum[r.pay]||0) + Number(r.raw||0);
+    if(r.splits && Array.isArray(r.splits)){
+      r.splits.forEach(s => {
+        g.paySum[s.pay] = (g.paySum[s.pay]||0) + Number(s.amount||0);
+      });
+    } else {
+      g.paySum[r.pay] = (g.paySum[r.pay]||0) + Number(r.raw||0);
+    }
   });
   return g;
 }
@@ -745,7 +803,8 @@ function showStatMonthView(y){
   document.getElementById('statMonthView').style.display = '';
   document.getElementById('statDayView').style.display = 'none';
   document.getElementById('statMonthTitle').textContent = y + " 年";
-  const months = [...new Set(getRecords().filter(r => r.date.startsWith(y+"-")).map(r => r.date.split("-")[1]))].sort().reverse();
+  const recs = getRecords().filter(r => r.date.startsWith(y+"-"));
+  const months = [...new Set(recs.map(r => r.date.split("-")[1]))].sort().reverse();
   const wrap = document.getElementById('statMonthList');
   wrap.innerHTML = "";
   if(months.length === 0){ wrap.innerHTML = `<div class="empty-tip">此年尚無紀錄</div>`; return; }
@@ -763,8 +822,9 @@ function showStatDayView(y, m){
   document.getElementById('statMonthView').style.display = 'none';
   document.getElementById('statDayView').style.display = '';
   document.getElementById('statDayTitle').textContent = y + "-" + m + " 每日營收";
+  const recs = getRecords();
   const dayMap = {};
-  getRecords().forEach(r=>{
+  recs.forEach(r=>{
     const [yy,mm,dd] = r.date.split("-");
     if(yy !== y || mm !== m) return;
     if(!dayMap[dd]){ dayMap[dd] = {sum:0, net:0, trip:0, fee:0, typeCount:{}}; config.typeList.forEach(t => dayMap[dd].typeCount[t.name]=0); }
@@ -800,19 +860,30 @@ function showStatDayView(y, m){
   });
 }
 
+/* ===== 支出統計 ===== */
 function showExpYearView(){
   document.getElementById('expYearView').style.display = '';
   document.getElementById('expMonthView').style.display = 'none';
   document.getElementById('expDayView').style.display = 'none';
   renderExpYearList();
 }
-function calcExpSum(exps, filterFn){ let t = 0; exps.forEach(e=>{ if(filterFn(e)) t += Number(e.raw||0); }); return t; }
-function calcNetIncome(recs, filterFn){ let n = 0; recs.forEach(r=>{ if(filterFn(r)) n += Number(r.net||0); }); return n; }
+function calcExpTotal(exps, filterFn){
+  let total = 0;
+  exps.forEach(e=>{ if(filterFn(e)) total += Number(e.raw||0); });
+  return total;
+}
+function calcNetIncome(recs, filterFn){
+  let net = 0;
+  recs.forEach(r=>{ if(filterFn(r)) net += Number(r.net||0); });
+  return net;
+}
 function buildExpCardHtml(title, netIncome, expTotal){
   const balance = netIncome - expTotal;
   return `
     <div class="stat-card-title">${title}</div>
-    <div class="stat-card-row hl">淨收入：${netIncome}　支出：<span style="color:#dc2626;">${expTotal}</span>　餘額：<span style="color:#16a34a;">${balance}</span></div>
+    <div class="stat-card-row hl">淨收入：${netIncome}</div>
+    <div class="stat-card-row fee">支出：${expTotal}</div>
+    <div class="stat-card-row" style="color:#16a34a;">餘額：${balance}</div>
   `;
 }
 function renderExpYearList(){
@@ -823,7 +894,7 @@ function renderExpYearList(){
   wrap.innerHTML = "";
   if(years.length === 0){ wrap.innerHTML = `<div class="empty-tip">尚無支出紀錄</div>`; return; }
   years.forEach(y=>{
-    const total = calcExpSum(exps, e => e.date.startsWith(y+"-"));
+    const total = calcExpTotal(exps, e => e.date.startsWith(y+"-"));
     const net = calcNetIncome(recs, r => r.date.startsWith(y+"-"));
     const card = document.createElement('div');
     card.className = "stat-card";
@@ -844,7 +915,7 @@ function showExpMonthView(y){
   wrap.innerHTML = "";
   if(months.length === 0){ wrap.innerHTML = `<div class="empty-tip">此年尚無支出</div>`; return; }
   months.forEach(m=>{
-    const total = calcExpSum(exps, e => e.date.startsWith(y+"-"+m+"-"));
+    const total = calcExpTotal(exps, e => e.date.startsWith(y+"-"+m+"-"));
     const net = calcNetIncome(recs, r => r.date.startsWith(y+"-"+m+"-"));
     const card = document.createElement('div');
     card.className = "stat-card";
@@ -880,7 +951,6 @@ function showExpDayView(y, m){
         <span class="er-cat" style="color:${e.color||'#dc2626'};">${e.cat}</span>
         <span class="er-note">${escapeHtml(e.note||'')}</span>
         <span class="er-amt">${e.raw}</span>
-        <button class="editBtn" onclick="openEditExp(${e.id})">改</button>
       </div>
     `).join('');
     dayCard.innerHTML = `<div style="font-size:14px;margin:6px 0;color:#0f172a;">${m}-${d} 　支出合計：<span style="color:#dc2626;">${total}</span></div>${rowsHtml}`;
@@ -888,6 +958,7 @@ function showExpDayView(y, m){
   });
 }
 
+/* ===== 修改紀錄 ===== */
 const editModal = document.getElementById('editModal');
 function openEdit(id){
   editId = id;
@@ -914,11 +985,35 @@ function saveEdit(){
   const pi = config.payList.find(p => p.name === payName);
   const ti = config.typeList.find(t => t.name === type);
   if(!pi) return;
-  const fee = raw * Number(pi.rate||0) / 100;
-  let net = raw - fee;
-  if(ti) net -= Number(ti.deduct||0);
-  if(net < 0) net = 0;
-  recs[idx].type = type; recs[idx].pay = payName; recs[idx].raw = raw; recs[idx].fee = fee; recs[idx].net = Math.round(net);
+
+  if(payName === "好孕券" && raw > 250){
+    const yunPart = 250, cashPart = raw - 250;
+    const fee = 0;
+    let net = raw - fee;
+    if(ti) net -= Number(ti.deduct||0);
+    if(net < 0) net = 0;
+    recs[idx].type = type;
+    recs[idx].pay = "好孕券";
+    recs[idx].raw = raw;
+    recs[idx].fee = fee;
+    recs[idx].net = Math.round(net);
+    recs[idx].splits = [
+      { pay: "好孕券", amount: yunPart },
+      { pay: "現金", amount: cashPart }
+    ];
+  } else {
+    const fee = raw * Number(pi.rate||0) / 100;
+    let net = raw - fee;
+    if(ti) net -= Number(ti.deduct||0);
+    if(net < 0) net = 0;
+    recs[idx].type = type;
+    recs[idx].pay = payName;
+    recs[idx].raw = raw;
+    recs[idx].fee = fee;
+    recs[idx].net = Math.round(net);
+    delete recs[idx].splits;
+  }
+
   saveRecords(recs);
   closeEditModal(); calcTotal(); renderTodayList();
   if(document.getElementById("pageDayDetail").classList.contains("active")) renderDayDetail();
@@ -931,56 +1026,7 @@ function deleteRec(){
   if(document.getElementById("pageDayDetail").classList.contains("active")) renderDayDetail();
 }
 
-function openEditExp(id){
-  editExpId = id;
-  const e = getExpenses().find(x => x.id === id);
-  if(!e) return;
-  const cs = document.getElementById('editExpCat');
-  cs.innerHTML = "";
-  config.expList.forEach(c=>{
-    const o = document.createElement('option');
-    o.textContent = c.name; o.value = c.name;
-    cs.appendChild(o);
-  });
-  cs.value = e.cat;
-  document.getElementById('editExpAmount').value = e.raw;
-  document.getElementById('editExpNote').value = e.note || "";
-  document.getElementById('editExpModal').classList.add('active');
-}
-function closeEditExpModal(){
-  document.getElementById('editExpModal').classList.remove('active');
-  editExpId = null;
-}
-function saveEditExp(){
-  const exps = getExpenses();
-  const idx = exps.findIndex(e => e.id === editExpId);
-  if(idx < 0) return;
-  const catName = document.getElementById('editExpCat').value;
-  const raw = Number(document.getElementById('editExpAmount').value);
-  const note = document.getElementById('editExpNote').value.trim();
-  if(!raw || raw <= 0){ alert("金額錯誤"); return; }
-  const catItem = config.expList.find(c => c.name === catName);
-  if(!catItem){ alert("找不到支出類型"); return; }
-  exps[idx].cat = catName;
-  exps[idx].color = catItem.color || "#dc2626";
-  exps[idx].raw = raw;
-  exps[idx].note = note;
-  saveExpenses(exps);
-  closeEditExpModal();
-  if(document.getElementById("pageExpStat").classList.contains("active")){
-    showExpYearView();
-  }
-}
-function deleteExp(){
-  if(editExpId === null) return;
-  if(!confirm("確定要刪除這筆支出嗎？")) return;
-  saveExpenses(getExpenses().filter(e => e.id !== editExpId));
-  closeEditExpModal();
-  if(document.getElementById("pageExpStat").classList.contains("active")){
-    showExpYearView();
-  }
-}
-
+/* ===== 設定頁 ===== */
 function renderSetting(){
   const tw = document.getElementById('typeListSet'); tw.innerHTML = "";
   config.typeList.forEach((t, i)=>{
