@@ -103,15 +103,14 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .exp-row .er-note{color:#475569;font-size:calc(0.9px * var(--fs-num));flex:1;text-align:left;padding:0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .exp-row .er-amt{color:#dc2626;text-align:right;}
 
-/* 支出輸入視窗：緊湊排版 */
 /* ===== 支出輸入視窗：數字鍵盤加高一倍、其他等比放大、不超出螢幕 ===== */
 #expInputModal .modal-card{
   padding:4px 6px;
   display:flex;
   flex-direction:column;
   height:100%;
-  min-height:0;           /* 防止子項溢出 */
-  gap:6px;                /* 區塊間距統一 */
+  min-height:0;
+  gap:6px;
 }
 #expInputModal #expModalTitle{
   font-size:calc(1.3px * var(--fs-num)) !important;
@@ -126,13 +125,13 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   flex-shrink:0;
 }
 
-/* 數字鍵盤：撐滿剩餘空間，按鈕高度自動 = 原本兩倍以上 */
+/* 數字鍵盤：撐滿剩餘空間 */
 #expInputModal .numKey{
   flex:1 1 auto;
   min-height:0;
   display:grid;
   grid-template-columns:1fr 1fr 1fr;
-  grid-template-rows:repeat(4, 1fr);   /* 4 列平均撐滿 */
+  grid-template-rows:repeat(4, 1fr);
   gap:6px;
   margin:0;
 }
@@ -151,7 +150,7 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   grid-template-columns:1fr 1fr;
   gap:8px;
   margin:0;
-  max-height:26vh;          /* 最多佔畫面 26% */
+  max-height:26vh;
   overflow-y:auto;
 }
 #expInputModal .payBtn{
@@ -240,7 +239,7 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
     </div>
     <div id="expCatWrap" class="payKey"></div>
     <input id="expNoteInput" class="noteInput" placeholder="備註（選填）">
-    <button style="width:100%;margin-top:8px;padding:12px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:16px;" onclick="closeExpInputModal()">取消</button>
+    <button style="width:100%;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:16px;" onclick="closeExpInputModal()">取消</button>
   </div>
 </div>
 
@@ -584,7 +583,6 @@ document.getElementById("fileImport").onchange = function(e){
       if(!config.fontSize) config.fontSize = 13;
       if(!config.fontWeight) config.fontWeight = 700;
       if(!config.expList) config.expList = [{name:"加油",color:"#dc2626"},{name:"其他",color:"#475569"}];
-      // 移除舊版殘留的 isCash 欄位（不再使用）
       config.payList.forEach(p => { delete p.isCash; });
       saveConfig();
       saveRecords(d.records);
@@ -746,6 +744,23 @@ function saveExpense(cat){
   list.unshift({ id: nextId(), cat: cat.name, color: cat.color, raw: amt, note, date: getBizDate(now), time: fmtTime() });
   saveExpenses(list);
   closeExpInputModal();
+  // 新增後即時重繪支出統計頁（保持目前層級）
+  refreshExpStatView();
+}
+
+/* 依目前所在的支出統計層級重新渲染 */
+function refreshExpStatView(){
+  if(!document.getElementById("pageExpStat").classList.contains("active")) return;
+  if(document.getElementById('expDayView').style.display !== 'none'){
+    const title = document.getElementById('expDayTitle').textContent;
+    const m = title.match(/(\d{4})-(\d{2})/);
+    if(m) showExpDayView(m[1], m[2]);
+  } else if(document.getElementById('expMonthView').style.display !== 'none'){
+    const y = document.getElementById('expMonthTitle').textContent.replace(" 年","").trim();
+    showExpMonthView(y);
+  } else {
+    renderExpYearList();
+  }
 }
 
 /* ===== 首頁統計 ===== */
@@ -1178,7 +1193,6 @@ function openEditExp(id){
   if(!e) return;
   const cs = document.getElementById('editExpCat'); cs.innerHTML = "";
   config.expList.forEach(c=>{ const o = document.createElement('option'); o.textContent = c.name; o.value = c.name; cs.appendChild(o); });
-  // 若原本類型已不存在於設定中，補一個選項
   if(!config.expList.find(c => c.name === e.cat)){
     const o = document.createElement('option'); o.textContent = e.cat; o.value = e.cat; cs.appendChild(o);
   }
@@ -1203,38 +1217,14 @@ function saveEditExp(){
   exps[idx].note = note;
   saveExpenses(exps);
   closeEditExpModal();
-  // 重新渲染支出統計（若當前在支出統計頁）
-  if(document.getElementById("pageExpStat").classList.contains("active")){
-    if(document.getElementById('expDayView').style.display !== 'none'){
-      // 保持當前檢視層級
-      const title = document.getElementById('expDayTitle').textContent; // 例如 "2026-09 每日支出"
-      const m = title.match(/(\d{4})-(\d{2})/);
-      if(m) showExpDayView(m[1], m[2]);
-    } else if(document.getElementById('expMonthView').style.display !== 'none'){
-      const y = document.getElementById('expMonthTitle').textContent.replace(" 年","").trim();
-      showExpMonthView(y);
-    } else {
-      renderExpYearList();
-    }
-  }
+  refreshExpStatView();
 }
 function deleteExp(){
   if(editExpId === null) return;
   if(!confirm("確定要刪除這筆支出嗎？")) return;
   saveExpenses(getExpenses().filter(e => e.id !== editExpId));
   closeEditExpModal();
-  if(document.getElementById("pageExpStat").classList.contains("active")){
-    if(document.getElementById('expDayView').style.display !== 'none'){
-      const title = document.getElementById('expDayTitle').textContent;
-      const m = title.match(/(\d{4})-(\d{2})/);
-      if(m) showExpDayView(m[1], m[2]);
-    } else if(document.getElementById('expMonthView').style.display !== 'none'){
-      const y = document.getElementById('expMonthTitle').textContent.replace(" 年","").trim();
-      showExpMonthView(y);
-    } else {
-      renderExpYearList();
-    }
-  }
+  refreshExpStatView();
 }
 
 /* ===== 設定頁 ===== */
