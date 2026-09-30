@@ -61,7 +61,7 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 #typeListSet input:not([type="number"]),#payListSet input:not([type="number"]),#expListSet input:not([type="number"]),.setBlock .item input:not([type="number"]){flex:1;min-width:0;}
 .item{background:#fff;padding:2px 8px;margin:2px 0;border-radius:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,0.05);gap:8px;}
 
-/* 明細行 */
+/* 明細行（首頁今日） */
 .detail-row{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:10px;margin:4px 0;padding:8px 10px;box-shadow:0 1px 4px rgba(0,0,0,0.05);font-size:calc(1.05px * var(--fs-num));gap:6px;}
 .dr-left{color:#0f172a;font-size:calc(0.9px * var(--fs-num));white-space:nowrap;}
 .dr-type,.dr-pay{white-space:nowrap;}
@@ -69,7 +69,7 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .dr-fee{color:#dc2626;}
 .dr-cum{color:#7e22ce;}
 
-/* 統計頁篩選卡（日/月/年） */
+/* ============ 三卡篩選（營業/支出通用） ============ */
 .filter-bar{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
 .filter-card{background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .15s;}
 .filter-card:active{background:#f8fafc;transform:scale(0.99);}
@@ -80,9 +80,10 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .filter-card .fc-stat .sum{color:#2563eb;}
 .filter-card .fc-stat .fee{color:#dc2626;}
 .filter-card .fc-stat .net{color:#7e22ce;}
+.filter-card .fc-stat .cnt{color:#94a3b8;}
 .filter-card .fc-arrow{color:#94a3b8;font-size:calc(1.1px * var(--fs-num));margin-left:6px;flex-shrink:0;}
 
-/* 統計摘要卡（不可點） */
+/* 清單摘要卡 */
 .summary-card{background:#fff;border-radius:10px;padding:10px 12px;margin:5px 0 8px;box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:calc(1.05px * var(--fs-num));}
 .summary-card .sc-name{color:#0f172a;flex-shrink:0;}
 .summary-card .sc-stat{flex:1;text-align:right;color:#475569;font-size:calc(0.92px * var(--fs-num));line-height:1.5;}
@@ -90,37 +91,30 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .summary-card .sc-stat .sum{color:#2563eb;}
 .summary-card .sc-stat .fee{color:#dc2626;}
 .summary-card .sc-stat .net{color:#7e22ce;}
+.summary-card .sc-stat .cnt{color:#94a3b8;}
 
-/* 統計統計卡（月/年清單用） */
+/* 清單統計卡（可點） */
 .stat-card{background:#fff;border-radius:10px;padding:10px 12px;margin:5px 0;box-shadow:0 1px 4px rgba(0,0,0,0.05);cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:calc(1.05px * var(--fs-num));gap:6px;}
 .stat-card:active{background:#f8fafc;}
 .stat-card .sc-name{color:#2563eb;flex-shrink:0;min-width:52px;}
+.stat-card.exp .sc-name{color:#dc2626;}
 .stat-card .sc-stat{flex:1;text-align:right;color:#475569;font-size:calc(0.92px * var(--fs-num));line-height:1.5;}
 .stat-card .sc-stat b{color:#0f172a;}
 .stat-card .sc-stat .sum{color:#2563eb;}
 .stat-card .sc-stat .fee{color:#dc2626;}
 .stat-card .sc-stat .net{color:#7e22ce;}
+.stat-card .sc-stat .cnt{color:#94a3b8;}
 
+/* 統計頁返回列 */
+.stat-bar{display:flex;gap:8px;margin-bottom:10px;}
+.stat-btn{flex:1;padding:11px;border:none;border-radius:10px;background:#e2e8f0;font-size:calc(1.05px * var(--fs-num));color:#334155;}
+.stat-btn:active{background:#cbd5e1;}
 .crumb{font-size:calc(0.95px * var(--fs-num));color:#64748b;margin-bottom:8px;}
 
-/* 支出統計卡片：三樣同排平均分布 */
-.exp-card-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:6px;}
-.exp-card-3col .col{text-align:center;}
-.exp-card-3col .col .lbl{font-size:calc(0.85px * var(--fs-num));color:#64748b;display:block;margin-bottom:2px;}
-.exp-card-3col .col .val{font-size:calc(1.1px * var(--fs-num));display:block;}
-.exp-card-3col .col .val.net{color:#0f172a;}
-.exp-card-3col .col .val.fee{color:#dc2626;}
-.exp-card-3col .col .val.bal{color:#16a34a;}
-.stat-card-title{font-size:calc(1.15px * var(--fs-num));color:#2563eb;margin-bottom:6px;}
-
-/* 每日列表（支出統計） */
-.day-summary-row{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:10px;margin:4px 0;padding:10px 12px;box-shadow:0 1px 4px rgba(0,0,0,0.05);font-size:calc(1.05px * var(--fs-num));gap:6px;}
-.ds-date{color:#0f172a;}
-.ds-type{color:#475569;font-size:calc(0.9px * var(--fs-num));}
-.ds-amt{color:#1e40af;text-align:right;}
-.ds-fee{color:#dc2626;text-align:right;}
-.ds-net{color:#7e22ce;text-align:right;}
-.ds-cum{color:#0f172a;text-align:right;}
+/* 新增支出按鈕（只在支出頁主頁） */
+.add-bar{margin-bottom:12px;}
+.add-btn{width:100%;padding:12px;border:none;border-radius:12px;background:#dc2626;color:#fff;font-size:calc(1.1px * var(--fs-num));box-shadow:0 2px 6px rgba(220,38,38,0.25);}
+.add-btn:active{background:#b91c1c;transform:scale(0.98);}
 
 /* 支出明細行 */
 .exp-row{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:10px;margin:4px 0;padding:8px 10px;box-shadow:0 1px 4px rgba(0,0,0,0.05);font-size:calc(1.05px * var(--fs-num));gap:6px;}
@@ -129,69 +123,16 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .exp-row .er-note{color:#475569;font-size:calc(0.9px * var(--fs-num));flex:1;text-align:left;padding:0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .exp-row .er-amt{color:#dc2626;text-align:right;}
 
-/* ===== 支出輸入視窗：數字鍵盤加高一倍、其他等比放大、不超出螢幕 ===== */
-#expInputModal .modal-card{
-  padding:4px 6px;
-  display:flex;
-  flex-direction:column;
-  height:100%;
-  min-height:0;
-  gap:6px;
-}
-#expInputModal #expModalTitle{
-  font-size:calc(1.3px * var(--fs-num)) !important;
-  margin:0 !important;
-  flex-shrink:0;
-  text-align:center;
-}
-#expInputModal .inputBox{
-  font-size:calc(2px * var(--fs-num));
-  padding:10px;
-  margin:0;
-  flex-shrink:0;
-}
-#expInputModal .numKey{
-  flex:1 1 auto;
-  min-height:0;
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  grid-template-rows:repeat(4, 1fr);
-  gap:6px;
-  margin:0;
-}
-#expInputModal .numBtn{
-  padding:0;
-  font-size:calc(1.3px * var(--fs-num));
-  border-radius:10px;
-  height:100%;
-  min-height:0;
-}
-#expInputModal .payKey{
-  flex:0 0 auto;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin:0;
-  max-height:26vh;
-  overflow-y:auto;
-}
-#expInputModal .payBtn{
-  padding:14px 8px;
-  font-size:calc(1.2px * var(--fs-num));
-  border-radius:10px;
-}
-#expInputModal .noteInput{
-  flex-shrink:0;
-  margin:0 !important;
-  padding:14px 12px;
-  font-size:calc(1.2px * var(--fs-num));
-}
-#expInputModal > .modal-card > button{
-  flex-shrink:0;
-  margin:0 !important;
-  padding:14px !important;
-  font-size:calc(1.15px * var(--fs-num)) !important;
-}
+/* 支出輸入視窗：數字鍵盤加高一倍、其他等比放大、不超出螢幕 */
+#expInputModal .modal-card{padding:4px 6px;display:flex;flex-direction:column;height:100%;min-height:0;gap:6px;}
+#expInputModal #expModalTitle{font-size:calc(1.3px * var(--fs-num)) !important;margin:0 !important;flex-shrink:0;text-align:center;}
+#expInputModal .inputBox{font-size:calc(2px * var(--fs-num));padding:10px;margin:0;flex-shrink:0;}
+#expInputModal .numKey{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:repeat(4, 1fr);gap:6px;margin:0;}
+#expInputModal .numBtn{padding:0;font-size:calc(1.3px * var(--fs-num));border-radius:10px;height:100%;min-height:0;}
+#expInputModal .payKey{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0;max-height:26vh;overflow-y:auto;}
+#expInputModal .payBtn{padding:14px 8px;font-size:calc(1.2px * var(--fs-num));border-radius:10px;}
+#expInputModal .noteInput{flex-shrink:0;margin:0 !important;padding:14px 12px;font-size:calc(1.2px * var(--fs-num));}
+#expInputModal > .modal-card > button{flex-shrink:0;margin:0 !important;padding:14px !important;font-size:calc(1.15px * var(--fs-num)) !important;}
 
 /* 字型滑桿 */
 .fs-wrap{display:flex;align-items:center;gap:10px;margin-top:6px;}
@@ -326,66 +267,81 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   <div id="listToday"></div>
 </div>
 
-<!-- 營業統計頁（日/月/年 三張篩選卡 + 內容區） -->
+<!-- 營業統計頁 -->
 <div id="pageStat" class="page">
   <div class="backHomeBar">
-    <button class="navBtn" onclick="goBack()">返回</button>
+    <button class="navBtn" onclick="navBack()">返回</button>
     <button class="navBtn" onclick="showPage('pageHome')">首頁</button>
   </div>
 
-  <div class="filter-bar">
-    <div class="filter-card" onclick="openStatDay()">
-      <span class="fc-label">日</span>
-      <span class="fc-main" id="fcDay">--</span>
-      <span class="fc-stat" id="fcDayStat">—</span>
-      <span class="fc-arrow">›</span>
+  <div id="statMainView">
+    <div class="filter-bar">
+      <div class="filter-card" onclick="statGoDayEntry()">
+        <span class="fc-label">日</span>
+        <span class="fc-main" id="statFcDay">--</span>
+        <span class="fc-stat" id="statFcDayStat">—</span>
+        <span class="fc-arrow">›</span>
+      </div>
+      <div class="filter-card" onclick="statGoMonthEntry()">
+        <span class="fc-label">月</span>
+        <span class="fc-main" id="statFcMonth">--</span>
+        <span class="fc-stat" id="statFcMonthStat">—</span>
+        <span class="fc-arrow">›</span>
+      </div>
+      <div class="filter-card" onclick="statGoYearEntry()">
+        <span class="fc-label">年</span>
+        <span class="fc-main" id="statFcYear">--</span>
+        <span class="fc-stat" id="statFcYearStat">—</span>
+        <span class="fc-arrow">›</span>
+      </div>
     </div>
-    <div class="filter-card" onclick="openStatMonth()">
-      <span class="fc-label">月</span>
-      <span class="fc-main" id="fcMonth">--</span>
-      <span class="fc-stat" id="fcMonthStat">—</span>
-      <span class="fc-arrow">›</span>
+    <div id="statContent">
+      <div class="empty-tip">點上方卡片查看統計</div>
     </div>
-    <div class="filter-card" onclick="openStatYear()">
-      <span class="fc-label">年</span>
-      <span class="fc-main" id="fcYear">--</span>
-      <span class="fc-stat" id="fcYearStat">—</span>
-      <span class="fc-arrow">›</span>
-    </div>
-  </div>
-
-  <div id="statContent">
-    <div class="empty-tip">點上方卡片查看統計</div>
   </div>
 </div>
 
 <!-- 支出統計頁 -->
 <div id="pageExpStat" class="page">
   <div class="backHomeBar">
-    <button class="navBtn" onclick="goBack()">返回</button>
+    <button class="navBtn" onclick="navBack()">返回</button>
     <button class="navBtn" onclick="showPage('pageHome')">首頁</button>
   </div>
-  <div style="margin-bottom:12px;">
-    <button class="bigBtn" style="width:100%;background:#dc2626;" onclick="openExpInputModal()">＋ 新增支出</button>
-  </div>
-  <div id="expYearView">
-    <h3 style="margin-bottom:10px;font-size:16px;">支出統計</h3>
-    <div id="expYearList"></div>
-  </div>
-  <div id="expMonthView" style="display:none;">
-    <h3 id="expMonthTitle" style="margin-bottom:10px;font-size:16px;"></h3>
-    <div id="expMonthList"></div>
-  </div>
-  <div id="expDayView" style="display:none;">
-    <h3 id="expDayTitle" style="margin-bottom:10px;font-size:16px;"></h3>
-    <div id="expDayList"></div>
+
+  <div id="expMainView">
+    <div class="add-bar">
+      <button class="add-btn" onclick="openExpInputModal()">＋ 新增支出</button>
+    </div>
+    <div class="filter-bar">
+      <div class="filter-card" onclick="expGoDayEntry()">
+        <span class="fc-label">日</span>
+        <span class="fc-main" id="expFcDay">--</span>
+        <span class="fc-stat" id="expFcDayStat">—</span>
+        <span class="fc-arrow">›</span>
+      </div>
+      <div class="filter-card" onclick="expGoMonthEntry()">
+        <span class="fc-label">月</span>
+        <span class="fc-main" id="expFcMonth">--</span>
+        <span class="fc-stat" id="expFcMonthStat">—</span>
+        <span class="fc-arrow">›</span>
+      </div>
+      <div class="filter-card" onclick="expGoYearEntry()">
+        <span class="fc-label">年</span>
+        <span class="fc-main" id="expFcYear">--</span>
+        <span class="fc-stat" id="expFcYearStat">—</span>
+        <span class="fc-arrow">›</span>
+      </div>
+    </div>
+    <div id="expContent">
+      <div class="empty-tip">點上方卡片查看支出</div>
+    </div>
   </div>
 </div>
 
 <!-- 設定頁 -->
 <div id="pageSetting" class="page">
   <div class="backHomeBar">
-    <button class="navBtn" onclick="goBack()">返回</button>
+    <button class="navBtn" onclick="navBack()">返回</button>
     <button class="navBtn" onclick="showPage('pageHome')">首頁</button>
   </div>
 
@@ -475,10 +431,9 @@ let modalAmount = "";
 let expModalAmount = "";
 let sortNewFirst = true;
 
-// 營業統計頁的檢視堆疊
+// 營業統計 / 支出統計 各自的檢視堆疊
 let statViewStack = [];
-// 首頁「今日」基準（真實時間）
-function todayBiz(){ return getBizDate(new Date()); }
+let expViewStack = [];
 
 function nextId(){
   let seq = Number(localStorage.getItem('taxiSeq') || 0) + 1;
@@ -614,6 +569,7 @@ document.getElementById("fileImport").onchange = function(e){
       applyFontWeight(config.fontWeight);
       alert("✅ 匯入成功！");
       renderHomeTypeBtn(); calcTotal(); renderTodayList();
+      refreshStatCards(); refreshExpCards();
     }catch(err){ alert("❌ 檔案讀取失敗"); }
   };
   r.readAsText(f); this.value = null;
@@ -650,17 +606,18 @@ function showPage(id){
     updateHourPreview(); renderSetting();
   }
   if(id === "pageStat") showStatDefault();
-  if(id === "pageExpStat") showExpYearView();
+  if(id === "pageExpStat") showExpDefault();
   if(id === "pageHome") renderHomeTypeBtn();
 }
 
-function goBack(){
+/* 頁面層級的「返回」按鈕（頁面間） */
+function navBack(){
   if(historyStack.length > 0){
     const p = historyStack.pop();
     document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
     document.getElementById(p).classList.add('active');
     if(p === "pageStat") showStatDefault();
-    if(p === "pageExpStat") showExpYearView();
+    if(p === "pageExpStat") showExpDefault();
     if(p === "pageSetting"){
       document.getElementById('setStartHour').value = config.businessHour.start;
       document.getElementById('setEndHour').value = config.businessHour.end;
@@ -715,14 +672,9 @@ function saveRecord(payItem){
     if(net < 0) net = 0;
     const list = getRecords();
     list.unshift({
-      id: nextId(),
-      type: currentType,
-      pay: "好孕券",
-      raw: amt,
-      fee: fee,
-      net: Math.round(net),
-      date: getBizDate(now),
-      time: fmtTime(),
+      id: nextId(), type: currentType, pay: "好孕券",
+      raw: amt, fee: fee, net: Math.round(net),
+      date: getBizDate(now), time: fmtTime(),
       splits: [
         { pay: "好孕券", amount: yunPart },
         { pay: "現金", amount: cashPart }
@@ -738,7 +690,7 @@ function saveRecord(payItem){
     list.unshift({ id: nextId(), type: currentType, pay: payItem.name, raw: amt, fee, net: Math.round(net), date: getBizDate(now), time: fmtTime() });
     saveRecords(list);
   }
-  closeInputModal(); calcTotal(); renderTodayList();
+  closeInputModal(); calcTotal(); renderTodayList(); refreshStatCards();
 }
 
 /* ===== 支出 Modal ===== */
@@ -765,21 +717,8 @@ function saveExpense(cat){
   list.unshift({ id: nextId(), cat: cat.name, color: cat.color, raw: amt, note, date: getBizDate(now), time: fmtTime() });
   saveExpenses(list);
   closeExpInputModal();
-  refreshExpStatView();
-}
-
-function refreshExpStatView(){
-  if(!document.getElementById("pageExpStat").classList.contains("active")) return;
-  if(document.getElementById('expDayView').style.display !== 'none'){
-    const title = document.getElementById('expDayTitle').textContent;
-    const m = title.match(/(\d{4})-(\d{2})/);
-    if(m) showExpDayView(m[1], m[2]);
-  } else if(document.getElementById('expMonthView').style.display !== 'none'){
-    const y = document.getElementById('expMonthTitle').textContent.replace(" 年","").trim();
-    showExpMonthView(y);
-  } else {
-    renderExpYearList();
-  }
+  refreshExpCards();
+  renderExpView();
 }
 
 /* ===== 首頁統計 ===== */
@@ -881,10 +820,9 @@ function renderTodayList(){
 }
 
 /* ============================================================
-   營業統計頁：日 / 月 / 年 三張篩選卡片
+   營業統計頁：三張篩選卡（日/月/年）+ 檢視堆疊
    ============================================================ */
-function calcStatRange(prefix){
-  // prefix 可為 "2026" / "2026-09" / "2026-09-30"
+function calcIncomeStat(prefix){
   const recs = getRecords().filter(r => r.date.startsWith(prefix));
   const sum = recs.reduce((s,r)=>s+Number(r.raw||0),0);
   const fee = recs.reduce((s,r)=>s+Number(r.fee||0),0);
@@ -892,64 +830,183 @@ function calcStatRange(prefix){
   return { sum, fee, net, trip: recs.length };
 }
 
-function refreshFilterCards(){
+function refreshStatCards(){
   const now = new Date();
   const y = now.getFullYear();
   const m = String(now.getMonth()+1).padStart(2,'0');
   const d = String(now.getDate()).padStart(2,'0');
-  const dayStr   = `${y}-${m}-${d}`;
-  const monthStr = `${y}-${m}`;
-  const yearStr  = `${y}`;
+  const dayPrefix = `${y}-${m}-${d}`;
+  const monPrefix = `${y}-${m}`;
+  const yrPrefix  = `${y}`;
 
-  document.getElementById('fcDay').textContent   = `${parseInt(m)}-${parseInt(d)}`;
-  document.getElementById('fcMonth').textContent = monthStr;
-  document.getElementById('fcYear').textContent  = yearStr;
+  document.getElementById('statFcDay').textContent   = `${parseInt(m)}-${parseInt(d)}`;
+  document.getElementById('statFcMonth').textContent = monPrefix;
+  document.getElementById('statFcYear').textContent  = yrPrefix;
 
-  const ds = calcStatRange(dayStr);
-  const ms = calcStatRange(monthStr);
-  const ys = calcStatRange(yearStr);
+  const ds = calcIncomeStat(dayPrefix);
+  const ms = calcIncomeStat(monPrefix);
+  const ys = calcIncomeStat(yrPrefix);
 
-  document.getElementById('fcDayStat').innerHTML =
+  document.getElementById('statFcDayStat').innerHTML =
     `<span class="sum">營 ${ds.sum}</span>　<span class="fee">費 ${Math.round(ds.fee)}</span>　<span class="net">淨 ${ds.net}</span>`;
-  document.getElementById('fcMonthStat').innerHTML =
+  document.getElementById('statFcMonthStat').innerHTML =
     `<span class="sum">營 ${ms.sum}</span>　<span class="fee">費 ${Math.round(ms.fee)}</span>　<span class="net">淨 ${ms.net}</span>`;
-  document.getElementById('fcYearStat').innerHTML =
+  document.getElementById('statFcYearStat').innerHTML =
     `<span class="sum">營 ${ys.sum}</span>　<span class="fee">費 ${Math.round(ys.fee)}</span>　<span class="net">淨 ${ys.net}</span>`;
 }
 
 function showStatDefault(){
   statViewStack = [];
-  const el = document.getElementById('statContent');
-  el.innerHTML = `<div class="empty-tip">點上方卡片查看統計</div>`;
-  refreshFilterCards();
+  document.getElementById('statContent').innerHTML = `<div class="empty-tip">點上方卡片查看統計</div>`;
+  refreshStatCards();
 }
 
-/* 點「日」→ 今日明細 */
-function openStatDay(){
+/* 點卡片入口 */
+function statGoDayEntry(){
   const now = new Date();
-  const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
-  statViewStack = [{type:'day', date:dateStr}];
-  renderStatDayDetail(dateStr);
+  const monPrefix = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  statViewStack = [{type:'dayList', month:monPrefix}];
+  renderStatView();
 }
+function statGoMonthEntry(){
+  const now = new Date();
+  statViewStack = [{type:'monthList', year:`${now.getFullYear()}`}];
+  renderStatView();
+}
+function statGoYearEntry(){
+  statViewStack = [{type:'yearList'}];
+  renderStatView();
+}
+
+/* 統計頁返回：優先回上一層統計，其次回頁面堆疊 */
+function statBack(){
+  if(statViewStack.length > 1){
+    statViewStack.pop();
+    renderStatView();
+    return;
+  }
+  showStatDefault();
+  navBack();
+}
+
+function renderStatView(){
+  if(statViewStack.length === 0){
+    document.getElementById('statContent').innerHTML = `<div class="empty-tip">點上方卡片查看統計</div>`;
+    return;
+  }
+  const top = statViewStack[statViewStack.length-1];
+  if(top.type === 'dayList')        renderStatDayList(top.month);
+  else if(top.type === 'monthList') renderStatMonthList(top.year);
+  else if(top.type === 'yearList')  renderStatYearList();
+  else if(top.type === 'dayDetail') renderStatDayDetail(top.date);
+  refreshStatCards();
+}
+
+function statBarHtml(){
+  return `<div class="stat-bar"><button class="stat-btn" onclick="statBack()">← 返回</button></div>`;
+}
+
+function renderStatDayList(monthStr){
+  const recs = getRecords().filter(r => r.date.startsWith(monthStr));
+  const dayMap = {};
+  recs.forEach(r=>{ const d = r.date.split("-")[2]; if(!dayMap[d]) dayMap[d]=[]; dayMap[d].push(r); });
+  const days = Object.keys(dayMap).sort();
+  const s = calcIncomeStat(monthStr);
+
+  let html = statBarHtml();
+  html += `<div class="crumb">${monthStr} 每日統計</div>`;
+  html += `<div class="summary-card">
+    <span class="sc-name">月總</span>
+    <span class="sc-stat"><span class="sum">營 ${s.sum}</span>　<span class="fee">費 ${Math.round(s.fee)}</span>　<span class="net">淨 ${s.net}</span></span>
+  </div>`;
+
+  if(days.length === 0){ html += `<div class="empty-tip">此月尚無紀錄</div>`; document.getElementById('statContent').innerHTML = html; return; }
+
+  days.forEach(d=>{
+    const arr = dayMap[d];
+    const dSum = arr.reduce((a,r)=>a+Number(r.raw||0),0);
+    const dFee = arr.reduce((a,r)=>a+Number(r.fee||0),0);
+    const dNet = arr.reduce((a,r)=>a+Number(r.net||0),0);
+    html += `
+      <div class="stat-card" onclick="statDrillToDayDetail('${monthStr}-${d}')">
+        <span class="sc-name">${monthStr.slice(5)}-${d}</span>
+        <span class="sc-stat"><span class="sum">營 ${dSum}</span>　<span class="fee">費 ${Math.round(dFee)}</span>　<span class="net">淨 ${dNet}</span></span>
+      </div>
+    `;
+  });
+
+  document.getElementById('statContent').innerHTML = html;
+}
+
+function renderStatMonthList(yearStr){
+  const recs = getRecords().filter(r => r.date.startsWith(yearStr));
+  const monthMap = {};
+  recs.forEach(r=>{ const m = r.date.split("-")[1]; if(!monthMap[m]) monthMap[m]=[]; monthMap[m].push(r); });
+  const months = Object.keys(monthMap).sort();
+  const s = calcIncomeStat(yearStr);
+
+  let html = statBarHtml();
+  html += `<div class="crumb">${yearStr} 每月統計</div>`;
+  html += `<div class="summary-card">
+    <span class="sc-name">年總</span>
+    <span class="sc-stat"><span class="sum">營 ${s.sum}</span>　<span class="fee">費 ${Math.round(s.fee)}</span>　<span class="net">淨 ${s.net}</span></span>
+  </div>`;
+
+  if(months.length === 0){ html += `<div class="empty-tip">此年尚無紀錄</div>`; document.getElementById('statContent').innerHTML = html; return; }
+
+  months.forEach(m=>{
+    const arr = monthMap[m];
+    const mSum = arr.reduce((a,r)=>a+Number(r.raw||0),0);
+    const mFee = arr.reduce((a,r)=>a+Number(r.fee||0),0);
+    const mNet = arr.reduce((a,r)=>a+Number(r.net||0),0);
+    html += `
+      <div class="stat-card" onclick="statDrillToDayList('${yearStr}-${m}')">
+        <span class="sc-name">${m} 月</span>
+        <span class="sc-stat"><span class="sum">營 ${mSum}</span>　<span class="fee">費 ${Math.round(mFee)}</span>　<span class="net">淨 ${mNet}</span></span>
+      </div>
+    `;
+  });
+
+  document.getElementById('statContent').innerHTML = html;
+}
+
+function renderStatYearList(){
+  const years = [...new Set(getRecords().map(r => r.date.split("-")[0]))].sort().reverse();
+  let html = statBarHtml();
+  html += `<div class="crumb">所有年份統計</div>`;
+
+  if(years.length === 0){ html += `<div class="empty-tip">尚無紀錄</div>`; document.getElementById('statContent').innerHTML = html; return; }
+
+  years.forEach(y=>{
+    const s = calcIncomeStat(y);
+    html += `
+      <div class="stat-card" onclick="statDrillToMonthList('${y}')">
+        <span class="sc-name">${y} 年</span>
+        <span class="sc-stat"><span class="sum">營 ${s.sum}</span>　<span class="fee">費 ${Math.round(s.fee)}</span>　<span class="net">淨 ${s.net}</span></span>
+      </div>
+    `;
+  });
+
+  document.getElementById('statContent').innerHTML = html;
+}
+
 function renderStatDayDetail(dateStr){
   const recs = getRecords().filter(r => r.date === dateStr);
-  const s = calcStatRange(dateStr);
-  const el = document.getElementById('statContent');
+  const s = calcIncomeStat(dateStr);
 
-  let html = `
-    <div class="crumb">${dateStr} 當日明細</div>
-    <div class="summary-card">
-      <span class="sc-name">日總</span>
-      <span class="sc-stat"><span class="sum">營 ${s.sum}</span>　<span class="fee">費 ${Math.round(s.fee)}</span>　<span class="net">淨 ${s.net}</span>　${s.trip}趟</span>
-    </div>
-  `;
+  let html = statBarHtml();
+  html += `<div class="crumb">${dateStr} 當日明細</div>`;
+  html += `<div class="summary-card">
+    <span class="sc-name">日總</span>
+    <span class="sc-stat"><span class="sum">營 ${s.sum}</span>　<span class="fee">費 ${Math.round(s.fee)}</span>　<span class="net">淨 ${s.net}</span>　${s.trip}趟</span>
+  </div>`;
 
-  if(recs.length === 0){ html += `<div class="empty-tip">此日尚無紀錄</div>`; el.innerHTML = html; return; }
+  if(recs.length === 0){ html += `<div class="empty-tip">此日尚無紀錄</div>`; document.getElementById('statContent').innerHTML = html; return; }
 
-  html += `<div class="section-title"><h3>收入明細（${recs.length} 筆）</h3></div>`;
-  recs.sort((a,b)=>a.id-b.id).forEach((item, i)=>{
-    let cum = 0; for(let j=0;j<=i;j++) cum += Number(recs[j].net||0);
-    const div = document.createElement('div');
+  const asc = [...recs].sort((a,b)=>a.id-b.id);
+  let cum = 0;
+  asc.forEach((item, i)=>{
+    cum += Number(item.net||0);
     html += `
       <div class="detail-row">
         ${buildDetailRow(item, i+1, cum)}
@@ -958,236 +1015,193 @@ function renderStatDayDetail(dateStr){
     `;
   });
 
-  el.innerHTML = html;
+  document.getElementById('statContent').innerHTML = html;
 }
 
-/* 點「月」→ 當月每日明細 */
-function openStatMonth(){
+/* 統計頁鑽取 */
+function statDrillToDayList(monthStr){ statViewStack.push({type:'dayList', month:monthStr}); renderStatView(); }
+function statDrillToMonthList(yearStr){ statViewStack.push({type:'monthList', year:yearStr}); renderStatView(); }
+function statDrillToDayDetail(dateStr){ statViewStack.push({type:'dayDetail', date:dateStr}); renderStatView(); }
+
+/* ============================================================
+   支出統計頁：三張篩選卡（日/月/年）+ 檢視堆疊
+   ============================================================ */
+function calcExpStat(prefix){
+  const list = getExpenses().filter(e => e.date.startsWith(prefix));
+  const sum = list.reduce((s,e)=>s+Number(e.raw||0),0);
+  return { sum, count: list.length };
+}
+
+function refreshExpCards(){
   const now = new Date();
-  const monthStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
-  statViewStack = [{type:'month', month:monthStr}];
-  renderStatMonthDetail(monthStr);
+  const y = now.getFullYear();
+  const m = String(now.getMonth()+1).padStart(2,'0');
+  const d = String(now.getDate()).padStart(2,'0');
+  const dayPrefix = `${y}-${m}-${d}`;
+  const monPrefix = `${y}-${m}`;
+  const yrPrefix  = `${y}`;
+
+  document.getElementById('expFcDay').textContent   = `${parseInt(m)}-${parseInt(d)}`;
+  document.getElementById('expFcMonth').textContent = monPrefix;
+  document.getElementById('expFcYear').textContent  = yrPrefix;
+
+  const ds = calcExpStat(dayPrefix);
+  const ms = calcExpStat(monPrefix);
+  const ys = calcExpStat(yrPrefix);
+
+  document.getElementById('expFcDayStat').innerHTML =
+    `<span class="fee">支出 ${ds.sum}</span>　<span class="cnt">${ds.count}筆</span>`;
+  document.getElementById('expFcMonthStat').innerHTML =
+    `<span class="fee">支出 ${ms.sum}</span>　<span class="cnt">${ms.count}筆</span>`;
+  document.getElementById('expFcYearStat').innerHTML =
+    `<span class="fee">支出 ${ys.sum}</span>　<span class="cnt">${ys.count}筆</span>`;
 }
-function renderStatMonthDetail(monthStr){
-  const recs = getRecords().filter(r => r.date.startsWith(monthStr));
+
+function showExpDefault(){
+  expViewStack = [];
+  document.getElementById('expContent').innerHTML = `<div class="empty-tip">點上方卡片查看支出</div>`;
+  refreshExpCards();
+}
+
+function expGoDayEntry(){
+  const now = new Date();
+  const monPrefix = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  expViewStack = [{type:'dayList', month:monPrefix}];
+  renderExpView();
+}
+function expGoMonthEntry(){
+  const now = new Date();
+  expViewStack = [{type:'monthList', year:`${now.getFullYear()}`}];
+  renderExpView();
+}
+function expGoYearEntry(){
+  expViewStack = [{type:'yearList'}];
+  renderExpView();
+}
+
+function expBack(){
+  if(expViewStack.length > 1){
+    expViewStack.pop();
+    renderExpView();
+    return;
+  }
+  showExpDefault();
+  navBack();
+}
+
+function renderExpView(){
+  if(expViewStack.length === 0){
+    document.getElementById('expContent').innerHTML = `<div class="empty-tip">點上方卡片查看支出</div>`;
+    return;
+  }
+  const top = expViewStack[expViewStack.length-1];
+  if(top.type === 'dayList')        renderExpDayList(top.month);
+  else if(top.type === 'monthList') renderExpMonthList(top.year);
+  else if(top.type === 'yearList')  renderExpYearList();
+  else if(top.type === 'dayDetail') renderExpDayDetail(top.date);
+  refreshExpCards();
+}
+
+function expBarHtml(){
+  return `<div class="stat-bar"><button class="stat-btn" onclick="expBack()">← 返回</button></div>`;
+}
+
+function renderExpDayList(monthStr){
+  const list = getExpenses().filter(e => e.date.startsWith(monthStr));
   const dayMap = {};
-  recs.forEach(r=>{ const d = r.date.split("-")[2]; if(!dayMap[d]) dayMap[d]=[]; dayMap[d].push(r); });
+  list.forEach(e=>{ const d = e.date.split("-")[2]; if(!dayMap[d]) dayMap[d]=[]; dayMap[d].push(e); });
   const days = Object.keys(dayMap).sort();
-  const s = calcStatRange(monthStr);
-  const el = document.getElementById('statContent');
+  const s = calcExpStat(monthStr);
 
-  let html = `
-    <div class="crumb">${monthStr} 每日明細</div>
-    <div class="summary-card">
-      <span class="sc-name">月總</span>
-      <span class="sc-stat"><span class="sum">營 ${s.sum}</span>　<span class="fee">費 ${Math.round(s.fee)}</span>　<span class="net">淨 ${s.net}</span>　${s.trip}趟</span>
-    </div>
-  `;
+  let html = expBarHtml();
+  html += `<div class="crumb">${monthStr} 每日支出</div>`;
+  html += `<div class="summary-card">
+    <span class="sc-name">月總</span>
+    <span class="sc-stat"><span class="fee">支出 ${s.sum}</span>　<span class="cnt">${s.count}筆</span></span>
+  </div>`;
 
-  if(days.length === 0){ html += `<div class="empty-tip">此月尚無紀錄</div>`; el.innerHTML = html; return; }
+  if(days.length === 0){ html += `<div class="empty-tip">此月尚無支出</div>`; document.getElementById('expContent').innerHTML = html; return; }
 
   days.forEach(d=>{
-    const dayRecs = dayMap[d];
-    const daySum = dayRecs.reduce((a,r)=>a+Number(r.raw||0),0);
-    const dayFee = dayRecs.reduce((a,r)=>a+Number(r.fee||0),0);
-    const dayNet = dayRecs.reduce((a,r)=>a+Number(r.net||0),0);
+    const arr = dayMap[d];
+    const dSum = arr.reduce((a,e)=>a+Number(e.raw||0),0);
     html += `
-      <div class="stat-card" onclick="drillStatToDay('${monthStr}-${d}')">
+      <div class="stat-card exp" onclick="expDrillToDayDetail('${monthStr}-${d}')">
         <span class="sc-name">${monthStr.slice(5)}-${d}</span>
-        <span class="sc-stat"><span class="sum">營 ${daySum}</span>　<span class="fee">費 ${Math.round(dayFee)}</span>　<span class="net">淨 ${dayNet}</span>　${dayRecs.length}趟</span>
+        <span class="sc-stat"><span class="fee">支出 ${dSum}</span>　<span class="cnt">${arr.length}筆</span></span>
       </div>
     `;
   });
 
-  el.innerHTML = html;
+  document.getElementById('expContent').innerHTML = html;
 }
 
-/* 點「年」→ 當年每月統計 */
-function openStatYear(){
-  const now = new Date();
-  const yearStr = `${now.getFullYear()}`;
-  statViewStack = [{type:'year', year:yearStr}];
-  renderStatYearDetail(yearStr);
-}
-function renderStatYearDetail(yearStr){
-  const recs = getRecords().filter(r => r.date.startsWith(yearStr));
+function renderExpMonthList(yearStr){
+  const list = getExpenses().filter(e => e.date.startsWith(yearStr));
   const monthMap = {};
-  recs.forEach(r=>{ const m = r.date.split("-")[1]; if(!monthMap[m]) monthMap[m]=[]; monthMap[m].push(r); });
+  list.forEach(e=>{ const m = e.date.split("-")[1]; if(!monthMap[m]) monthMap[m]=[]; monthMap[m].push(e); });
   const months = Object.keys(monthMap).sort();
-  const s = calcStatRange(yearStr);
-  const el = document.getElementById('statContent');
+  const s = calcExpStat(yearStr);
 
-  let html = `
-    <div class="crumb">${yearStr} 每月統計</div>
-    <div class="summary-card">
-      <span class="sc-name">年總</span>
-      <span class="sc-stat"><span class="sum">營 ${s.sum}</span>　<span class="fee">費 ${Math.round(s.fee)}</span>　<span class="net">淨 ${s.net}</span>　${s.trip}趟</span>
-    </div>
-  `;
+  let html = expBarHtml();
+  html += `<div class="crumb">${yearStr} 每月支出</div>`;
+  html += `<div class="summary-card">
+    <span class="sc-name">年總</span>
+    <span class="sc-stat"><span class="fee">支出 ${s.sum}</span>　<span class="cnt">${s.count}筆</span></span>
+  </div>`;
 
-  if(months.length === 0){ html += `<div class="empty-tip">此年尚無紀錄</div>`; el.innerHTML = html; return; }
+  if(months.length === 0){ html += `<div class="empty-tip">此年尚無支出</div>`; document.getElementById('expContent').innerHTML = html; return; }
 
   months.forEach(m=>{
-    const mRecs = monthMap[m];
-    const mSum = mRecs.reduce((a,r)=>a+Number(r.raw||0),0);
-    const mFee = mRecs.reduce((a,r)=>a+Number(r.fee||0),0);
-    const mNet = mRecs.reduce((a,r)=>a+Number(r.net||0),0);
+    const arr = monthMap[m];
+    const mSum = arr.reduce((a,e)=>a+Number(e.raw||0),0);
     html += `
-      <div class="stat-card" onclick="drillStatToMonth('${yearStr}-${m}')">
+      <div class="stat-card exp" onclick="expDrillToDayList('${yearStr}-${m}')">
         <span class="sc-name">${m} 月</span>
-        <span class="sc-stat"><span class="sum">營 ${mSum}</span>　<span class="fee">費 ${Math.round(mFee)}</span>　<span class="net">淨 ${mNet}</span>　${mRecs.length}趟</span>
+        <span class="sc-stat"><span class="fee">支出 ${mSum}</span>　<span class="cnt">${arr.length}筆</span></span>
       </div>
     `;
   });
 
-  el.innerHTML = html;
+  document.getElementById('expContent').innerHTML = html;
 }
 
-/* 統計頁鑽取：從月→日、年→月 */
-function drillStatToDay(dateStr){
-  statViewStack.push({type:'day', date:dateStr});
-  renderStatDayDetail(dateStr);
-}
-function drillStatToMonth(monthStr){
-  statViewStack.push({type:'month', month:monthStr});
-  renderStatMonthDetail(monthStr);
-}
-
-/* 統計頁內返回（覆蓋全域 goBack 行為）— 判斷是否在統計頁且有堆疊 */
-document.addEventListener('click', function(e){
-  // 交給按鈕自己的 onclick 處理，這裡不用做事
-}, true);
-
-/* ===== 收入統計頁返回鍵攔截（若在統計頁且還有堆疊，先彈堆疊） ===== */
-function goBack(){
-  // 若目前在營業統計頁，且檢視堆疊>1，先回上一層
-  if(document.getElementById('pageStat').classList.contains('active') && statViewStack.length > 1){
-    statViewStack.pop();
-    const prev = statViewStack[statViewStack.length-1];
-    if(prev.type === 'day')   renderStatDayDetail(prev.date);
-    else if(prev.type === 'month') renderStatMonthDetail(prev.month);
-    else if(prev.type === 'year')  renderStatYearDetail(prev.year);
-    return;
-  }
-  // 否則照原本邏輯
-  if(historyStack.length > 0){
-    const p = historyStack.pop();
-    document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-    document.getElementById(p).classList.add('active');
-    if(p === "pageStat") showStatDefault();
-    if(p === "pageExpStat") showExpYearView();
-    if(p === "pageSetting"){
-      document.getElementById('setStartHour').value = config.businessHour.start;
-      document.getElementById('setEndHour').value = config.businessHour.end;
-      document.getElementById('fontSizeSlider').value = config.fontSize;
-      document.getElementById('fontSizeValue').textContent = config.fontSize;
-      document.getElementById('fontWeightSlider').value = config.fontWeight;
-      document.getElementById('fontWeightValue').textContent = config.fontWeight;
-      updateHourPreview(); renderSetting();
-    }
-    return;
-  }
-  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-  document.getElementById('pageHome').classList.add('active');
-}
-
-/* ===== 支出統計 ===== */
-function showExpYearView(){
-  document.getElementById('expYearView').style.display = '';
-  document.getElementById('expMonthView').style.display = 'none';
-  document.getElementById('expDayView').style.display = 'none';
-  renderExpYearList();
-}
-function calcExpTotal(exps, filterFn){
-  let total = 0;
-  exps.forEach(e=>{ if(filterFn(e)) total += Number(e.raw||0); });
-  return total;
-}
-function calcNetIncome(recs, filterFn){
-  let net = 0;
-  recs.forEach(r=>{ if(filterFn(r)) net += Number(r.net||0); });
-  return net;
-}
-function buildExpCardHtml(title, netIncome, expTotal){
-  const balance = netIncome - expTotal;
-  return `
-    <div class="stat-card-title">${escapeHtml(title)}</div>
-    <div class="exp-card-3col">
-      <div class="col">
-        <span class="lbl">淨收入</span>
-        <span class="val net">${netIncome}</span>
-      </div>
-      <div class="col">
-        <span class="lbl">支出</span>
-        <span class="val fee">${expTotal}</span>
-      </div>
-      <div class="col">
-        <span class="lbl">餘額</span>
-        <span class="val bal">${balance}</span>
-      </div>
-    </div>
-  `;
-}
 function renderExpYearList(){
-  const exps = getExpenses();
-  const recs = getRecords();
-  const years = [...new Set(exps.map(e => e.date.split("-")[0]))].sort().reverse();
-  const wrap = document.getElementById('expYearList');
-  wrap.innerHTML = "";
-  if(years.length === 0){ wrap.innerHTML = `<div class="empty-tip">尚無支出紀錄</div>`; return; }
+  const years = [...new Set(getExpenses().map(e => e.date.split("-")[0]))].sort().reverse();
+  let html = expBarHtml();
+  html += `<div class="crumb">所有年份支出</div>`;
+
+  if(years.length === 0){ html += `<div class="empty-tip">尚無支出</div>`; document.getElementById('expContent').innerHTML = html; return; }
+
   years.forEach(y=>{
-    const total = calcExpTotal(exps, e => e.date.startsWith(y+"-"));
-    const net = calcNetIncome(recs, r => r.date.startsWith(y+"-"));
-    const card = document.createElement('div');
-    card.className = "stat-card";
-    card.innerHTML = buildExpCardHtml(y + " 年", net, total);
-    card.onclick = ()=> showExpMonthView(y);
-    wrap.appendChild(card);
+    const s = calcExpStat(y);
+    html += `
+      <div class="stat-card exp" onclick="expDrillToMonthList('${y}')">
+        <span class="sc-name">${y} 年</span>
+        <span class="sc-stat"><span class="fee">支出 ${s.sum}</span>　<span class="cnt">${s.count}筆</span></span>
+      </div>
+    `;
   });
+
+  document.getElementById('expContent').innerHTML = html;
 }
-function showExpMonthView(y){
-  document.getElementById('expYearView').style.display = 'none';
-  document.getElementById('expMonthView').style.display = '';
-  document.getElementById('expDayView').style.display = 'none';
-  document.getElementById('expMonthTitle').textContent = y + " 年";
-  const exps = getExpenses();
-  const recs = getRecords();
-  const months = [...new Set(exps.filter(e=>e.date.startsWith(y+"-")).map(e => e.date.split("-")[1]))].sort().reverse();
-  const wrap = document.getElementById('expMonthList');
-  wrap.innerHTML = "";
-  if(months.length === 0){ wrap.innerHTML = `<div class="empty-tip">此年尚無支出</div>`; return; }
-  months.forEach(m=>{
-    const total = calcExpTotal(exps, e => e.date.startsWith(y+"-"+m+"-"));
-    const net = calcNetIncome(recs, r => r.date.startsWith(y+"-"+m+"-"));
-    const card = document.createElement('div');
-    card.className = "stat-card";
-    card.innerHTML = buildExpCardHtml(m + " 月", net, total);
-    card.onclick = ()=> showExpDayView(y, m);
-    wrap.appendChild(card);
-  });
-}
-function showExpDayView(y, m){
-  document.getElementById('expYearView').style.display = 'none';
-  document.getElementById('expMonthView').style.display = 'none';
-  document.getElementById('expDayView').style.display = '';
-  document.getElementById('expDayTitle').textContent = y + "-" + m + " 每日支出";
-  const exps = getExpenses().filter(e => e.date.startsWith(y+"-"+m+"-"));
-  const dayMap = {};
-  exps.forEach(e=>{
-    const dd = e.date.split("-")[2];
-    if(!dayMap[dd]) dayMap[dd] = [];
-    dayMap[dd].push(e);
-  });
-  const wrap = document.getElementById('expDayList');
-  wrap.innerHTML = "";
-  const days = Object.keys(dayMap).sort();
-  if(days.length === 0){ wrap.innerHTML = `<div class="empty-tip">此月尚無支出</div>`; return; }
-  days.forEach(d=>{
-    const items = dayMap[d];
-    const total = items.reduce((s, e)=> s + Number(e.raw||0), 0);
-    const dayCard = document.createElement('div');
-    dayCard.style.marginBottom = "10px";
-    let rowsHtml = items.sort((a,b)=>a.id-b.id).map(e=>`
+
+function renderExpDayDetail(dateStr){
+  const list = getExpenses().filter(e => e.date === dateStr);
+  const s = calcExpStat(dateStr);
+
+  let html = expBarHtml();
+  html += `<div class="crumb">${dateStr} 當日支出</div>`;
+  html += `<div class="summary-card">
+    <span class="sc-name">日總</span>
+    <span class="sc-stat"><span class="fee">支出 ${s.sum}</span>　<span class="cnt">${s.count}筆</span></span>
+  </div>`;
+
+  if(list.length === 0){ html += `<div class="empty-tip">此日尚無支出</div>`; document.getElementById('expContent').innerHTML = html; return; }
+
+  html += `<div class="section-title"><h3>支出明細（${list.length} 筆）</h3></div>`;
+  list.sort((a,b)=>a.id-b.id).forEach(e=>{
+    html += `
       <div class="exp-row">
         <span class="er-time">${e.time}</span>
         <span class="er-cat" style="color:${e.color||'#dc2626'};">${escapeHtml(e.cat)}</span>
@@ -1195,11 +1209,15 @@ function showExpDayView(y, m){
         <span class="er-amt">${e.raw}</span>
         <button class="editBtn" onclick="openEditExp(${e.id})">改</button>
       </div>
-    `).join('');
-    dayCard.innerHTML = `<div style="font-size:14px;margin:6px 0;color:#0f172a;">${m}-${d} 　支出合計：<span style="color:#dc2626;">${total}</span></div>${rowsHtml}`;
-    wrap.appendChild(dayCard);
+    `;
   });
+
+  document.getElementById('expContent').innerHTML = html;
 }
+
+function expDrillToDayList(monthStr){ expViewStack.push({type:'dayList', month:monthStr}); renderExpView(); }
+function expDrillToMonthList(yearStr){ expViewStack.push({type:'monthList', year:yearStr}); renderExpView(); }
+function expDrillToDayDetail(dateStr){ expViewStack.push({type:'dayDetail', date:dateStr}); renderExpView(); }
 
 /* ===== 修改收入紀錄 ===== */
 const editModal = document.getElementById('editModal');
@@ -1259,31 +1277,14 @@ function saveEdit(){
 
   saveRecords(recs);
   closeEditModal(); calcTotal(); renderTodayList();
-  if(document.getElementById("pageStat").classList.contains("active")){
-    // 重新渲染目前統計層級
-    if(statViewStack.length > 0){
-      const cur = statViewStack[statViewStack.length-1];
-      if(cur.type === 'day')   renderStatDayDetail(cur.date);
-      else if(cur.type === 'month') renderStatMonthDetail(cur.month);
-      else if(cur.type === 'year')  renderStatYearDetail(cur.year);
-    }
-    refreshFilterCards();
-  }
+  renderStatView();
 }
 function deleteRec(){
   if(editId === null) return;
   if(!confirm("確定要刪除這筆紀錄嗎？")) return;
   saveRecords(getRecords().filter(r => r.id !== editId));
   closeEditModal(); calcTotal(); renderTodayList();
-  if(document.getElementById("pageStat").classList.contains("active")){
-    if(statViewStack.length > 0){
-      const cur = statViewStack[statViewStack.length-1];
-      if(cur.type === 'day')   renderStatDayDetail(cur.date);
-      else if(cur.type === 'month') renderStatMonthDetail(cur.month);
-      else if(cur.type === 'year')  renderStatYearDetail(cur.year);
-    }
-    refreshFilterCards();
-  }
+  renderStatView();
 }
 
 /* ===== 修改支出紀錄 ===== */
@@ -1318,14 +1319,14 @@ function saveEditExp(){
   exps[idx].note = note;
   saveExpenses(exps);
   closeEditExpModal();
-  refreshExpStatView();
+  renderExpView();
 }
 function deleteExp(){
   if(editExpId === null) return;
   if(!confirm("確定要刪除這筆支出嗎？")) return;
   saveExpenses(getExpenses().filter(e => e.id !== editExpId));
   closeEditExpModal();
-  refreshExpStatView();
+  renderExpView();
 }
 
 /* ===== 設定頁 ===== */
@@ -1396,6 +1397,8 @@ window.onload = function(){
   renderHomeTypeBtn();
   calcTotal();
   renderTodayList();
+  refreshStatCards();
+  refreshExpCards();
 };
 </script>
 </body>
