@@ -1,4 +1,4 @@
-const CACHE = 'taxi-v1';
+const CACHE = 'taxi-v2';
 const ASSETS = [
   './', './index.html', './manifest.json',
   './cameraWarn.mp3', './icon-192.png', './icon-512.png'
