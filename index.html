@@ -69,13 +69,39 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .dr-fee{color:#dc2626;}
 .dr-cum{color:#7e22ce;}
 
-/* 統計頁年/月卡片 */
-.stat-card{background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:8px;cursor:pointer;}
-.stat-card:active{transform:scale(0.98);background:#f8fafc;}
-.stat-card-title{font-size:calc(1.15px * var(--fs-num));color:#2563eb;margin-bottom:6px;}
-.stat-card-row{font-size:calc(0.98px * var(--fs-num));color:#475569;margin-top:2px;}
-.stat-card-row.hl{color:#0f172a;}
-.stat-card-row.fee{color:#dc2626;}
+/* 統計頁篩選卡（日/月/年） */
+.filter-bar{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.filter-card{background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .15s;}
+.filter-card:active{background:#f8fafc;transform:scale(0.99);}
+.filter-card .fc-label{font-size:calc(0.95px * var(--fs-num));color:#64748b;flex-shrink:0;width:22px;text-align:center;}
+.filter-card .fc-main{font-size:calc(1.3px * var(--fs-num));color:#0f172a;flex-shrink:0;margin-left:8px;min-width:66px;}
+.filter-card .fc-stat{font-size:calc(0.92px * var(--fs-num));color:#475569;text-align:right;flex:1;margin-left:10px;line-height:1.5;}
+.filter-card .fc-stat b{color:#0f172a;}
+.filter-card .fc-stat .sum{color:#2563eb;}
+.filter-card .fc-stat .fee{color:#dc2626;}
+.filter-card .fc-stat .net{color:#7e22ce;}
+.filter-card .fc-arrow{color:#94a3b8;font-size:calc(1.1px * var(--fs-num));margin-left:6px;flex-shrink:0;}
+
+/* 統計摘要卡（不可點） */
+.summary-card{background:#fff;border-radius:10px;padding:10px 12px;margin:5px 0 8px;box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:calc(1.05px * var(--fs-num));}
+.summary-card .sc-name{color:#0f172a;flex-shrink:0;}
+.summary-card .sc-stat{flex:1;text-align:right;color:#475569;font-size:calc(0.92px * var(--fs-num));line-height:1.5;}
+.summary-card .sc-stat b{color:#0f172a;}
+.summary-card .sc-stat .sum{color:#2563eb;}
+.summary-card .sc-stat .fee{color:#dc2626;}
+.summary-card .sc-stat .net{color:#7e22ce;}
+
+/* 統計統計卡（月/年清單用） */
+.stat-card{background:#fff;border-radius:10px;padding:10px 12px;margin:5px 0;box-shadow:0 1px 4px rgba(0,0,0,0.05);cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:calc(1.05px * var(--fs-num));gap:6px;}
+.stat-card:active{background:#f8fafc;}
+.stat-card .sc-name{color:#2563eb;flex-shrink:0;min-width:52px;}
+.stat-card .sc-stat{flex:1;text-align:right;color:#475569;font-size:calc(0.92px * var(--fs-num));line-height:1.5;}
+.stat-card .sc-stat b{color:#0f172a;}
+.stat-card .sc-stat .sum{color:#2563eb;}
+.stat-card .sc-stat .fee{color:#dc2626;}
+.stat-card .sc-stat .net{color:#7e22ce;}
+
+.crumb{font-size:calc(0.95px * var(--fs-num));color:#64748b;margin-bottom:8px;}
 
 /* 支出統計卡片：三樣同排平均分布 */
 .exp-card-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:6px;}
@@ -85,10 +111,10 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .exp-card-3col .col .val.net{color:#0f172a;}
 .exp-card-3col .col .val.fee{color:#dc2626;}
 .exp-card-3col .col .val.bal{color:#16a34a;}
+.stat-card-title{font-size:calc(1.15px * var(--fs-num));color:#2563eb;margin-bottom:6px;}
 
-/* 每日列表（統計頁） */
-.day-summary-row{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:10px;margin:4px 0;padding:10px 12px;box-shadow:0 1px 4px rgba(0,0,0,0.05);font-size:calc(1.05px * var(--fs-num));cursor:pointer;gap:6px;}
-.day-summary-row:active{background:#f1f5f9;}
+/* 每日列表（支出統計） */
+.day-summary-row{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:10px;margin:4px 0;padding:10px 12px;box-shadow:0 1px 4px rgba(0,0,0,0.05);font-size:calc(1.05px * var(--fs-num));gap:6px;}
 .ds-date{color:#0f172a;}
 .ds-type{color:#475569;font-size:calc(0.9px * var(--fs-num));}
 .ds-amt{color:#1e40af;text-align:right;}
@@ -124,8 +150,6 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   margin:0;
   flex-shrink:0;
 }
-
-/* 數字鍵盤：撐滿剩餘空間 */
 #expInputModal .numKey{
   flex:1 1 auto;
   min-height:0;
@@ -142,8 +166,6 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   height:100%;
   min-height:0;
 }
-
-/* 類型按鈕：比原本高，佔固定比例，可滾動 */
 #expInputModal .payKey{
   flex:0 0 auto;
   display:grid;
@@ -158,16 +180,12 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   font-size:calc(1.2px * var(--fs-num));
   border-radius:10px;
 }
-
-/* 備註：加大 */
 #expInputModal .noteInput{
   flex-shrink:0;
   margin:0 !important;
   padding:14px 12px;
   font-size:calc(1.2px * var(--fs-num));
 }
-
-/* 取消按鈕 */
 #expInputModal > .modal-card > button{
   flex-shrink:0;
   margin:0 !important;
@@ -308,39 +326,37 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   <div id="listToday"></div>
 </div>
 
-<!-- 收入統計頁 -->
+<!-- 營業統計頁（日/月/年 三張篩選卡 + 內容區） -->
 <div id="pageStat" class="page">
   <div class="backHomeBar">
     <button class="navBtn" onclick="goBack()">返回</button>
     <button class="navBtn" onclick="showPage('pageHome')">首頁</button>
   </div>
-  <div id="statYearView">
-    <h3 style="margin-bottom:10px;font-size:16px;">營業統計</h3>
-    <div id="statYearList"></div>
-  </div>
-  <div id="statMonthView" style="display:none;">
-    <h3 id="statMonthTitle" style="margin-bottom:10px;font-size:16px;"></h3>
-    <div id="statMonthList"></div>
-  </div>
-  <div id="statDayView" style="display:none;">
-    <h3 id="statDayTitle" style="margin-bottom:10px;font-size:16px;"></h3>
-    <div id="statDayList"></div>
-  </div>
-</div>
 
-<!-- 單日明細 -->
-<div id="pageDayDetail" class="page">
-  <div class="backHomeBar">
-    <button class="navBtn" onclick="goBack()">返回</button>
-    <button class="navBtn" onclick="showPage('pageHome')">首頁</button>
+  <div class="filter-bar">
+    <div class="filter-card" onclick="openStatDay()">
+      <span class="fc-label">日</span>
+      <span class="fc-main" id="fcDay">--</span>
+      <span class="fc-stat" id="fcDayStat">—</span>
+      <span class="fc-arrow">›</span>
+    </div>
+    <div class="filter-card" onclick="openStatMonth()">
+      <span class="fc-label">月</span>
+      <span class="fc-main" id="fcMonth">--</span>
+      <span class="fc-stat" id="fcMonthStat">—</span>
+      <span class="fc-arrow">›</span>
+    </div>
+    <div class="filter-card" onclick="openStatYear()">
+      <span class="fc-label">年</span>
+      <span class="fc-main" id="fcYear">--</span>
+      <span class="fc-stat" id="fcYearStat">—</span>
+      <span class="fc-arrow">›</span>
+    </div>
   </div>
-  <h3 id="dayDetailTitle" style="margin-bottom:12px;font-size:16px;">單日明細</h3>
-  <div class="card">
-    <div style="font-size:calc(1.05px * var(--fs-num));margin-bottom:4px;">營業額：<span id="ddTotal" style="color:#2563eb;">0</span>｜載客：<span id="ddTrip">0</span>趟</div>
-    <div style="font-size:calc(1.05px * var(--fs-num));color:#475569;margin-bottom:4px;"><span id="ddTypeText"></span></div>
-    <div style="font-size:calc(1px * var(--fs-num));color:#64748b;">現金：<span id="ddCash">0</span>｜非現金：<span id="ddNonCash">0</span>｜手續費：<span id="ddFee">0</span></div>
+
+  <div id="statContent">
+    <div class="empty-tip">點上方卡片查看統計</div>
   </div>
-  <div id="dayDetailList" style="margin-top:10px;"></div>
 </div>
 
 <!-- 支出統計頁 -->
@@ -435,7 +451,12 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   </div>
 
   <div class="setBlock">
-    <h4>資料備份</h4>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;white-space:nowrap;overflow:hidden;">
+      <h4 style="margin:0;font-size:calc(1.05px * var(--fs-num));color:#0f172a;flex-shrink:0;">資料備份</h4>
+      <span style="font-size:calc(0.85px * var(--fs-num));color:#64748b;line-height:1.3;flex:1;text-align:right;overflow:hidden;text-overflow:ellipsis;">
+        .json 檔存於「下載」
+      </span>
+    </div>
     <div class="backup-bar">
       <button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出</button>
       <button class="backup-btn importBtn" onclick="document.getElementById('fileImport').click()">📥 匯入</button>
@@ -453,9 +474,12 @@ let historyStack = [];
 let modalAmount = "";
 let expModalAmount = "";
 let sortNewFirst = true;
-let statViewYear, statViewMonth, statViewDay;
 
-// 遞增序號：避免 Date.now() 碰撞
+// 營業統計頁的檢視堆疊
+let statViewStack = [];
+// 首頁「今日」基準（真實時間）
+function todayBiz(){ return getBizDate(new Date()); }
+
 function nextId(){
   let seq = Number(localStorage.getItem('taxiSeq') || 0) + 1;
   localStorage.setItem('taxiSeq', seq);
@@ -520,7 +544,6 @@ function saveExpenses(l){ localStorage.setItem('taxiExp', JSON.stringify(l)); }
 function fmtTime(){ const d=new Date(); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
 function escapeHtml(v){ return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
 
-// 現金判定：第一項付款方式即為現金
 function isCashPay(p){
   const first = config.payList[0];
   return !!(first && first.name === p);
@@ -626,9 +649,8 @@ function showPage(id){
     document.getElementById('fontWeightValue').textContent = config.fontWeight;
     updateHourPreview(); renderSetting();
   }
-  if(id === "pageStat") showStatYearView();
+  if(id === "pageStat") showStatDefault();
   if(id === "pageExpStat") showExpYearView();
-  if(id === "pageDayDetail") renderDayDetail();
   if(id === "pageHome") renderHomeTypeBtn();
 }
 
@@ -637,9 +659,8 @@ function goBack(){
     const p = historyStack.pop();
     document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
     document.getElementById(p).classList.add('active');
-    if(p === "pageStat") showStatYearView();
+    if(p === "pageStat") showStatDefault();
     if(p === "pageExpStat") showExpYearView();
-    if(p === "pageDayDetail") renderDayDetail();
     if(p === "pageSetting"){
       document.getElementById('setStartHour').value = config.businessHour.start;
       document.getElementById('setEndHour').value = config.businessHour.end;
@@ -744,11 +765,9 @@ function saveExpense(cat){
   list.unshift({ id: nextId(), cat: cat.name, color: cat.color, raw: amt, note, date: getBizDate(now), time: fmtTime() });
   saveExpenses(list);
   closeExpInputModal();
-  // 新增後即時重繪支出統計頁（保持目前層級）
   refreshExpStatView();
 }
 
-/* 依目前所在的支出統計層級重新渲染 */
 function refreshExpStatView(){
   if(!document.getElementById("pageExpStat").classList.contains("active")) return;
   if(document.getElementById('expDayView').style.display !== 'none'){
@@ -861,150 +880,215 @@ function renderTodayList(){
   });
 }
 
-function renderDayDetail(){
-  if(!statViewYear || !statViewMonth || !statViewDay) return;
-  const td = `${statViewYear}-${statViewMonth}-${statViewDay}`;
-  document.getElementById("dayDetailTitle").textContent = `${td} 營業明細`;
-  const list = getRecords().filter(r => r.date === td);
-  const s = calcDayStats(list, td);
-  const ta = [];
-  for(const k in s.typeCount) ta.push(`${k}:${s.typeCount[k]}趟`);
-  document.getElementById("ddTotal").textContent = s.daySum;
-  document.getElementById("ddTrip").textContent = s.tripCount;
-  document.getElementById("ddTypeText").textContent = ta.join("｜");
-  document.getElementById("ddCash").textContent = s.cashSum;
-  document.getElementById("ddNonCash").textContent = s.nonCashSum;
-  document.getElementById("ddFee").textContent = Math.round(s.feeSum);
-  const wrap = document.getElementById("dayDetailList");
-  wrap.innerHTML = "";
-  if(list.length === 0){ wrap.innerHTML = `<div class="empty-tip">此日尚無紀錄</div>`; return; }
-  const asc = [...list].sort((a,b)=>a.id-b.id);
-  let cum = 0;
-  asc.forEach((item, i)=>{
-    cum += Number(item.net||0);
-    const div = document.createElement('div');
-    div.className = "detail-row";
-    div.innerHTML = buildDetailRow(item, i+1, cum) + `<button class="editBtn" onclick="openEdit(${item.id})">改</button>`;
-    wrap.appendChild(div);
-  });
+/* ============================================================
+   營業統計頁：日 / 月 / 年 三張篩選卡片
+   ============================================================ */
+function calcStatRange(prefix){
+  // prefix 可為 "2026" / "2026-09" / "2026-09-30"
+  const recs = getRecords().filter(r => r.date.startsWith(prefix));
+  const sum = recs.reduce((s,r)=>s+Number(r.raw||0),0);
+  const fee = recs.reduce((s,r)=>s+Number(r.fee||0),0);
+  const net = recs.reduce((s,r)=>s+Number(r.net||0),0);
+  return { sum, fee, net, trip: recs.length };
 }
 
-/* ===== 收入統計 ===== */
-function showStatYearView(){
-  document.getElementById('statYearView').style.display = '';
-  document.getElementById('statMonthView').style.display = 'none';
-  document.getElementById('statDayView').style.display = 'none';
-  renderStatYearList();
+function refreshFilterCards(){
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth()+1).padStart(2,'0');
+  const d = String(now.getDate()).padStart(2,'0');
+  const dayStr   = `${y}-${m}-${d}`;
+  const monthStr = `${y}-${m}`;
+  const yearStr  = `${y}`;
+
+  document.getElementById('fcDay').textContent   = `${parseInt(m)}-${parseInt(d)}`;
+  document.getElementById('fcMonth').textContent = monthStr;
+  document.getElementById('fcYear').textContent  = yearStr;
+
+  const ds = calcStatRange(dayStr);
+  const ms = calcStatRange(monthStr);
+  const ys = calcStatRange(yearStr);
+
+  document.getElementById('fcDayStat').innerHTML =
+    `<span class="sum">營 ${ds.sum}</span>　<span class="fee">費 ${Math.round(ds.fee)}</span>　<span class="net">淨 ${ds.net}</span>`;
+  document.getElementById('fcMonthStat').innerHTML =
+    `<span class="sum">營 ${ms.sum}</span>　<span class="fee">費 ${Math.round(ms.fee)}</span>　<span class="net">淨 ${ms.net}</span>`;
+  document.getElementById('fcYearStat').innerHTML =
+    `<span class="sum">營 ${ys.sum}</span>　<span class="fee">費 ${Math.round(ys.fee)}</span>　<span class="net">淨 ${ys.net}</span>`;
 }
-function calcStatCard(recs, filterFn){
-  const g = {sum:0, net:0, trip:0, fee:0, deduct:0, typeCount:{}, paySum:{}};
-  config.typeList.forEach(t => g.typeCount[t.name] = 0);
-  config.payList.forEach(p => g.paySum[p.name] = 0);
-  recs.forEach(r=>{
-    if(!filterFn(r)) return;
-    g.sum += Number(r.raw||0);
-    g.net += Number(r.net||0);
-    g.trip++;
-    g.fee += Number(r.fee||0);
-    const ti = config.typeList.find(t=>t.name===r.type);
-    if(ti && Number(ti.deduct)>0) g.deduct += Number(ti.deduct);
-    g.typeCount[r.type] = (g.typeCount[r.type]||0)+1;
-    if(r.splits && Array.isArray(r.splits)){
-      r.splits.forEach(s => {
-        g.paySum[s.pay] = (g.paySum[s.pay]||0) + Number(s.amount||0);
-      });
-    } else {
-      g.paySum[r.pay] = (g.paySum[r.pay]||0) + Number(r.raw||0);
-    }
-  });
-  return g;
+
+function showStatDefault(){
+  statViewStack = [];
+  const el = document.getElementById('statContent');
+  el.innerHTML = `<div class="empty-tip">點上方卡片查看統計</div>`;
+  refreshFilterCards();
 }
-function buildStatCardHtml(title, g){
-  const tParts = config.typeList.map(t => `${escapeHtml(t.name)}:${g.typeCount[t.name]||0}`).join('　');
-  const pParts = config.payList.map(p => `${escapeHtml(p.name)}:${g.paySum[p.name]||0}`).join('　');
-  return `
-    <div class="stat-card-title">${escapeHtml(title)}</div>
-    <div class="stat-card-row hl">營業額：${g.sum}　淨：${g.net}</div>
-    <div class="stat-card-row">趟：${g.trip}　${tParts}　派遣費：${g.deduct}　手續費：${Math.round(g.fee)}</div>
-    <div class="stat-card-row">${pParts}</div>
+
+/* 點「日」→ 今日明細 */
+function openStatDay(){
+  const now = new Date();
+  const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  statViewStack = [{type:'day', date:dateStr}];
+  renderStatDayDetail(dateStr);
+}
+function renderStatDayDetail(dateStr){
+  const recs = getRecords().filter(r => r.date === dateStr);
+  const s = calcStatRange(dateStr);
+  const el = document.getElementById('statContent');
+
+  let html = `
+    <div class="crumb">${dateStr} 當日明細</div>
+    <div class="summary-card">
+      <span class="sc-name">日總</span>
+      <span class="sc-stat"><span class="sum">營 ${s.sum}</span>　<span class="fee">費 ${Math.round(s.fee)}</span>　<span class="net">淨 ${s.net}</span>　${s.trip}趟</span>
+    </div>
   `;
-}
-function renderStatYearList(){
-  const recs = getRecords();
-  const years = [...new Set(recs.map(r => r.date.split("-")[0]))].sort().reverse();
-  const wrap = document.getElementById('statYearList');
-  wrap.innerHTML = "";
-  if(years.length === 0){ wrap.innerHTML = `<div class="empty-tip">尚無紀錄</div>`; return; }
-  years.forEach(y=>{
-    const g = calcStatCard(recs, r => r.date.startsWith(y+"-"));
-    const card = document.createElement('div');
-    card.className = "stat-card";
-    card.innerHTML = buildStatCardHtml(y + " 年", g);
-    card.onclick = ()=> showStatMonthView(y);
-    wrap.appendChild(card);
-  });
-}
-function showStatMonthView(y){
-  document.getElementById('statYearView').style.display = 'none';
-  document.getElementById('statMonthView').style.display = '';
-  document.getElementById('statDayView').style.display = 'none';
-  document.getElementById('statMonthTitle').textContent = y + " 年";
-  const allRecs = getRecords();
-  const recs = allRecs.filter(r => r.date.startsWith(y+"-"));
-  const months = [...new Set(recs.map(r => r.date.split("-")[1]))].sort().reverse();
-  const wrap = document.getElementById('statMonthList');
-  wrap.innerHTML = "";
-  if(months.length === 0){ wrap.innerHTML = `<div class="empty-tip">此年尚無紀錄</div>`; return; }
-  months.forEach(m=>{
-    const g = calcStatCard(allRecs, r => r.date.startsWith(y+"-"+m+"-"));
-    const card = document.createElement('div');
-    card.className = "stat-card";
-    card.innerHTML = buildStatCardHtml(m + " 月", g);
-    card.onclick = ()=> showStatDayView(y, m);
-    wrap.appendChild(card);
-  });
-}
-function showStatDayView(y, m){
-  document.getElementById('statYearView').style.display = 'none';
-  document.getElementById('statMonthView').style.display = 'none';
-  document.getElementById('statDayView').style.display = '';
-  document.getElementById('statDayTitle').textContent = y + "-" + m + " 每日營收";
-  const recs = getRecords();
-  const dayMap = {};
-  recs.forEach(r=>{
-    const [yy,mm,dd] = r.date.split("-");
-    if(yy !== y || mm !== m) return;
-    if(!dayMap[dd]){ dayMap[dd] = {sum:0, net:0, trip:0, fee:0, typeCount:{}}; config.typeList.forEach(t => dayMap[dd].typeCount[t.name]=0); }
-    dayMap[dd].sum += Number(r.raw||0);
-    dayMap[dd].net += Number(r.net||0);
-    dayMap[dd].trip++;
-    dayMap[dd].fee += Number(r.fee||0);
-    dayMap[dd].typeCount[r.type] = (dayMap[dd].typeCount[r.type]||0)+1;
-  });
-  const wrap = document.getElementById('statDayList');
-  wrap.innerHTML = "";
-  const days = Object.keys(dayMap).sort();
-  if(days.length === 0){ wrap.innerHTML = `<div class="empty-tip">此月尚無紀錄</div>`; return; }
-  let cumu = 0;
-  days.forEach(d=>{
-    const g = dayMap[d];
-    cumu += g.sum;
-    const tt = config.typeList.map(t => `${t.name.charAt(0)}:${g.typeCount[t.name]||0}`).join(' ');
-    const feeN = Math.round(g.fee);
-    const feeH = feeN > 0 ? `-${feeN}` : '';
-    const row = document.createElement('div');
-    row.className = "day-summary-row";
-    row.innerHTML = `
-      <span class="ds-date">${m}-${d}</span>
-      <span class="ds-type">(${tt})</span>
-      <span class="ds-amt">${g.sum}</span>
-      <span class="ds-fee">${feeH}</span>
-      <span class="ds-net">淨 ${g.net}</span>
-      <span class="ds-cum">累計 ${cumu}</span>
+
+  if(recs.length === 0){ html += `<div class="empty-tip">此日尚無紀錄</div>`; el.innerHTML = html; return; }
+
+  html += `<div class="section-title"><h3>收入明細（${recs.length} 筆）</h3></div>`;
+  recs.sort((a,b)=>a.id-b.id).forEach((item, i)=>{
+    let cum = 0; for(let j=0;j<=i;j++) cum += Number(recs[j].net||0);
+    const div = document.createElement('div');
+    html += `
+      <div class="detail-row">
+        ${buildDetailRow(item, i+1, cum)}
+        <button class="editBtn" onclick="openEdit(${item.id})">改</button>
+      </div>
     `;
-    row.onclick = ()=>{ statViewYear = y; statViewMonth = m; statViewDay = d; showPage('pageDayDetail'); };
-    wrap.appendChild(row);
   });
+
+  el.innerHTML = html;
+}
+
+/* 點「月」→ 當月每日明細 */
+function openStatMonth(){
+  const now = new Date();
+  const monthStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  statViewStack = [{type:'month', month:monthStr}];
+  renderStatMonthDetail(monthStr);
+}
+function renderStatMonthDetail(monthStr){
+  const recs = getRecords().filter(r => r.date.startsWith(monthStr));
+  const dayMap = {};
+  recs.forEach(r=>{ const d = r.date.split("-")[2]; if(!dayMap[d]) dayMap[d]=[]; dayMap[d].push(r); });
+  const days = Object.keys(dayMap).sort();
+  const s = calcStatRange(monthStr);
+  const el = document.getElementById('statContent');
+
+  let html = `
+    <div class="crumb">${monthStr} 每日明細</div>
+    <div class="summary-card">
+      <span class="sc-name">月總</span>
+      <span class="sc-stat"><span class="sum">營 ${s.sum}</span>　<span class="fee">費 ${Math.round(s.fee)}</span>　<span class="net">淨 ${s.net}</span>　${s.trip}趟</span>
+    </div>
+  `;
+
+  if(days.length === 0){ html += `<div class="empty-tip">此月尚無紀錄</div>`; el.innerHTML = html; return; }
+
+  days.forEach(d=>{
+    const dayRecs = dayMap[d];
+    const daySum = dayRecs.reduce((a,r)=>a+Number(r.raw||0),0);
+    const dayFee = dayRecs.reduce((a,r)=>a+Number(r.fee||0),0);
+    const dayNet = dayRecs.reduce((a,r)=>a+Number(r.net||0),0);
+    html += `
+      <div class="stat-card" onclick="drillStatToDay('${monthStr}-${d}')">
+        <span class="sc-name">${monthStr.slice(5)}-${d}</span>
+        <span class="sc-stat"><span class="sum">營 ${daySum}</span>　<span class="fee">費 ${Math.round(dayFee)}</span>　<span class="net">淨 ${dayNet}</span>　${dayRecs.length}趟</span>
+      </div>
+    `;
+  });
+
+  el.innerHTML = html;
+}
+
+/* 點「年」→ 當年每月統計 */
+function openStatYear(){
+  const now = new Date();
+  const yearStr = `${now.getFullYear()}`;
+  statViewStack = [{type:'year', year:yearStr}];
+  renderStatYearDetail(yearStr);
+}
+function renderStatYearDetail(yearStr){
+  const recs = getRecords().filter(r => r.date.startsWith(yearStr));
+  const monthMap = {};
+  recs.forEach(r=>{ const m = r.date.split("-")[1]; if(!monthMap[m]) monthMap[m]=[]; monthMap[m].push(r); });
+  const months = Object.keys(monthMap).sort();
+  const s = calcStatRange(yearStr);
+  const el = document.getElementById('statContent');
+
+  let html = `
+    <div class="crumb">${yearStr} 每月統計</div>
+    <div class="summary-card">
+      <span class="sc-name">年總</span>
+      <span class="sc-stat"><span class="sum">營 ${s.sum}</span>　<span class="fee">費 ${Math.round(s.fee)}</span>　<span class="net">淨 ${s.net}</span>　${s.trip}趟</span>
+    </div>
+  `;
+
+  if(months.length === 0){ html += `<div class="empty-tip">此年尚無紀錄</div>`; el.innerHTML = html; return; }
+
+  months.forEach(m=>{
+    const mRecs = monthMap[m];
+    const mSum = mRecs.reduce((a,r)=>a+Number(r.raw||0),0);
+    const mFee = mRecs.reduce((a,r)=>a+Number(r.fee||0),0);
+    const mNet = mRecs.reduce((a,r)=>a+Number(r.net||0),0);
+    html += `
+      <div class="stat-card" onclick="drillStatToMonth('${yearStr}-${m}')">
+        <span class="sc-name">${m} 月</span>
+        <span class="sc-stat"><span class="sum">營 ${mSum}</span>　<span class="fee">費 ${Math.round(mFee)}</span>　<span class="net">淨 ${mNet}</span>　${mRecs.length}趟</span>
+      </div>
+    `;
+  });
+
+  el.innerHTML = html;
+}
+
+/* 統計頁鑽取：從月→日、年→月 */
+function drillStatToDay(dateStr){
+  statViewStack.push({type:'day', date:dateStr});
+  renderStatDayDetail(dateStr);
+}
+function drillStatToMonth(monthStr){
+  statViewStack.push({type:'month', month:monthStr});
+  renderStatMonthDetail(monthStr);
+}
+
+/* 統計頁內返回（覆蓋全域 goBack 行為）— 判斷是否在統計頁且有堆疊 */
+document.addEventListener('click', function(e){
+  // 交給按鈕自己的 onclick 處理，這裡不用做事
+}, true);
+
+/* ===== 收入統計頁返回鍵攔截（若在統計頁且還有堆疊，先彈堆疊） ===== */
+function goBack(){
+  // 若目前在營業統計頁，且檢視堆疊>1，先回上一層
+  if(document.getElementById('pageStat').classList.contains('active') && statViewStack.length > 1){
+    statViewStack.pop();
+    const prev = statViewStack[statViewStack.length-1];
+    if(prev.type === 'day')   renderStatDayDetail(prev.date);
+    else if(prev.type === 'month') renderStatMonthDetail(prev.month);
+    else if(prev.type === 'year')  renderStatYearDetail(prev.year);
+    return;
+  }
+  // 否則照原本邏輯
+  if(historyStack.length > 0){
+    const p = historyStack.pop();
+    document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+    document.getElementById(p).classList.add('active');
+    if(p === "pageStat") showStatDefault();
+    if(p === "pageExpStat") showExpYearView();
+    if(p === "pageSetting"){
+      document.getElementById('setStartHour').value = config.businessHour.start;
+      document.getElementById('setEndHour').value = config.businessHour.end;
+      document.getElementById('fontSizeSlider').value = config.fontSize;
+      document.getElementById('fontSizeValue').textContent = config.fontSize;
+      document.getElementById('fontWeightSlider').value = config.fontWeight;
+      document.getElementById('fontWeightValue').textContent = config.fontWeight;
+      updateHourPreview(); renderSetting();
+    }
+    return;
+  }
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('pageHome').classList.add('active');
 }
 
 /* ===== 支出統計 ===== */
@@ -1175,14 +1259,31 @@ function saveEdit(){
 
   saveRecords(recs);
   closeEditModal(); calcTotal(); renderTodayList();
-  if(document.getElementById("pageDayDetail").classList.contains("active")) renderDayDetail();
+  if(document.getElementById("pageStat").classList.contains("active")){
+    // 重新渲染目前統計層級
+    if(statViewStack.length > 0){
+      const cur = statViewStack[statViewStack.length-1];
+      if(cur.type === 'day')   renderStatDayDetail(cur.date);
+      else if(cur.type === 'month') renderStatMonthDetail(cur.month);
+      else if(cur.type === 'year')  renderStatYearDetail(cur.year);
+    }
+    refreshFilterCards();
+  }
 }
 function deleteRec(){
   if(editId === null) return;
   if(!confirm("確定要刪除這筆紀錄嗎？")) return;
   saveRecords(getRecords().filter(r => r.id !== editId));
   closeEditModal(); calcTotal(); renderTodayList();
-  if(document.getElementById("pageDayDetail").classList.contains("active")) renderDayDetail();
+  if(document.getElementById("pageStat").classList.contains("active")){
+    if(statViewStack.length > 0){
+      const cur = statViewStack[statViewStack.length-1];
+      if(cur.type === 'day')   renderStatDayDetail(cur.date);
+      else if(cur.type === 'month') renderStatMonthDetail(cur.month);
+      else if(cur.type === 'year')  renderStatYearDetail(cur.year);
+    }
+    refreshFilterCards();
+  }
 }
 
 /* ===== 修改支出紀錄 ===== */
