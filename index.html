@@ -86,11 +86,38 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .filter-card .fc-main{font-size:calc(1.3px * var(--fs-num));color:#0f172a;flex-shrink:0;margin-left:8px;min-width:66px;}
 .filter-card .fc-stat{font-size:calc(0.92px * var(--fs-num));color:#475569;text-align:right;flex:1;margin-left:10px;line-height:1.5;}
 .filter-card .fc-stat b{color:#0f172a;}
-.filter-card .fc-stat .sum{color:#2563eb;}
-.filter-card .fc-stat .fee{color:#dc2626;}
-.filter-card .fc-stat .net{color:#7e22ce;}
-.filter-card .fc-stat .cnt{color:#94a3b8;}
+
 .filter-card .fc-arrow{color:#94a3b8;font-size:calc(1.1px * var(--fs-num));margin-left:6px;flex-shrink:0;}
+.filter-card .sc-stat{
+  display:flex;
+  justify-content:flex-end;
+  gap:4px;
+}
+.filter-card .sc-stat b{color:#0f172a;}
+.filter-card .sc-stat .sum{
+  color:#2563eb;
+  flex:1;
+  text-align:right;
+  font-variant-numeric: tabular-nums;
+}
+.filter-card .sc-stat .fee{
+  color:#dc2626;
+  min-width:6ch;
+  text-align:right;
+  font-variant-numeric: tabular-nums;
+}
+.filter-card .sc-stat .net{
+  color:#7e22ce;
+  min-width:7ch;
+  text-align:right;
+  font-variant-numeric: tabular-nums;
+}
+.filter-card .sc-stat .cnt{
+  color:#94a3b8;
+  min-width:4ch;
+  text-align:right;
+  font-variant-numeric: tabular-nums;
+}
 
 /* 清單摘要卡 */
 .summary-card{background:#fff;border-radius:10px;padding:10px 12px;margin:5px 0 8px;box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:calc(1.05px * var(--fs-num));}
@@ -125,7 +152,13 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   text-align:right;
   font-variant-numeric: tabular-nums;
 }
-.summary-card .sc-stat .cnt{color:#94a3b8;}
+.summary-card .sc-stat .cnt{
+  color:#94a3b8;
+  min-width:4ch;
+  text-align:right;
+  font-variant-numeric: tabular-nums;
+}
+
 
 /* 清單統計卡（可點） */
 .stat-card{background:#fff;border-radius:10px;padding:10px 12px;margin:5px 0;box-shadow:0 1px 4px rgba(0,0,0,0.05);cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:calc(1.05px * var(--fs-num));gap:6px;}
