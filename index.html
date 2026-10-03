@@ -71,11 +71,12 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 
 /* 明細行（首頁今日） */
 .detail-row{display:flex;align-items:center;background:#fff;border-radius:10px;margin:3px 0;padding:3px 10px;box-shadow:0 1px 3px rgba(0,0,0,0.05);font-size:calc(1.05px * var(--fs-num));gap:0;font-family:Consolas,Menlo,monospace;white-space:pre;line-height:1.1;}
-.dr-left{color:#0f172a;font-size:calc(0.9px * var(--fs-num));white-space:nowrap;}
-.dr-type,.dr-pay{white-space:nowrap;}
-.dr-amt,.dr-fee,.dr-net,.dr-cum{text-align:right;white-space:nowrap;}
-.dr-fee{color:#dc2626;}
-.dr-cum{color:#7e22ce;}
+.dr-left{color:#0f172a;font-size:calc(0.9px * var(--fs-num));flex-shrink:0;}
+.dr-type{flex-shrink:0;margin-right:6px;}
+.dr-amt{flex-shrink:0;text-align:right;margin-right:6px;}
+.dr-net{flex-shrink:0;text-align:right;margin-right:6px;}
+.dr-cum{flex:1;text-align:right;}
+.editBtn{flex-shrink:0;margin-left:4px;}
 
 /* ============ 三卡篩選（營業/支出通用） ============ */
 .filter-bar{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
@@ -796,25 +797,21 @@ function buildDetailRow(item, idx, cum){
   }else{
     payChar = (item.pay||"").charAt(0);
   }
-  // 時間後面緊貼(營業類別)，付款方式緊貼括弧 → (派)現
   const typePayCombo = "(" + typeStr + ")" + payChar;
 
-  // 各欄預留位數，多餘間距平均分配到各欄（等寬字型）
-  const timeCol   = (idxStr + (item.time||"")).padEnd(9," ");
-  const typeCol   = typePayCombo.padEnd(7," ");
-  const rawPad    = String(item.raw).padStart(4," ");
-  const feePad    = String(feeN).padStart(2," ");
-  const amtFeeCol = (rawPad + "-" + feePad).padStart(9," ");
-  const netCol    = ("淨" + String(item.net)).padStart(8," ");
-  const cumCol    = String(cum).padStart(6," ");
+  const rawStr = String(item.raw);
+  const feeStr = String(feeN);
+  const amtFeeText = `${rawStr}-${feeStr}`;
+  const netText = "淨" + String(item.net);
+  const cumStr = String(cum);
 
   return `
-    <span class="dr-left">${timeCol}</span>
-    <span class="dr-type" style="color:${typeColor};">${typeCol}</span>
-    <span class="dr-amt" style="color:#2563eb;">${amtFeeCol}</span>
-    <span class="dr-net" style="color:#008822;">${netCol}</span>
-    <span class="dr-cum" style="color:#7e22ce;">${cumCol}</span>
-    <span class="dr-gap"> </span>
+    <span class="dr-left">${idxStr}${item.time}</span>
+    <span class="dr-type" style="color:${typeColor};">${typePayCombo}</span>
+    <span class="dr-amt" style="color:#2563eb;">${amtFeeText}</span>
+    <span class="dr-net" style="color:#008822;">${netText}</span>
+    <span class="dr-cum" style="color:#7e22ce;">${cumStr}</span>
+    <button class="editBtn">改</button>
   `;
 }
 
