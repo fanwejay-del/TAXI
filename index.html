@@ -70,7 +70,7 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .item{background:#fff;padding:2px 8px;margin:2px 0;border-radius:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,0.05);gap:8px;}
 
 /* 明細行（首頁今日） */
-.detail-row{display:flex;align-items:center;background:#fff;border-radius:10px;margin:3px 0;padding:3px 10px;box-shadow:0 1px 3px rgba(0,0,0,0.05);font-size:calc(1.05px * var(--fs-num));gap:0;font-family:Consolas,Menlo,monospace;white-space:nowrap;line-height:1.1;}
+.detail-row{display:flex;align-items:center;background:#fff;border-radius:10px;margin:3px 0;padding:3px 10px;box-shadow:0 1px 3px rgba(0,0,0,0.05);font-size:calc(1.05px * var(--fs-num));gap:0;font-family:Consolas,Menlo,monospace;white-space:pre;line-height:1.1;}
 .dr-left{color:#0f172a;font-size:calc(0.9px * var(--fs-num));white-space:nowrap;}
 .dr-type,.dr-pay{white-space:nowrap;}
 .dr-amt,.dr-fee,.dr-net,.dr-cum{text-align:right;white-space:nowrap;}
@@ -785,43 +785,38 @@ function toggleSort(){ sortNewFirst = !sortNewFirst; document.getElementById('so
 
 function buildDetailRow(item, idx, cum){
   const typeStr = (item.type||"").charAt(0);
-  const typeItem = config.typeList.find(t => t.name === item.type);
+  const typeItem = config.typeList.find(t=>t.name===item.type);
   const typeColor = typeItem ? typeItem.color : "#0f172a";
   const feeN = Math.round(item.fee||0);
-  const idxStr = idx !== null ? String(idx).padStart(2,'0')+"." : '';
-  // 付款方式取第一個字（緊貼在營業類別後面）
-  let paySingleChar = "";
-  if(item.splits && Array.isArray(item.splits)){
-    paySingleChar = (item.splits[0].pay||"").charAt(0);
+  const idxStr = idx!==null ? String(idx).padStart(2,'0')+"." : '';
+
+  let payChar = "";
+  if(item.splits && Array.isArray(item.splits) && item.splits.length>0){
+    payChar = (item.splits[0].pay||"").charAt(0);
   }else{
-    paySingleChar = (item.pay || "").charAt(0);
+    payChar = (item.pay||"").charAt(0);
   }
-  // 營業類別加括弧、緊貼在時間後面，付款方式緊貼在括弧後面 → (派)現
-  const typePayCombo = "(" + typeStr + ")" + paySingleChar;
+  // 時間後面緊貼(營業類別)，付款方式緊貼括弧 → (派)現
+  const typePayCombo = "(" + typeStr + ")" + payChar;
 
-  // 車資4位寬 - 手續費2位寬，右對齊、不補前導0 → 手續費個位數對齊
-  const rawStr = String(item.raw);
-  const rawPad = rawStr.padStart(4," ");
-  const feeStr = String(feeN);
-  const feePad = feeStr.padStart(2," ");
-  const amtFeeText = `${rawPad}-${feePad}`;
-
-  // 淨金額：補回「淨」字（4位寬）；累計5位寬，右對齊、個位數貼齊
-  const netStr = String(item.net);
-  const netPad = "淨" + netStr.padStart(4," ");
-  const cumStr = String(cum);
-  const cumPad = cumStr.padStart(5," ");
+  // 各欄預留位數，多餘間距平均分配到各欄（等寬字型）
+  const timeCol   = (idxStr + (item.time||"")).padEnd(9," ");
+  const typeCol   = typePayCombo.padEnd(7," ");
+  const rawPad    = String(item.raw).padStart(4," ");
+  const feePad    = String(feeN).padStart(2," ");
+  const amtFeeCol = (rawPad + "-" + feePad).padStart(9," ");
+  const netCol    = ("淨" + String(item.net)).padStart(8," ");
+  const cumCol    = String(cum).padStart(6," ");
 
   return `
-    <span class="dr-left">${idxStr}${item.time}</span>
-    <span class="dr-type" style="color:${typeColor};">${typePayCombo}</span>
-    <span class="dr-amt" style="color:#2563eb;">${amtFeeText}</span>
-    <span class="dr-net" style="color:#008822;">${netPad}</span>
-    <span class="dr-cum" style="color:#992222;">${cumPad}</span>
+    <span class="dr-left">${timeCol}</span>
+    <span class="dr-type" style="color:${typeColor};">${typeCol}</span>
+    <span class="dr-amt" style="color:#2563eb;">${amtFeeCol}</span>
+    <span class="dr-net" style="color:#008822;">${netCol}</span>
+    <span class="dr-cum" style="color:#7e22ce;">${cumCol}</span>
+    <span class="dr-gap"> </span>
   `;
 }
-
-
 
 function renderTodayList(){
   const recs = getRecords();
