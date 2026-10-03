@@ -96,18 +96,6 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .filter-card .sc-stat b{color:#0f172a;}
 .filter-card .sc-stat .sum{
   color:#2563eb;
-  flex:1;
-  text-align:right;
-  font-variant-numeric: tabular-nums;
-}
-.filter-card .sc-stat .fee{
-  color:#dc2626;
-  min-width:6ch;
-  text-align:right;
-  font-variant-numeric: tabular-nums;
-}
-.filter-card .sc-stat .net{
-  color:#7e22ce;
   min-width:7ch;
   text-align:right;
   font-variant-numeric: tabular-nums;
@@ -118,6 +106,19 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   text-align:right;
   font-variant-numeric: tabular-nums;
 }
+.filter-card .sc-stat .fee{
+  color:#dc2626;
+  min-width:5ch;
+  text-align:right;
+  font-variant-numeric: tabular-nums;
+}
+.filter-card .sc-stat .net{
+  color:#7e22ce;
+  min-width:7ch;
+  text-align:right;
+  font-variant-numeric: tabular-nums;
+}
+
 
 /* 清單摘要卡 */
 .summary-card{background:#fff;border-radius:10px;padding:10px 12px;margin:5px 0 8px;box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:calc(1.05px * var(--fs-num));}
@@ -136,18 +137,6 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .summary-card .sc-stat b{color:#0f172a;}
 .summary-card .sc-stat .sum{
   color:#2563eb;
-  flex:1;
-  text-align:right;
-  font-variant-numeric: tabular-nums;
-}
-.summary-card .sc-stat .fee{
-  color:#dc2626;
-  min-width:6ch;
-  text-align:right;
-  font-variant-numeric: tabular-nums;
-}
-.summary-card .sc-stat .net{
-  color:#7e22ce;
   min-width:7ch;
   text-align:right;
   font-variant-numeric: tabular-nums;
@@ -158,7 +147,18 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   text-align:right;
   font-variant-numeric: tabular-nums;
 }
-
+.summary-card .sc-stat .fee{
+  color:#dc2626;
+  min-width:5ch;
+  text-align:right;
+  font-variant-numeric: tabular-nums;
+}
+.summary-card .sc-stat .net{
+  color:#7e22ce;
+  min-width:7ch;
+  text-align:right;
+  font-variant-numeric: tabular-nums;
+}
 
 /* 清單統計卡（可點） */
 .stat-card{background:#fff;border-radius:10px;padding:10px 12px;margin:5px 0;box-shadow:0 1px 4px rgba(0,0,0,0.05);cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:calc(1.05px * var(--fs-num));gap:6px;}
@@ -904,7 +904,7 @@ function calcIncomeStat(prefix){
   const sum = recs.reduce((s,r)=>s+Number(r.raw||0),0);
   const fee = recs.reduce((s,r)=>s+Number(r.fee||0),0);
   const net = recs.reduce((s,r)=>s+Number(r.net||0),0);
-  return { sum, fee, net, trip: recs.length };
+  return { sum, fee, net, trip: recs.length, cnt: recs.length };
 }
 
 function refreshStatCards(){
@@ -925,11 +925,12 @@ function refreshStatCards(){
   const ys = calcIncomeStat(yrPrefix);
 
   document.getElementById('statFcDayStat').innerHTML =
-    `<span class="sum">營 ${ds.sum}</span>　<span class="fee">費 ${Math.round(ds.fee)}</span>　<span class="net">淨 ${ds.net}</span>`;
-  document.getElementById('statFcMonthStat').innerHTML =
-    `<span class="sum">營 ${ms.sum}</span>　<span class="fee">費 ${Math.round(ms.fee)}</span>　<span class="net">淨 ${ms.net}</span>`;
+  `<span class="sum">營 ${ds.sum}</span><span class="cnt">次 ${ds.cnt}</span><span class="fee">費 ${Math.round(ds.fee)}</span><span class="net">淨 ${ds.net}</span>`;
+ document.getElementById('statFcMonthStat').innerHTML =
+  `<span class="sum">營 ${ms.sum}</span><span class="cnt">次 ${ms.cnt}</span><span class="fee">費 ${Math.round(ms.fee)}</span><span class="net">淨 ${ms.net}</span>`;
+
   document.getElementById('statFcYearStat').innerHTML =
-    `<span class="sum">營 ${ys.sum}</span>　<span class="fee">費 ${Math.round(ys.fee)}</span>　<span class="net">淨 ${ys.net}</span>`;
+`<span class="sum">營 ${ys.sum}</span><span class="cnt">次 ${ys.cnt}</span><span class="fee">費 ${Math.round(ys.fee)}</span><span class="net">淨 ${ys.net}</span>`;
 }
 
 function showStatDefault(){
@@ -994,20 +995,20 @@ function renderStatDayList(monthStr){
   html += `<div class="crumb">${monthStr} 每日統計</div>`;
   html += `<div class="summary-card">
     <span class="sc-name">月總</span>
-    <span class="sc-stat"><span class="sum">營 ${s.sum}</span>　<span class="fee">費 ${Math.round(s.fee)}</span>　<span class="net">淨 ${s.net}</span></span>
-  </div>`;
+   <span class="sc-stat"><span class="sum">營 ${s.sum}</span><span class="cnt">次 ${s.cnt}</span><span class="fee">費 ${Math.round(s.fee)}</span><span class="net">淨 ${s.net}</span></span>
+ </div>`;
 
   if(days.length === 0){ html += `<div class="empty-tip">此月尚無紀錄</div>`; document.getElementById('statContent').innerHTML = html; return; }
-
   days.forEach(d=>{
     const arr = dayMap[d];
     const dSum = arr.reduce((a,r)=>a+Number(r.raw||0),0);
     const dFee = arr.reduce((a,r)=>a+Number(r.fee||0),0);
     const dNet = arr.reduce((a,r)=>a+Number(r.net||0),0);
+    const dCnt = arr.length;
     html += `
       <div class="stat-card" onclick="statDrillToDayDetail('${monthStr}-${d}')">
         <span class="sc-name">${monthStr.slice(5)}-${d}</span>
-        <span class="sc-stat"><span class="sum">營 ${dSum}</span>　<span class="fee">費 ${Math.round(dFee)}</span>　<span class="net">淨 ${dNet}</span></span>
+        <span class="sc-stat"><span class="sum">營 ${dSum}</span><span class="cnt">次 ${dCnt}</span><span class="fee">費 ${Math.round(dFee)}</span><span class="net">淨 ${dNet}</span></span>
       </div>
     `;
   });
@@ -1026,7 +1027,7 @@ function renderStatMonthList(yearStr){
   html += `<div class="crumb">${yearStr} 每月統計</div>`;
   html += `<div class="summary-card">
     <span class="sc-name">年總</span>
-    <span class="sc-stat"><span class="sum">營 ${s.sum}</span>　<span class="fee">費 ${Math.round(s.fee)}</span>　<span class="net">淨 ${s.net}</span></span>
+    <span class="sc-stat"><span class="sum">營 ${s.sum}</span><span class="cnt">次 ${s.cnt}</span><span class="fee">費 ${Math.round(s.fee)}</span><span class="net">淨 ${s.net}</span></span>
   </div>`;
 
   if(months.length === 0){ html += `<div class="empty-tip">此年尚無紀錄</div>`; document.getElementById('statContent').innerHTML = html; return; }
@@ -1036,10 +1037,12 @@ function renderStatMonthList(yearStr){
     const mSum = arr.reduce((a,r)=>a+Number(r.raw||0),0);
     const mFee = arr.reduce((a,r)=>a+Number(r.fee||0),0);
     const mNet = arr.reduce((a,r)=>a+Number(r.net||0),0);
+     const mCnt = arr.length; //新增這一行
+    
     html += `
       <div class="stat-card" onclick="statDrillToDayList('${yearStr}-${m}')">
         <span class="sc-name">${m} 月</span>
-        <span class="sc-stat"><span class="sum">營 ${mSum}</span>　<span class="fee">費 ${Math.round(mFee)}</span>　<span class="net">淨 ${mNet}</span></span>
+        <span class="sc-stat"><span class="sum">營 ${mSum}</span><span class="cnt">次 ${mCnt}</span><span class="fee">費 ${Math.round(mFee)}</span><span class="net">淨 ${mNet}</span></span>
       </div>
     `;
   });
@@ -1059,7 +1062,7 @@ function renderStatYearList(){
     html += `
       <div class="stat-card" onclick="statDrillToMonthList('${y}')">
         <span class="sc-name">${y} 年</span>
-        <span class="sc-stat"><span class="sum">營 ${s.sum}</span>　<span class="fee">費 ${Math.round(s.fee)}</span>　<span class="net">淨 ${s.net}</span></span>
+        <span class="sc-stat"><span class="sum">營 ${s.sum}</span><span class="cnt">次 ${s.cnt}</span><span class="fee">費 ${Math.round(s.fee)}</span><span class="net">淨 ${s.net}</span></span>
       </div>
     `;
   });
@@ -1075,7 +1078,7 @@ function renderStatDayDetail(dateStr){
   html += `<div class="crumb">${dateStr} 當日明細</div>`;
   html += `<div class="summary-card">
     <span class="sc-name">日總</span>
-    <span class="sc-stat"><span class="sum">營 ${s.sum}</span>　<span class="fee">費 ${Math.round(s.fee)}</span>　<span class="net">淨 ${s.net}</span>　${s.trip}趟</span>
+    <span class="sc-stat"><span class="sum">營 ${s.sum}</span><span class="cnt">次 ${s.cnt}</span><span class="fee">費 ${Math.round(s.fee)}</span><span class="net">淨 ${s.net}</span></span>
   </div>`;
 
   if(recs.length === 0){ html += `<div class="empty-tip">此日尚無紀錄</div>`; document.getElementById('statContent').innerHTML = html; return; }
