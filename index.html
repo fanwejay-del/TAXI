@@ -799,18 +799,22 @@ function buildDetailRow(item, idx, cum){
   }
   const typePayCombo = "(" + typeStr + ")" + payChar;
 
-  const rawStr = String(item.raw);
-  const feeStr = String(feeN);
-  const amtFeeText = `${rawStr}-${feeStr}`;
-  const netText = "淨" + String(item.net);
-  const cumStr = String(cum);
+  // 各欄固定長度，等寬字型，平均分配空格
+  const timeCol   = (idxStr + (item.time||"")).padEnd(11," ");
+  const typeCol   = typePayCombo.padEnd(8," ");
+  const rawPad    = String(item.raw).padStart(4," ");
+  const feePad    = String(feeN).padStart(2," ");
+  const amtFeeCol = (rawPad + "-" + feePad).padEnd(10," ");
+  const netCol    = ("淨" + String(item.net)).padEnd(9," ");
+  // 累計：最少預留5位數字空間，加上「累計」兩個字，總長設為 7
+  const cumCol    = ("累計" + String(cum)).padEnd(7," ");
 
   return `
-    <span class="dr-left">${idxStr}${item.time}</span>
-    <span class="dr-type" style="color:${typeColor};">${typePayCombo}</span>
-    <span class="dr-amt" style="color:#2563eb;">${amtFeeText}</span>
-    <span class="dr-net" style="color:#008822;">${netText}</span>
-    <span class="dr-cum" style="color:#7e22ce;">${cumStr}</span>
+    <span class="dr-left">${timeCol}</span>
+    <span class="dr-type" style="color:${typeColor};">${typeCol}</span>
+    <span class="dr-amt" style="color:#2563eb;">${amtFeeCol}</span>
+    <span class="dr-net" style="color:#008822;">${netCol}</span>
+    <span class="dr-cum" style="color:#7e22ce;">${cumCol}</span>
     <button class="editBtn">改</button>
   `;
 }
