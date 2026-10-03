@@ -788,38 +788,39 @@ function buildDetailRow(item, idx, cum){
   const typeItem = config.typeList.find(t => t.name === item.type);
   const typeColor = typeItem ? typeItem.color : "#0f172a";
   const feeN = Math.round(item.fee||0);
-  const idxStr = idx !== null ? `${idx}.` : '';
-  const feeHtml = feeN > 0 ? `<span class="dr-fee">-${feeN}</span>` : '';
-  const cumHtml = cum !== null ? `<span class="dr-cum">累計 ${cum}</span>` : '';
-
-  let payHtml = '';
+  const idxStr = idx !== null ? String(idx).padStart(2,'0')+"." : '';
+  // 類別首字直接接付款首字，中間無空格
+  let paySingleChar = "";
   if(item.splits && Array.isArray(item.splits)){
-    let inner = '';
-    item.splits.forEach((s, i) => {
-      const pItem = config.payList.find(p => p.name === s.pay);
-      const pColor = pItem ? pItem.color : "#0f172a";
-      const name = s.pay === "好孕券" ? "好" : "";
-      const prefix = i === 0 ? "" : "+";
-      inner += `${prefix}<span style="color:${pColor};">${name}${s.amount}</span>`;
-    });
-    payHtml = `<span class="dr-pay">${inner}</span>`;
-  } else {
-    const payStr = (item.pay || "").charAt(0);
-    const payItem = config.payList.find(p => p.name === item.pay);
-    const payColor = payItem ? payItem.color : "#0f172a";
-    payHtml = `<span class="dr-pay" style="color:${payColor};">${payStr}</span>`;
+    const pItem = config.payList.find(p => p.name === item.splits[0].pay);
+    paySingleChar = (item.splits[0].pay||"").charAt(0);
+  }else{
+    paySingleChar = (item.pay || "").charAt(0);
   }
+  const typePayCombo = typeStr + paySingleChar;
+
+  // 車資4位寬 - 手續費2位寬，右對齊，不補前導0
+  const rawStr = String(item.raw);
+  const rawPad = rawStr.padStart(4," ");
+  const feeStr = String(feeN);
+  const feePad = feeStr.padStart(2," ");
+  const amtFeeText = `${rawPad}-${feePad}`;
+
+  // 淨金額4位寬、累計5位寬，右對齊
+  const netStr = String(item.net);
+  const netPad = netStr.padStart(4," ");
+  const cumStr = String(cum);
+  const cumPad = cumStr.padStart(5," ");
 
   return `
     <span class="dr-left">${idxStr}${item.time}</span>
-    <span class="dr-type" style="color:${typeColor};">(${typeStr})</span>
-    ${payHtml}
-    <span class="dr-amt">${item.raw}</span>
-    ${feeHtml}
-    <span class="dr-net">淨 ${item.net}</span>
-    ${cumHtml}
+    <span style="color:${typeColor};">${typePayCombo}</span>
+    <span class="dr-amt" style="color:#2563eb;">${amtFeeText}</span>
+    <span class="dr-net" style="color:#008822;">${netPad}</span>
+    <span class="dr-cum" style="color:#992222;">${cumPad}</span>
   `;
 }
+
 
 function renderTodayList(){
   const recs = getRecords();
