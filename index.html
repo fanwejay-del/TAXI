@@ -95,10 +95,32 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 /* 清單摘要卡 */
 .summary-card{background:#fff;border-radius:10px;padding:10px 12px;margin:5px 0 8px;box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:calc(1.05px * var(--fs-num));}
 .summary-card .sc-name{color:#0f172a;flex-shrink:0;}
-.summary-card .sc-stat{flex:1;text-align:right;color:#475569;font-size:calc(0.92px * var(--fs-num));line-height:1.5;}
+.summary-card .sc-stat{
+  flex:1;
+  text-align:right;
+  color:#475569;
+  font-size:calc(0.92px * var(--fs-num));
+  line-height:1.5;
+  display:flex;
+  justify-content:flex-end;
+  gap:4px;
+}
+
 .summary-card .sc-stat b{color:#0f172a;}
-.summary-card .sc-stat .sum{color:#2563eb;}
-.summary-card .sc-stat .fee{color:#dc2626;}
+.summary-card .sc-stat .sum{
+  color:#2563eb;
+  flex:1;
+  text-align:right;
+  font-variant-numeric: tabular-nums;
+}
+.summary-card .sc-stat .fee{
+  color:#dc2626;
+  min-width:6ch;
+  text-align:right;
+  display:inline-block;
+  font-variant-numeric: tabular-nums;
+}
+
 .summary-card .sc-stat .net{color:#7e22ce;}
 .summary-card .sc-stat .cnt{color:#94a3b8;}
 
