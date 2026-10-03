@@ -806,8 +806,8 @@ function buildDetailRow(item, idx, cum){
   const feePad    = String(feeN).padStart(2," ");
   const amtFeeCol = (rawPad + "-" + feePad).padEnd(10," ");
   const netCol    = ("淨" + String(item.net)).padEnd(9," ");
-  // 累計：最少預留5位數字空間，加上「累計」兩個字，總長設為 7
-  const cumCol    = ("累計" + String(cum)).padEnd(7," ");
+  // 累計：「累計」+數字，數字最少預留5位
+  const cumCol    = ("累計" + String(cum)).padEnd(9," ");
 
   return `
     <span class="dr-left">${timeCol}</span>
@@ -815,7 +815,6 @@ function buildDetailRow(item, idx, cum){
     <span class="dr-amt" style="color:#2563eb;">${amtFeeCol}</span>
     <span class="dr-net" style="color:#008822;">${netCol}</span>
     <span class="dr-cum" style="color:#7e22ce;">${cumCol}</span>
-    <button class="editBtn">改</button>
   `;
 }
 
