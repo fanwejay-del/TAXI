@@ -789,37 +789,38 @@ function buildDetailRow(item, idx, cum){
   const typeColor = typeItem ? typeItem.color : "#0f172a";
   const feeN = Math.round(item.fee||0);
   const idxStr = idx !== null ? String(idx).padStart(2,'0')+"." : '';
-  // 類別首字直接接付款首字，中間無空格
+  // 付款方式取第一個字（緊貼在營業類別後面）
   let paySingleChar = "";
   if(item.splits && Array.isArray(item.splits)){
-    const pItem = config.payList.find(p => p.name === item.splits[0].pay);
     paySingleChar = (item.splits[0].pay||"").charAt(0);
   }else{
     paySingleChar = (item.pay || "").charAt(0);
   }
-  const typePayCombo = typeStr + paySingleChar;
+  // 營業類別加括弧、緊貼在時間後面，付款方式緊貼在括弧後面 → (派)現
+  const typePayCombo = "(" + typeStr + ")" + paySingleChar;
 
-  // 車資4位寬 - 手續費2位寬，右對齊，不補前導0
+  // 車資4位寬 - 手續費2位寬，右對齊、不補前導0 → 手續費個位數對齊
   const rawStr = String(item.raw);
   const rawPad = rawStr.padStart(4," ");
   const feeStr = String(feeN);
   const feePad = feeStr.padStart(2," ");
   const amtFeeText = `${rawPad}-${feePad}`;
 
-  // 淨金額4位寬、累計5位寬，右對齊
+  // 淨金額：補回「淨」字（4位寬）；累計5位寬，右對齊、個位數貼齊
   const netStr = String(item.net);
-  const netPad = netStr.padStart(4," ");
+  const netPad = "淨" + netStr.padStart(4," ");
   const cumStr = String(cum);
   const cumPad = cumStr.padStart(5," ");
 
   return `
     <span class="dr-left">${idxStr}${item.time}</span>
-    <span style="color:${typeColor};">${typePayCombo}</span>
+    <span class="dr-type" style="color:${typeColor};">${typePayCombo}</span>
     <span class="dr-amt" style="color:#2563eb;">${amtFeeText}</span>
     <span class="dr-net" style="color:#008822;">${netPad}</span>
     <span class="dr-cum" style="color:#992222;">${cumPad}</span>
   `;
 }
+
 
 
 function renderTodayList(){
