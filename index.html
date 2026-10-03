@@ -79,11 +79,12 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 
 /* ============ 三卡篩選（營業/支出通用） ============ */
 .filter-bar{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
-.filter-card{background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .15s;}
-.filter-card:active{background:#f8fafc;transform:scale(0.99);}
-.filter-card .fc-label{font-size:calc(0.95px * var(--fs-num));color:#64748b;flex-shrink:0;width:22px;text-align:center;}
-.filter-card .fc-main{font-size:calc(1.3px * var(--fs-num));color:#0f172a;flex-shrink:0;margin-left:8px;min-width:66px;}
-.filter-card .fc-stat{font-size:calc(0.92px * var(--fs-num));color:#475569;text-align:right;flex:1;margin-left:10px;line-height:1.5;}
+.filter-card{background:#fff;border-radius:8px;padding:3px 10px;box-shadow:0 1px 3px rgba(0,0,0,0.06);cursor:pointer;display:flex;justify-content:space-between;align-items:center;line-height:1.1;}
+.filter-card .fc-label{font-size:calc(0.9px * var(--fs-num));color:#64748b;flex-shrink:0;width:18px;text-align:center;}
+.filter-card .fc-main{font-size:calc(1.05px * var(--fs-num));color:#0f172a;flex-shrink:0;margin-left:8px;min-width:0;}
+.filter-card .fc-stat{font-size:calc(0.9px * var(--fs-num));color:#475569;text-align:right;flex:1;margin-left:10px;line-height:1.1;}
+.filter-card .fc-arrow{color:#94a3b8;font-size:calc(1px * var(--fs-num));margin-left:6px;flex-shrink:0;}
+
 .filter-card .fc-stat b{color:#0f172a;}
 .filter-card .fc-stat .sum{color:#2563eb;}
 .filter-card .fc-stat .fee{color:#dc2626;}
@@ -92,9 +93,9 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .filter-card .fc-arrow{color:#94a3b8;font-size:calc(1.1px * var(--fs-num));margin-left:6px;flex-shrink:0;}
 
 /* 清單摘要卡 */
-.summary-card{background:#fff;border-radius:10px;padding:10px 12px;margin:5px 0 8px;box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:calc(1.05px * var(--fs-num));}
+.summary-card{background:#fff;border-radius:8px;padding:2px 10px;margin:4px 0 6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:calc(1px * var(--fs-num));line-height:1.1;}
 .summary-card .sc-name{color:#0f172a;flex-shrink:0;}
-.summary-card .sc-stat{flex:1;text-align:right;color:#475569;font-size:calc(0.92px * var(--fs-num));line-height:1.5;}
+.summary-card .sc-stat{flex:1;text-align:right;color:#475569;font-size:calc(0.9px * var(--fs-num));line-height:1.1;}
 .summary-card .sc-stat b{color:#0f172a;}
 .summary-card .sc-stat .sum{color:#2563eb;}
 .summary-card .sc-stat .fee{color:#dc2626;}
@@ -102,11 +103,11 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .summary-card .sc-stat .cnt{color:#94a3b8;}
 
 /* 清單統計卡（可點） */
-.stat-card{background:#fff;border-radius:10px;padding:10px 12px;margin:5px 0;box-shadow:0 1px 4px rgba(0,0,0,0.05);cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:calc(1.05px * var(--fs-num));gap:6px;}
+.stat-card{background:#fff;border-radius:8px;padding:2px 10px;margin:3px 0;box-shadow:0 1px 3px rgba(0,0,0,0.05);cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:calc(1px * var(--fs-num));line-height:1.1;}
 .stat-card:active{background:#f8fafc;}
 .stat-card .sc-name{color:#2563eb;flex-shrink:0;min-width:52px;}
 .stat-card.exp .sc-name{color:#dc2626;}
-.stat-card .sc-stat{flex:1;text-align:right;color:#475569;font-size:calc(0.92px * var(--fs-num));line-height:1.5;}
+.stat-card .sc-stat{flex:1;text-align:right;color:#475569;font-size:calc(0.9px * var(--fs-num));line-height:1.1;}
 .stat-card .sc-stat b{color:#0f172a;}
 .stat-card .sc-stat .sum{color:#2563eb;}
 .stat-card .sc-stat .fee{color:#dc2626;}
