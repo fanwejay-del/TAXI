@@ -7,7 +7,6 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2563eb">
 <style>
-  /* 隱藏Netlify右下角浮標 */
 button[data-nf],
 [data-netlify],
 #netlify,
@@ -17,8 +16,8 @@ div[class*="netlify"] {
 
 :root{--fs-num:13;--fw-num:700;}
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent;}
-body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#1e293b;line-height:1.35;font-weight:var(--fw-num);}
-.page{display:none;}
+body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color:#1e293b;line-height:1.35;font-weight:var(--fw-num);}
+.page{display:none;padding:0 6px;}
 .page.active{display:block;}
 .row2{display:grid;grid-template-columns:repeat(auto-fit, minmax(90px, 1fr));gap:8px;margin-bottom:12px;}
 .card{background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:4px;}
@@ -28,24 +27,51 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .topbar-icons{display:flex;gap:6px;align-items:center;}
 .stat-icon,.set-icon,.exp-icon{font-size:calc(1.4px * var(--fs-num));color:#475569;padding:4px 6px;cursor:pointer;border-radius:8px;line-height:1;}
 .stat-icon:active,.set-icon:active,.exp-icon:active{background:#e2e8f0;}
-.bigBtn{padding:12px 6px;border:none;border-radius:12px;font-size:calc(1.05px * var(--fs-num));color:#fff;box-shadow:0 3px 8px rgba(0,0,0,0.12);}
-.bigBtn:active{transform:scale(0.97);opacity:0.92;}
+
+/* ===== 通用按鈕陰影 + 按下變深 ===== */
+.bigBtn,
+.numBtn,
+.payBtn,
+.navBtn,
+.editBtn,
+.delBtn,
+.sortBtn,
+.add-btn,
+.backup-btn,
+.stat-btn,
+.setBlock button {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.14);
+  transition: filter 0.12s ease, box-shadow 0.12s ease, transform 0.1s ease, background 0.12s ease, opacity 0.12s ease;
+}
+.bigBtn:active,
+.numBtn:active,
+.payBtn:active,
+.navBtn:active,
+.editBtn:active,
+.delBtn:active,
+.sortBtn:active,
+.add-btn:active,
+.backup-btn:active,
+.stat-btn:active,
+.setBlock button:active {
+  filter: brightness(0.88);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+  transform: scale(0.97);
+}
+
+.bigBtn{padding:12px 6px;border:none;border-radius:12px;font-size:calc(1.05px * var(--fs-num));color:#fff;}
 .inputBox{width:100%;padding:16px;font-size:28px;text-align:center;border:2px solid #e2e8f0;border-radius:12px;margin:14px 0;background:#f8fafc;color:#0f172a;}
 .numKey{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
-.numBtn{padding:18px 8px;font-size:22px;border-radius:12px;border:none;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.08);color:#1e293b;}
-.numBtn:active{background:#f1f5f9;}
+.numBtn{padding:18px 8px;font-size:22px;border-radius:12px;border:none;background:#fff;color:#1e293b;}
+.numBtn:active{background:#e2e8f0;}
 .payKey{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
-.payBtn{padding:20px 10px;border:none;border-radius:12px;color:#fff;font-size:calc(1.2px * var(--fs-num));box-shadow:0 2px 6px rgba(0,0,0,0.15);}
-.payBtn:active{opacity:0.9;transform:scale(0.98);}
+.payBtn{padding:20px 10px;border:none;border-radius:12px;color:#fff;font-size:calc(1.2px * var(--fs-num));}
 .noteInput{width:100%;padding:10px 12px;margin-top:10px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:calc(1.05px * var(--fs-num));background:#f8fafc;}
 .noteInput:focus{outline:none;border-color:#2563eb;background:#fff;}
 .editBtn{color:#2563eb;border:none;background:#eff6ff;font-size:calc(0.9px * var(--fs-num));padding:6px 8px;border-radius:8px;flex-shrink:0;}
-.editBtn:active{background:#dbeafe;}
 .delBtn{color:#dc2626;border:none;background:#fef2f2;font-size:calc(0.85px * var(--fs-num));padding:4px 8px;border-radius:6px;}
-.delBtn:active{background:#fee2e2;}
 .backHomeBar{display:flex;gap:10px;margin-bottom:14px;}
 .navBtn{flex:1;padding:12px;border:none;border-radius:10px;background:#e2e8f0;font-size:calc(1.05px * var(--fs-num));color:#334155;}
-.navBtn:active{background:#cbd5e1;}
 .setBlock{margin:8px 0;padding:10px 12px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
 .setBlock h4{margin-bottom:6px;font-size:calc(1.05px * var(--fs-num));color:#0f172a;}
 .setBlock label{display:block;font-size:calc(0.95px * var(--fs-num));color:#64748b;margin-top:6px;margin-bottom:3px;}
@@ -69,8 +95,7 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 #typeListSet input:not([type="number"]),#payListSet input:not([type="number"]),#expListSet input:not([type="number"]),.setBlock .item input:not([type="number"]){flex:1;min-width:0;}
 .item{background:#fff;padding:2px 8px;margin:2px 0;border-radius:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,0.05);gap:8px;}
 
-/* 明細行（首頁今日） */
-.detail-row{display:flex;align-items:center;background:#fff;border-radius:10px;margin:3px 0;padding:3px 10px;box-shadow:0 1px 3px rgba(0,0,0,0.05);font-size:calc(1.05px * var(--fs-num));gap:0;font-family:Consolas,Menlo,monospace;white-space:pre;line-height:1.1;}
+.detail-row{display:flex;align-items:center;background:#fff;border-radius:10px;margin:3px 0;padding:3px 8px 3px 6px;box-shadow:0 1px 3px rgba(0,0,0,0.05);font-size:calc(1.05px * var(--fs-num));gap:0;font-family:Consolas,Menlo,monospace;white-space:pre;line-height:1.1;}
 .dr-left{color:#0f172a;font-size:calc(0.9px * var(--fs-num));flex-shrink:0;}
 .dr-type{flex-shrink:0;margin-right:6px;}
 .dr-amt{flex-shrink:0;text-align:right;margin-right:6px;}
@@ -78,49 +103,66 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 .dr-cum{flex:1;text-align:right;}
 .editBtn{flex-shrink:0;margin-left:4px;}
 
-/* ============ 三卡篩選（營業/支出通用） ============ */
 .filter-bar{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
-.filter-card{background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .15s;}
+.filter-card{background:#fff;border-radius:12px;padding:12px 10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .15s;}
 .filter-card:active{background:#f8fafc;transform:scale(0.99);}
-.filter-card .fc-label{font-size:calc(0.95px * var(--fs-num));color:#64748b;flex-shrink:0;width:22px;text-align:center;}
-.filter-card .fc-main{font-size:calc(1.3px * var(--fs-num));color:#0f172a;flex-shrink:0;margin-left:8px;min-width:66px;}
-.filter-card .fc-stat{font-size:calc(0.92px * var(--fs-num));color:#475569;text-align:right;flex:1;margin-left:10px;line-height:1.5;}
-.filter-card .fc-stat b{color:#0f172a;}
-
-.filter-card .fc-arrow{color:#94a3b8;font-size:calc(1.1px * var(--fs-num));margin-left:6px;flex-shrink:0;}
-.filter-card .sc-stat{
+.filter-card .fc-label{font-size:calc(0.95px * var(--fs-num));color:#64748b;flex-shrink:0;width:auto;min-width:1.2em;text-align:left;}
+.filter-card .fc-main{font-size:calc(1.3px * var(--fs-num));color:#0f172a;flex-shrink:0;margin-left:6px;min-width:66px;}
+.filter-card .fc-stat{
+  font-size:calc(0.92px * var(--fs-num));
+  color:#475569;
+  text-align:right;
+  flex:1;
+  margin-left:8px;
+  line-height:1.5;
   display:flex;
   justify-content:flex-end;
   gap:4px;
+  flex-wrap:wrap;
 }
-.filter-card .sc-stat b{color:#0f172a;}
-.filter-card .sc-stat .sum{
+.filter-card .fc-arrow{color:#94a3b8;font-size:calc(1.1px * var(--fs-num));margin-left:6px;flex-shrink:0;}
+
+.filter-card .fc-stat .sum,
+.summary-card .sc-stat .sum,
+.stat-card .sc-stat .sum{
   color:#2563eb;
   min-width:7ch;
   text-align:right;
   font-variant-numeric: tabular-nums;
 }
-.filter-card .sc-stat .cnt{
+.filter-card .fc-stat .cnt,
+.summary-card .sc-stat .cnt,
+.stat-card .sc-stat .cnt{
   color:#94a3b8;
   min-width:4ch;
   text-align:right;
   font-variant-numeric: tabular-nums;
 }
-.filter-card .sc-stat .fee{
+.filter-card .fc-stat .fee,
+.summary-card .sc-stat .fee,
+.stat-card .sc-stat .fee{
   color:#dc2626;
   min-width:5ch;
   text-align:right;
   font-variant-numeric: tabular-nums;
 }
-.filter-card .sc-stat .net{
+.filter-card .fc-stat .net,
+.summary-card .sc-stat .net,
+.stat-card .sc-stat .net{
   color:#7e22ce;
   min-width:7ch;
   text-align:right;
   font-variant-numeric: tabular-nums;
 }
+.filter-card .fc-stat .bal,
+.summary-card .sc-stat .bal,
+.stat-card .sc-stat .bal{
+  color:#059669;
+  min-width:7ch;
+  text-align:right;
+  font-variant-numeric: tabular-nums;
+}
 
-
-/* 清單摘要卡 */
 .summary-card{background:#fff;border-radius:10px;padding:10px 12px;margin:5px 0 8px;box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:calc(1.05px * var(--fs-num));}
 .summary-card .sc-name{color:#0f172a;flex-shrink:0;}
 .summary-card .sc-stat{
@@ -132,65 +174,38 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   display:flex;
   justify-content:flex-end;
   gap:4px;
+  flex-wrap:wrap;
 }
 
-.summary-card .sc-stat b{color:#0f172a;}
-.summary-card .sc-stat .sum{
-  color:#2563eb;
-  min-width:7ch;
-  text-align:right;
-  font-variant-numeric: tabular-nums;
-}
-.summary-card .sc-stat .cnt{
-  color:#94a3b8;
-  min-width:4ch;
-  text-align:right;
-  font-variant-numeric: tabular-nums;
-}
-.summary-card .sc-stat .fee{
-  color:#dc2626;
-  min-width:5ch;
-  text-align:right;
-  font-variant-numeric: tabular-nums;
-}
-.summary-card .sc-stat .net{
-  color:#7e22ce;
-  min-width:7ch;
-  text-align:right;
-  font-variant-numeric: tabular-nums;
-}
-
-/* 清單統計卡（可點） */
 .stat-card{background:#fff;border-radius:10px;padding:10px 12px;margin:5px 0;box-shadow:0 1px 4px rgba(0,0,0,0.05);cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:calc(1.05px * var(--fs-num));gap:6px;}
 .stat-card:active{background:#f8fafc;}
 .stat-card .sc-name{color:#2563eb;flex-shrink:0;min-width:52px;}
 .stat-card.exp .sc-name{color:#dc2626;}
-.stat-card .sc-stat{flex:1;text-align:right;color:#475569;font-size:calc(0.92px * var(--fs-num));line-height:1.5;}
-.stat-card .sc-stat b{color:#0f172a;}
-.stat-card .sc-stat .sum{color:#2563eb;}
-.stat-card .sc-stat .fee{color:#dc2626;}
-.stat-card .sc-stat .net{color:#7e22ce;}
-.stat-card .sc-stat .cnt{color:#94a3b8;}
+.stat-card .sc-stat{
+  flex:1;
+  text-align:right;
+  color:#475569;
+  font-size:calc(0.92px * var(--fs-num));
+  line-height:1.5;
+  display:flex;
+  justify-content:flex-end;
+  gap:4px;
+  flex-wrap:wrap;
+}
 
-/* 統計頁返回列 */
 .stat-bar{display:flex;gap:8px;margin-bottom:10px;}
 .stat-btn{flex:1;padding:11px;border:none;border-radius:10px;background:#e2e8f0;font-size:calc(1.05px * var(--fs-num));color:#334155;}
-.stat-btn:active{background:#cbd5e1;}
 .crumb{font-size:calc(0.95px * var(--fs-num));color:#64748b;margin-bottom:8px;}
 
-/* 新增支出按鈕（只在支出頁主頁） */
 .add-bar{margin-bottom:12px;}
-.add-btn{width:100%;padding:12px;border:none;border-radius:12px;background:#dc2626;color:#fff;font-size:calc(1.1px * var(--fs-num));box-shadow:0 2px 6px rgba(220,38,38,0.25);}
-.add-btn:active{background:#b91c1c;transform:scale(0.98);}
+.add-btn{width:100%;padding:12px;border:none;border-radius:12px;background:#dc2626;color:#fff;font-size:calc(1.1px * var(--fs-num));}
 
-/* 支出明細行 */
 .exp-row{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:10px;margin:4px 0;padding:8px 10px;box-shadow:0 1px 4px rgba(0,0,0,0.05);font-size:calc(1.05px * var(--fs-num));gap:6px;}
 .exp-row .er-time{color:#64748b;font-size:calc(0.9px * var(--fs-num));}
 .exp-row .er-cat{white-space:nowrap;}
 .exp-row .er-note{color:#475569;font-size:calc(0.9px * var(--fs-num));flex:1;text-align:left;padding:0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .exp-row .er-amt{color:#dc2626;text-align:right;}
 
-/* 支出輸入視窗：數字鍵盤加高一倍、其他等比放大、不超出螢幕 */
 #expInputModal .modal-card{padding:4px 6px;display:flex;flex-direction:column;height:100%;min-height:0;gap:6px;}
 #expInputModal #expModalTitle{font-size:calc(1.3px * var(--fs-num)) !important;margin:0 !important;flex-shrink:0;text-align:center;}
 #expInputModal .inputBox{font-size:calc(2px * var(--fs-num));padding:10px;margin:0;flex-shrink:0;}
@@ -201,7 +216,6 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 #expInputModal .noteInput{flex-shrink:0;margin:0 !important;padding:14px 12px;font-size:calc(1.2px * var(--fs-num));}
 #expInputModal > .modal-card > button{flex-shrink:0;margin:0 !important;padding:14px !important;font-size:calc(1.15px * var(--fs-num)) !important;}
 
-/* 字型滑桿 */
 .fs-wrap{display:flex;align-items:center;gap:10px;margin-top:6px;}
 .fs-wrap input[type="range"]{flex:1;-webkit-appearance:none;height:6px;border-radius:3px;background:#e2e8f0;outline:none;}
 .fs-wrap input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#2563eb;cursor:pointer;}
@@ -214,13 +228,12 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
 #inputModal .payKey{flex-shrink:0;margin-top:8px;gap:10px;}
 #inputModal .payBtn{padding:18px 8px;font-size:calc(1.2px * var(--fs-num));}
 #inputModal > .modal-card > button{flex-shrink:0;margin-top:6px !important;padding:10px !important;font-size:calc(1.1px * var(--fs-num)) !important;}
-@media(max-width:600px){body{padding:8px;}}
+@media(max-width:600px){body{padding:8px 0;}.page{padding:0 4px;}}
 </style>
 </head>
 <body>
 <input type="file" id="fileImport" style="display:none" accept=".json">
 
-<!-- 收入輸入 Modal -->
 <div id="inputModal" class="modal">
   <div class="modal-card">
     <h3 id="modalTitle" style="text-align:center;margin-bottom:8px;font-size:22px;">路招</h3>
@@ -244,7 +257,6 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   </div>
 </div>
 
-<!-- 支出輸入 Modal -->
 <div id="expInputModal" class="modal">
   <div class="modal-card">
     <h3 id="expModalTitle" style="text-align:center;margin-bottom:8px;font-size:22px;">支出</h3>
@@ -269,7 +281,6 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   </div>
 </div>
 
-<!-- 修改收入 Modal -->
 <div id="editModal" class="modal">
   <div class="modal-card">
     <h3 style="text-align:center;margin-bottom:16px;font-size:18px;">修改紀錄</h3>
@@ -287,7 +298,6 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   </div>
 </div>
 
-<!-- 修改支出 Modal -->
 <div id="editExpModal" class="modal">
   <div class="modal-card">
     <h3 style="text-align:center;margin-bottom:16px;font-size:18px;">修改支出</h3>
@@ -305,7 +315,6 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   </div>
 </div>
 
-<!-- 首頁 -->
 <div id="pageHome" class="page active">
   <div class="topbar">
     <div class="topbar-inner">
@@ -334,7 +343,6 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   <div id="listToday"></div>
 </div>
 
-<!-- 營業統計頁 -->
 <div id="pageStat" class="page">
   <div class="backHomeBar">
     <button class="navBtn" onclick="navBack()">返回</button>
@@ -368,7 +376,6 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   </div>
 </div>
 
-<!-- 支出統計頁 -->
 <div id="pageExpStat" class="page">
   <div class="backHomeBar">
     <button class="navBtn" onclick="navBack()">返回</button>
@@ -405,7 +412,6 @@ body{background:#f1f5f9;padding:10px;font-size:calc(1px * var(--fs-num));color:#
   </div>
 </div>
 
-<!-- 設定頁 -->
 <div id="pageSetting" class="page">
   <div class="backHomeBar">
     <button class="navBtn" onclick="navBack()">返回</button>
@@ -497,8 +503,6 @@ let historyStack = [];
 let modalAmount = "";
 let expModalAmount = "";
 let sortNewFirst = true;
-
-// 營業統計 / 支出統計 各自的檢視堆疊
 let statViewStack = [];
 let expViewStack = [];
 
@@ -580,7 +584,6 @@ function getBizDate(dt){
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
-/* ===== 備份 ===== */
 function exportBackup(){
   const data = { saveTime: new Date().toISOString(), config, records: getRecords(), expenses: getExpenses() };
   const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
@@ -591,7 +594,6 @@ function exportBackup(){
   alert("✅ 備份檔已下載！");
 }
 
-/* ===== 匯入驗證 ===== */
 function isValidRecord(r){
   return r && typeof r === 'object'
     && typeof r.id !== 'undefined'
@@ -642,7 +644,6 @@ document.getElementById("fileImport").onchange = function(e){
   r.readAsText(f); this.value = null;
 };
 
-/* ===== 首頁類別按鈕 ===== */
 function renderHomeTypeBtn(){
   const wrap = document.getElementById("typeBtnWrap");
   wrap.innerHTML = "";
@@ -677,21 +678,17 @@ function showPage(id){
   if(id === "pageHome") renderHomeTypeBtn();
 }
 
-/* 頁面層級的「返回」按鈕（頁面間） */
 function navBack(){
-  // 1. 若在營業統計頁，且有統計層堆疊 → 先回統計上一層
   if(document.getElementById('pageStat').classList.contains('active') && statViewStack.length > 1){
     statViewStack.pop();
     renderStatView();
     return;
   }
-  // 2. 若在支出統計頁，且有統計層堆疊 → 先回統計上一層
   if(document.getElementById('pageExpStat').classList.contains('active') && expViewStack.length > 1){
     expViewStack.pop();
     renderExpView();
     return;
   }
-  // 3. 否則回頁面堆疊
   if(historyStack.length > 0){
     const p = historyStack.pop();
     document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
@@ -709,7 +706,6 @@ function navBack(){
     }
     return;
   }
-  // 4. 都沒有 → 回首頁
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.getElementById('pageHome').classList.add('active');
 }
@@ -723,7 +719,6 @@ function updateHourPreview(){
   b.innerHTML = `<strong>${String(s).padStart(2,'0')}:00 ～ ${s>e?'隔日 ':''}${String(e).padStart(2,'0')}:00</strong>`;
 }
 
-/* ===== 收入 Modal ===== */
 const modal = document.getElementById('inputModal');
 function openInputModal(type){ currentType = type; modalAmount = ""; document.getElementById('modalTitle').textContent = type; document.getElementById('amountShow').textContent = "0"; renderPayBtn(); modal.classList.add('active'); }
 function closeInputModal(){ modal.classList.remove('active'); }
@@ -771,10 +766,9 @@ function saveRecord(payItem){
     list.unshift({ id: nextId(), type: currentType, pay: payItem.name, raw: amt, fee, net: Math.round(net), date: getBizDate(now), time: fmtTime() });
     saveRecords(list);
   }
-  closeInputModal(); calcTotal(); renderTodayList(); refreshStatCards();
+  closeInputModal(); calcTotal(); renderTodayList(); refreshStatCards(); refreshExpCards();
 }
 
-/* ===== 支出 Modal ===== */
 const expModal = document.getElementById('expInputModal');
 function openExpInputModal(){ expModalAmount = ""; document.getElementById('expAmountShow').textContent = "0"; document.getElementById('expNoteInput').value = ""; renderExpCatBtn(); expModal.classList.add('active'); }
 function closeExpInputModal(){ expModal.classList.remove('active'); }
@@ -802,7 +796,6 @@ function saveExpense(cat){
   renderExpView();
 }
 
-/* ===== 首頁統計 ===== */
 function calcDayStats(recs, targetDate){
   let daySum=0, cashSum=0, nonCashSum=0, tripCount=0, feeSum=0, deductSum=0;
   const typeCount = {};
@@ -857,14 +850,12 @@ function buildDetailRow(item, idx, cum){
   }
   const typePayCombo = "(" + typeStr + ")" + payChar;
 
-  // 各欄固定長度，等寬字型，平均分配空格
   const timeCol   = (idxStr + (item.time||"")).padEnd(11," ");
   const typeCol   = typePayCombo.padEnd(8," ");
   const rawPad    = String(item.raw).padStart(4," ");
   const feePad    = String(feeN).padStart(2," ");
   const amtFeeCol = (rawPad + "-" + feePad).padEnd(10," ");
   const netCol    = ("淨" + String(item.net)).padEnd(9," ");
-  // 累計：「累計」+數字，數字最少預留5位
   const cumCol    = ("累計" + String(cum)).padEnd(9," ");
 
   return `
@@ -896,9 +887,6 @@ function renderTodayList(){
   });
 }
 
-/* ============================================================
-   營業統計頁：三張篩選卡（日/月/年）+ 檢視堆疊
-   ============================================================ */
 function calcIncomeStat(prefix){
   const recs = getRecords().filter(r => r.date.startsWith(prefix));
   const sum = recs.reduce((s,r)=>s+Number(r.raw||0),0);
@@ -908,29 +896,26 @@ function calcIncomeStat(prefix){
 }
 
 function refreshStatCards(){
-  const now = new Date();
-  const y = now.getFullYear();
-  const m = String(now.getMonth()+1).padStart(2,'0');
-  const d = String(now.getDate()).padStart(2,'0');
-  const dayPrefix = `${y}-${m}-${d}`;
+  const today = getBizDate(new Date());
+  const parts = today.split('-');
+  const y = parts[0], m = parts[1], d = parts[2];
   const monPrefix = `${y}-${m}`;
-  const yrPrefix  = `${y}`;
+  const yrPrefix  = y;
 
-  document.getElementById('statFcDay').textContent   = `${parseInt(m)}-${parseInt(d)}`;
+  document.getElementById('statFcDay').textContent   = `${parseInt(m,10)}-${parseInt(d,10)}`;
   document.getElementById('statFcMonth').textContent = monPrefix;
   document.getElementById('statFcYear').textContent  = yrPrefix;
 
-  const ds = calcIncomeStat(dayPrefix);
+  const ds = calcIncomeStat(today);
   const ms = calcIncomeStat(monPrefix);
   const ys = calcIncomeStat(yrPrefix);
 
   document.getElementById('statFcDayStat').innerHTML =
-  `<span class="sum">營 ${ds.sum}</span><span class="cnt">次 ${ds.cnt}</span><span class="fee">費 ${Math.round(ds.fee)}</span><span class="net">淨 ${ds.net}</span>`;
- document.getElementById('statFcMonthStat').innerHTML =
-  `<span class="sum">營 ${ms.sum}</span><span class="cnt">次 ${ms.cnt}</span><span class="fee">費 ${Math.round(ms.fee)}</span><span class="net">淨 ${ms.net}</span>`;
-
+    `<span class="sum">營 ${ds.sum}</span><span class="cnt">次 ${ds.cnt}</span><span class="fee">費 ${Math.round(ds.fee)}</span><span class="net">淨 ${ds.net}</span>`;
+  document.getElementById('statFcMonthStat').innerHTML =
+    `<span class="sum">營 ${ms.sum}</span><span class="cnt">次 ${ms.cnt}</span><span class="fee">費 ${Math.round(ms.fee)}</span><span class="net">淨 ${ms.net}</span>`;
   document.getElementById('statFcYearStat').innerHTML =
-`<span class="sum">營 ${ys.sum}</span><span class="cnt">次 ${ys.cnt}</span><span class="fee">費 ${Math.round(ys.fee)}</span><span class="net">淨 ${ys.net}</span>`;
+    `<span class="sum">營 ${ys.sum}</span><span class="cnt">次 ${ys.cnt}</span><span class="fee">費 ${Math.round(ys.fee)}</span><span class="net">淨 ${ys.net}</span>`;
 }
 
 function showStatDefault(){
@@ -939,32 +924,20 @@ function showStatDefault(){
   refreshStatCards();
 }
 
-/* 點卡片入口 */
 function statGoDayEntry(){
-  const now = new Date();
-  const monPrefix = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  const today = getBizDate(new Date());
+  const monPrefix = today.slice(0,7);
   statViewStack = [{type:'dayList', month:monPrefix}];
   renderStatView();
 }
 function statGoMonthEntry(){
-  const now = new Date();
-  statViewStack = [{type:'monthList', year:`${now.getFullYear()}`}];
+  const today = getBizDate(new Date());
+  statViewStack = [{type:'monthList', year:today.slice(0,4)}];
   renderStatView();
 }
 function statGoYearEntry(){
   statViewStack = [{type:'yearList'}];
   renderStatView();
-}
-
-/* 統計頁返回：優先回上一層統計，其次回頁面堆疊 */
-function statBack(){
-  if(statViewStack.length > 1){
-    statViewStack.pop();
-    renderStatView();
-    return;
-  }
-  showStatDefault();
-  navBack();
 }
 
 function renderStatView(){
@@ -980,10 +953,6 @@ function renderStatView(){
   refreshStatCards();
 }
 
-function statBarHtml(){
-  return '';
-}
-
 function renderStatDayList(monthStr){
   const recs = getRecords().filter(r => r.date.startsWith(monthStr));
   const dayMap = {};
@@ -991,12 +960,11 @@ function renderStatDayList(monthStr){
   const days = Object.keys(dayMap).sort();
   const s = calcIncomeStat(monthStr);
 
-  let html = statBarHtml();
-  html += `<div class="crumb">${monthStr} 每日統計</div>`;
+  let html = `<div class="crumb">${monthStr} 每日統計</div>`;
   html += `<div class="summary-card">
     <span class="sc-name">月總</span>
-   <span class="sc-stat"><span class="sum">營 ${s.sum}</span><span class="cnt">次 ${s.cnt}</span><span class="fee">費 ${Math.round(s.fee)}</span><span class="net">淨 ${s.net}</span></span>
- </div>`;
+    <span class="sc-stat"><span class="sum">營 ${s.sum}</span><span class="cnt">次 ${s.cnt}</span><span class="fee">費 ${Math.round(s.fee)}</span><span class="net">淨 ${s.net}</span></span>
+  </div>`;
 
   if(days.length === 0){ html += `<div class="empty-tip">此月尚無紀錄</div>`; document.getElementById('statContent').innerHTML = html; return; }
   days.forEach(d=>{
@@ -1012,7 +980,6 @@ function renderStatDayList(monthStr){
       </div>
     `;
   });
-
   document.getElementById('statContent').innerHTML = html;
 }
 
@@ -1023,8 +990,7 @@ function renderStatMonthList(yearStr){
   const months = Object.keys(monthMap).sort();
   const s = calcIncomeStat(yearStr);
 
-  let html = statBarHtml();
-  html += `<div class="crumb">${yearStr} 每月統計</div>`;
+  let html = `<div class="crumb">${yearStr} 每月統計</div>`;
   html += `<div class="summary-card">
     <span class="sc-name">年總</span>
     <span class="sc-stat"><span class="sum">營 ${s.sum}</span><span class="cnt">次 ${s.cnt}</span><span class="fee">費 ${Math.round(s.fee)}</span><span class="net">淨 ${s.net}</span></span>
@@ -1037,8 +1003,7 @@ function renderStatMonthList(yearStr){
     const mSum = arr.reduce((a,r)=>a+Number(r.raw||0),0);
     const mFee = arr.reduce((a,r)=>a+Number(r.fee||0),0);
     const mNet = arr.reduce((a,r)=>a+Number(r.net||0),0);
-     const mCnt = arr.length; //新增這一行
-    
+    const mCnt = arr.length;
     html += `
       <div class="stat-card" onclick="statDrillToDayList('${yearStr}-${m}')">
         <span class="sc-name">${m} 月</span>
@@ -1046,17 +1011,13 @@ function renderStatMonthList(yearStr){
       </div>
     `;
   });
-
   document.getElementById('statContent').innerHTML = html;
 }
 
 function renderStatYearList(){
   const years = [...new Set(getRecords().map(r => r.date.split("-")[0]))].sort().reverse();
-  let html = statBarHtml();
-  html += `<div class="crumb">所有年份統計</div>`;
-
+  let html = `<div class="crumb">所有年份統計</div>`;
   if(years.length === 0){ html += `<div class="empty-tip">尚無紀錄</div>`; document.getElementById('statContent').innerHTML = html; return; }
-
   years.forEach(y=>{
     const s = calcIncomeStat(y);
     html += `
@@ -1066,23 +1027,18 @@ function renderStatYearList(){
       </div>
     `;
   });
-
   document.getElementById('statContent').innerHTML = html;
 }
 
 function renderStatDayDetail(dateStr){
   const recs = getRecords().filter(r => r.date === dateStr);
   const s = calcIncomeStat(dateStr);
-
-  let html = statBarHtml();
-  html += `<div class="crumb">${dateStr} 當日明細</div>`;
+  let html = `<div class="crumb">${dateStr} 當日明細</div>`;
   html += `<div class="summary-card">
     <span class="sc-name">日總</span>
     <span class="sc-stat"><span class="sum">營 ${s.sum}</span><span class="cnt">次 ${s.cnt}</span><span class="fee">費 ${Math.round(s.fee)}</span><span class="net">淨 ${s.net}</span></span>
   </div>`;
-
   if(recs.length === 0){ html += `<div class="empty-tip">此日尚無紀錄</div>`; document.getElementById('statContent').innerHTML = html; return; }
-
   const asc = [...recs].sort((a,b)=>a.id-b.id);
   let cum = 0;
   asc.forEach((item, i)=>{
@@ -1094,47 +1050,44 @@ function renderStatDayDetail(dateStr){
       </div>
     `;
   });
-
   document.getElementById('statContent').innerHTML = html;
 }
 
-/* 統計頁鑽取 */
 function statDrillToDayList(monthStr){ statViewStack.push({type:'dayList', month:monthStr}); renderStatView(); }
 function statDrillToMonthList(yearStr){ statViewStack.push({type:'monthList', year:yearStr}); renderStatView(); }
 function statDrillToDayDetail(dateStr){ statViewStack.push({type:'dayDetail', date:dateStr}); renderStatView(); }
 
-/* ============================================================
-   支出統計頁：三張篩選卡（日/月/年）+ 檢視堆疊
-   ============================================================ */
+/* ===== 支出統計（含淨收入、餘額） ===== */
 function calcExpStat(prefix){
   const list = getExpenses().filter(e => e.date.startsWith(prefix));
   const sum = list.reduce((s,e)=>s+Number(e.raw||0),0);
-  return { sum, count: list.length };
+  const income = calcIncomeStat(prefix);
+  const net = income.net || 0;
+  const balance = net - sum;
+  return { sum, count: list.length, net, balance };
 }
 
 function refreshExpCards(){
-  const now = new Date();
-  const y = now.getFullYear();
-  const m = String(now.getMonth()+1).padStart(2,'0');
-  const d = String(now.getDate()).padStart(2,'0');
-  const dayPrefix = `${y}-${m}-${d}`;
+  const today = getBizDate(new Date());
+  const parts = today.split('-');
+  const y = parts[0], m = parts[1], d = parts[2];
   const monPrefix = `${y}-${m}`;
-  const yrPrefix  = `${y}`;
+  const yrPrefix  = y;
 
-  document.getElementById('expFcDay').textContent   = `${parseInt(m)}-${parseInt(d)}`;
+  document.getElementById('expFcDay').textContent   = `${parseInt(m,10)}-${parseInt(d,10)}`;
   document.getElementById('expFcMonth').textContent = monPrefix;
   document.getElementById('expFcYear').textContent  = yrPrefix;
 
-  const ds = calcExpStat(dayPrefix);
+  const ds = calcExpStat(today);
   const ms = calcExpStat(monPrefix);
   const ys = calcExpStat(yrPrefix);
 
   document.getElementById('expFcDayStat').innerHTML =
-    `<span class="fee">支出 ${ds.sum}</span>　<span class="cnt">${ds.count}筆</span>`;
+    `<span class="net">淨 ${ds.net}</span><span class="fee">支 ${ds.sum}</span><span class="bal">餘 ${ds.balance}</span><span class="cnt">${ds.count}筆</span>`;
   document.getElementById('expFcMonthStat').innerHTML =
-    `<span class="fee">支出 ${ms.sum}</span>　<span class="cnt">${ms.count}筆</span>`;
+    `<span class="net">淨 ${ms.net}</span><span class="fee">支 ${ms.sum}</span><span class="bal">餘 ${ms.balance}</span><span class="cnt">${ms.count}筆</span>`;
   document.getElementById('expFcYearStat').innerHTML =
-    `<span class="fee">支出 ${ys.sum}</span>　<span class="cnt">${ys.count}筆</span>`;
+    `<span class="net">淨 ${ys.net}</span><span class="fee">支 ${ys.sum}</span><span class="bal">餘 ${ys.balance}</span><span class="cnt">${ys.count}筆</span>`;
 }
 
 function showExpDefault(){
@@ -1144,29 +1097,18 @@ function showExpDefault(){
 }
 
 function expGoDayEntry(){
-  const now = new Date();
-  const monPrefix = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
-  expViewStack = [{type:'dayList', month:monPrefix}];
+  const today = getBizDate(new Date());
+  expViewStack = [{type:'dayList', month:today.slice(0,7)}];
   renderExpView();
 }
 function expGoMonthEntry(){
-  const now = new Date();
-  expViewStack = [{type:'monthList', year:`${now.getFullYear()}`}];
+  const today = getBizDate(new Date());
+  expViewStack = [{type:'monthList', year:today.slice(0,4)}];
   renderExpView();
 }
 function expGoYearEntry(){
   expViewStack = [{type:'yearList'}];
   renderExpView();
-}
-
-function expBack(){
-  if(expViewStack.length > 1){
-    expViewStack.pop();
-    renderExpView();
-    return;
-  }
-  showExpDefault();
-  navBack();
 }
 
 function renderExpView(){
@@ -1182,10 +1124,6 @@ function renderExpView(){
   refreshExpCards();
 }
 
-function expBarHtml(){
-  return '';
-}
-
 function renderExpDayList(monthStr){
   const list = getExpenses().filter(e => e.date.startsWith(monthStr));
   const dayMap = {};
@@ -1193,11 +1131,10 @@ function renderExpDayList(monthStr){
   const days = Object.keys(dayMap).sort();
   const s = calcExpStat(monthStr);
 
-  let html = expBarHtml();
-  html += `<div class="crumb">${monthStr} 每日支出</div>`;
+  let html = `<div class="crumb">${monthStr} 每日支出</div>`;
   html += `<div class="summary-card">
     <span class="sc-name">月總</span>
-    <span class="sc-stat"><span class="fee">支出 ${s.sum}</span>　<span class="cnt">${s.count}筆</span></span>
+    <span class="sc-stat"><span class="net">淨 ${s.net}</span><span class="fee">支 ${s.sum}</span><span class="bal">餘 ${s.balance}</span><span class="cnt">${s.count}筆</span></span>
   </div>`;
 
   if(days.length === 0){ html += `<div class="empty-tip">此月尚無支出</div>`; document.getElementById('expContent').innerHTML = html; return; }
@@ -1205,14 +1142,15 @@ function renderExpDayList(monthStr){
   days.forEach(d=>{
     const arr = dayMap[d];
     const dSum = arr.reduce((a,e)=>a+Number(e.raw||0),0);
+    const dayPrefix = `${monthStr}-${d}`;
+    const dayStat = calcExpStat(dayPrefix);
     html += `
-      <div class="stat-card exp" onclick="expDrillToDayDetail('${monthStr}-${d}')">
+      <div class="stat-card exp" onclick="expDrillToDayDetail('${dayPrefix}')">
         <span class="sc-name">${monthStr.slice(5)}-${d}</span>
-        <span class="sc-stat"><span class="fee">支出 ${dSum}</span>　<span class="cnt">${arr.length}筆</span></span>
+        <span class="sc-stat"><span class="net">淨 ${dayStat.net}</span><span class="fee">支 ${dSum}</span><span class="bal">餘 ${dayStat.balance}</span><span class="cnt">${arr.length}筆</span></span>
       </div>
     `;
   });
-
   document.getElementById('expContent').innerHTML = html;
 }
 
@@ -1223,11 +1161,10 @@ function renderExpMonthList(yearStr){
   const months = Object.keys(monthMap).sort();
   const s = calcExpStat(yearStr);
 
-  let html = expBarHtml();
-  html += `<div class="crumb">${yearStr} 每月支出</div>`;
+  let html = `<div class="crumb">${yearStr} 每月支出</div>`;
   html += `<div class="summary-card">
     <span class="sc-name">年總</span>
-    <span class="sc-stat"><span class="fee">支出 ${s.sum}</span>　<span class="cnt">${s.count}筆</span></span>
+    <span class="sc-stat"><span class="net">淨 ${s.net}</span><span class="fee">支 ${s.sum}</span><span class="bal">餘 ${s.balance}</span><span class="cnt">${s.count}筆</span></span>
   </div>`;
 
   if(months.length === 0){ html += `<div class="empty-tip">此年尚無支出</div>`; document.getElementById('expContent').innerHTML = html; return; }
@@ -1235,50 +1172,43 @@ function renderExpMonthList(yearStr){
   months.forEach(m=>{
     const arr = monthMap[m];
     const mSum = arr.reduce((a,e)=>a+Number(e.raw||0),0);
+    const monPrefix = `${yearStr}-${m}`;
+    const monStat = calcExpStat(monPrefix);
     html += `
-      <div class="stat-card exp" onclick="expDrillToDayList('${yearStr}-${m}')">
+      <div class="stat-card exp" onclick="expDrillToDayList('${monPrefix}')">
         <span class="sc-name">${m} 月</span>
-        <span class="sc-stat"><span class="fee">支出 ${mSum}</span>　<span class="cnt">${arr.length}筆</span></span>
+        <span class="sc-stat"><span class="net">淨 ${monStat.net}</span><span class="fee">支 ${mSum}</span><span class="bal">餘 ${monStat.balance}</span><span class="cnt">${arr.length}筆</span></span>
       </div>
     `;
   });
-
   document.getElementById('expContent').innerHTML = html;
 }
 
 function renderExpYearList(){
   const years = [...new Set(getExpenses().map(e => e.date.split("-")[0]))].sort().reverse();
-  let html = expBarHtml();
-  html += `<div class="crumb">所有年份支出</div>`;
-
+  let html = `<div class="crumb">所有年份支出</div>`;
   if(years.length === 0){ html += `<div class="empty-tip">尚無支出</div>`; document.getElementById('expContent').innerHTML = html; return; }
-
   years.forEach(y=>{
     const s = calcExpStat(y);
     html += `
       <div class="stat-card exp" onclick="expDrillToMonthList('${y}')">
         <span class="sc-name">${y} 年</span>
-        <span class="sc-stat"><span class="fee">支出 ${s.sum}</span>　<span class="cnt">${s.count}筆</span></span>
+        <span class="sc-stat"><span class="net">淨 ${s.net}</span><span class="fee">支 ${s.sum}</span><span class="bal">餘 ${s.balance}</span><span class="cnt">${s.count}筆</span></span>
       </div>
     `;
   });
-
   document.getElementById('expContent').innerHTML = html;
 }
 
 function renderExpDayDetail(dateStr){
   const list = getExpenses().filter(e => e.date === dateStr);
   const s = calcExpStat(dateStr);
-
-  let html = expBarHtml();
-  html += `<div class="crumb">${dateStr} 當日支出</div>`;
+  let html = `<div class="crumb">${dateStr} 當日支出</div>`;
   html += `<div class="summary-card">
     <span class="sc-name">日總</span>
-    <span class="sc-stat"><span class="fee">支出 ${s.sum}</span>　<span class="cnt">${s.count}筆</span></span>
+    <span class="sc-stat"><span class="net">淨 ${s.net}</span><span class="fee">支 ${s.sum}</span><span class="bal">餘 ${s.balance}</span><span class="cnt">${s.count}筆</span></span>
   </div>`;
-
   if(list.length === 0){ html += `<div class="empty-tip">此日尚無支出</div>`; document.getElementById('expContent').innerHTML = html; return; }
-
   html += `<div class="section-title"><h3>支出明細（${list.length} 筆）</h3></div>`;
   list.sort((a,b)=>a.id-b.id).forEach(e=>{
     html += `
@@ -1291,7 +1221,6 @@ function renderExpDayDetail(dateStr){
       </div>
     `;
   });
-
   document.getElementById('expContent').innerHTML = html;
 }
 
@@ -1299,7 +1228,6 @@ function expDrillToDayList(monthStr){ expViewStack.push({type:'dayList', month:m
 function expDrillToMonthList(yearStr){ expViewStack.push({type:'monthList', year:yearStr}); renderExpView(); }
 function expDrillToDayDetail(dateStr){ expViewStack.push({type:'dayDetail', date:dateStr}); renderExpView(); }
 
-/* ===== 修改收入紀錄 ===== */
 const editModal = document.getElementById('editModal');
 function openEdit(id){
   editId = id;
@@ -1357,17 +1285,16 @@ function saveEdit(){
 
   saveRecords(recs);
   closeEditModal(); calcTotal(); renderTodayList();
-  renderStatView();
+  renderStatView(); refreshStatCards(); refreshExpCards();
 }
 function deleteRec(){
   if(editId === null) return;
   if(!confirm("確定要刪除這筆紀錄嗎？")) return;
   saveRecords(getRecords().filter(r => r.id !== editId));
   closeEditModal(); calcTotal(); renderTodayList();
-  renderStatView();
+  renderStatView(); refreshStatCards(); refreshExpCards();
 }
 
-/* ===== 修改支出紀錄 ===== */
 const editExpModal = document.getElementById('editExpModal');
 function openEditExp(id){
   editExpId = id;
@@ -1399,17 +1326,16 @@ function saveEditExp(){
   exps[idx].note = note;
   saveExpenses(exps);
   closeEditExpModal();
-  renderExpView();
+  renderExpView(); refreshExpCards();
 }
 function deleteExp(){
   if(editExpId === null) return;
   if(!confirm("確定要刪除這筆支出嗎？")) return;
   saveExpenses(getExpenses().filter(e => e.id !== editExpId));
   closeEditExpModal();
-  renderExpView();
+  renderExpView(); refreshExpCards();
 }
 
-/* ===== 設定頁 ===== */
 function renderSetting(){
   const tw = document.getElementById('typeListSet'); tw.innerHTML = "";
   config.typeList.forEach((t, i)=>{
