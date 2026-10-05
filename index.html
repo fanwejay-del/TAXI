@@ -75,8 +75,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .filter-bar{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
 .filter-card{background:#fff;border-radius:12px;padding:12px 10px;box-shadow:0 2px 8px rgba(0,0,0,.06);cursor:pointer;display:flex;justify-content:space-between;align-items:center;min-width:0;overflow:hidden;}
 .filter-card:active{background:#f8fafc;transform:scale(.99);}
-.filter-card .fc-label{font-size:calc(1.15px * var(--fs-num));color:#64748b;flex-shrink:0;min-width:1.2em;text-align:left;}
-.filter-card .fc-main{font-size:calc(1.55px * var(--fs-num));color:#0f172a;flex-shrink:0;margin-left:6px;min-width:0;max-width:28%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.filter-card .fc-main{font-size:calc(1.55px * var(--fs-num));color:#0f172a;flex-shrink:0;min-width:0;max-width:34%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .filter-card .fc-stat{font-size:calc(1.1px * var(--fs-num));color:#475569;flex:1;margin-left:8px;line-height:1.5;display:flex;justify-content:flex-end;align-items:baseline;gap:clamp(2px,1.2vw,6px);min-width:0;overflow:hidden;flex-wrap:wrap;}
 .filter-card .fc-arrow{color:#94a3b8;font-size:calc(1.25px * var(--fs-num));margin-left:6px;flex-shrink:0;}
 .filter-card .fc-stat span,.summary-card .sc-stat span,.stat-card .sc-stat span{flex:0 1 auto;min-width:0;white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums;}
@@ -227,9 +226,9 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 <div id="pageStat" class="page">
 <div id="statMainView">
 <div class="filter-bar">
-<div class="filter-card" onclick="statGoDayEntry()"><span class="fc-label">日</span><span class="fc-main" id="statFcDay">--</span><span class="fc-stat" id="statFcDayStat">—</span><span class="fc-arrow">›</span></div>
-<div class="filter-card" onclick="statGoMonthEntry()"><span class="fc-label">月</span><span class="fc-main" id="statFcMonth">--</span><span class="fc-stat" id="statFcMonthStat">—</span><span class="fc-arrow">›</span></div>
-<div class="filter-card" onclick="statGoYearEntry()"><span class="fc-label">年</span><span class="fc-main" id="statFcYear">--</span><span class="fc-stat" id="statFcYearStat">—</span><span class="fc-arrow">›</span></div>
+<div class="filter-card" onclick="statGoDayEntry()"><span class="fc-main" id="statFcDay">--</span><span class="fc-stat" id="statFcDayStat">—</span><span class="fc-arrow">›</span></div>
+<div class="filter-card" onclick="statGoMonthEntry()"><span class="fc-main" id="statFcMonth">--</span><span class="fc-stat" id="statFcMonthStat">—</span><span class="fc-arrow">›</span></div>
+<div class="filter-card" onclick="statGoYearEntry()"><span class="fc-main" id="statFcYear">--</span><span class="fc-stat" id="statFcYearStat">—</span><span class="fc-arrow">›</span></div>
 </div>
 <div id="statContent"><div class="empty-tip">點上方卡片查看統計</div></div>
 </div></div>
@@ -238,9 +237,9 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 <div id="expMainView">
 <div class="add-bar"><button class="add-btn" onclick="openExpInputModal()">＋ 新增支出</button></div>
 <div class="filter-bar">
-<div class="filter-card" onclick="expGoDayEntry()"><span class="fc-label">日</span><span class="fc-main" id="expFcDay">--</span><span class="fc-stat" id="expFcDayStat">—</span><span class="fc-arrow">›</span></div>
-<div class="filter-card" onclick="expGoMonthEntry()"><span class="fc-label">月</span><span class="fc-main" id="expFcMonth">--</span><span class="fc-stat" id="expFcMonthStat">—</span><span class="fc-arrow">›</span></div>
-<div class="filter-card" onclick="expGoYearEntry()"><span class="fc-label">年</span><span class="fc-main" id="expFcYear">--</span><span class="fc-stat" id="expFcYearStat">—</span><span class="fc-arrow">›</span></div>
+<div class="filter-card" onclick="expGoDayEntry()"><span class="fc-main" id="expFcDay">--</span><span class="fc-stat" id="expFcDayStat">—</span><span class="fc-arrow">›</span></div>
+<div class="filter-card" onclick="expGoMonthEntry()"><span class="fc-main" id="expFcMonth">--</span><span class="fc-stat" id="expFcMonthStat">—</span><span class="fc-arrow">›</span></div>
+<div class="filter-card" onclick="expGoYearEntry()"><span class="fc-main" id="expFcYear">--</span><span class="fc-stat" id="expFcYearStat">—</span><span class="fc-arrow">›</span></div>
 </div>
 <div id="expContent"><div class="empty-tip">點上方卡片查看支出</div></div>
 </div></div>
