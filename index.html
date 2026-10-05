@@ -280,9 +280,9 @@ function onFontSizeChange(v){document.getElementById('fontSizeValue').textConten
 function onFontWeightChange(v){document.getElementById('fontWeightValue').textContent=v;applyFontWeight(Number(v));config.fontWeight=Number(v)||700;saveConfig();}
 function onHourChange(){updateHourPreview();var s=Number(document.getElementById('setStartHour').value),e=Number(document.getElementById('setEndHour').value);if(!Number.isInteger(s)||s<0||s>23)return;if(!Number.isInteger(e)||e<0||e>23)return;config.businessHour={start:s,end:e};saveConfig();}
 function onTypeNameChange(i,v){if(config.typeList[i]){config.typeList[i].name=v.trim();saveConfig();renderHomeTypeBtn();}}
-function onTypeDeductChange(i,v){if(config.typeList[i]){config.typeList[i].deduct=Number(v)||0;saveConfig();}}
+function onTypeDeductChange(i,v){if(config.typeList[i]){config.typeList[i].deduct=Math.max(0,Number(v)||0);saveConfig();}}
 function onPayNameChange(i,v){if(config.payList[i]){config.payList[i].name=v.trim();saveConfig();}}
-function onPayRateChange(i,v){if(config.payList[i]){config.payList[i].rate=Number(v)||0;saveConfig();}}
+function onPayRateChange(i,v){if(config.payList[i]){config.payList[i].rate=Math.max(0,Number(v)||0);saveConfig();}}
 function onExpNameChange(i,v){if(config.expList[i]){config.expList[i].name=v.trim();saveConfig();}}
 
 function saveConfig(){localStorage.setItem('taxiConfig',JSON.stringify(config));}
@@ -318,7 +318,7 @@ document.getElementById('fileImport').onchange=function(e){
   r.onload=function(ev){
     try{
       var d=JSON.parse(ev.target.result);
-      if(!d.config||!Array.isArray(d.records)){alert('❌ 備份檔格式錯誤');return;}
+      if(!d.config||!Array.isArray(d.records)||!Array.isArray(d.config.typeList)||!Array.isArray(d.config.payList)){alert('❌ 備份檔格式錯誤');return;}
       if(d.records.find(function(x){return !isValidRecord(x);})){alert('❌ 收入紀錄格式錯誤，已中止匯入');return;}
       if(d.expenses&&!Array.isArray(d.expenses)){alert('❌ 支出紀錄格式錯誤');return;}
       if(d.expenses&&d.expenses.find(function(x){return !isValidExpense(x);})){alert('❌ 支出紀錄格式錯誤，已中止匯入');return;}
@@ -330,7 +330,8 @@ document.getElementById('fileImport').onchange=function(e){
       if(!config.expList)config.expList=[{name:'加油',color:'#dc2626'},{name:'其他',color:'#475569'}];
       if(config.payList)config.payList.forEach(function(p){delete p.isCash;});
       saveConfig();saveRecords(d.records);
-      if(Array.isArray(d.expenses))saveExpenses(d.expenses);
+      // 匯入是「覆蓋全部資料」：備份沒有支出時也要清空現有支出
+      saveExpenses(Array.isArray(d.expenses)?d.expenses:[]);
       applyFontSize(config.fontSize);applyFontWeight(config.fontWeight);
       alert('✅ 匯入成功！');
       renderHomeTypeBtn();calcTotal();renderTodayList();refreshStatCards();refreshExpCards();
@@ -392,12 +393,12 @@ function saveRecord(payItem){
   if(payItem.name==='好孕券'&&amt>250){
     var fee=0,net=amt-fee;if(typeItem)net-=Number(typeItem.deduct||0);if(net<0)net=0;
     var list=getRecords();
-    list.unshift({id:nextId(),type:currentType,pay:'好孕券',raw:amt,fee:fee,net:Math.round(net),date:getBizDate(now),time:fmtTime(),splits:[{pay:'好孕券',amount:250},{pay:'現金',amount:amt-250}]});
+    list.unshift({id:nextId(),type:currentType,pay:'好孕券',raw:amt,fee:fee,net:Math.round(net),deduct:typeItem?Number(typeItem.deduct||0):0,date:getBizDate(now),time:fmtTime(),splits:[{pay:'好孕券',amount:250},{pay:(config.payList[0]&&config.payList[0].name)||'現金',amount:amt-250}]});
     saveRecords(list);
   }else{
     var fee2=amt*Number(payItem.rate||0)/100,net2=amt-fee2;if(typeItem)net2-=Number(typeItem.deduct||0);if(net2<0)net2=0;
     var list2=getRecords();
-    list2.unshift({id:nextId(),type:currentType,pay:payItem.name,raw:amt,fee:fee2,net:Math.round(net2),date:getBizDate(now),time:fmtTime()});
+    list2.unshift({id:nextId(),type:currentType,pay:payItem.name,raw:amt,fee:fee2,net:Math.round(net2),deduct:typeItem?Number(typeItem.deduct||0):0,date:getBizDate(now),time:fmtTime()});
     saveRecords(list2);
   }
   closeInputModal();calcTotal();renderTodayList();refreshStatCards();refreshExpCards();
@@ -421,13 +422,30 @@ function calcDayStats(recs,targetDate){
   config.typeList.forEach(function(t){typeCount[t.name]=0;});
   recs.forEach(function(r){
     if(r.date!==targetDate)return;
-    daySum+=Number(r.net||0);feeSum+=Number(r.fee||0);typeCount[r.type]=(typeCount[r.type]||0)+1;
-    var ti=config.typeList.find(function(t){return t.name===r.type;});
-    if(ti&&Number(ti.deduct)>0)deductSum+=Number(ti.deduct);
-    if(r.splits&&Array.isArray(r.splits)){r.splits.forEach(function(s){if(isCashPay(s.pay))cashSum+=Number(s.amount||0);else nonCashSum+=Number(s.amount||0);});}
-    else{if(isCashPay(r.pay))cashSum+=Number(r.raw||0);else nonCashSum+=Number(r.raw||0);}
+    // 營業額 = 原始車資，不扣手續費、不扣派遣費
+    daySum+=Number(r.raw||0);
+    feeSum+=Number(r.fee||0);
+    typeCount[r.type]=(typeCount[r.type]||0)+1;
+
+    // 新紀錄保存當時的派遣費；舊紀錄沒有 deduct 時才用目前設定作為相容 fallback
+    if(Number.isFinite(Number(r.deduct))) deductSum+=Number(r.deduct||0);
+    else{
+      var ti=config.typeList.find(function(t){return t.name===r.type;});
+      if(ti)deductSum+=Number(ti.deduct||0);
+    }
+
+    // 現金／非現金均以原始營業額計算，不受手續費影響
+    if(r.splits&&Array.isArray(r.splits)){
+      r.splits.forEach(function(s){
+        if(isCashPay(s.pay))cashSum+=Number(s.amount||0);
+        else nonCashSum+=Number(s.amount||0);
+      });
+    }else{
+      if(isCashPay(r.pay))cashSum+=Number(r.raw||0);
+      else nonCashSum+=Number(r.raw||0);
+    }
   });
-  return{daySum:daySum,cashSum:cashSum,nonCashSum:nonCashSum,feeSum:feeSum,deductSum:deductSum,typeCount:typeCount};
+  return{daySum:daySum,cashSum:cashSum,nonCashSum:nonCashSum,feeSum:feeSum,deductSum:deductSum};
 }
 function calcTotal(){
   var today=getBizDate(new Date()),s=calcDayStats(getRecords(),today),typeArr=[];
@@ -610,8 +628,8 @@ function saveEdit(){
   var type=document.getElementById('editType').value,payName=document.getElementById('editPay').value,raw=Number(document.getElementById('editAmount').value);
   if(!raw||raw<=0){alert('金額錯誤');return;}
   var pi=config.payList.find(function(p){return p.name===payName;}),ti=config.typeList.find(function(t){return t.name===type;});if(!pi)return;
-  if(payName==='好孕券'&&raw>250){var fee=0,net=raw;if(ti)net-=Number(ti.deduct||0);if(net<0)net=0;recs[idx].type=type;recs[idx].pay='好孕券';recs[idx].raw=raw;recs[idx].fee=fee;recs[idx].net=Math.round(net);recs[idx].splits=[{pay:'好孕券',amount:250},{pay:'現金',amount:raw-250}];}
-  else{var fee2=raw*Number(pi.rate||0)/100,net2=raw-fee2;if(ti)net2-=Number(ti.deduct||0);if(net2<0)net2=0;recs[idx].type=type;recs[idx].pay=payName;recs[idx].raw=raw;recs[idx].fee=fee2;recs[idx].net=Math.round(net2);delete recs[idx].splits;}
+  if(payName==='好孕券'&&raw>250){var fee=0,net=raw;if(ti)net-=Number(ti.deduct||0);if(net<0)net=0;recs[idx].type=type;recs[idx].pay='好孕券';recs[idx].raw=raw;recs[idx].fee=fee;recs[idx].deduct=ti?Number(ti.deduct||0):0;recs[idx].net=Math.round(net);recs[idx].splits=[{pay:'好孕券',amount:250},{pay:(config.payList[0]&&config.payList[0].name)||'現金',amount:raw-250}];}
+  else{var fee2=raw*Number(pi.rate||0)/100,net2=raw-fee2;if(ti)net2-=Number(ti.deduct||0);if(net2<0)net2=0;recs[idx].type=type;recs[idx].pay=payName;recs[idx].raw=raw;recs[idx].fee=fee2;recs[idx].deduct=ti?Number(ti.deduct||0):0;recs[idx].net=Math.round(net2);delete recs[idx].splits;}
   saveRecords(recs);closeEditModal();calcTotal();renderTodayList();renderStatView();refreshStatCards();refreshExpCards();
 }
 function deleteRec(){if(editId===null)return;if(!confirm('確定要刪除這筆紀錄嗎？'))return;saveRecords(getRecords().filter(function(r){return r.id!==editId;}));closeEditModal();calcTotal();renderTodayList();renderStatView();refreshStatCards();refreshExpCards();}
