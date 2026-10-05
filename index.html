@@ -56,9 +56,10 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .exportBtn{background:#16a34a;}
 .importBtn{background:#7c3aed;}
 .empty-tip{text-align:center;color:#94a3b8;padding:24px 16px;font-size:calc(1.05px * var(--fs-num));}
-.section-title{display:flex;justify-content:space-between;align-items:center;margin:12px 0 6px;}
-.section-title h3{font-size:calc(1.15px * var(--fs-num));color:#0f172a;}
-.sortBtn{border:none;background:#e0f2fe;color:#0369a1;font-size:calc(.9px * var(--fs-num));padding:5px 10px;border-radius:20px;}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:12px 0 6px;gap:8px;}
+.section-title h3{font-size:calc(1.15px * var(--fs-num));color:#0f172a;flex-shrink:0;}
+.section-title .today-date{font-size:calc(.95px * var(--fs-num));color:#64748b;margin-left:auto;white-space:nowrap;flex-shrink:0;}
+.sortBtn{border:none;background:#e0f2fe;color:#0369a1;font-size:calc(.9px * var(--fs-num));padding:5px 10px;border-radius:20px;flex-shrink:0;}
 #typeListSet input,#payListSet input,#expListSet input,.setBlock .item input{font-size:calc(.95px * var(--fs-num));padding:4px 8px;height:26px;border-radius:6px;border:1.2px solid #e2e8f0;background:#f8fafc;margin:0;}
 #typeListSet input[type="number"],#payListSet input[type="number"],#expListSet input[type="number"],.setBlock .item input[type="number"]{width:4.5em;max-width:72px;text-align:center;flex-shrink:0;}
 #typeListSet input:not([type="number"]),#payListSet input:not([type="number"]),#expListSet input:not([type="number"]),.setBlock .item input:not([type="number"]){flex:1;min-width:0;}
@@ -215,7 +216,11 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 <span class="stat-pair" id="typeCountText" style="color:#475569;"></span>
 </div>
 </div>
-<div class="section-title"><h3>今日明細</h3><button class="sortBtn" id="sortBtn" onclick="toggleSort()">新→舊 ⇅</button></div>
+<div class="section-title">
+  <h3>今日明細</h3>
+  <span class="today-date" id="todayDateText">--</span>
+  <button class="sortBtn" id="sortBtn" onclick="toggleSort()">排序</button>
+</div>
 <div id="listToday"></div>
 </div>
 
@@ -291,6 +296,18 @@ function escapeHtml(v){return String(v==null?"":v).replace(/&/g,"&amp;").replace
 function isCashPay(p){var first=config.payList[0];return !!(first&&first.name===p);}
 function getBizDate(dt){var h=dt.getHours(),sh=Number(config.businessHour&&config.businessHour.start!=null?config.businessHour.start:22),eh=Number(config.businessHour&&config.businessHour.end!=null?config.businessHour.end:8);var d=new Date(dt);if(sh>eh&&h<eh)d.setDate(d.getDate()-1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 
+/* ===== 取得今天日期 + 星期幾 ===== */
+function getTodayWeekdayText(){
+  var d=new Date();
+  var wd=['日','一','二','三','四','五','六'][d.getDay()];
+  return (d.getMonth()+1)+'/'+String(d.getDate()).padStart(2,'0')+' 週'+wd;
+}
+
+/* ===== 統計卡片顯示格式：5日 / 10月 / 26年 ===== */
+function fmtDayShort(d){return parseInt(d,10)+'日';}
+function fmtMonthShort(m){return parseInt(m,10)+'月';}
+function fmtYearShort(y){return String(y).slice(-2)+'年';}
+
 function exportBackup(){var data={saveTime:new Date().toISOString(),config:config,records:getRecords(),expenses:getExpenses()};var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='計程車記帳備份_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);alert('✅ 備份檔已下載！');}
 
 function isValidRecord(r){return r&&typeof r==='object'&&typeof r.id!=='undefined'&&typeof r.type==='string'&&typeof r.pay==='string'&&Number.isFinite(Number(r.raw))&&Number.isFinite(Number(r.net))&&typeof r.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(r.date);}
@@ -348,7 +365,12 @@ function showPage(id){
   }
   if(id==='pageStat')showStatDefault();
   if(id==='pageExpStat')showExpDefault();
-  if(id==='pageHome')renderHomeTypeBtn();
+  if(id==='pageHome'){renderHomeTypeBtn();updateTodayDateText();}
+}
+
+function updateTodayDateText(){
+  var el=document.getElementById('todayDateText');
+  if(el)el.textContent=getTodayWeekdayText();
 }
 
 function updateHourPreview(){
@@ -417,8 +439,9 @@ function calcTotal(){
   document.getElementById('nonCashTotal').textContent=s.nonCashSum;
   document.getElementById('feeTotal').textContent=Math.round(s.feeSum);
   document.getElementById('deductTotal').textContent=Math.round(s.deductSum);
+  updateTodayDateText();
 }
-function toggleSort(){sortNewFirst=!sortNewFirst;document.getElementById('sortBtn').textContent=sortNewFirst?'新→舊 ⇅':'舊→新 ⇅';renderTodayList();}
+function toggleSort(){sortNewFirst=!sortNewFirst;renderTodayList();}
 
 function buildDetailRow(item,idx,cum){
   var typeStr=(item.type||'').charAt(0),typeItem=config.typeList.find(function(t){return t.name===item.type;}),typeColor=typeItem?typeItem.color:'#0f172a';
@@ -458,9 +481,9 @@ function calcExpStat(prefix){
 
 function refreshStatCards(){
   var today=getBizDate(new Date()),p=today.split('-'),y=p[0],m=p[1],d=p[2],mon=y+'-'+m;
-  document.getElementById('statFcDay').textContent=parseInt(m,10)+'-'+parseInt(d,10);
-  document.getElementById('statFcMonth').textContent=mon;
-  document.getElementById('statFcYear').textContent=y;
+  document.getElementById('statFcDay').textContent=fmtDayShort(d);
+  document.getElementById('statFcMonth').textContent=fmtMonthShort(m);
+  document.getElementById('statFcYear').textContent=fmtYearShort(y);
   var ds=calcIncomeStat(today),ms=calcIncomeStat(mon),ys=calcIncomeStat(y);
   document.getElementById('statFcDayStat').innerHTML='<span class="sum">營 '+ds.sum+'</span><span class="cnt">趟 '+ds.cnt+'</span><span class="fee">費 '+Math.round(ds.fee)+'</span><span class="net">淨 '+ds.net+'</span>';
   document.getElementById('statFcMonthStat').innerHTML='<span class="sum">營 '+ms.sum+'</span><span class="cnt">趟 '+ms.cnt+'</span><span class="fee">費 '+Math.round(ms.fee)+'</span><span class="net">淨 '+ms.net+'</span>';
@@ -468,9 +491,9 @@ function refreshStatCards(){
 }
 function refreshExpCards(){
   var today=getBizDate(new Date()),p=today.split('-'),y=p[0],m=p[1],d=p[2],mon=y+'-'+m;
-  document.getElementById('expFcDay').textContent=parseInt(m,10)+'-'+parseInt(d,10);
-  document.getElementById('expFcMonth').textContent=mon;
-  document.getElementById('expFcYear').textContent=y;
+  document.getElementById('expFcDay').textContent=fmtDayShort(d);
+  document.getElementById('expFcMonth').textContent=fmtMonthShort(m);
+  document.getElementById('expFcYear').textContent=fmtYearShort(y);
   var ds=calcExpStat(today),ms=calcExpStat(mon),ys=calcExpStat(y);
   document.getElementById('expFcDayStat').innerHTML='<span class="net">淨 '+ds.net+'</span><span class="fee">支 '+ds.sum+'</span><span class="bal">餘 '+ds.balance+'</span><span class="cnt">'+ds.count+'筆</span>';
   document.getElementById('expFcMonthStat').innerHTML='<span class="net">淨 '+ms.net+'</span><span class="fee">支 '+ms.sum+'</span><span class="bal">餘 '+ms.balance+'</span><span class="cnt">'+ms.count+'筆</span>';
@@ -627,7 +650,7 @@ function delPayTemp(i){config.payList.splice(i,1);saveConfig();renderSetting();}
 function addNewExpTemp(){var n=document.getElementById('newExpName').value.trim();if(!n){alert('請輸入名稱');return;}config.expList.push({name:n,color:'#dc2626'});saveConfig();renderSetting();document.getElementById('newExpName').value='';}
 function delExpTemp(i){config.expList.splice(i,1);saveConfig();renderSetting();}
 
-window.onload=function(){applyFontSize(config.fontSize);applyFontWeight(config.fontWeight);renderHomeTypeBtn();calcTotal();renderTodayList();refreshStatCards();refreshExpCards();updateNavActive('pageHome');};
+window.onload=function(){applyFontSize(config.fontSize);applyFontWeight(config.fontWeight);renderHomeTypeBtn();calcTotal();renderTodayList();refreshStatCards();refreshExpCards();updateNavActive('pageHome');updateTodayDateText();};
 </script>
 </body>
 </html>
