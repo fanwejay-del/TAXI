@@ -64,6 +64,8 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 #typeListSet input[type="number"],#payListSet input[type="number"],#expListSet input[type="number"],.setBlock .item input[type="number"]{width:4.5em;max-width:72px;text-align:center;flex-shrink:0;}
 #typeListSet input:not([type="number"]),#payListSet input:not([type="number"]),#expListSet input:not([type="number"]),.setBlock .item input:not([type="number"]){flex:1;min-width:0;}
 .item{background:#fff;padding:2px 8px;margin:2px 0;border-radius:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.05);gap:8px;}
+/* ★ 新增：設定頁類別色塊 */
+.item .color-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);}
 .detail-row{display:flex;align-items:center;background:#fff;border-radius:10px;margin:3px 0;padding:3px 8px 3px 6px;box-shadow:0 1px 3px rgba(0,0,0,.05);font-size:calc(1.05px * var(--fs-num));font-family:Consolas,Menlo,monospace;white-space:nowrap;line-height:1.1;cursor:pointer;flex-wrap:wrap;gap:2px 4px;}
 .detail-row:active{background:#f1f5f9;}
 .detail-row>span{flex-shrink:0;white-space:nowrap;}
@@ -272,6 +274,46 @@ if(!config.fontSize)config.fontSize=13;
 if(!config.fontWeight)config.fontWeight=700;
 if(!config.expList)config.expList=[{name:"加油",color:"#dc2626"},{name:"其他",color:"#475569"}];
 
+/* ★ 新增：營業類別自動配色 ===== */
+var TYPE_COLORS=[
+  '#2563eb','#ea580c','#16a34a','#7c3aed','#dc2626',
+  '#0891b2','#ca8a04','#db2777','#059669','#9333ea',
+  '#0d9488','#e11d48','#4f46e5','#65a30d','#c2410c',
+  '#0369a1','#a21caf','#b45309','#15803d','#be123c'
+];
+
+/* 挑一個目前還沒被用過的颜色 */
+function pickUnusedColor(){
+  var used=config.typeList.map(function(t){return String(t.color||'').toLowerCase();});
+  for(var i=0;i<TYPE_COLORS.length;i++){
+    if(used.indexOf(TYPE_COLORS[i].toLowerCase())<0)return TYPE_COLORS[i];
+  }
+  return TYPE_COLORS[config.typeList.length%TYPE_COLORS.length];
+}
+
+/* 挑一個不在 seen 裡的颜色（seen 是已占用颜色的物件） */
+function pickUnusedColorExcluding(seen){
+  for(var i=0;i<TYPE_COLORS.length;i++){
+    if(!seen[TYPE_COLORS[i].toLowerCase()])return TYPE_COLORS[i];
+  }
+  return TYPE_COLORS[Object.keys(seen).length%TYPE_COLORS.length];
+}
+
+/* 整理舊資料：沒颜色或颜色重複的類別自動補色 */
+function ensureTypeColors(){
+  var seen={},changed=false;
+  config.typeList.forEach(function(t){
+    var c=String(t.color||'').toLowerCase();
+    if(!c||seen[c]){
+      var nc=pickUnusedColorExcluding(seen);
+      t.color=nc;seen[nc.toLowerCase()]=1;changed=true;
+    }else{
+      seen[c]=1;
+    }
+  });
+  if(changed)saveConfig();
+}
+
 function applyFontSize(v){document.documentElement.style.setProperty('--fs-num',v);}
 function applyFontWeight(v){document.documentElement.style.setProperty('--fw-num',v);}
 applyFontSize(config.fontSize);applyFontWeight(config.fontWeight);
@@ -329,8 +371,8 @@ document.getElementById('fileImport').onchange=function(e){
       if(!config.fontWeight)config.fontWeight=700;
       if(!config.expList)config.expList=[{name:'加油',color:'#dc2626'},{name:'其他',color:'#475569'}];
       if(config.payList)config.payList.forEach(function(p){delete p.isCash;});
+      ensureTypeColors();               /* ★ 新增：匯入後也自動補色 */
       saveConfig();saveRecords(d.records);
-      // 匯入是「覆蓋全部資料」：備份沒有支出時也要清空現有支出
       saveExpenses(Array.isArray(d.expenses)?d.expenses:[]);
       applyFontSize(config.fontSize);applyFontWeight(config.fontWeight);
       alert('✅ 匯入成功！');
@@ -422,19 +464,16 @@ function calcDayStats(recs,targetDate){
   config.typeList.forEach(function(t){typeCount[t.name]=0;});
   recs.forEach(function(r){
     if(r.date!==targetDate)return;
-    // 營業額 = 原始車資，不扣手續費、不扣派遣費
     daySum+=Number(r.raw||0);
     feeSum+=Number(r.fee||0);
     typeCount[r.type]=(typeCount[r.type]||0)+1;
 
-    // 新紀錄保存當時的派遣費；舊紀錄沒有 deduct 時才用目前設定作為相容 fallback
     if(Number.isFinite(Number(r.deduct))) deductSum+=Number(r.deduct||0);
     else{
       var ti=config.typeList.find(function(t){return t.name===r.type;});
       if(ti)deductSum+=Number(ti.deduct||0);
     }
 
-    // 現金／非現金均以原始營業額計算，不受手續費影響
     if(r.splits&&Array.isArray(r.splits)){
       r.splits.forEach(function(s){
         if(isCashPay(s.pay))cashSum+=Number(s.amount||0);
@@ -654,20 +693,25 @@ function deleteExp(){if(editExpId===null)return;if(!confirm('確定要刪除這�
 
 function renderSetting(){
   var tw=document.getElementById('typeListSet');tw.innerHTML='';
-  config.typeList.forEach(function(t,i){var d=document.createElement('div');d.className='item';d.innerHTML='<input value="'+escapeHtml(t.name)+'" oninput="onTypeNameChange('+i+',this.value)" placeholder="類別名稱"><input type="number" value="'+t.deduct+'" oninput="onTypeDeductChange('+i+',this.value)" placeholder="扣除"><button class="delBtn" onclick="delTypeTemp('+i+')">刪除</button>';tw.appendChild(d);});
+  config.typeList.forEach(function(t,i){var d=document.createElement('div');d.className='item';
+    /* ★ 修改：加上颜色小圓點 */
+    d.innerHTML='<span class="color-dot" style="background:'+escapeHtml(t.color||'#5577aa')+'"></span><input value="'+escapeHtml(t.name)+'" oninput="onTypeNameChange('+i+',this.value)" placeholder="類別名稱"><input type="number" value="'+t.deduct+'" oninput="onTypeDeductChange('+i+',this.value)" placeholder="扣除"><button class="delBtn" onclick="delTypeTemp('+i+')">刪除</button>';
+    tw.appendChild(d);});
   var pw=document.getElementById('payListSet');pw.innerHTML='';
   config.payList.forEach(function(p,i){var d=document.createElement('div');d.className='item';d.innerHTML='<input value="'+escapeHtml(p.name)+'" oninput="onPayNameChange('+i+',this.value)" placeholder="付款名稱"><input type="number" value="'+p.rate+'" oninput="onPayRateChange('+i+',this.value)" placeholder="趴數"><button class="delBtn" onclick="delPayTemp('+i+')">刪除</button>';pw.appendChild(d);});
   var ew=document.getElementById('expListSet');ew.innerHTML='';
   config.expList.forEach(function(e,i){var d=document.createElement('div');d.className='item';d.innerHTML='<input value="'+escapeHtml(e.name)+'" oninput="onExpNameChange('+i+',this.value)" placeholder="支出名稱"><button class="delBtn" onclick="delExpTemp('+i+')">刪除</button>';ew.appendChild(d);});
 }
-function addNewTypeTemp(){var n=document.getElementById('newTypeName').value.trim(),d=Number(document.getElementById('newTypeDeduct').value)||0;if(!n){alert('請輸入名稱');return;}config.typeList.push({name:n,deduct:d,color:'#5577aa'});saveConfig();renderSetting();renderHomeTypeBtn();document.getElementById('newTypeName').value='';document.getElementById('newTypeDeduct').value='';}
+/* ★ 修改：新增類別自動配色 */
+function addNewTypeTemp(){var n=document.getElementById('newTypeName').value.trim(),d=Number(document.getElementById('newTypeDeduct').value)||0;if(!n){alert('請輸入名稱');return;}config.typeList.push({name:n,deduct:d,color:pickUnusedColor()});saveConfig();renderSetting();renderHomeTypeBtn();document.getElementById('newTypeName').value='';document.getElementById('newTypeDeduct').value='';}
 function delTypeTemp(i){config.typeList.splice(i,1);saveConfig();renderSetting();renderHomeTypeBtn();}
 function addNewPayTemp(){var n=document.getElementById('newPayName').value.trim(),r=Number(document.getElementById('newPayRate').value)||0;if(!n){alert('請輸入名稱');return;}config.payList.push({name:n,rate:r,color:'#557799'});saveConfig();renderSetting();document.getElementById('newPayName').value='';document.getElementById('newPayRate').value='';}
 function delPayTemp(i){config.payList.splice(i,1);saveConfig();renderSetting();}
 function addNewExpTemp(){var n=document.getElementById('newExpName').value.trim();if(!n){alert('請輸入名稱');return;}config.expList.push({name:n,color:'#dc2626'});saveConfig();renderSetting();document.getElementById('newExpName').value='';}
 function delExpTemp(i){config.expList.splice(i,1);saveConfig();renderSetting();}
 
-window.onload=function(){applyFontSize(config.fontSize);applyFontWeight(config.fontWeight);renderHomeTypeBtn();calcTotal();renderTodayList();refreshStatCards();refreshExpCards();updateNavActive('pageHome');updateTodayDateText();};
+/* ★ 修改：onload 加上 ensureTypeColors() */
+window.onload=function(){ensureTypeColors();applyFontSize(config.fontSize);applyFontWeight(config.fontWeight);renderHomeTypeBtn();calcTotal();renderTodayList();refreshStatCards();refreshExpCards();updateNavActive('pageHome');updateTodayDateText();};
 </script>
 </body>
 </html>
