@@ -64,7 +64,6 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 #typeListSet input[type="number"],#payListSet input[type="number"],#expListSet input[type="number"],.setBlock .item input[type="number"]{width:4.5em;max-width:72px;text-align:center;flex-shrink:0;}
 #typeListSet input:not([type="number"]),#payListSet input:not([type="number"]),#expListSet input:not([type="number"]),.setBlock .item input:not([type="number"]){flex:1;min-width:0;}
 .item{background:#fff;padding:2px 8px;margin:2px 0;border-radius:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.05);gap:8px;}
-/* ★ 新增：設定頁類別色塊 */
 .item .color-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);}
 .detail-row{display:flex;align-items:center;background:#fff;border-radius:10px;margin:3px 0;padding:3px 8px 3px 6px;box-shadow:0 1px 3px rgba(0,0,0,.05);font-size:calc(1.05px * var(--fs-num));font-family:Consolas,Menlo,monospace;white-space:nowrap;line-height:1.1;cursor:pointer;flex-wrap:wrap;gap:2px 4px;}
 .detail-row:active{background:#f1f5f9;}
@@ -124,7 +123,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 #inputModal .payBtn{padding:18px 8px;font-size:calc(1.2px * var(--fs-num));}
 #inputModal>.modal-card>button{margin-top:6px!important;padding:10px!important;font-size:calc(1.1px * var(--fs-num))!important;}
 
-/* ===== 首頁統計卡片：名稱+數字綁定 ===== */
+/* ===== 首頁統計卡片 ===== */
 .day-summary-card{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:calc(1.05px * var(--fs-num));line-height:1.6;}
 .day-summary-card .stat-pair{display:inline-flex;align-items:baseline;gap:3px;white-space:nowrap;flex-shrink:0;}
 .day-summary-card .stat-pair .lbl{color:#475569;}
@@ -133,8 +132,15 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .day-summary-card .stat-pair .val.purple{color:#7e22ce;}
 .day-summary-card .stat-pair .val.red{color:#dc2626;}
 
+/* ★ 新增：統計頁類別篩選卡片 */
+.stat-type-card{background:#fff;border-radius:12px;padding:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:12px;display:flex;flex-wrap:wrap;gap:6px;}
+.stat-type-btn{flex:1 1 0;min-width:56px;max-width:100%;padding:9px 6px;border:none;border-radius:9px;background:#e2e8f0;color:#475569;font-size:calc(.95px * var(--fs-num));font-weight:inherit;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:filter .12s,transform .1s,box-shadow .12s;box-shadow:0 1px 3px rgba(0,0,0,.12);}
+.stat-type-btn:active{filter:brightness(.88);transform:scale(.96);}
+.stat-type-btn.active{color:#fff!important;box-shadow:0 2px 8px rgba(0,0,0,.25);}
+.stat-type-btn.all-btn.active{background:#0f172a!important;}
+
 @media(max-width:600px){body{padding:8px 0;}.page{padding:0 4px;}}
-@media(max-width:400px){.summary-card .sc-stat,.stat-card .sc-stat{font-size:calc(.82px * var(--fs-num));gap:2px;}}
+@media(max-width:400px){.summary-card .sc-stat,.stat-card .sc-stat{font-size:calc(.82px * var(--fs-num));gap:2px;}.stat-type-btn{font-size:calc(.82px * var(--fs-num));padding:8px 4px;min-width:44px;}}
 </style>
 </head>
 <body>
@@ -225,8 +231,10 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 <div id="listToday"></div>
 </div>
 
+<!-- ★ 修改：統計頁加入類別篩選卡片 -->
 <div id="pageStat" class="page">
 <div id="statMainView">
+<div class="stat-type-card" id="statTypeCard"></div>
 <div class="filter-bar">
 <div class="filter-card" onclick="statGoDayEntry()"><span class="fc-main" id="statFcDay">--</span><span class="fc-stat" id="statFcDayStat">—</span><span class="fc-arrow">›</span></div>
 <div class="filter-card" onclick="statGoMonthEntry()"><span class="fc-main" id="statFcMonth">--</span><span class="fc-stat" id="statFcMonthStat">—</span><span class="fc-arrow">›</span></div>
@@ -261,6 +269,9 @@ if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch
 
 var currentType="",editId=null,editExpId=null,historyStack=[],modalAmount="",expModalAmount="",sortNewFirst=true,statViewStack=[],expViewStack=[];
 
+/* ★ 新增：統計頁目前選取的營業類別（""=全部） */
+var statTypeFilter="";
+
 function nextId(){var seq=Number(localStorage.getItem('taxiSeq')||0)+1;localStorage.setItem('taxiSeq',seq);return Date.now()*1000+(seq%1000);}
 
 var config=JSON.parse(localStorage.getItem('taxiConfig'))||{
@@ -274,15 +285,13 @@ if(!config.fontSize)config.fontSize=13;
 if(!config.fontWeight)config.fontWeight=700;
 if(!config.expList)config.expList=[{name:"加油",color:"#dc2626"},{name:"其他",color:"#475569"}];
 
-/* ★ 新增：營業類別自動配色 ===== */
+/* ===== 營業類別自動配色 ===== */
 var TYPE_COLORS=[
   '#2563eb','#ea580c','#16a34a','#7c3aed','#dc2626',
   '#0891b2','#ca8a04','#db2777','#059669','#9333ea',
   '#0d9488','#e11d48','#4f46e5','#65a30d','#c2410c',
   '#0369a1','#a21caf','#b45309','#15803d','#be123c'
 ];
-
-/* 挑一個目前還沒被用過的颜色 */
 function pickUnusedColor(){
   var used=config.typeList.map(function(t){return String(t.color||'').toLowerCase();});
   for(var i=0;i<TYPE_COLORS.length;i++){
@@ -290,16 +299,12 @@ function pickUnusedColor(){
   }
   return TYPE_COLORS[config.typeList.length%TYPE_COLORS.length];
 }
-
-/* 挑一個不在 seen 裡的颜色（seen 是已占用颜色的物件） */
 function pickUnusedColorExcluding(seen){
   for(var i=0;i<TYPE_COLORS.length;i++){
     if(!seen[TYPE_COLORS[i].toLowerCase()])return TYPE_COLORS[i];
   }
   return TYPE_COLORS[Object.keys(seen).length%TYPE_COLORS.length];
 }
-
-/* 整理舊資料：沒颜色或颜色重複的類別自動補色 */
 function ensureTypeColors(){
   var seen={},changed=false;
   config.typeList.forEach(function(t){
@@ -307,9 +312,7 @@ function ensureTypeColors(){
     if(!c||seen[c]){
       var nc=pickUnusedColorExcluding(seen);
       t.color=nc;seen[nc.toLowerCase()]=1;changed=true;
-    }else{
-      seen[c]=1;
-    }
+    }else{seen[c]=1;}
   });
   if(changed)saveConfig();
 }
@@ -337,14 +340,11 @@ function escapeHtml(v){return String(v==null?"":v).replace(/&/g,"&amp;").replace
 function isCashPay(p){var first=config.payList[0];return !!(first&&first.name===p);}
 function getBizDate(dt){var h=dt.getHours(),sh=Number(config.businessHour&&config.businessHour.start!=null?config.businessHour.start:22),eh=Number(config.businessHour&&config.businessHour.end!=null?config.businessHour.end:8);var d=new Date(dt);if(sh>eh&&h<eh)d.setDate(d.getDate()-1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 
-/* ===== 取得今天日期 + 星期幾 ===== */
 function getTodayWeekdayText(){
   var d=new Date();
   var wd=['日','一','二','三','四','五','六'][d.getDay()];
   return (d.getMonth()+1)+'/'+String(d.getDate()).padStart(2,'0')+' 週'+wd;
 }
-
-/* ===== 統計卡片顯示格式：5日 / 10月 / 26年 ===== */
 function fmtDayShort(d){return parseInt(d,10)+'日';}
 function fmtMonthShort(m){return parseInt(m,10)+'月';}
 function fmtYearShort(y){return String(y).slice(-2)+'年';}
@@ -371,7 +371,7 @@ document.getElementById('fileImport').onchange=function(e){
       if(!config.fontWeight)config.fontWeight=700;
       if(!config.expList)config.expList=[{name:'加油',color:'#dc2626'},{name:'其他',color:'#475569'}];
       if(config.payList)config.payList.forEach(function(p){delete p.isCash;});
-      ensureTypeColors();               /* ★ 新增：匯入後也自動補色 */
+      ensureTypeColors();
       saveConfig();saveRecords(d.records);
       saveExpenses(Array.isArray(d.expenses)?d.expenses:[]);
       applyFontSize(config.fontSize);applyFontWeight(config.fontWeight);
@@ -525,14 +525,54 @@ function renderTodayList(){
   });
 }
 
+/* ★ 新增：依 statTypeFilter 过滤收入紀錄 */
+function getFilteredRecords(){
+  var recs=getRecords();
+  if(!statTypeFilter)return recs;
+  return recs.filter(function(r){return r.type===statTypeFilter;});
+}
+
+/* ★ 修改：calcIncomeStat 改用过滤后的纪录 */
 function calcIncomeStat(prefix){
-  var recs=getRecords().filter(function(r){return r.date.indexOf(prefix)===0;});
+  var recs=getFilteredRecords().filter(function(r){return r.date.indexOf(prefix)===0;});
   return{sum:recs.reduce(function(s,r){return s+Number(r.raw||0);},0),fee:recs.reduce(function(s,r){return s+Number(r.fee||0);},0),net:recs.reduce(function(s,r){return s+Number(r.net||0);},0),cnt:recs.length};
 }
 function calcExpStat(prefix){
   var list=getExpenses().filter(function(e){return e.date.indexOf(prefix)===0;});
   var sum=list.reduce(function(s,e){return s+Number(e.raw||0);},0),net=calcIncomeStat(prefix).net||0;
   return{sum:sum,count:list.length,net:net,balance:net-sum};
+}
+
+/* ★ 新增：繪製統計頁類別篩選卡片 */
+function renderStatTypeCard(){
+  var card=document.getElementById('statTypeCard');
+  if(!card)return;
+  card.innerHTML='';
+  // 全部按鈕
+  var allBtn=document.createElement('button');
+  allBtn.className='stat-type-btn all-btn'+(statTypeFilter===''?' active':'');
+  allBtn.textContent='全部';
+  allBtn.onclick=function(){setStatTypeFilter('');};
+  card.appendChild(allBtn);
+  // 各類別按鈕
+  config.typeList.forEach(function(t){
+    var b=document.createElement('button');
+    b.className='stat-type-btn'+(statTypeFilter===t.name?' active':'');
+    b.textContent=t.name;
+    b.style.background=(statTypeFilter===t.name)?(t.color||'#5577aa'):'#e2e8f0';
+    b.style.color=(statTypeFilter===t.name)?'#fff':'#475569';
+    b.onclick=function(){setStatTypeFilter(t.name);};
+    card.appendChild(b);
+  });
+}
+
+/* ★ 新增：切換類別篩選並重繪 */
+function setStatTypeFilter(name){
+  statTypeFilter=name;
+  renderStatTypeCard();
+  statViewStack=[];                 // 回到預設視圖
+  document.getElementById('statContent').innerHTML='<div class="empty-tip">點上方卡片查看統計</div>';
+  refreshStatCards();
 }
 
 function refreshStatCards(){
@@ -556,7 +596,8 @@ function refreshExpCards(){
   document.getElementById('expFcYearStat').innerHTML='<span class="net">淨 '+ys.net+'</span><span class="fee">支 '+ys.sum+'</span><span class="bal">餘 '+ys.balance+'</span><span class="cnt">'+ys.count+'筆</span>';
 }
 
-function showStatDefault(){statViewStack=[];document.getElementById('statContent').innerHTML='<div class="empty-tip">點上方卡片查看統計</div>';refreshStatCards();}
+/* ★ 修改：重設時一併重畫類別卡片 */
+function showStatDefault(){statViewStack=[];document.getElementById('statContent').innerHTML='<div class="empty-tip">點上方卡片查看統計</div>';renderStatTypeCard();refreshStatCards();}
 function showExpDefault(){expViewStack=[];document.getElementById('expContent').innerHTML='<div class="empty-tip">點上方卡片查看支出</div>';refreshExpCards();}
 function statGoDayEntry(){statViewStack=[{type:'dayList',month:getBizDate(new Date()).slice(0,7)}];renderStatView();}
 function statGoMonthEntry(){statViewStack=[{type:'monthList',year:getBizDate(new Date()).slice(0,4)}];renderStatView();}
@@ -584,32 +625,35 @@ function renderExpView(){
   refreshExpCards();
 }
 
+/* ★ 修改：改用 getFilteredRecords() */
 function renderStatDayList(monthStr){
-  var recs=getRecords().filter(function(r){return r.date.indexOf(monthStr)===0;}),dayMap={},s=calcIncomeStat(monthStr);
+  var recs=getFilteredRecords().filter(function(r){return r.date.indexOf(monthStr)===0;}),dayMap={},s=calcIncomeStat(monthStr);
   recs.forEach(function(r){var d=r.date.split('-')[2];if(!dayMap[d])dayMap[d]=[];dayMap[d].push(r);});
-  var days=Object.keys(dayMap).sort(),html='<div class="crumb">'+monthStr+' 每日統計</div><div class="summary-card"><span class="sc-name">月總</span><span class="sc-stat"><span class="sum">營 '+s.sum+'</span><span class="cnt">趟 '+s.cnt+'</span><span class="fee">費 '+Math.round(s.fee)+'</span><span class="net">淨 '+s.net+'</span></span></div>';
+  var days=Object.keys(dayMap).sort(),title=(statTypeFilter?statTypeFilter:'全部')+'｜'+monthStr+' 每日統計';
+  var html='<div class="crumb">'+title+'</div><div class="summary-card"><span class="sc-name">月總</span><span class="sc-stat"><span class="sum">營 '+s.sum+'</span><span class="cnt">趟 '+s.cnt+'</span><span class="fee">費 '+Math.round(s.fee)+'</span><span class="net">淨 '+s.net+'</span></span></div>';
   if(!days.length){html+='<div class="empty-tip">此月尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;return;}
   days.forEach(function(d){var arr=dayMap[d],dSum=arr.reduce(function(a,r){return a+Number(r.raw||0);},0),dFee=arr.reduce(function(a,r){return a+Number(r.fee||0);},0),dNet=arr.reduce(function(a,r){return a+Number(r.net||0);},0);html+='<div class="stat-card" onclick="statDrillToDayDetail(\''+monthStr+'-'+d+'\')"><span class="sc-name">'+monthStr.slice(5)+'-'+d+'</span><span class="sc-stat"><span class="sum">營 '+dSum+'</span><span class="cnt">趟 '+arr.length+'</span><span class="fee">費 '+Math.round(dFee)+'</span><span class="net">淨 '+dNet+'</span></span></div>';});
   document.getElementById('statContent').innerHTML=html;
 }
 function renderStatMonthList(yearStr){
-  var recs=getRecords().filter(function(r){return r.date.indexOf(yearStr)===0;}),monthMap={},s=calcIncomeStat(yearStr);
+  var recs=getFilteredRecords().filter(function(r){return r.date.indexOf(yearStr)===0;}),monthMap={},s=calcIncomeStat(yearStr);
   recs.forEach(function(r){var m=r.date.split('-')[1];if(!monthMap[m])monthMap[m]=[];monthMap[m].push(r);});
-  var months=Object.keys(monthMap).sort(),html='<div class="crumb">'+yearStr+' 每月統計</div><div class="summary-card"><span class="sc-name">年總</span><span class="sc-stat"><span class="sum">營 '+s.sum+'</span><span class="cnt">趟 '+s.cnt+'</span><span class="fee">費 '+Math.round(s.fee)+'</span><span class="net">淨 '+s.net+'</span></span></div>';
+  var months=Object.keys(monthMap).sort(),title=(statTypeFilter?statTypeFilter:'全部')+'｜'+yearStr+' 每月統計';
+  var html='<div class="crumb">'+title+'</div><div class="summary-card"><span class="sc-name">年總</span><span class="sc-stat"><span class="sum">營 '+s.sum+'</span><span class="cnt">趟 '+s.cnt+'</span><span class="fee">費 '+Math.round(s.fee)+'</span><span class="net">淨 '+s.net+'</span></span></div>';
   if(!months.length){html+='<div class="empty-tip">此年尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;return;}
   months.forEach(function(m){var arr=monthMap[m],mSum=arr.reduce(function(a,r){return a+Number(r.raw||0);},0),mFee=arr.reduce(function(a,r){return a+Number(r.fee||0);},0),mNet=arr.reduce(function(a,r){return a+Number(r.net||0);},0);html+='<div class="stat-card" onclick="statDrillToDayList(\''+yearStr+'-'+m+'\')"><span class="sc-name">'+m+' 月</span><span class="sc-stat"><span class="sum">營 '+mSum+'</span><span class="cnt">趟 '+arr.length+'</span><span class="fee">費 '+Math.round(mFee)+'</span><span class="net">淨 '+mNet+'</span></span></div>';});
   document.getElementById('statContent').innerHTML=html;
 }
 function renderStatYearList(){
-  var years=[],seen={};getRecords().forEach(function(r){var y=r.date.split('-')[0];if(!seen[y]){seen[y]=1;years.push(y);}});years.sort().reverse();
-  var html='<div class="crumb">所有年份統計</div>';
+  var years=[],seen={};getFilteredRecords().forEach(function(r){var y=r.date.split('-')[0];if(!seen[y]){seen[y]=1;years.push(y);}});years.sort().reverse();
+  var html='<div class="crumb">'+(statTypeFilter?statTypeFilter:'全部')+'｜所有年份統計</div>';
   if(!years.length){html+='<div class="empty-tip">尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;return;}
   years.forEach(function(y){var s=calcIncomeStat(y);html+='<div class="stat-card" onclick="statDrillToMonthList(\''+y+'\')"><span class="sc-name">'+y+' 年</span><span class="sc-stat"><span class="sum">營 '+s.sum+'</span><span class="cnt">趟 '+s.cnt+'</span><span class="fee">費 '+Math.round(s.fee)+'</span><span class="net">淨 '+s.net+'</span></span></div>';});
   document.getElementById('statContent').innerHTML=html;
 }
 function renderStatDayDetail(dateStr){
-  var recs=getRecords().filter(function(r){return r.date===dateStr;}),s=calcIncomeStat(dateStr);
-  var html='<div class="crumb">'+dateStr+' 當日明細</div><div class="summary-card"><span class="sc-name">日總</span><span class="sc-stat"><span class="sum">營 '+s.sum+'</span><span class="cnt">趟 '+s.cnt+'</span><span class="fee">費 '+Math.round(s.fee)+'</span><span class="net">淨 '+s.net+'</span></span></div>';
+  var recs=getFilteredRecords().filter(function(r){return r.date===dateStr;}),s=calcIncomeStat(dateStr);
+  var html='<div class="crumb">'+(statTypeFilter?statTypeFilter:'全部')+'｜'+dateStr+' 當日明細</div><div class="summary-card"><span class="sc-name">日總</span><span class="sc-stat"><span class="sum">營 '+s.sum+'</span><span class="cnt">趟 '+s.cnt+'</span><span class="fee">費 '+Math.round(s.fee)+'</span><span class="net">淨 '+s.net+'</span></span></div>';
   if(!recs.length){html+='<div class="empty-tip">此日尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;return;}
   var asc=recs.slice().sort(function(a,b){return a.id-b.id;}),cum=0;
   asc.forEach(function(item,i){cum+=Number(item.net||0);html+='<div class="detail-row" onclick="openEdit('+item.id+')">'+buildDetailRow(item,i+1,cum)+'</div>';});
@@ -669,9 +713,9 @@ function saveEdit(){
   var pi=config.payList.find(function(p){return p.name===payName;}),ti=config.typeList.find(function(t){return t.name===type;});if(!pi)return;
   if(payName==='好孕券'&&raw>250){var fee=0,net=raw;if(ti)net-=Number(ti.deduct||0);if(net<0)net=0;recs[idx].type=type;recs[idx].pay='好孕券';recs[idx].raw=raw;recs[idx].fee=fee;recs[idx].deduct=ti?Number(ti.deduct||0):0;recs[idx].net=Math.round(net);recs[idx].splits=[{pay:'好孕券',amount:250},{pay:(config.payList[0]&&config.payList[0].name)||'現金',amount:raw-250}];}
   else{var fee2=raw*Number(pi.rate||0)/100,net2=raw-fee2;if(ti)net2-=Number(ti.deduct||0);if(net2<0)net2=0;recs[idx].type=type;recs[idx].pay=payName;recs[idx].raw=raw;recs[idx].fee=fee2;recs[idx].deduct=ti?Number(ti.deduct||0):0;recs[idx].net=Math.round(net2);delete recs[idx].splits;}
-  saveRecords(recs);closeEditModal();calcTotal();renderTodayList();renderStatView();refreshStatCards();refreshExpCards();
+  saveRecords(recs);closeEditModal();calcTotal();renderTodayList();renderStatView();renderStatTypeCard();refreshStatCards();refreshExpCards();
 }
-function deleteRec(){if(editId===null)return;if(!confirm('確定要刪除這筆紀錄嗎？'))return;saveRecords(getRecords().filter(function(r){return r.id!==editId;}));closeEditModal();calcTotal();renderTodayList();renderStatView();refreshStatCards();refreshExpCards();}
+function deleteRec(){if(editId===null)return;if(!confirm('確定要刪除這筆紀錄嗎？'))return;saveRecords(getRecords().filter(function(r){return r.id!==editId;}));closeEditModal();calcTotal();renderTodayList();renderStatView();renderStatTypeCard();refreshStatCards();refreshExpCards();}
 
 var editExpModal=document.getElementById('editExpModal');
 function openEditExp(id){
@@ -694,7 +738,6 @@ function deleteExp(){if(editExpId===null)return;if(!confirm('確定要刪除這�
 function renderSetting(){
   var tw=document.getElementById('typeListSet');tw.innerHTML='';
   config.typeList.forEach(function(t,i){var d=document.createElement('div');d.className='item';
-    /* ★ 修改：加上颜色小圓點 */
     d.innerHTML='<span class="color-dot" style="background:'+escapeHtml(t.color||'#5577aa')+'"></span><input value="'+escapeHtml(t.name)+'" oninput="onTypeNameChange('+i+',this.value)" placeholder="類別名稱"><input type="number" value="'+t.deduct+'" oninput="onTypeDeductChange('+i+',this.value)" placeholder="扣除"><button class="delBtn" onclick="delTypeTemp('+i+')">刪除</button>';
     tw.appendChild(d);});
   var pw=document.getElementById('payListSet');pw.innerHTML='';
@@ -702,7 +745,6 @@ function renderSetting(){
   var ew=document.getElementById('expListSet');ew.innerHTML='';
   config.expList.forEach(function(e,i){var d=document.createElement('div');d.className='item';d.innerHTML='<input value="'+escapeHtml(e.name)+'" oninput="onExpNameChange('+i+',this.value)" placeholder="支出名稱"><button class="delBtn" onclick="delExpTemp('+i+')">刪除</button>';ew.appendChild(d);});
 }
-/* ★ 修改：新增類別自動配色 */
 function addNewTypeTemp(){var n=document.getElementById('newTypeName').value.trim(),d=Number(document.getElementById('newTypeDeduct').value)||0;if(!n){alert('請輸入名稱');return;}config.typeList.push({name:n,deduct:d,color:pickUnusedColor()});saveConfig();renderSetting();renderHomeTypeBtn();document.getElementById('newTypeName').value='';document.getElementById('newTypeDeduct').value='';}
 function delTypeTemp(i){config.typeList.splice(i,1);saveConfig();renderSetting();renderHomeTypeBtn();}
 function addNewPayTemp(){var n=document.getElementById('newPayName').value.trim(),r=Number(document.getElementById('newPayRate').value)||0;if(!n){alert('請輸入名稱');return;}config.payList.push({name:n,rate:r,color:'#557799'});saveConfig();renderSetting();document.getElementById('newPayName').value='';document.getElementById('newPayRate').value='';}
@@ -710,8 +752,8 @@ function delPayTemp(i){config.payList.splice(i,1);saveConfig();renderSetting();}
 function addNewExpTemp(){var n=document.getElementById('newExpName').value.trim();if(!n){alert('請輸入名稱');return;}config.expList.push({name:n,color:'#dc2626'});saveConfig();renderSetting();document.getElementById('newExpName').value='';}
 function delExpTemp(i){config.expList.splice(i,1);saveConfig();renderSetting();}
 
-/* ★ 修改：onload 加上 ensureTypeColors() */
-window.onload=function(){ensureTypeColors();applyFontSize(config.fontSize);applyFontWeight(config.fontWeight);renderHomeTypeBtn();calcTotal();renderTodayList();refreshStatCards();refreshExpCards();updateNavActive('pageHome');updateTodayDateText();};
+/* ★ 修改：onload 加上 renderStatTypeCard() */
+window.onload=function(){ensureTypeColors();applyFontSize(config.fontSize);applyFontWeight(config.fontWeight);renderHomeTypeBtn();calcTotal();renderTodayList();refreshStatCards();refreshExpCards();renderStatTypeCard();updateNavActive('pageHome');updateTodayDateText();};
 </script>
 </body>
 </html>
