@@ -641,7 +641,7 @@ function refreshStatCards(){
   document.getElementById('statFcMonth').textContent=fmtMonthShort(m);
   document.getElementById('statFcYear').textContent=fmtYearShort(y);
   var ds=calcIncomeStat(today),ms=calcIncomeStat(mon),ys=calcIncomeStat(y);
-  document.getElementById('statFcDayStat').innerHTML='<span class="sum">營業 '+ds.sum+'</span><span class="cnt">趟次 '+ds.cnt+'</span><span class="fee">手續費 '+Math.round(ds.fee)+'</span><span class="net">淨收 '+ds.net+'</span>';
+  document.getElementById('statFcDayStat').innerHTML='<span class="sum">營業'+ds.sum+'</span><span class="cnt">趟次 '+ds.cnt+'</span><span class="fee">手續費 '+Math.round(ds.fee)+'</span><span class="net">淨收 '+ds.net+'</span>';
   document.getElementById('statFcMonthStat').innerHTML='<span class="sum">營業 '+ms.sum+'</span><span class="cnt">趟次 '+ms.cnt+'</span><span class="fee">手續費 '+Math.round(ms.fee)+'</span><span class="net">淨收 '+ms.net+'</span>';
   document.getElementById('statFcYearStat').innerHTML='<span class="sum">營業 '+ys.sum+'</span><span class="cnt">趟次 '+ys.cnt+'</span><span class="fee">手續費 '+Math.round(ys.fee)+'</span><span class="net">淨收 '+ys.net+'</span>';
 }
