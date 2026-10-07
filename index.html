@@ -57,8 +57,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 #typeListSet input[type="number"],#payListSet input[type="number"],#expListSet input[type="number"],.setBlock .item input[type="number"]{width:4.5em;max-width:72px;text-align:center;flex-shrink:0;}
 #typeListSet input:not([type="number"]),#payListSet input:not([type="number"]),#expListSet input:not([type="number"]),.setBlock .item input:not([type="number"]){flex:1;min-width:0;}
 .item{background:#fff;padding:2px 8px;margin:2px 0;border-radius:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.05);gap:8px;}
-
-/* ★ 可點擊色塊 */
+  /* ★ 可點擊色塊 */
 .color-dot{width:22px;height:22px;border-radius:50%;flex-shrink:0;box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.15);cursor:pointer;position:relative;transition:transform .1s;}
 .color-dot:active{transform:scale(.88);}
 .color-dot::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px dashed transparent;}
@@ -76,22 +75,38 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .filter-card{background:#fff;border-radius:12px;padding:12px 10px;box-shadow:0 2px 8px rgba(0,0,0,.06);cursor:pointer;display:flex;justify-content:space-between;align-items:center;min-width:0;overflow:hidden;}
 .filter-card:active{background:#f8fafc;transform:scale(.99);}
 .filter-card .fc-main{font-size:calc(1.55px * var(--fs-num));color:#0f172a;flex-shrink:0;min-width:0;max-width:34%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.filter-card .fc-stat{font-size:calc(1.1px * var(--fs-num));color:#475569;flex:1;margin-left:8px;line-height:1.5;display:flex;justify-content:flex-end;align-items:baseline;gap:clamp(2px,1.2vw,6px);min-width:0;overflow:hidden;flex-wrap:wrap;}
+
+/* ★★★ 統計數字：不換行 + 完全等寬 + 彈性縮字 ★★★ */
+.filter-card .fc-stat{color:#475569;flex:1;margin-left:8px;line-height:1.5;display:flex;justify-content:flex-end;align-items:baseline;gap:clamp(2px,1.2vw,6px);min-width:0;overflow:hidden;flex-wrap:nowrap;}
 .filter-card .fc-arrow{color:#94a3b8;font-size:calc(1.25px * var(--fs-num));margin-left:6px;flex-shrink:0;}
-.filter-card .fc-stat span,.summary-card .sc-stat span,.stat-card .sc-stat span{flex:0 1 auto;min-width:0;white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums;}
+
+/* 統計數字 span：完全等寬 flex:1 1 0 */
+.filter-card .fc-stat span,
+.summary-card .sc-stat span,
+.stat-card .sc-stat span{
+  flex:1 1 0;
+  min-width:0;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+  font-size:clamp(9px, calc(.92px * var(--fs-num)), 14px);
+}
 .filter-card .fc-stat .sum,.summary-card .sc-stat .sum,.stat-card .sc-stat .sum{color:#2563eb;}
 .filter-card .fc-stat .cnt,.summary-card .sc-stat .cnt,.stat-card .sc-stat .cnt{color:#94a3b8;}
 .filter-card .fc-stat .fee,.summary-card .sc-stat .fee,.stat-card .sc-stat .fee{color:#dc2626;}
 .filter-card .fc-stat .net,.summary-card .sc-stat .net,.stat-card .sc-stat .net{color:#7e22ce;}
 .filter-card .fc-stat .bal,.summary-card .sc-stat .bal,.stat-card .sc-stat .bal{color:#059669;}
+
 .summary-card{background:#fff;border-radius:10px;padding:10px 12px;margin:5px 0 8px;box-shadow:0 1px 4px rgba(0,0,0,.05);display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:calc(1.05px * var(--fs-num));min-width:0;overflow:hidden;}
 .summary-card .sc-name{color:#0f172a;flex-shrink:0;}
-.summary-card .sc-stat{flex:1;color:#475569;font-size:calc(.92px * var(--fs-num));display:flex;justify-content:flex-end;align-items:baseline;gap:clamp(2px,1.2vw,6px);min-width:0;overflow:hidden;flex-wrap:wrap;}
+.summary-card .sc-stat{flex:1;color:#475569;display:flex;justify-content:flex-end;align-items:baseline;gap:clamp(2px,1.2vw,6px);min-width:0;overflow:hidden;flex-wrap:nowrap;}
 .stat-card{background:#fff;border-radius:10px;padding:10px 12px;margin:5px 0;box-shadow:0 1px 4px rgba(0,0,0,.05);cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:calc(1.05px * var(--fs-num));gap:6px;min-width:0;overflow:hidden;}
 .stat-card:active{background:#f8fafc;}
 .stat-card .sc-name{color:#2563eb;flex-shrink:0;min-width:52px;}
 .stat-card.exp .sc-name{color:#dc2626;}
-.stat-card .sc-stat{flex:1;color:#475569;font-size:calc(.92px * var(--fs-num));display:flex;justify-content:flex-end;align-items:baseline;gap:clamp(2px,1.2vw,6px);min-width:0;overflow:hidden;flex-wrap:wrap;}
+.stat-card .sc-stat{flex:1;color:#475569;display:flex;justify-content:flex-end;align-items:baseline;gap:clamp(2px,1.2vw,6px);min-width:0;overflow:hidden;flex-wrap:nowrap;}
 .crumb{font-size:calc(.95px * var(--fs-num));color:#64748b;margin-bottom:8px;}
 .add-bar{margin-bottom:12px;}
 .add-btn{width:100%;padding:12px;border:none;border-radius:12px;background:#dc2626;color:#fff;font-size:calc(1.1px * var(--fs-num));}
@@ -119,14 +134,43 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 /* ★ 隱藏的 color input */
 .hidden-color{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;}
 
-.stat-type-card{background:#fff;border-radius:12px;padding:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:12px;display:flex;flex-wrap:wrap;gap:6px;}
-.stat-type-btn{flex:1 1 0;min-width:56px;max-width:100%;padding:9px 6px;border:none;border-radius:9px;background:#e2e8f0;color:#475569;font-size:calc(.95px * var(--fs-num));font-weight:inherit;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:filter .12s,transform .1s,box-shadow .12s;box-shadow:0 1px 3px rgba(0,0,0,.12);}
+/* ★★★ 類別篩選卡片：Grid 平均分 + 彈性縮字 ★★★ */
+.stat-type-card{
+  background:#fff;
+  border-radius:12px;
+  padding:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+  margin-bottom:12px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(52px, 1fr));
+  gap:6px;
+}
+.stat-type-btn{
+  width:100%;
+  min-width:0;
+  padding:9px 4px;
+  border:none;
+  border-radius:9px;
+  background:#e2e8f0;
+  color:#475569;
+  font-size:clamp(10px, calc(.95px * var(--fs-num)), 15px);
+  font-weight:inherit;
+  cursor:pointer;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  transition:filter .12s,transform .1s,box-shadow .12s;
+  box-shadow:0 1px 3px rgba(0,0,0,.12);
+}
 .stat-type-btn:active{filter:brightness(.88);transform:scale(.96);}
 .stat-type-btn.active{color:#fff!important;box-shadow:0 2px 8px rgba(0,0,0,.25);}
 .stat-type-btn.all-btn.active{background:#0f172a!important;}
 
 @media(max-width:600px){body{padding:8px 0;}.page{padding:0 4px;}}
-@media(max-width:400px){.summary-card .sc-stat,.stat-card .sc-stat{font-size:calc(.82px * var(--fs-num));gap:2px;}.stat-type-btn{font-size:calc(.82px * var(--fs-num));padding:8px 4px;min-width:44px;}}
+@media(max-width:400px){
+  .summary-card .sc-stat span,.stat-card .sc-stat span,.filter-card .fc-stat span{font-size:clamp(8px, calc(.82px * var(--fs-num)), 12px);}
+  .stat-type-btn{font-size:clamp(9px, calc(.82px * var(--fs-num)), 13px);padding:8px 4px;}
+}
 </style>
 </head>
 <body>
@@ -200,7 +244,6 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 </div>
 <button onclick="deleteExp()" style="width:100%;margin-top:12px;padding:12px;border:none;border-radius:12px;background:#dc2626;color:#fff;font-size:14px;">刪除此筆</button>
 </div></div>
-
 <div id="pageHome" class="page active">
 <div id="typeBtnWrap" class="row2"></div>
 <div class="card">
@@ -270,7 +313,6 @@ if(!config.fontSize)config.fontSize=13;
 if(!config.fontWeight)config.fontWeight=700;
 if(!config.expList)config.expList=[{name:"加油",color:"#dc2626"},{name:"其他",color:"#475569"}];
 
-/* ===== 調色盤 ===== */
 var TYPE_COLORS=[
   '#2563eb','#ea580c','#16a34a','#7c3aed','#dc2626',
   '#0891b2','#ca8a04','#db2777','#059669','#9333ea',
@@ -294,7 +336,6 @@ function pickUnusedColorExcludingList(list, seen){
   return TYPE_COLORS[list.length%TYPE_COLORS.length];
 }
 
-/* ★ 通用：自動補色（沒顏色或顏色重複就重配）*/
 function ensureColorsForList(list){
   var seen={},changed=false;
   list.forEach(function(t){
@@ -326,7 +367,6 @@ function onPayNameChange(i,v){if(config.payList[i]){config.payList[i].name=v.tri
 function onPayRateChange(i,v){if(config.payList[i]){config.payList[i].rate=Math.max(0,Number(v)||0);saveConfig();}}
 function onExpNameChange(i,v){if(config.expList[i]){config.expList[i].name=v.trim();saveConfig();}}
 
-/* ★ 點色塊改色 */
 var colorPickTarget=null;
 function openColorPicker(kind, idx){
   colorPickTarget={kind:kind, idx:idx};
@@ -388,13 +428,7 @@ document.getElementById('fileImport').onchange=function(e){
       if(d.expenses&&d.expenses.find(function(x){return !isValidExpense(x);})){alert('❌ 支出紀錄格式錯誤，已中止匯入');return;}
       if(!confirm('📥 匯入將「合併」備份檔與現有資料（不會刪除任何紀錄），確定繼續？'))return;
 
-      /* ★ 匯入前先自動備份現有資料（保險） */
-      var backupNow = {
-        saveTime: new Date().toISOString(),
-        config: config,
-        records: getRecords(),
-        expenses: getExpenses()
-      };
+      var backupNow = {saveTime: new Date().toISOString(),config: config,records: getRecords(),expenses: getExpenses()};
       var blob = new Blob([JSON.stringify(backupNow,null,2)],{type:'application/json'});
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a');
@@ -403,7 +437,6 @@ document.getElementById('fileImport').onchange=function(e){
       a.click();
       URL.revokeObjectURL(url);
 
-      /* ★ 套用備份檔的設定（類別、付款方式等） */
       config = d.config;
       if(!config.businessHour)config.businessHour={start:22,end:8};
       if(!config.fontSize)config.fontSize=13;
@@ -413,7 +446,6 @@ document.getElementById('fileImport').onchange=function(e){
       ensureTypeColors();
       saveConfig();
 
-      /* ===== 收入紀錄：合併（id 重複就重新配） ===== */
       var curRecs = getRecords();
       var curIds = {};
       curRecs.forEach(function(r){curIds[r.id]=1;});
@@ -426,7 +458,6 @@ document.getElementById('fileImport').onchange=function(e){
       });
       saveRecords(curRecs.concat(addRecs));
 
-      /* ===== 支出紀錄：合併（id 重複就重新配） ===== */
       var curExps = getExpenses();
       var curExpIds = {};
       curExps.forEach(function(x){curExpIds[x.id]=1;});
@@ -549,7 +580,7 @@ function calcDayStats(recs,targetDate){
       else nonCashSum+=Number(r.raw||0);
     }
   });
-  return{daySum:daySum,cashSum:cashSum,nonCashSum:nonCashSum,feeSum:feeSum,deductSum:deductSum};
+  return{daySum:daySum,cashSum:cashSum,nonCashSum:nonCashSum,feeSum:feeSum,deductSum:deductSum,typeCount:typeCount};
 }
 function calcTotal(){
   var today=getBizDate(new Date()),s=calcDayStats(getRecords(),today),typeArr=[];
@@ -793,7 +824,6 @@ function saveEditExp(){
 }
 function deleteExp(){if(editExpId===null)return;if(!confirm('確定要刪除這筆支出嗎？'))return;saveExpenses(getExpenses().filter(function(e){return e.id!==editExpId;}));closeEditExpModal();renderExpView();refreshExpCards();}
 
-/* ★ 設定頁渲染（含可點色塊）*/
 function renderSetting(){
   var tw=document.getElementById('typeListSet');tw.innerHTML='';
   config.typeList.forEach(function(t,i){
@@ -823,7 +853,6 @@ function renderSetting(){
   });
 }
 
-/* ★ 新增時自動配色 */
 function addNewTypeTemp(){var n=document.getElementById('newTypeName').value.trim(),d=Number(document.getElementById('newTypeDeduct').value)||0;if(!n){alert('請輸入名稱');return;}config.typeList.push({name:n,deduct:d,color:pickUnusedColorFromList(config.typeList)});saveConfig();renderSetting();renderHomeTypeBtn();renderStatTypeCard();document.getElementById('newTypeName').value='';document.getElementById('newTypeDeduct').value='';}
 function delTypeTemp(i){config.typeList.splice(i,1);saveConfig();renderSetting();renderHomeTypeBtn();renderStatTypeCard();}
 function addNewPayTemp(){var n=document.getElementById('newPayName').value.trim(),r=Number(document.getElementById('newPayRate').value)||0;if(!n){alert('請輸入名稱');return;}config.payList.push({name:n,rate:r,color:pickUnusedColorFromList(config.payList)});saveConfig();renderSetting();document.getElementById('newPayName').value='';document.getElementById('newPayRate').value='';}
