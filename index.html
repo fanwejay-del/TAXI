@@ -57,7 +57,6 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 #typeListSet input[type="number"],#payListSet input[type="number"],#expListSet input[type="number"],.setBlock .item input[type="number"]{width:4.5em;max-width:72px;text-align:center;flex-shrink:0;}
 #typeListSet input:not([type="number"]),#payListSet input:not([type="number"]),#expListSet input:not([type="number"]),.setBlock .item input:not([type="number"]){flex:1;min-width:0;}
 .item{background:#fff;padding:2px;margin:2px 0;border-radius:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.05);gap:8px;}
-  /* ★ 可點擊色塊 */
 .color-dot{width:22px;height:22px;border-radius:50%;flex-shrink:0;box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.15);cursor:pointer;position:relative;transition:transform .1s;}
 .color-dot:active{transform:scale(.88);}
 .color-dot::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px dashed transparent;}
@@ -76,7 +75,6 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .filter-card:active{background:#f8fafc;transform:scale(.99);}
 .filter-card .fc-main{font-size:calc(1.55px * var(--fs-num));color:#0f172a;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-left:2px;}
 
-/* ★★★ 統計數字：不換行 + 完全等寬 + gap:0 + 置中 + 動態縮字 ★★★ */
 .filter-card .fc-stat{color:#475569;flex:1;line-height:1.5;display:flex;justify-content:flex-end;align-items:baseline;gap:0;min-width:0;overflow:hidden;flex-wrap:nowrap;}
 .filter-card .fc-arrow{color:#94a3b8;font-size:calc(1.25px * var(--fs-num));margin-left:2px;margin-right:2px;flex-shrink:0;}
 
@@ -115,25 +113,14 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .exp-row .er-time{color:#64748b;font-size:calc(.9px * var(--fs-num));}
 .exp-row .er-note{color:#475569;font-size:calc(.9px * var(--fs-num));flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;}
 .exp-row .er-amt{color:#dc2626;text-align:right;margin-left:auto;}
-#expInputModal .modal-card{padding:4px 6px;display:flex;flex-direction:column;height:100%;min-height:0;gap:6px;}
-#expInputModal #expModalTitle{font-size:calc(1.3px * var(--fs-num))!important;margin:0!important;text-align:center;}
-#expInputModal .inputBox{font-size:calc(2px * var(--fs-num));padding:10px;margin:0;}
-#expInputModal .numKey{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:repeat(4,1fr);gap:6px;margin:0;}
-#expInputModal .numBtn{padding:0;font-size:calc(1.3px * var(--fs-num));border-radius:10px;height:100%;min-height:0;}
-#expInputModal .payKey{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0;max-height:26vh;overflow-y:auto;}
-#expInputModal .payBtn{padding:14px 8px;font-size:calc(1.2px * var(--fs-num));border-radius:10px;}
-#expInputModal .noteInput{margin:0!important;padding:14px 12px;font-size:calc(1.2px * var(--fs-num));}
-#expInputModal>.modal-card>button{margin:0!important;padding:14px!important;font-size:calc(1.15px * var(--fs-num))!important;}
 
 .fs-wrap{display:flex;align-items:center;gap:10px;margin-top:6px;}
 .fs-wrap input[type="range"]{flex:1;-webkit-appearance:none;height:6px;border-radius:3px;background:#e2e8f0;outline:none;}
 .fs-wrap input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#2563eb;cursor:pointer;}
 .fs-value{font-size:calc(1.05px * var(--fs-num));color:#2563eb;min-width:34px;text-align:right;}
 
-/* ★ 隱藏的 color input */
 .hidden-color{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;}
 
-/* ★★★ 類別篩選卡片：Grid 平均分 + 彈性縮字 ★★★ */
 .stat-type-card{
   background:#fff;
   border-radius:12px;
@@ -165,6 +152,32 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .stat-type-btn.active{color:#fff!important;box-shadow:0 2px 8px rgba(0,0,0,.25);}
 .stat-type-btn.all-btn.active{background:#0f172a!important;}
 
+/* ===== ★ 新增：輸入 Modal 的彈性收縮結構 ===== */
+.modal-card .input-area {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+}
+.modal-card .ad-area {
+  flex-shrink: 0;
+  height: 50px;
+  background: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #888;
+}
+/* 收入 Modal 的鍵盤與付款按鈕 */
+#inputModal .numKey { flex-shrink: 0; }
+#inputModal .payKey { flex: 1 1 auto; min-height: 0; overflow-y: auto; margin-top: 6px; }
+/* 支出 Modal 的鍵盤與類別按鈕 */
+#expInputModal .numKey { flex-shrink: 0; }
+#expInputModal .payKey { flex: 1 1 auto; min-height: 0; overflow-y: auto; margin-top: 6px; }
+
 @media(max-width:600px){body{padding:8px 0;}.page{padding:0 4px;}}
 @media(max-width:400px){
   .summary-card .sc-stat span,.stat-card .sc-stat span,.filter-card .fc-stat span{font-size:clamp(8px, calc(.82px * var(--fs-num)), 12px);}
@@ -187,29 +200,45 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 <div id="inputModal" class="modal"><div class="modal-card">
 <h3 id="modalTitle" style="text-align:center;margin-bottom:8px;font-size:22px;">路招</h3>
 <div id="amountShow" class="inputBox">0</div>
-<div class="numKey">
-<button class="numBtn" onclick="pressNum('1')">1</button><button class="numBtn" onclick="pressNum('2')">2</button><button class="numBtn" onclick="pressNum('3')">3</button>
-<button class="numBtn" onclick="pressNum('4')">4</button><button class="numBtn" onclick="pressNum('5')">5</button><button class="numBtn" onclick="pressNum('6')">6</button>
-<button class="numBtn" onclick="pressNum('7')">7</button><button class="numBtn" onclick="pressNum('8')">8</button><button class="numBtn" onclick="pressNum('9')">9</button>
-<button class="numBtn" onclick="clearNum()">清除</button><button class="numBtn" onclick="pressNum('0')">0</button><button class="numBtn" onclick="pressNum('00')">00</button>
+
+<!-- ★ 彈性收縮區 -->
+<div class="input-area">
+  <div class="numKey">
+  <button class="numBtn" onclick="pressNum('1')">1</button><button class="numBtn" onclick="pressNum('2')">2</button><button class="numBtn" onclick="pressNum('3')">3</button>
+  <button class="numBtn" onclick="pressNum('4')">4</button><button class="numBtn" onclick="pressNum('5')">5</button><button class="numBtn" onclick="pressNum('6')">6</button>
+  <button class="numBtn" onclick="pressNum('7')">7</button><button class="numBtn" onclick="pressNum('8')">8</button><button class="numBtn" onclick="pressNum('9')">9</button>
+  <button class="numBtn" onclick="clearNum()">清除</button><button class="numBtn" onclick="pressNum('0')">0</button><button class="numBtn" onclick="pressNum('00')">00</button>
+  </div>
+  <div id="payBtnWrap" class="payKey"></div>
 </div>
-<div id="payBtnWrap" class="payKey"></div>
-<button style="width:100%;margin-top:12px;padding:14px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:17px;" onclick="closeInputModal()">取消</button>
+
+<!-- ★ 廣告預留區 -->
+<div class="ad-area">廣告區（預留 50px）</div>
+
+<button style="width:100%;margin-top:12px;padding:14px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:17px;flex-shrink:0;" onclick="closeInputModal()">取消</button>
 </div></div>
 
 <!-- 支出輸入 Modal -->
 <div id="expInputModal" class="modal"><div class="modal-card">
 <h3 id="expModalTitle" style="text-align:center;margin-bottom:8px;font-size:22px;">支出</h3>
 <div id="expAmountShow" class="inputBox">0</div>
-<div class="numKey">
-<button class="numBtn" onclick="pressExpNum('1')">1</button><button class="numBtn" onclick="pressExpNum('2')">2</button><button class="numBtn" onclick="pressExpNum('3')">3</button>
-<button class="numBtn" onclick="pressExpNum('4')">4</button><button class="numBtn" onclick="pressExpNum('5')">5</button><button class="numBtn" onclick="pressExpNum('6')">6</button>
-<button class="numBtn" onclick="pressExpNum('7')">7</button><button class="numBtn" onclick="pressExpNum('8')">8</button><button class="numBtn" onclick="pressExpNum('9')">9</button>
-<button class="numBtn" onclick="clearExpNum()">清除</button><button class="numBtn" onclick="pressExpNum('0')">0</button><button class="numBtn" onclick="pressExpNum('00')">00</button>
+
+<!-- ★ 彈性收縮區 -->
+<div class="input-area">
+  <div class="numKey">
+  <button class="numBtn" onclick="pressExpNum('1')">1</button><button class="numBtn" onclick="pressExpNum('2')">2</button><button class="numBtn" onclick="pressExpNum('3')">3</button>
+  <button class="numBtn" onclick="pressExpNum('4')">4</button><button class="numBtn" onclick="pressExpNum('5')">5</button><button class="numBtn" onclick="pressExpNum('6')">6</button>
+  <button class="numBtn" onclick="pressExpNum('7')">7</button><button class="numBtn" onclick="pressExpNum('8')">8</button><button class="numBtn" onclick="pressExpNum('9')">9</button>
+  <button class="numBtn" onclick="clearExpNum()">清除</button><button class="numBtn" onclick="pressExpNum('0')">0</button><button class="numBtn" onclick="pressExpNum('00')">00</button>
+  </div>
+  <div id="expCatWrap" class="payKey"></div>
 </div>
-<div id="expCatWrap" class="payKey"></div>
-<input id="expNoteInput" class="noteInput" placeholder="備註（選填）">
-<button style="width:100%;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:16px;" onclick="closeExpInputModal()">取消</button>
+
+<!-- ★ 廣告預留區 -->
+<div class="ad-area">廣告區（預留 50px）</div>
+
+<input id="expNoteInput" class="noteInput" placeholder="備註（選填）" style="flex-shrink:0;">
+<button style="width:100%;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:16px;flex-shrink:0;" onclick="closeExpInputModal()">取消</button>
 </div></div>
 
 <!-- 修改收入 Modal -->
@@ -366,21 +395,28 @@ function onPayNameChange(i,v){if(config.payList[i]){config.payList[i].name=v.tri
 function onPayRateChange(i,v){if(config.payList[i]){config.payList[i].rate=Math.max(0,Number(v)||0);saveConfig();}}
 function onExpNameChange(i,v){if(config.expList[i]){config.expList[i].name=v.trim();saveConfig();}}
 
-/* ★★★ 動態縮字：數字太寬就逐級縮小，直到塞得下 ★★★ */
+var _fitCanvas=null;
+function _getFitCtx(){
+  if(!_fitCanvas)_fitCanvas=document.createElement('canvas');
+  return _fitCanvas.getContext('2d');
+}
 function fitOne(el, minSize){
-  el.style.fontSize = '';
-  var base = parseFloat(getComputedStyle(el).fontSize);
-  if(!base)return;
-  var size = base;
-  if(el.scrollWidth <= el.clientWidth + 1) return;
-  while(el.scrollWidth > el.clientWidth + 1 && size > minSize){
-    size -= 0.5;
-    el.style.fontSize = size + 'px';
-  }
+  if(!el.clientWidth)return;
+  el.style.fontSize='';
+  var cs=getComputedStyle(el);
+  var baseSize=parseFloat(cs.fontSize)||12;
+  var ctx=_getFitCtx();
+  ctx.font=(cs.fontStyle||'normal')+' '+(cs.fontWeight||'400')+' '+baseSize+'px '+(cs.fontFamily||'sans-serif');
+  var textW=ctx.measureText(el.textContent||'').width;
+  var avail=el.clientWidth-2;
+  if(textW<=avail)return;
+  var ratio=avail/textW;
+  var newSize=Math.max(minSize,baseSize*ratio);
+  el.style.fontSize=newSize.toFixed(2)+'px';
 }
 function fitAllStatText(){
-  var els = document.querySelectorAll('.fc-stat span, .sc-stat span, .stat-type-btn');
-  els.forEach(function(el){ fitOne(el, 7); });
+  var els=document.querySelectorAll('.fc-stat span, .sc-stat span, .stat-type-btn');
+  els.forEach(function(el){ fitOne(el,7); });
 }
 
 var colorPickTarget=null;
@@ -427,13 +463,11 @@ function fmtDayShort(d){return parseInt(d,10)+'日';}
 function fmtMonthShort(m){return parseInt(m,10)+'月';}
 function fmtYearShort(y){return String(y).slice(-2)+'年';}
 
-/* ★ 匯出：只含紀錄，不含設定 */
 function exportBackup(){var data={saveTime:new Date().toISOString(),records:getRecords(),expenses:getExpenses()};var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='計程車記帳備份_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);alert('✅ 備份檔已下載！（僅紀錄，不含設定）');}
 
 function isValidRecord(r){return r&&typeof r==='object'&&typeof r.id!=='undefined'&&typeof r.type==='string'&&typeof r.pay==='string'&&Number.isFinite(Number(r.raw))&&Number.isFinite(Number(r.net))&&typeof r.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(r.date);}
 function isValidExpense(e){return e&&typeof e==='object'&&typeof e.id!=='undefined'&&typeof e.cat==='string'&&Number.isFinite(Number(e.raw))&&typeof e.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(e.date);}
 
-/* ★★★ 匯入：id 優先 + 內容指紋（id 撞到時比對內容） ★★★ */
 function recFingerprint(r){
   return [r.date, r.time||'', r.type||'', Number(r.raw||0), r.pay||'', Number(r.net||0)].join('|');
 }
@@ -462,7 +496,6 @@ document.getElementById('fileImport').onchange=function(e){
       a.click();
       URL.revokeObjectURL(url);
 
-      /* ===== 收入：id + 指紋比對 ===== */
       var curRecs = getRecords();
       var curRecById = {};
       var curRecFp = {};
@@ -487,7 +520,6 @@ document.getElementById('fileImport').onchange=function(e){
       });
       saveRecords(curRecs.concat(addRecs));
 
-      /* ===== 支出：id + 指紋比對 ===== */
       var curExps = getExpenses();
       var curExpById = {};
       var curExpFp = {};
