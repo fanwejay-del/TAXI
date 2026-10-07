@@ -14,8 +14,8 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .page{display:none;padding:0 6px;}
 .page.active{display:block;}
 
-.row2{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
-.row2 .bigBtn{flex:1 1 calc((100% - 32px) / 5);min-width:0;}
+.row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:7px;margin-bottom:12px;overflow:hidden;}
+.row2 .bigBtn{width:100%;min-width:0;}
 
 .card{background:#fff;border-radius:12px;padding:12px 2px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:4px;}
 
@@ -26,13 +26,13 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 
 .bigBtn,.numBtn,.payBtn,.navBtn,.editBtn,.delBtn,.sortBtn,.add-btn,.backup-btn,.stat-btn,.setBlock button{box-shadow:0 2px 6px rgba(0,0,0,.14);transition:filter .12s,box-shadow .12s,transform .1s,background .12s;}
 .bigBtn:active,.numBtn:active,.payBtn:active,.navBtn:active,.editBtn:active,.delBtn:active,.sortBtn:active,.add-btn:active,.backup-btn:active,.stat-btn:active,.setBlock button:active{filter:brightness(.88);box-shadow:0 1px 3px rgba(0,0,0,.18);transform:scale(.97);}
-.bigBtn{padding:12px 4px;border:none;border-radius:12px;font-size:calc(.95px * var(--fs-num));color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bigBtn{padding:8px 3px;border:none;border-radius:10px;font-size:clamp(11px,calc(.85px * var(--fs-num)),14px);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
 .inputBox{width:100%;padding:16px;font-size:28px;text-align:center;border:2px solid #e2e8f0;border-radius:12px;margin:14px 0;background:#f8fafc;color:#0f172a;}
-.numKey{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
-.numBtn{padding:18px 8px;font-size:22px;border-radius:12px;border:none;background:#fff;color:#1e293b;}
+.numKey{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(5px,2vw,10px);width:100%;min-width:0;flex:0 0 auto;}
+.numBtn{width:100%;min-width:0;padding:clamp(10px,3.8vw,18px) 4px;font-size:clamp(17px,5.5vw,22px);border-radius:12px;border:none;background:#fff;color:#1e293b;overflow:hidden;}
 .numBtn:active{background:#e2e8f0;}
-.payKey{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
-.payBtn{padding:20px 10px;border:none;border-radius:12px;color:#fff;font-size:calc(1.2px * var(--fs-num));}
+.payKey{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(6px,2.5vw,12px);margin-top:8px;width:100%;min-width:0;overflow:hidden;}
+.payBtn{width:100%;min-width:0;padding:clamp(12px,4vw,20px) 6px;border:none;border-radius:12px;color:#fff;font-size:clamp(12px,calc(1.2px * var(--fs-num)),16px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .noteInput{width:100%;padding:10px 12px;margin-top:10px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:calc(1.05px * var(--fs-num));background:#f8fafc;}
 .noteInput:focus{outline:none;border-color:#2563eb;background:#fff;}
 .delBtn{color:#dc2626;border:none;background:#fef2f2;font-size:calc(.85px * var(--fs-num));padding:4px 8px;border-radius:6px;}
@@ -47,16 +47,18 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 
 /* ===== ★ 輸入區的彈性佈局與自動縮放 ===== */
 .modal-card .input-area {
-  flex: 1;
+  flex: 0 1 auto;
   display: flex;
   flex-direction: column;
   gap: 6px;
   min-height: 0;
+  min-width: 0;
+  width: 100%;
   overflow: hidden;
-  transform-origin: top center;
+  transform: none !important;
 }
-#inputModal .numKey, #expInputModal .numKey { flex-shrink: 0; }
-#inputModal .payKey, #expInputModal .payKey { flex: 1 1 auto; min-height: 0; overflow: hidden; margin-top: 6px; }
+#inputModal .numKey, #expInputModal .numKey { flex: 0 0 auto; }
+#inputModal .payKey, #expInputModal .payKey { flex: 0 0 auto; min-height: 0; margin-top: 6px; }
 
 .backup-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
 .backup-btn{padding:8px 10px;border:none;border-radius:8px;color:#fff;font-size:calc(1.05px * var(--fs-num));}
@@ -401,38 +403,13 @@ function fitAllStatText(){
 
 /* ★ 輸入區自動按比例縮小 (已修復測量順序) */
 function fitModalContent(modalId){
-  var modal = document.getElementById(modalId);
+  var modal=document.getElementById(modalId);
   if(!modal || !modal.classList.contains('active')) return;
-  var card = modal.querySelector('.modal-card');
-  var inputArea = card.querySelector('.input-area');
-  if(!inputArea) return;
-
-  // 1. 重置樣式以測量自然尺寸
-  inputArea.style.transform = 'none';
-  inputArea.style.height = 'auto';
-  inputArea.style.flex = 'none';
-
-  // 2. 測量內容高度
-  var contentHeight = inputArea.scrollHeight;
-
-  // 3. 計算可用高度
-  var cancelBtn = card.querySelector('button[onclick^="close"]');
-  var noteInput = card.querySelector('.noteInput');
-
-  var availableHeight = card.clientHeight;
-  if(cancelBtn) availableHeight -= cancelBtn.offsetHeight;
-  if(noteInput) availableHeight -= noteInput.offsetHeight;
-  availableHeight -= 20; // 留一點緩衝
-
-  // 4. 按比例縮小
-  if(contentHeight > availableHeight && availableHeight > 0){
-    var scale = availableHeight / contentHeight;
-    inputArea.style.transform = 'scale(' + scale + ')';
-    inputArea.style.transformOrigin = 'top center';
-    inputArea.style.height = (contentHeight * scale) + 'px';
-    inputArea.style.flex = '0 0 auto';
-  } else {
-    inputArea.style.flex = '1';
+  var inputArea=modal.querySelector('.input-area');
+  if(inputArea){
+    inputArea.style.transform='none';
+    inputArea.style.height='auto';
+    inputArea.style.flex='0 1 auto';
   }
 }
 
