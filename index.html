@@ -571,7 +571,7 @@ function buildDetailRow(item,idx,cum){
   var typePayCombo='('+typeStr+')'+payChar;
   var timeCol=(idxStr+(item.time||'')).padEnd(11,' '),typeCol=typePayCombo.padEnd(8,' ');
   var amtFeeCol=(String(item.raw).padStart(4,' ')+'-'+String(feeN).padStart(2,' ')).padEnd(10,' ');
-  var netCol=('淨'+String(item.net)).padEnd(9,' '),cumCol=('累計'+String(cum)).padEnd(9,' ');
+  var netCol=('淨收'+String(item.net)).padEnd(9,' '),cumCol=('累計'+String(cum)).padEnd(9,' ');
   return '<span class="dr-left">'+timeCol+'</span><span class="dr-type" style="color:'+typeColor+';">'+typeCol+'</span><span class="dr-amt" style="color:#2563eb;">'+amtFeeCol+'</span><span class="dr-net" style="color:#008822;">'+netCol+'</span><span class="dr-cum" style="color:#7e22ce;">'+cumCol+'</span>';
 }
 
