@@ -291,7 +291,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 <div class="setBlock"><h4>營業類別</h4><div id="typeListSet"></div><div style="display:flex;gap:6px;margin-top:6px;"><input id="newTypeName" placeholder="名稱" style="flex:1;padding:6px 8px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newTypeDeduct" type="number" placeholder="扣除" style="width:56px;padding:6px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewTypeTemp()" style="padding:6px 10px;font-size:13px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div></div>
 <div class="setBlock"><h4>付款方式</h4><div id="payListSet"></div><div style="display:flex;gap:6px;margin-top:6px;"><input id="newPayName" placeholder="名稱" style="flex:1;padding:6px 8px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newPayRate" type="number" placeholder="%" style="width:56px;padding:6px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewPayTemp()" style="padding:6px 10px;font-size:13px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div><div style="font-size:12px;color:#94a3b8;margin-top:6px;">※ 好孕卷自動扣除補助250輸入全額即可其餘視為現金</div></div>
 <div class="setBlock"><h4>支出類型</h4><div id="expListSet"></div><div style="display:flex;gap:6px;margin-top:6px;"><input id="newExpName" placeholder="名稱" style="flex:1;padding:6px 8px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><button onclick="addNewExpTemp()" style="padding:6px 10px;font-size:13px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div></div>
-<div class="setBlock"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><h4 style="margin:0;font-size:calc(1.05px * var(--fs-num));color:#0f172a;">資料備份</h4><span style="font-size:calc(.85px * var(--fs-num));color:#64748b;flex:1;text-align:right;">.json 檔存於「下載」</span></div><div class="backup-bar"><button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出</button><button class="backup-btn importBtn" onclick="document.getElementById('fileImport').click()">📥 匯入</button></div></div>
+<div class="setBlock"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><h4 style="margin:0;font-size:calc(1.05px * var(--fs-num));color:#0f172a;">資料備份</h4><span style="font-size:calc(.85px * var(--fs-num));color:#64748b;flex:1;text-align:right;">僅紀錄，不含設定</span></div><div class="backup-bar"><button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出</button><button class="backup-btn importBtn" onclick="document.getElementById('fileImport').click()">📥 匯入</button></div></div>
 </div>
 
 <script>
@@ -411,23 +411,26 @@ function fmtDayShort(d){return parseInt(d,10)+'日';}
 function fmtMonthShort(m){return parseInt(m,10)+'月';}
 function fmtYearShort(y){return String(y).slice(-2)+'年';}
 
-function exportBackup(){var data={saveTime:new Date().toISOString(),config:config,records:getRecords(),expenses:getExpenses()};var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='計程車記帳備份_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);alert('✅ 備份檔已下載！');}
+/* ★ 匯出：只含紀錄，不含設定 */
+function exportBackup(){var data={saveTime:new Date().toISOString(),records:getRecords(),expenses:getExpenses()};var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='計程車記帳備份_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);alert('✅ 備份檔已下載！（僅紀錄，不含設定）');}
 
 function isValidRecord(r){return r&&typeof r==='object'&&typeof r.id!=='undefined'&&typeof r.type==='string'&&typeof r.pay==='string'&&Number.isFinite(Number(r.raw))&&Number.isFinite(Number(r.net))&&typeof r.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(r.date);}
 function isValidExpense(e){return e&&typeof e==='object'&&typeof e.id!=='undefined'&&typeof e.cat==='string'&&Number.isFinite(Number(e.raw))&&typeof e.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(e.date);}
 
+/* ★ 匯入：只合併紀錄，不覆蓋設定 */
 document.getElementById('fileImport').onchange=function(e){
   var f=e.target.files[0];if(!f)return;
   var r=new FileReader();
   r.onload=function(ev){
     try{
       var d=JSON.parse(ev.target.result);
-      if(!d.config||!Array.isArray(d.records)||!Array.isArray(d.config.typeList)||!Array.isArray(d.config.payList)){alert('❌ 備份檔格式錯誤');return;}
+      if(!Array.isArray(d.records)){alert('❌ 備份檔格式錯誤（缺少 records）');return;}
       if(d.records.find(function(x){return !isValidRecord(x);})){alert('❌ 收入紀錄格式錯誤，已中止匯入');return;}
       if(d.expenses&&!Array.isArray(d.expenses)){alert('❌ 支出紀錄格式錯誤');return;}
       if(d.expenses&&d.expenses.find(function(x){return !isValidExpense(x);})){alert('❌ 支出紀錄格式錯誤，已中止匯入');return;}
-      if(!confirm('📥 匯入將「合併」備份檔與現有資料（不會刪除任何紀錄），確定繼續？'))return;
+      if(!confirm('📥 匯入將「合併」備份檔與現有資料（不會刪除任何紀錄，也不會改設定），確定繼續？'))return;
 
+      /* 匯入前先自動備份現有資料（完整含設定，保險用） */
       var backupNow = {saveTime: new Date().toISOString(),config: config,records: getRecords(),expenses: getExpenses()};
       var blob = new Blob([JSON.stringify(backupNow,null,2)],{type:'application/json'});
       var url = URL.createObjectURL(blob);
@@ -437,15 +440,9 @@ document.getElementById('fileImport').onchange=function(e){
       a.click();
       URL.revokeObjectURL(url);
 
-      config = d.config;
-      if(!config.businessHour)config.businessHour={start:22,end:8};
-      if(!config.fontSize)config.fontSize=13;
-      if(!config.fontWeight)config.fontWeight=700;
-      if(!config.expList)config.expList=[{name:'加油',color:'#dc2626'},{name:'其他',color:'#475569'}];
-      if(config.payList)config.payList.forEach(function(p){delete p.isCash;});
-      ensureTypeColors();
-      saveConfig();
+      /* ★ 不再覆蓋 config，設定維持本機現狀 */
 
+      /* ===== 收入紀錄：合併（id 重複就重新配） ===== */
       var curRecs = getRecords();
       var curIds = {};
       curRecs.forEach(function(r){curIds[r.id]=1;});
@@ -458,6 +455,7 @@ document.getElementById('fileImport').onchange=function(e){
       });
       saveRecords(curRecs.concat(addRecs));
 
+      /* ===== 支出紀錄：合併（id 重複就重新配） ===== */
       var curExps = getExpenses();
       var curExpIds = {};
       curExps.forEach(function(x){curExpIds[x.id]=1;});
@@ -470,8 +468,7 @@ document.getElementById('fileImport').onchange=function(e){
       });
       saveExpenses(curExps.concat(addExps));
 
-      applyFontSize(config.fontSize);applyFontWeight(config.fontWeight);
-      alert('✅ 匯入成功（合併）！\n收入 +'+addRecs.length+' 筆，支出 +'+addExps.length+' 筆。\n匯入前資料已自動備份到「下載」資料夾。');
+      alert('✅ 匯入成功（合併）！\n收入 +'+addRecs.length+' 筆，支出 +'+addExps.length+' 筆。\n設定維持不變，未從備份覆蓋。\n匯入前資料已自動備份到「下載」資料夾。');
       renderHomeTypeBtn();calcTotal();renderTodayList();refreshStatCards();refreshExpCards();renderStatTypeCard();
     }catch(err){alert('❌ 檔案讀取失敗');}
   };
