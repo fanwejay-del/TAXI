@@ -641,9 +641,9 @@ function refreshStatCards(){
   document.getElementById('statFcMonth').textContent=fmtMonthShort(m);
   document.getElementById('statFcYear').textContent=fmtYearShort(y);
   var ds=calcIncomeStat(today),ms=calcIncomeStat(mon),ys=calcIncomeStat(y);
-  document.getElementById('statFcDayStat').innerHTML='<span class="sum">營業'+ds.sum+'</span><span class="cnt">趟次 '+ds.cnt+'</span><span class="fee">手續費 '+Math.round(ds.fee)+'</span><span class="net">淨收 '+ds.net+'</span>';
-  document.getElementById('statFcMonthStat').innerHTML='<span class="sum">營業 '+ms.sum+'</span><span class="cnt">趟次 '+ms.cnt+'</span><span class="fee">手續費 '+Math.round(ms.fee)+'</span><span class="net">淨收 '+ms.net+'</span>';
-  document.getElementById('statFcYearStat').innerHTML='<span class="sum">營業 '+ys.sum+'</span><span class="cnt">趟次 '+ys.cnt+'</span><span class="fee">手續費 '+Math.round(ys.fee)+'</span><span class="net">淨收 '+ys.net+'</span>';
+  document.getElementById('statFcDayStat').innerHTML='<span class="sum">營業'+ds.sum+'</span><span class="cnt">趟次'+ds.cnt+'</span><span class="fee">手續費'+Math.round(ds.fee)+'</span><span class="net">淨收'+ds.net+'</span>';
+  document.getElementById('statFcMonthStat').innerHTML='<span class="sum">營業'+ms.sum+'</span><span class="cnt">趟次'+ms.cnt+'</span><span class="fee">手續費'+Math.round(ms.fee)+'</span><span class="net">淨收'+ms.net+'</span>';
+  document.getElementById('statFcYearStat').innerHTML='<span class="sum">營業'+ys.sum+'</span><span class="cnt">趟次'+ys.cnt+'</span><span class="fee">手續費'+Math.round(ys.fee)+'</span><span class="net">淨收'+ys.net+'</span>';
 }
 function refreshExpCards(){
   var today=getBizDate(new Date()),p=today.split('-'),y=p[0],m=p[1],d=p[2],mon=y+'-'+m;
@@ -688,30 +688,30 @@ function renderStatDayList(monthStr){
   var recs=getFilteredRecords().filter(function(r){return r.date.indexOf(monthStr)===0;}),dayMap={},s=calcIncomeStat(monthStr);
   recs.forEach(function(r){var d=r.date.split('-')[2];if(!dayMap[d])dayMap[d]=[];dayMap[d].push(r);});
   var days=Object.keys(dayMap).sort(),title=(statTypeFilter?statTypeFilter:'全部')+'｜'+monthStr+' 每日統計';
-  var html='<div class="crumb">'+title+'</div><div class="summary-card"><span class="sc-name">月總</span><span class="sc-stat"><span class="sum">營收 '+s.sum+'</span><span class="cnt">趟次 '+s.cnt+'</span><span class="fee">手續費 '+Math.round(s.fee)+'</span><span class="net">淨 '+s.net+'</span></span></div>';
+  var html='<div class="crumb">'+title+'</div><div class="summary-card"><span class="sc-name">月總</span><span class="sc-stat"><span class="sum">營收'+s.sum+'</span><span class="cnt">趟次'+s.cnt+'</span><span class="fee">手續費'+Math.round(s.fee)+'</span><span class="net">淨收'+s.net+'</span></span></div>';
   if(!days.length){html+='<div class="empty-tip">此月尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;return;}
-  days.forEach(function(d){var arr=dayMap[d],dSum=arr.reduce(function(a,r){return a+Number(r.raw||0);},0),dFee=arr.reduce(function(a,r){return a+Number(r.fee||0);},0),dNet=arr.reduce(function(a,r){return a+Number(r.net||0);},0);html+='<div class="stat-card" onclick="statDrillToDayDetail(\''+monthStr+'-'+d+'\')"><span class="sc-name">'+monthStr.slice(5)+'-'+d+'</span><span class="sc-stat"><span class="sum">營收 '+dSum+'</span><span class="cnt">趟次 '+arr.length+'</span><span class="fee">手續費 '+Math.round(dFee)+'</span><span class="net">淨收 '+dNet+'</span></span></div>';});
+  days.forEach(function(d){var arr=dayMap[d],dSum=arr.reduce(function(a,r){return a+Number(r.raw||0);},0),dFee=arr.reduce(function(a,r){return a+Number(r.fee||0);},0),dNet=arr.reduce(function(a,r){return a+Number(r.net||0);},0);html+='<div class="stat-card" onclick="statDrillToDayDetail(\''+monthStr+'-'+d+'\')"><span class="sc-name">'+monthStr.slice(5)+'-'+d+'</span><span class="sc-stat"><span class="sum">營收'+dSum+'</span><span class="cnt">趟次'+arr.length+'</span><span class="fee">手續費'+Math.round(dFee)+'</span><span class="net">淨收'+dNet+'</span></span></div>';});
   document.getElementById('statContent').innerHTML=html;
 }
 function renderStatMonthList(yearStr){
   var recs=getFilteredRecords().filter(function(r){return r.date.indexOf(yearStr)===0;}),monthMap={},s=calcIncomeStat(yearStr);
   recs.forEach(function(r){var m=r.date.split('-')[1];if(!monthMap[m])monthMap[m]=[];monthMap[m].push(r);});
   var months=Object.keys(monthMap).sort(),title=(statTypeFilter?statTypeFilter:'全部')+'｜'+yearStr+' 每月統計';
-  var html='<div class="crumb">'+title+'</div><div class="summary-card"><span class="sc-name">年總</span><span class="sc-stat"><span class="sum">營收 '+s.sum+'</span><span class="cnt">趟次 '+s.cnt+'</span><span class="fee">手續費 '+Math.round(s.fee)+'</span><span class="net">淨收 '+s.net+'</span></span></div>';
+  var html='<div class="crumb">'+title+'</div><div class="summary-card"><span class="sc-name">年總</span><span class="sc-stat"><span class="sum">營收'+s.sum+'</span><span class="cnt">趟次'+s.cnt+'</span><span class="fee">手續費'+Math.round(s.fee)+'</span><span class="net">淨收'+s.net+'</span></span></div>';
   if(!months.length){html+='<div class="empty-tip">此年尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;return;}
-  months.forEach(function(m){var arr=monthMap[m],mSum=arr.reduce(function(a,r){return a+Number(r.raw||0);},0),mFee=arr.reduce(function(a,r){return a+Number(r.fee||0);},0),mNet=arr.reduce(function(a,r){return a+Number(r.net||0);},0);html+='<div class="stat-card" onclick="statDrillToDayList(\''+yearStr+'-'+m+'\')"><span class="sc-name">'+m+' 月</span><span class="sc-stat"><span class="sum">營收 '+mSum+'</span><span class="cnt">趟次 '+arr.length+'</span><span class="fee">手續費 '+Math.round(mFee)+'</span><span class="net">淨收 '+mNet+'</span></span></div>';});
+  months.forEach(function(m){var arr=monthMap[m],mSum=arr.reduce(function(a,r){return a+Number(r.raw||0);},0),mFee=arr.reduce(function(a,r){return a+Number(r.fee||0);},0),mNet=arr.reduce(function(a,r){return a+Number(r.net||0);},0);html+='<div class="stat-card" onclick="statDrillToDayList(\''+yearStr+'-'+m+'\')"><span class="sc-name">'+m+' 月</span><span class="sc-stat"><span class="sum">營收'+mSum+'</span><span class="cnt">趟次'+arr.length+'</span><span class="fee">手續費'+Math.round(mFee)+'</span><span class="net">淨收'+mNet+'</span></span></div>';});
   document.getElementById('statContent').innerHTML=html;
 }
 function renderStatYearList(){
   var years=[],seen={};getFilteredRecords().forEach(function(r){var y=r.date.split('-')[0];if(!seen[y]){seen[y]=1;years.push(y);}});years.sort().reverse();
   var html='<div class="crumb">'+(statTypeFilter?statTypeFilter:'全部')+'｜所有年份統計</div>';
   if(!years.length){html+='<div class="empty-tip">尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;return;}
-  years.forEach(function(y){var s=calcIncomeStat(y);html+='<div class="stat-card" onclick="statDrillToMonthList(\''+y+'\')"><span class="sc-name">'+y+' 年</span><span class="sc-stat"><span class="sum">營收 '+s.sum+'</span><span class="cnt">趟次 '+s.cnt+'</span><span class="fee">手續費 '+Math.round(s.fee)+'</span><span class="net">淨收 '+s.net+'</span></span></div>';});
+  years.forEach(function(y){var s=calcIncomeStat(y);html+='<div class="stat-card" onclick="statDrillToMonthList(\''+y+'\')"><span class="sc-name">'+y+' 年</span><span class="sc-stat"><span class="sum">營收'+s.sum+'</span><span class="cnt">趟次'+s.cnt+'</span><span class="fee">手續費'+Math.round(s.fee)+'</span><span class="net">淨收'+s.net+'</span></span></div>';});
   document.getElementById('statContent').innerHTML=html;
 }
 function renderStatDayDetail(dateStr){
   var recs=getFilteredRecords().filter(function(r){return r.date===dateStr;}),s=calcIncomeStat(dateStr);
-  var html='<div class="crumb">'+(statTypeFilter?statTypeFilter:'全部')+'｜'+dateStr+' 當日明細</div><div class="summary-card"><span class="sc-name">日總</span><span class="sc-stat"><span class="sum">營收 '+s.sum+'</span><span class="cnt">趟次 '+s.cnt+'</span><span class="fee">手續費 '+Math.round(s.fee)+'</span><span class="net">淨收 '+s.net+'</span></span></div>';
+  var html='<div class="crumb">'+(statTypeFilter?statTypeFilter:'全部')+'｜'+dateStr+' 當日明細</div><div class="summary-card"><span class="sc-name">日總</span><span class="sc-stat"><span class="sum">營收'+s.sum+'</span><span class="cnt">趟次'+s.cnt+'</span><span class="fee">手續費'+Math.round(s.fee)+'</span><span class="net">淨收'+s.net+'</span></span></div>';
   if(!recs.length){html+='<div class="empty-tip">此日尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;return;}
   var asc=recs.slice().sort(function(a,b){return a.id-b.id;}),cum=0;
   asc.forEach(function(item,i){cum+=Number(item.net||0);html+='<div class="detail-row" onclick="openEdit('+item.id+')">'+buildDetailRow(item,i+1,cum)+'</div>';});
@@ -724,9 +724,9 @@ function statDrillToDayDetail(d){statViewStack.push({type:'dayDetail',date:d});r
 function renderExpDayList(monthStr){
   var list=getExpenses().filter(function(e){return e.date.indexOf(monthStr)===0;}),dayMap={},s=calcExpStat(monthStr);
   list.forEach(function(e){var d=e.date.split('-')[2];if(!dayMap[d])dayMap[d]=[];dayMap[d].push(e);});
-  var days=Object.keys(dayMap).sort(),html='<div class="crumb">'+monthStr+' 每日支出</div><div class="summary-card"><span class="sc-name">月總</span><span class="sc-stat"><span class="net">淨收 '+s.net+'</span><span class="fee">支出 '+s.sum+'</span><span class="bal">餘額 '+s.balance+'</span><span class="cnt">'+s.count+'筆</span></span></div>';
+  var days=Object.keys(dayMap).sort(),html='<div class="crumb">'+monthStr+' 每日支出</div><div class="summary-card"><span class="sc-name">月總</span><span class="sc-stat"><span class="net">淨收 '+s.net+'</span><span class="fee">支出'+s.sum+'</span><span class="bal">餘額'+s.balance+'</span><span class="cnt">'+s.count+'筆</span></span></div>';
   if(!days.length){html+='<div class="empty-tip">此月尚無支出</div>';document.getElementById('expContent').innerHTML=html;return;}
-  days.forEach(function(d){var arr=dayMap[d],dSum=arr.reduce(function(a,e){return a+Number(e.raw||0);},0),dayPrefix=monthStr+'-'+d,dayStat=calcExpStat(dayPrefix);html+='<div class="stat-card exp" onclick="expDrillToDayDetail(\''+dayPrefix+'\')"><span class="sc-name">'+monthStr.slice(5)+'-'+d+'</span><span class="sc-stat"><span class="net">淨 '+dayStat.net+'</span><span class="fee">支 '+dSum+'</span><span class="bal">餘 '+dayStat.balance+'</span><span class="cnt">'+arr.length+'筆</span></span></div>';});
+  days.forEach(function(d){var arr=dayMap[d],dSum=arr.reduce(function(a,e){return a+Number(e.raw||0);},0),dayPrefix=monthStr+'-'+d,dayStat=calcExpStat(dayPrefix);html+='<div class="stat-card exp" onclick="expDrillToDayDetail(\''+dayPrefix+'\')"><span class="sc-name">'+monthStr.slice(5)+'-'+d+'</span><span class="sc-stat"><span class="net">淨收'+dayStat.net+'</span><span class="fee">支出'+dSum+'</span><span class="bal">餘額'+dayStat.balance+'</span><span class="cnt">'+arr.length+'筆</span></span></div>';});
   document.getElementById('expContent').innerHTML=html;
 }
 function renderExpMonthList(yearStr){
