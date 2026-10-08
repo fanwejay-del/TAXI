@@ -880,6 +880,19 @@ function resetLevel(){statResetLevel();}
 function statBreadcrumbYear(year){statViewStack=[{type:'monthList',year:year}];renderStatView();}
 function statBreadcrumbMonth(month){statViewStack=[{type:'dayList',month:month}];renderStatView();}
 
+function statDrillToMonthList(year){
+  statViewStack=[{type:'monthList',year:String(year)}];
+  renderStatView();
+}
+function statDrillToDayList(month){
+  statViewStack=[{type:'dayList',month:String(month)}];
+  renderStatView();
+}
+function statDrillToDayDetail(date){
+  statViewStack=[{type:'dayDetail',date:String(date)}];
+  renderStatView();
+}
+
 function renderStatView(){
   var wrap=document.getElementById('statContent');
   if(!wrap)return;
