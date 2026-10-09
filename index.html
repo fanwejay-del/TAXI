@@ -14,8 +14,8 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .page{display:none;padding:0 6px;}
 .page.active{display:block;}
 
-.row2{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
-.row2 .bigBtn{flex:1 1 calc((100% - 32px) / 5);min-width:0;}
+.row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:7px;margin-bottom:12px;overflow:hidden;}
+.row2 .bigBtn{width:100%;min-width:0;}
 
 .card{background:#fff;border-radius:12px;padding:12px 2px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:4px;}
 
@@ -26,13 +26,13 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 
 .bigBtn,.numBtn,.payBtn,.navBtn,.editBtn,.delBtn,.sortBtn,.add-btn,.backup-btn,.stat-btn,.setBlock button{box-shadow:0 2px 6px rgba(0,0,0,.14);transition:filter .12s,box-shadow .12s,transform .1s,background .12s;}
 .bigBtn:active,.numBtn:active,.payBtn:active,.navBtn:active,.editBtn:active,.delBtn:active,.sortBtn:active,.add-btn:active,.backup-btn:active,.stat-btn:active,.setBlock button:active{filter:brightness(.88);box-shadow:0 1px 3px rgba(0,0,0,.18);transform:scale(.97);}
-.bigBtn{padding:12px 4px;border:none;border-radius:12px;font-size:calc(.95px * var(--fs-num));color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bigBtn{padding:0 3px;border:none;border-radius:10px;font-size:clamp(16px,calc(0.85px * var(--fs-num)),18px);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;height:calc(2.6px * var(--fs-num) + 12px);display:flex;align-items:center;justify-content:center;line-height:1;}
 .inputBox{width:100%;padding:16px;font-size:28px;text-align:center;border:2px solid #e2e8f0;border-radius:12px;margin:14px 0;background:#f8fafc;color:#0f172a;}
-.numKey{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
-.numBtn{padding:18px 8px;font-size:22px;border-radius:12px;border:none;background:#fff;color:#1e293b;}
+.numKey{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(5px,2vw,10px);width:100%;min-width:0;flex:0 0 auto;}
+.numBtn{width:100%;min-width:0;padding:clamp(10px,3.8vw,18px) 4px;font-size:clamp(17px,5.5vw,22px);border-radius:12px;border:none;background:#fff;color:#1e293b;overflow:hidden;}
 .numBtn:active{background:#e2e8f0;}
-.payKey{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
-.payBtn{padding:20px 10px;border:none;border-radius:12px;color:#fff;font-size:calc(1.2px * var(--fs-num));}
+.payKey{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(6px,2.5vw,12px);margin-top:8px;width:100%;min-width:0;overflow:hidden;}
+.payBtn{width:100%;min-width:0;padding:clamp(12px,4vw,20px) 6px;border:none;border-radius:12px;color:#fff;font-size:clamp(12px,calc(1.2px * var(--fs-num)),16px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .noteInput{width:100%;padding:10px 12px;margin-top:10px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:calc(1.05px * var(--fs-num));background:#f8fafc;}
 .noteInput:focus{outline:none;border-color:#2563eb;background:#fff;}
 .delBtn{color:#dc2626;border:none;background:#fef2f2;font-size:calc(.85px * var(--fs-num));padding:4px 8px;border-radius:6px;}
@@ -44,6 +44,21 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .modal{position:fixed;top:0;left:0;width:100%;height:100%;height:100dvh;background:#fff;display:none;align-items:stretch;justify-content:center;padding:6px;z-index:100;overflow:hidden;}
 .modal.active{display:flex;}
 .modal-card{width:100%;height:100%;padding:6px;display:flex;flex-direction:column;overflow:hidden;background:#fff;}
+
+.modal-card .input-area {
+  flex: 0 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
+  transform: none !important;
+}
+#inputModal .numKey, #expInputModal .numKey { flex: 0 0 auto; }
+#inputModal .payKey, #expInputModal .payKey { flex: 0 0 auto; min-height: 0; margin-top: 6px; }
+
 .backup-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
 .backup-btn{padding:8px 10px;border:none;border-radius:8px;color:#fff;font-size:calc(1.05px * var(--fs-num));}
 .exportBtn{background:#16a34a;}
@@ -57,7 +72,6 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 #typeListSet input[type="number"],#payListSet input[type="number"],#expListSet input[type="number"],.setBlock .item input[type="number"]{width:4.5em;max-width:72px;text-align:center;flex-shrink:0;}
 #typeListSet input:not([type="number"]),#payListSet input:not([type="number"]),#expListSet input:not([type="number"]),.setBlock .item input:not([type="number"]){flex:1;min-width:0;}
 .item{background:#fff;padding:2px;margin:2px 0;border-radius:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.05);gap:8px;}
-/* ★ 可點擊色塊 */
 .color-dot{width:22px;height:22px;border-radius:50%;flex-shrink:0;box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.15);cursor:pointer;position:relative;transition:transform .1s;}
 .color-dot:active{transform:scale(.88);}
 .color-dot::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px dashed transparent;}
@@ -76,7 +90,6 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .filter-card:active{background:#f8fafc;transform:scale(.99);}
 .filter-card .fc-main{font-size:calc(1.55px * var(--fs-num));color:#0f172a;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-left:2px;}
 
-/* ★★★ 統計數字：不換行 + 完全等寬 + gap:0 + 置中 + 動態縮字 ★★★ */
 .filter-card .fc-stat{color:#475569;flex:1;line-height:1.5;display:flex;justify-content:flex-end;align-items:baseline;gap:0;min-width:0;overflow:hidden;flex-wrap:nowrap;}
 .filter-card .fc-arrow{color:#94a3b8;font-size:calc(1.25px * var(--fs-num));margin-left:2px;margin-right:2px;flex-shrink:0;}
 
@@ -115,25 +128,14 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .exp-row .er-time{color:#64748b;font-size:calc(.9px * var(--fs-num));}
 .exp-row .er-note{color:#475569;font-size:calc(.9px * var(--fs-num));flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;}
 .exp-row .er-amt{color:#dc2626;text-align:right;margin-left:auto;}
-#expInputModal .modal-card{padding:4px 6px;display:flex;flex-direction:column;height:100%;min-height:0;gap:6px;}
-#expInputModal #expModalTitle{font-size:calc(1.3px * var(--fs-num))!important;margin:0!important;text-align:center;}
-#expInputModal .inputBox{font-size:calc(2px * var(--fs-num));padding:10px;margin:0;}
-#expInputModal .numKey{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:repeat(4,1fr);gap:6px;margin:0;}
-#expInputModal .numBtn{padding:0;font-size:calc(1.3px * var(--fs-num));border-radius:10px;height:100%;min-height:0;}
-#expInputModal .payKey{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0;max-height:26vh;overflow-y:auto;}
-#expInputModal .payBtn{padding:14px 8px;font-size:calc(1.2px * var(--fs-num));border-radius:10px;}
-#expInputModal .noteInput{margin:0!important;padding:14px 12px;font-size:calc(1.2px * var(--fs-num));}
-#expInputModal>.modal-card>button{margin:0!important;padding:14px!important;font-size:calc(1.15px * var(--fs-num))!important;}
 
 .fs-wrap{display:flex;align-items:center;gap:10px;margin-top:6px;}
 .fs-wrap input[type="range"]{flex:1;-webkit-appearance:none;height:6px;border-radius:3px;background:#e2e8f0;outline:none;}
 .fs-wrap input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#2563eb;cursor:pointer;}
 .fs-value{font-size:calc(1.05px * var(--fs-num));color:#2563eb;min-width:34px;text-align:right;}
 
-/* ★ 隱藏的 color input */
 .hidden-color{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;}
 
-/* ★★★ 類別篩選卡片：Grid 平均分 + 彈性縮字 ★★★ */
 .stat-type-card{
   background:#fff;
   border-radius:12px;
@@ -165,54 +167,80 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .stat-type-btn.active{color:#fff!important;box-shadow:0 2px 8px rgba(0,0,0,.25);}
 .stat-type-btn.all-btn.active{background:#0f172a!important;}
 
-/* ★★★ 日/月/年「營業合計」表頭：標籤+數字整組換行 ★★★ */
-.grand-total-card{
-  background:#fff;
-  border-radius:12px;
-  padding:10px 8px;
-  box-shadow:0 2px 8px rgba(0,0,0,.06);
-  margin:6px 0 10px;
+
+/* ===== 營業統計：年 → 月 → 日 → 單筆 ===== */
+.stat-page-title{font-size:calc(1.35px * var(--fs-num));font-weight:800;color:#0f172a;margin:2px 2px 8px;}
+.stat-breadcrumb{position:sticky;top:56px;z-index:20;background:#fff;padding:8px 10px;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.08);margin-bottom:8px;font-size:calc(.95px * var(--fs-num));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.stat-breadcrumb button{border:0;background:none;color:#2563eb;font:inherit;font-weight:700;padding:0 3px;cursor:pointer;}
+.stat-breadcrumb .stat-current{color:#475569;font-weight:500;}
+.stat-muted{color:#94a3b8;}
+.stat-summary-box{background:#fff;border-radius:10px;padding:10px 8px;margin-bottom:8px;box-shadow:0 1px 5px rgba(0,0,0,.06);}
+.stat-summary-title{font-size:calc(1.05px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:8px;}
+
+/* 合計區塊：每個格子是一個 flex row，標籤+數字一起換行 */
+.stat-summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px 10px;}
+.stat-summary-grid>div{min-width:0;display:flex;align-items:baseline;gap:4px;white-space:nowrap;overflow:hidden;}
+.stat-summary-grid span{flex-shrink:0;color:#64748b;font-size:calc(.82px * var(--fs-num));white-space:nowrap;}
+.stat-summary-grid strong{flex-shrink:0;text-align:right;color:#2563eb;font-size:calc(1.12px * var(--fs-num));font-variant-numeric:tabular-nums;white-space:nowrap;margin-left:auto;}
+.stat-summary-grid strong.fee{color:#dc2626;}
+.stat-summary-grid strong.net{color:#059669;}
+.stat-summary-grid strong.cost{color:#ea580c;}
+.stat-list-box{background:#fff;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.06);overflow:hidden;}
+
+/* 年 / 月 / 日列表：項目固定 + 收入/手續/淨收 平均分 */
+.stat-list-head,.stat-list-row{display:grid;grid-template-columns:auto 1fr 1fr;gap:5px;align-items:center;}
+.stat-list-head{background:#f8fafc;padding:8px 8px;color:#475569;font-size:calc(.86px * var(--fs-num));font-weight:800;}
+.stat-list-head .head-amount{text-align:right;}
+.stat-list-row{padding:9px 8px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));min-width:0;cursor:pointer;}
+.stat-list-row:active{background:#eff6ff;}
+.stat-list-row .item-name{color:#2563eb;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.stat-list-row .item-main{color:#2563eb;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.stat-list-row .item-last{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.stat-list-row .item-fee{color:#dc2626;}
+.stat-list-row .item-net{color:#059669;}
+
+/* 單筆明細（營業）：時間 48px / 類別 48px / 付款 1fr / 收入 1fr / 手續 1fr / 淨收 1fr */
+.stat-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:8px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;}
+.stat-detail-row:active{background:#eff6ff;}
+.stat-detail-row>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;}
+.stat-detail-head .amount{text-align:right;}
+.stat-detail-amt{text-align:right;color:#2563eb;font-variant-numeric:tabular-nums;}
+.stat-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;}
+.stat-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;}
+
+/* 單筆明細（支出）：時間 48px / 類型 48px / 備註 1fr / 金額 1fr */
+.stat-detail-row-exp{display:grid;grid-template-columns:48px 48px 1fr 1fr;gap:4px;align-items:center;padding:8px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;}
+.stat-detail-row-exp:active{background:#eff6ff;}
+.stat-detail-row-exp>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.stat-detail-row-exp.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;}
+.stat-detail-row-exp.stat-detail-head .amount{text-align:right;}
+
+.stat-back{margin:8px 0 2px;width:100%;padding:8px;border:0;border-radius:9px;background:#e0f2fe;color:#0369a1;font-size:calc(.9px * var(--fs-num));font-weight:700;}
+
+/* 支出統計專用 */
+.exp-summary-card{background:#fff;border-radius:10px;padding:10px 8px;margin-bottom:8px;box-shadow:0 1px 5px rgba(0,0,0,.06);}
+.exp-summary-card .stat-summary-title{font-size:calc(1.05px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:8px;}
+.exp-summary-card .stat-summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;}
+.exp-summary-card .stat-summary-grid>div{display:block;}
+.exp-summary-card .stat-summary-grid span{display:block;color:#64748b;font-size:calc(.82px * var(--fs-num));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.exp-summary-card .stat-summary-grid strong{display:block;text-align:right;color:#dc2626;font-size:calc(1.12px * var(--fs-num));font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.exp-summary-card .stat-summary-grid strong.net{color:#059669;}
+
+/* 支出類型 checkbox */
+.exp-cost-check{width:16px;height:16px;flex-shrink:0;cursor:pointer;accent-color:#ea580c;margin:0;}
+
+@media(max-width:400px){
+  .stat-list-head,.stat-list-row{grid-template-columns:auto 1fr 1fr;gap:3px;padding-left:5px;padding-right:5px}
+  .stat-detail-row{grid-template-columns:40px 40px 1fr 1fr 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
+  .stat-detail-row-exp{grid-template-columns:40px 40px 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
+  .stat-summary-grid{grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:6px 8px;}
 }
-.grand-total-title{
-  font-size:calc(1.1px * var(--fs-num));
-  color:#0f172a;
-  font-weight:700;
-  margin-bottom:8px;
-  padding-left:2px;
-}
-.grand-total-row{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:8px 16px;
-  padding:2px 0;
-}
-.grand-total-item{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  min-width:0;
-  white-space:nowrap;
-}
-.grand-total-item .gt-label{
-  font-size:clamp(10px, calc(.85px * var(--fs-num)), 13px);
-  color:#64748b;
-  margin-bottom:2px;
-}
-.grand-total-item .gt-value{
-  font-size:clamp(14px, calc(1.3px * var(--fs-num)), 20px);
-  font-weight:700;
-  font-variant-numeric:tabular-nums;
-}
-.gt-blue{color:#2563eb;}
-.gt-red{color:#dc2626;}
-.gt-green{color:#16a34a;}
 
 @media(max-width:600px){body{padding:8px 0;}.page{padding:0 4px;}}
 @media(max-width:400px){
   .summary-card .sc-stat span,.stat-card .sc-stat span,.filter-card .fc-stat span{font-size:clamp(8px, calc(.82px * var(--fs-num)), 12px);}
   .stat-type-btn{font-size:clamp(9px, calc(.82px * var(--fs-num)), 13px);padding:8px 4px;}
-  .grand-total-row{gap:6px 12px;}
 }
 </style>
 </head>
@@ -231,29 +259,37 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 <div id="inputModal" class="modal"><div class="modal-card">
 <h3 id="modalTitle" style="text-align:center;margin-bottom:8px;font-size:22px;">路招</h3>
 <div id="amountShow" class="inputBox">0</div>
-<div class="numKey">
-<button class="numBtn" onclick="pressNum('1')">1</button><button class="numBtn" onclick="pressNum('2')">2</button><button class="numBtn" onclick="pressNum('3')">3</button>
-<button class="numBtn" onclick="pressNum('4')">4</button><button class="numBtn" onclick="pressNum('5')">5</button><button class="numBtn" onclick="pressNum('6')">6</button>
-<button class="numBtn" onclick="pressNum('7')">7</button><button class="numBtn" onclick="pressNum('8')">8</button><button class="numBtn" onclick="pressNum('9')">9</button>
-<button class="numBtn" onclick="clearNum()">清除</button><button class="numBtn" onclick="pressNum('0')">0</button><button class="numBtn" onclick="pressNum('00')">00</button>
+
+<div class="input-area">
+  <div class="numKey">
+  <button class="numBtn" onclick="pressNum('1')">1</button><button class="numBtn" onclick="pressNum('2')">2</button><button class="numBtn" onclick="pressNum('3')">3</button>
+  <button class="numBtn" onclick="pressNum('4')">4</button><button class="numBtn" onclick="pressNum('5')">5</button><button class="numBtn" onclick="pressNum('6')">6</button>
+  <button class="numBtn" onclick="pressNum('7')">7</button><button class="numBtn" onclick="pressNum('8')">8</button><button class="numBtn" onclick="pressNum('9')">9</button>
+  <button class="numBtn" onclick="clearNum()">清除</button><button class="numBtn" onclick="pressNum('0')">0</button><button class="numBtn" onclick="pressNum('00')">00</button>
+  </div>
+  <div id="payBtnWrap" class="payKey"></div>
 </div>
-<div id="payBtnWrap" class="payKey"></div>
-<button style="width:100%;margin-top:12px;padding:14px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:17px;" onclick="closeInputModal()">取消</button>
+
+<button style="width:100%;padding:14px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:17px;flex-shrink:0;" onclick="closeInputModal()">取消</button>
 </div></div>
 
 <!-- 支出輸入 Modal -->
 <div id="expInputModal" class="modal"><div class="modal-card">
 <h3 id="expModalTitle" style="text-align:center;margin-bottom:8px;font-size:22px;">支出</h3>
 <div id="expAmountShow" class="inputBox">0</div>
-<div class="numKey">
-<button class="numBtn" onclick="pressExpNum('1')">1</button><button class="numBtn" onclick="pressExpNum('2')">2</button><button class="numBtn" onclick="pressExpNum('3')">3</button>
-<button class="numBtn" onclick="pressExpNum('4')">4</button><button class="numBtn" onclick="pressExpNum('5')">5</button><button class="numBtn" onclick="pressExpNum('6')">6</button>
-<button class="numBtn" onclick="pressExpNum('7')">7</button><button class="numBtn" onclick="pressExpNum('8')">8</button><button class="numBtn" onclick="pressExpNum('9')">9</button>
-<button class="numBtn" onclick="clearExpNum()">清除</button><button class="numBtn" onclick="pressExpNum('0')">0</button><button class="numBtn" onclick="pressExpNum('00')">00</button>
+
+<div class="input-area">
+  <div class="numKey">
+  <button class="numBtn" onclick="pressExpNum('1')">1</button><button class="numBtn" onclick="pressExpNum('2')">2</button><button class="numBtn" onclick="pressExpNum('3')">3</button>
+  <button class="numBtn" onclick="pressExpNum('4')">4</button><button class="numBtn" onclick="pressExpNum('5')">5</button><button class="numBtn" onclick="pressExpNum('6')">6</button>
+  <button class="numBtn" onclick="pressExpNum('7')">7</button><button class="numBtn" onclick="pressExpNum('8')">8</button><button class="numBtn" onclick="pressExpNum('9')">9</button>
+  <button class="numBtn" onclick="clearExpNum()">清除</button><button class="numBtn" onclick="pressExpNum('0')">0</button><button class="numBtn" onclick="pressExpNum('00')">00</button>
+  </div>
+  <div id="expCatWrap" class="payKey"></div>
 </div>
-<div id="expCatWrap" class="payKey"></div>
-<input id="expNoteInput" class="noteInput" placeholder="備註（選填）">
-<button style="width:100%;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:16px;" onclick="closeExpInputModal()">取消</button>
+
+<input id="expNoteInput" class="noteInput" placeholder="備註（選填）" style="flex-shrink:0;">
+<button style="width:100%;padding:14px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:17px;flex-shrink:0;" onclick="closeExpInputModal()">取消</button>
 </div></div>
 
 <!-- 修改收入 Modal -->
@@ -308,23 +344,48 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 </div>
 
 <div id="pageStat" class="page">
-<div class="stat-type-card" id="statTypeCard"></div>
-<div class="filter-bar">
-<div class="filter-card" onclick="statGoDayEntry()"><span class="fc-main" id="statFcDay">--</span><span class="fc-stat" id="statFcDayStat">—</span><span class="fc-arrow">›</span></div>
-<div class="filter-card" onclick="statGoMonthEntry()"><span class="fc-main" id="statFcMonth">--</span><span class="fc-stat" id="statFcMonthStat">—</span><span class="fc-arrow">›</span></div>
-<div class="filter-card" onclick="statGoYearEntry()"><span class="fc-main" id="statFcYear">--</span><span class="fc-stat" id="statFcYearStat">—</span><span class="fc-arrow">›</span></div>
-</div>
-<div id="statContent"><div class="empty-tip">點上方卡片查看統計</div></div>
+  <div class="stat-page-title">📊 營業統計</div>
+  <div class="stat-type-card" id="statTypeCard"></div>
+
+  <div id="statBreadcrumb" class="stat-breadcrumb">
+    <span class="stat-muted">目前：</span>
+    <button onclick="statResetLevel()">全部年份</button>
+  </div>
+
+  <div class="stat-summary-box">
+    <div class="stat-summary-title" id="statSummaryTitle">全部年度合計</div>
+    <div class="stat-summary-grid" id="statSummaryGrid"></div>
+  </div>
+
+  <div class="stat-list-box">
+    <div id="statContent"><div class="empty-tip">尚無營業紀錄</div></div>
+  </div>
 </div>
 
+<!-- 支出統計頁面 -->
 <div id="pageExpStat" class="page">
-<div class="add-bar"><button class="add-btn" onclick="openExpInputModal()">＋ 新增支出</button></div>
-<div class="filter-bar">
-<div class="filter-card" onclick="expGoDayEntry()"><span class="fc-main" id="expFcDay">--</span><span class="fc-stat" id="expFcDayStat">—</span><span class="fc-arrow">›</span></div>
-<div class="filter-card" onclick="expGoMonthEntry()"><span class="fc-main" id="expFcMonth">--</span><span class="fc-stat" id="expFcMonthStat">—</span><span class="fc-arrow">›</span></div>
-<div class="filter-card" onclick="expGoYearEntry()"><span class="fc-main" id="expFcYear">--</span><span class="fc-stat" id="expFcYearStat">—</span><span class="fc-arrow">›</span></div>
-</div>
-<div id="expContent"><div class="empty-tip">點上方卡片查看支出</div></div>
+  <div class="stat-page-title">💸 支出統計</div>
+  <div class="add-bar" style="margin-bottom:8px;"><button class="add-btn" onclick="openExpInputModal()">＋ 新增支出</button></div>
+
+  <div class="stat-type-card" id="expTypeCard"></div>
+
+  <div id="expBreadcrumb" class="stat-breadcrumb">
+    <span class="stat-muted">目前：</span>
+    <button onclick="expResetLevel()">全部年份</button>
+  </div>
+
+  <div class="exp-summary-card stat-summary-box">
+    <div class="stat-summary-title" id="expSummaryTitle">全部年度支出合計</div>
+    <div class="stat-summary-grid">
+      <div><span>支出總額</span><strong id="expSummarySum">0</strong></div>
+      <div><span>筆數</span><strong id="expSummaryCount">0</strong></div>
+      <div><span>餘額（淨收-支出）</span><strong class="net" id="expSummaryBalance">0</strong></div>
+    </div>
+  </div>
+
+  <div class="stat-list-box">
+    <div id="expContent"><div class="empty-tip">尚無支出紀錄</div></div>
+  </div>
 </div>
 
 <div id="pageSetting" class="page">
@@ -333,7 +394,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 <div class="setBlock"><h4>營業時間</h4><div style="display:flex;gap:8px;align-items:center;font-size:calc(1.05px * var(--fs-num));"><span>開始</span><input id="setStartHour" type="number" min="0" max="23" oninput="onHourChange()" style="width:56px;padding:6px;text-align:center;font-size:14px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;"><span>結束</span><input id="setEndHour" type="number" min="0" max="23" oninput="onHourChange()" style="width:56px;padding:6px;text-align:center;font-size:14px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;"></div><div id="hourPreview" class="hour-preview">請輸入開始與結束時間</div></div>
 <div class="setBlock"><h4>營業類別</h4><div id="typeListSet"></div><div style="display:flex;gap:6px;margin-top:6px;"><input id="newTypeName" placeholder="名稱" style="flex:1;padding:6px 8px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newTypeDeduct" type="number" placeholder="扣除" style="width:56px;padding:6px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewTypeTemp()" style="padding:6px 10px;font-size:13px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div></div>
 <div class="setBlock"><h4>付款方式</h4><div id="payListSet"></div><div style="display:flex;gap:6px;margin-top:6px;"><input id="newPayName" placeholder="名稱" style="flex:1;padding:6px 8px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newPayRate" type="number" placeholder="%" style="width:56px;padding:6px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewPayTemp()" style="padding:6px 10px;font-size:13px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div><div style="font-size:12px;color:#94a3b8;margin-top:6px;">※ 好孕卷自動扣除補助250輸入全額即可其餘視為現金</div></div>
-<div class="setBlock"><h4>支出類型</h4><div id="expListSet"></div><div style="display:flex;gap:6px;margin-top:6px;"><input id="newExpName" placeholder="名稱" style="flex:1;padding:6px 8px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><button onclick="addNewExpTemp()" style="padding:6px 10px;font-size:13px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div></div>
+<div class="setBlock"><h4>支出類型（打勾 = 營業成本）</h4><div id="expListSet"></div><div style="display:flex;gap:6px;margin-top:6px;"><input id="newExpName" placeholder="名稱" style="flex:1;padding:6px 8px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><button onclick="addNewExpTemp()" style="padding:6px 10px;font-size:13px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div></div>
 <div class="setBlock"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><h4 style="margin:0;font-size:calc(1.05px * var(--fs-num));color:#0f172a;">資料備份</h4><span style="font-size:calc(.85px * var(--fs-num));color:#64748b;flex:1;text-align:right;">僅紀錄，不含設定</span></div><div class="backup-bar"><button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出</button><button class="backup-btn importBtn" onclick="document.getElementById('fileImport').click()">📥 匯入</button></div></div>
 </div>
 
@@ -342,19 +403,21 @@ if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch
 
 var currentType="",editId=null,editExpId=null,historyStack=[],modalAmount="",expModalAmount="",sortNewFirst=true,statViewStack=[],expViewStack=[];
 var statTypeFilter="";
+var expCatFilter="";
 
 function nextId(){var seq=Number(localStorage.getItem('taxiSeq')||0)+1;localStorage.setItem('taxiSeq',seq);return Date.now()*1000+(seq%1000);}
 
 var config=JSON.parse(localStorage.getItem('taxiConfig'))||{
   typeList:[{name:"路招",deduct:0,color:"#2563eb"},{name:"派遣",deduct:10,color:"#ea580c"}],
   payList:[{name:"現金",rate:0,color:"#16a34a"},{name:"悠遊卡",rate:3,color:"#22aabb"},{name:"信用卡",rate:3,color:"#7c3aed"},{name:"企業簽單",rate:15,color:"#9333ea"},{name:"好孕券",rate:0,color:"#0891b2"}],
-  expList:[{name:"加油",color:"#dc2626"},{name:"維修",color:"#ea580c"},{name:"餐費",color:"#9333ea"},{name:"停車",color:"#0891b2"},{name:"其他",color:"#475569"}],
+  expList:[{name:"加油",color:"#dc2626",isCost:false},{name:"維修",color:"#ea580c",isCost:false},{name:"餐費",color:"#9333ea",isCost:false},{name:"停車",color:"#0891b2",isCost:false},{name:"其他",color:"#475569",isCost:false}],
   businessHour:{start:22,end:8},fontSize:13,fontWeight:700
 };
 if(!config.businessHour)config.businessHour={start:22,end:8};
 if(!config.fontSize)config.fontSize=13;
 if(!config.fontWeight)config.fontWeight=700;
-if(!config.expList)config.expList=[{name:"加油",color:"#dc2626"},{name:"其他",color:"#475569"}];
+if(!config.expList)config.expList=[{name:"加油",color:"#dc2626",isCost:false},{name:"其他",color:"#475569",isCost:false}];
+config.expList.forEach(function(e){if(typeof e.isCost==='undefined')e.isCost=false;});
 
 var TYPE_COLORS=[
   '#2563eb','#ea580c','#16a34a','#7c3aed','#dc2626',
@@ -401,16 +464,63 @@ function applyFontSize(v){document.documentElement.style.setProperty('--fs-num',
 function applyFontWeight(v){document.documentElement.style.setProperty('--fw-num',v);}
 applyFontSize(config.fontSize);applyFontWeight(config.fontWeight);
 
-function onFontSizeChange(v){document.getElementById('fontSizeValue').textContent=v;applyFontSize(Number(v));config.fontSize=Number(v)||13;saveConfig();fitAllStatText();}
-function onFontWeightChange(v){document.getElementById('fontWeightValue').textContent=v;applyFontWeight(Number(v));config.fontWeight=Number(v)||700;saveConfig();}
+function onFontSizeChange(v){document.getElementById('fontSizeValue').textContent=v;applyFontSize(Number(v));config.fontSize=Number(v)||13;saveConfig();fitAllStatText();fitHomeButtons();setTimeout(function(){fitModalContent('inputModal');fitModalContent('expInputModal');},50);}
+function onFontWeightChange(v){document.getElementById('fontWeightValue').textContent=v;applyFontWeight(Number(v));config.fontWeight=Number(v)||700;saveConfig();setTimeout(function(){fitModalContent('inputModal');fitModalContent('expInputModal');},50);}
 function onHourChange(){updateHourPreview();var s=Number(document.getElementById('setStartHour').value),e=Number(document.getElementById('setEndHour').value);if(!Number.isInteger(s)||s<0||s>23)return;if(!Number.isInteger(e)||e<0||e>23)return;config.businessHour={start:s,end:e};saveConfig();}
-function onTypeNameChange(i,v){if(config.typeList[i]){config.typeList[i].name=v.trim();saveConfig();renderHomeTypeBtn();renderStatTypeCard();}}
-function onTypeDeductChange(i,v){if(config.typeList[i]){config.typeList[i].deduct=Math.max(0,Number(v)||0);saveConfig();}}
-function onPayNameChange(i,v){if(config.payList[i]){config.payList[i].name=v.trim();saveConfig();}}
-function onPayRateChange(i,v){if(config.payList[i]){config.payList[i].rate=Math.max(0,Number(v)||0);saveConfig();}}
-function onExpNameChange(i,v){if(config.expList[i]){config.expList[i].name=v.trim();saveConfig();}}
 
-/* ★★★ 動態縮字：用 canvas 量文字寬度，數字太長就縮字 ★★★ */
+/* ★ 改名時同步更新舊紀錄 */
+function renameInRecords(oldName,newName,field){
+  var recs=getRecords(),changed=false;
+  recs.forEach(function(r){
+    if(r[field]===oldName){r[field]=newName;changed=true;}
+    if(r.splits&&Array.isArray(r.splits)){
+      r.splits.forEach(function(s){if(s.pay===oldName&&field==='pay'){s.pay=newName;changed=true;}});
+    }
+  });
+  if(changed)saveRecords(recs);
+}
+function renameInExpenses(oldName,newName){
+  var exps=getExpenses(),changed=false;
+  exps.forEach(function(e){if(e.cat===oldName){e.cat=newName;changed=true;}});
+  if(changed)saveExpenses(exps);
+}
+
+function onTypeNameChange(i,v){
+  if(!config.typeList[i])return;
+  var oldName=config.typeList[i].name;
+  var newName=v.trim();
+  if(oldName===newName)return;
+  config.typeList[i].name=newName;
+  saveConfig();
+  if(oldName&&newName)renameInRecords(oldName,newName,'type');
+  renderHomeTypeBtn();renderStatTypeCard();
+  calcTotal();renderTodayList();refreshStatCards();refreshExpCards();
+}
+function onTypeDeductChange(i,v){if(config.typeList[i]){config.typeList[i].deduct=Math.max(0,Number(v)||0);saveConfig();}}
+function onPayNameChange(i,v){
+  if(!config.payList[i])return;
+  var oldName=config.payList[i].name;
+  var newName=v.trim();
+  if(oldName===newName)return;
+  config.payList[i].name=newName;
+  saveConfig();
+  if(oldName&&newName)renameInRecords(oldName,newName,'pay');
+  calcTotal();renderTodayList();refreshStatCards();refreshExpCards();
+}
+function onPayRateChange(i,v){if(config.payList[i]){config.payList[i].rate=Math.max(0,Number(v)||0);saveConfig();}}
+function onExpNameChange(i,v){
+  if(!config.expList[i])return;
+  var oldName=config.expList[i].name;
+  var newName=v.trim();
+  if(oldName===newName)return;
+  config.expList[i].name=newName;
+  saveConfig();
+  if(oldName&&newName)renameInExpenses(oldName,newName);
+  renderExpTypeCard();
+  refreshExpCards();refreshStatCards();
+}
+function onExpIsCostChange(i,v){if(config.expList[i]){config.expList[i].isCost=!!v;saveConfig();refreshStatCards();}}
+
 var _fitCanvas=null;
 function _getFitCtx(){
   if(!_fitCanvas)_fitCanvas=document.createElement('canvas');
@@ -435,27 +545,34 @@ function fitAllStatText(){
   els.forEach(function(el){ fitOne(el,7); });
 }
 
-/* ★★★ 產生「營業合計」表頭（標籤+數字整組換行） ★★★ */
-function buildGrandTotalHTML(title, sumRaw, sumFee, cntA, cntB, sumNet){
-  return '<div class="grand-total-card">'
-    + '<div class="grand-total-title">'+escapeHtml(title)+'</div>'
-    + '<div class="grand-total-row">'
-    +   '<div class="grand-total-item"><span class="gt-label">營業收入</span><span class="gt-value gt-blue">'+sumRaw+'</span></div>'
-    +   '<div class="grand-total-item"><span class="gt-label">手續費</span><span class="gt-value gt-red">'+Math.round(sumFee)+'</span></div>'
-    +   '<div class="grand-total-item"><span class="gt-label">'+(config.typeList[0]?escapeHtml(config.typeList[0].name):'類別1')+'次數</span><span class="gt-value">'+cntA+'</span></div>'
-    +   '<div class="grand-total-item"><span class="gt-label">'+(config.typeList[1]?escapeHtml(config.typeList[1].name):'類別2')+'次數</span><span class="gt-value">'+cntB+'</span></div>'
-    +   '<div class="grand-total-item"><span class="gt-label">淨收入</span><span class="gt-value gt-green">'+sumNet+'</span></div>'
-    + '</div>'
-    + '</div>';
+function fitHomeButtons(){
+  document.querySelectorAll('#typeBtnWrap .bigBtn').forEach(function(btn){
+    if(!btn.clientWidth||!btn.clientHeight)return;
+    var h=btn.clientHeight;
+    var target=h*0.66;
+    btn.style.fontSize=target+'px';
+    fitOne(btn, Math.max(10,target*0.5));
+    if(parseFloat(btn.style.fontSize)<target){
+      var cs=getComputedStyle(btn);
+      var ctx=_getFitCtx();
+      ctx.font=(cs.fontStyle||'normal')+' '+(cs.fontWeight||'400')+' '+target+'px '+(cs.fontFamily||'sans-serif');
+      var textW=ctx.measureText(btn.textContent||'').width;
+      if(textW<=btn.clientWidth-2){
+        btn.style.fontSize=target+'px';
+      }
+    }
+  });
 }
 
-/* 依 prefix 計算類別次數 */
-function countByTypePrefix(prefix){
-  var recs=getFilteredRecords().filter(function(r){return r.date.indexOf(prefix)===0;});
-  var map={};
-  config.typeList.forEach(function(t){map[t.name]=0;});
-  recs.forEach(function(r){map[r.type]=(map[r.type]||0)+1;});
-  return map;
+function fitModalContent(modalId){
+  var modal=document.getElementById(modalId);
+  if(!modal || !modal.classList.contains('active')) return;
+  var inputArea=modal.querySelector('.input-area');
+  if(inputArea){
+    inputArea.style.transform='none';
+    inputArea.style.height='auto';
+    inputArea.style.flex='0 1 auto';
+  }
 }
 
 var colorPickTarget=null;
@@ -478,6 +595,7 @@ document.getElementById('colorPicker').addEventListener('input', function(e){
   renderSetting();
   renderHomeTypeBtn();
   renderStatTypeCard();
+  renderExpTypeCard();
 });
 document.getElementById('colorPicker').addEventListener('change', function(){
   colorPickTarget=null;
@@ -498,17 +616,12 @@ function getTodayWeekdayText(){
   var wd=['日','一','二','三','四','五','六'][d.getDay()];
   return (d.getMonth()+1)+'/'+String(d.getDate()).padStart(2,'0')+' 週'+wd;
 }
-function fmtDayShort(d){return parseInt(d,10)+'日';}
-function fmtMonthShort(m){return parseInt(m,10)+'月';}
-function fmtYearShort(y){return String(y).slice(-2)+'年';}
 
-/* ★ 匯出：只含紀錄，不含設定 */
 function exportBackup(){var data={saveTime:new Date().toISOString(),records:getRecords(),expenses:getExpenses()};var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='計程車記帳備份_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);alert('✅ 備份檔已下載！（僅紀錄，不含設定）');}
 
 function isValidRecord(r){return r&&typeof r==='object'&&typeof r.id!=='undefined'&&typeof r.type==='string'&&typeof r.pay==='string'&&Number.isFinite(Number(r.raw))&&Number.isFinite(Number(r.net))&&typeof r.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(r.date);}
 function isValidExpense(e){return e&&typeof e==='object'&&typeof e.id!=='undefined'&&typeof e.cat==='string'&&Number.isFinite(Number(e.raw))&&typeof e.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(e.date);}
 
-/* ★★★ 匯入：id 優先 + 內容指紋 ★★★ */
 function recFingerprint(r){
   return [r.date, r.time||'', r.type||'', Number(r.raw||0), r.pay||'', Number(r.net||0)].join('|');
 }
@@ -537,35 +650,51 @@ document.getElementById('fileImport').onchange=function(e){
       a.click();
       URL.revokeObjectURL(url);
 
-      /* 收入 */
       var curRecs = getRecords();
-      var curRecById = {},curRecFp = {};
-      curRecs.forEach(function(x){curRecById[x.id]=x;curRecFp[recFingerprint(x)]=1;});
+      var curRecById = {};
+      var curRecFp = {};
+      curRecs.forEach(function(x){
+        curRecById[x.id] = x;
+        curRecFp[recFingerprint(x)] = 1;
+      });
+
       var addRecs = [], skipRecs = 0;
       d.records.forEach(function(r){
-        var nr = JSON.parse(JSON.stringify(r)),fp = recFingerprint(nr),exist = curRecById[nr.id];
+        var nr = JSON.parse(JSON.stringify(r));
+        var fp = recFingerprint(nr);
+        var exist = curRecById[nr.id];
         if(exist){
           if(recFingerprint(exist) === fp){ skipRecs++; return; }
           nr.id = nextId();
         }
         if(curRecFp[fp]){ skipRecs++; return; }
-        curRecFp[fp] = 1; curRecById[nr.id] = nr; addRecs.push(nr);
+        curRecFp[fp] = 1;
+        curRecById[nr.id] = nr;
+        addRecs.push(nr);
       });
       saveRecords(curRecs.concat(addRecs));
 
-      /* 支出 */
       var curExps = getExpenses();
-      var curExpById = {},curExpFp = {};
-      curExps.forEach(function(x){curExpById[x.id]=x;curExpFp[expFingerprint(x)]=1;});
+      var curExpById = {};
+      var curExpFp = {};
+      curExps.forEach(function(x){
+        curExpById[x.id] = x;
+        curExpFp[expFingerprint(x)] = 1;
+      });
+
       var addExps = [], skipExps = 0;
       (Array.isArray(d.expenses)?d.expenses:[]).forEach(function(x){
-        var nx = JSON.parse(JSON.stringify(x)),fp = expFingerprint(nx),exist = curExpById[nx.id];
+        var nx = JSON.parse(JSON.stringify(x));
+        var fp = expFingerprint(nx);
+        var exist = curExpById[nx.id];
         if(exist){
           if(expFingerprint(exist) === fp){ skipExps++; return; }
           nx.id = nextId();
         }
         if(curExpFp[fp]){ skipExps++; return; }
-        curExpFp[fp] = 1; curExpById[nx.id] = nx; addExps.push(nx);
+        curExpFp[fp] = 1;
+        curExpById[nx.id] = nx;
+        addExps.push(nx);
       });
       saveExpenses(curExps.concat(addExps));
 
@@ -576,13 +705,25 @@ document.getElementById('fileImport').onchange=function(e){
         + '匯入前資料已自動備份到「下載」資料夾。';
       alert(msg);
 
-      renderHomeTypeBtn();calcTotal();renderTodayList();refreshStatCards();refreshExpCards();renderStatTypeCard();
+      renderHomeTypeBtn();calcTotal();renderTodayList();refreshStatCards();refreshExpCards();renderStatTypeCard();renderExpTypeCard();
     }catch(err){alert('❌ 檔案讀取失敗');}
   };
   r.readAsText(f);this.value=null;
 };
 
-function renderHomeTypeBtn(){var wrap=document.getElementById('typeBtnWrap');wrap.innerHTML='';config.typeList.forEach(function(t){var btn=document.createElement('button');btn.className='bigBtn';btn.style.background=t.color||'#5577aa';btn.textContent=t.name;btn.onclick=function(){openInputModal(t.name);};wrap.appendChild(btn);});}
+function renderHomeTypeBtn(){
+  var wrap=document.getElementById('typeBtnWrap');
+  wrap.innerHTML='';
+  config.typeList.forEach(function(t){
+    var btn=document.createElement('button');
+    btn.className='bigBtn';
+    btn.style.background=t.color||'#5577aa';
+    btn.textContent=t.name;
+    btn.onclick=function(){openInputModal(t.name);};
+    wrap.appendChild(btn);
+  });
+  setTimeout(fitHomeButtons,0);
+}
 
 function updateNavActive(pageId){
   document.querySelectorAll('.global-nav .nav-icon').forEach(function(el){
@@ -623,11 +764,19 @@ function updateHourPreview(){
 }
 
 var modal=document.getElementById('inputModal');
-function openInputModal(type){currentType=type;modalAmount='';document.getElementById('modalTitle').textContent=type;document.getElementById('amountShow').textContent='0';renderPayBtn();modal.classList.add('active');}
+function openInputModal(type){
+  currentType=type;
+  modalAmount='';
+  document.getElementById('modalTitle').textContent=type;
+  document.getElementById('amountShow').textContent='0';
+  modal.classList.add('active');
+  renderPayBtn();
+  setTimeout(function(){fitModalContent('inputModal');},50);
+}
 function closeInputModal(){modal.classList.remove('active');}
 function pressNum(n){if(modalAmount==='0')modalAmount='';modalAmount+=n;document.getElementById('amountShow').textContent=modalAmount||'0';}
 function clearNum(){modalAmount='';document.getElementById('amountShow').textContent='0';}
-function renderPayBtn(){var w=document.getElementById('payBtnWrap');w.innerHTML='';config.payList.forEach(function(p){var b=document.createElement('button');b.className='payBtn';b.style.background=p.color||'#557799';b.textContent=p.name;b.onclick=function(){saveRecord(p);};w.appendChild(b);});}
+function renderPayBtn(){var w=document.getElementById('payBtnWrap');w.innerHTML='';config.payList.forEach(function(p){var b=document.createElement('button');b.className='payBtn';b.style.background=p.color||'#557799';b.textContent=p.name;b.onclick=function(){saveRecord(p);};w.appendChild(b);});setTimeout(function(){fitModalContent('inputModal');},50);}
 
 function saveRecord(payItem){
   var amt=Number(modalAmount);if(!amt||amt<=0){alert('請輸入金額');return;}
@@ -647,16 +796,23 @@ function saveRecord(payItem){
 }
 
 var expModal=document.getElementById('expInputModal');
-function openExpInputModal(){expModalAmount='';document.getElementById('expAmountShow').textContent='0';document.getElementById('expNoteInput').value='';renderExpCatBtn();expModal.classList.add('active');}
+function openExpInputModal(){
+  expModalAmount='';
+  document.getElementById('expAmountShow').textContent='0';
+  document.getElementById('expNoteInput').value='';
+  expModal.classList.add('active');
+  renderExpCatBtn();
+  setTimeout(function(){fitModalContent('expInputModal');},50);
+}
 function closeExpInputModal(){expModal.classList.remove('active');}
 function pressExpNum(n){if(expModalAmount==='0')expModalAmount='';expModalAmount+=n;document.getElementById('expAmountShow').textContent=expModalAmount||'0';}
 function clearExpNum(){expModalAmount='';document.getElementById('expAmountShow').textContent='0';}
-function renderExpCatBtn(){var w=document.getElementById('expCatWrap');w.innerHTML='';config.expList.forEach(function(c){var b=document.createElement('button');b.className='payBtn';b.style.background=c.color||'#dc2626';b.textContent=c.name;b.onclick=function(){saveExpense(c);};w.appendChild(b);});}
+function renderExpCatBtn(){var w=document.getElementById('expCatWrap');w.innerHTML='';config.expList.forEach(function(c){var b=document.createElement('button');b.className='payBtn';b.style.background=c.color||'#dc2626';b.textContent=c.name;b.onclick=function(){saveExpense(c);};w.appendChild(b);});setTimeout(function(){fitModalContent('expInputModal');},50);}
 function saveExpense(cat){
   var amt=Number(expModalAmount);if(!amt||amt<=0){alert('請輸入金額');return;}
   var note=document.getElementById('expNoteInput').value.trim(),now=new Date(),list=getExpenses();
   list.unshift({id:nextId(),cat:cat.name,color:cat.color,raw:amt,note:note,date:getBizDate(now),time:fmtTime()});
-  saveExpenses(list);closeExpInputModal();refreshExpCards();renderExpView();
+  saveExpenses(list);closeExpInputModal();refreshExpCards();renderExpView();refreshStatCards();
 }
 
 function calcDayStats(recs,targetDate){
@@ -667,12 +823,21 @@ function calcDayStats(recs,targetDate){
     daySum+=Number(r.raw||0);
     feeSum+=Number(r.fee||0);
     typeCount[r.type]=(typeCount[r.type]||0)+1;
+
     if(Number.isFinite(Number(r.deduct))) deductSum+=Number(r.deduct||0);
-    else{var ti=config.typeList.find(function(t){return t.name===r.type;});if(ti)deductSum+=Number(ti.deduct||0);}
+    else{
+      var ti=config.typeList.find(function(t){return t.name===r.type;});
+      if(ti)deductSum+=Number(ti.deduct||0);
+    }
+
     if(r.splits&&Array.isArray(r.splits)){
-      r.splits.forEach(function(s){if(isCashPay(s.pay))cashSum+=Number(s.amount||0);else nonCashSum+=Number(s.amount||0);});
+      r.splits.forEach(function(s){
+        if(isCashPay(s.pay))cashSum+=Number(s.amount||0);
+        else nonCashSum+=Number(s.amount||0);
+      });
     }else{
-      if(isCashPay(r.pay))cashSum+=Number(r.raw||0);else nonCashSum+=Number(r.raw||0);
+      if(isCashPay(r.pay))cashSum+=Number(r.raw||0);
+      else nonCashSum+=Number(r.raw||0);
     }
   });
   return{daySum:daySum,cashSum:cashSum,nonCashSum:nonCashSum,feeSum:feeSum,deductSum:deductSum,typeCount:typeCount};
@@ -722,12 +887,35 @@ function getFilteredRecords(){
   return recs.filter(function(r){return r.type===statTypeFilter;});
 }
 
-function calcIncomeStat(prefix){
-  var recs=getFilteredRecords().filter(function(r){return r.date.indexOf(prefix)===0;});
-  return{sum:recs.reduce(function(s,r){return s+Number(r.raw||0);},0),fee:recs.reduce(function(s,r){return s+Number(r.fee||0);},0),net:recs.reduce(function(s,r){return s+Number(r.net||0);},0),cnt:recs.length};
+function getCostExpenses(prefix){
+  var costCats={};
+  config.expList.forEach(function(e){if(e.isCost)costCats[e.name]=1;});
+  return getExpenses().filter(function(e){
+    if(!costCats[e.cat])return false;
+    return String(e.date||'').indexOf(prefix||'')===0;
+  });
 }
+
+function calcIncomeStat(prefix){
+  var recs=getFilteredRecords().filter(function(r){return String(r.date||'').indexOf(prefix)===0;});
+  var sum=0,fee=0,net=0,typeCount={};
+  config.typeList.forEach(function(t){typeCount[t.name]=0;});
+  recs.forEach(function(r){
+    sum+=Number(r.raw||0);
+    fee+=Number(r.fee||0);
+    net+=Number(r.net||0);
+    typeCount[r.type]=(typeCount[r.type]||0)+1;
+  });
+  var costList=getCostExpenses(prefix);
+  var cost=costList.reduce(function(s,e){return s+Number(e.raw||0);},0);
+  return{
+    sum:sum,fee:fee,net:net,cnt:recs.length,
+    typeCount:typeCount,cost:cost
+  };
+}
+
 function calcExpStat(prefix){
-  var list=getExpenses().filter(function(e){return e.date.indexOf(prefix)===0;});
+  var list=getFilteredExpenses().filter(function(e){return String(e.date||'').indexOf(prefix)===0;});
   var sum=list.reduce(function(s,e){return s+Number(e.raw||0);},0),net=calcIncomeStat(prefix).net||0;
   return{sum:sum,count:list.length,net:net,balance:net-sum};
 }
@@ -751,209 +939,361 @@ function renderStatTypeCard(){
     b.onclick=function(){setStatTypeFilter(t.name);};
     card.appendChild(b);
   });
-  setTimeout(fitAllStatText, 0);
+  setTimeout(fitAllStatText,0);
+}
+
+function renderExpTypeCard(){
+  var card=document.getElementById('expTypeCard');
+  if(!card)return;
+  card.innerHTML='';
+  var allBtn=document.createElement('button');
+  allBtn.className='stat-type-btn all-btn'+(expCatFilter===''?' active':'');
+  allBtn.textContent='全部';
+  allBtn.onclick=function(){setExpCatFilter('');};
+  card.appendChild(allBtn);
+  config.expList.forEach(function(t){
+    var b=document.createElement('button');
+    var isActive=(expCatFilter===t.name);
+    b.className='stat-type-btn'+(isActive?' active':'');
+    b.textContent=t.name;
+    b.style.background=isActive?(t.color||'#dc2626'):'#e2e8f0';
+    b.style.color=isActive?'#fff':'#475569';
+    b.onclick=function(){setExpCatFilter(t.name);};
+    card.appendChild(b);
+  });
+  setTimeout(fitAllStatText,0);
+}
+
+function setExpCatFilter(name){
+  expCatFilter=name;
+  expViewStack=[];
+  renderExpTypeCard();
+  renderExpView();
+}
+
+function getFilteredExpenses(){
+  var list=getExpenses();
+  if(!expCatFilter)return list;
+  return list.filter(function(e){return e.cat===expCatFilter;});
+}
+
+function statMoney(n){return Math.round(Number(n||0)).toLocaleString('zh-TW');}
+function statTypeTitle(){return statTypeFilter?statTypeFilter+'｜':'';}
+
+function updateStatSummary(title,prefix){
+  var s=calcIncomeStat(prefix||'');
+  document.getElementById('statSummaryTitle').textContent=title;
+  var hasCost=config.expList.some(function(e){return e.isCost;});
+  var grid=document.getElementById('statSummaryGrid');
+  var netAfterCost=s.net-s.cost;
+  var html='';
+  html+='<div><span>營業收入</span><strong>'+statMoney(s.sum)+'</strong></div>';
+  html+='<div><span>手續費</span><strong class="fee">'+statMoney(s.fee)+'</strong></div>';
+  config.typeList.forEach(function(t){
+    html+='<div><span>'+escapeHtml(t.name)+'次數</span><strong>'+ (s.typeCount[t.name]||0) +'</strong></div>';
+  });
+  if(hasCost){
+    html+='<div><span>營業成本</span><strong class="cost">'+statMoney(s.cost)+'</strong></div>';
+    html+='<div><span>淨收入</span><strong class="net">'+statMoney(netAfterCost)+'</strong></div>';
+  }else{
+    html+='<div><span>淨收入</span><strong class="net">'+statMoney(s.net)+'</strong></div>';
+  }
+  grid.innerHTML=html;
+  setTimeout(fitAllStatText,0);
+}
+
+function updateStatBreadcrumb(){
+  var el=document.getElementById('statBreadcrumb');
+  if(!el)return;
+  var stack=statViewStack||[];
+  var html='<span class="stat-muted">目前：</span><button onclick="statResetLevel()">全部年份</button>';
+  if(stack.length){
+    var top=stack[stack.length-1];
+    if(top.type==='monthList'||top.type==='dayList'||top.type==='dayDetail'){
+      var y=top.year||String((top.month||top.date).slice(0,4));
+      html+=' <span>/</span> <button onclick="statBreadcrumbYear(\''+y+'\')">'+y+'年</button>';
+    }
+    if(top.type==='dayList'||top.type==='dayDetail'){
+      var m=top.month||(top.date||'').slice(0,7);
+      html+=' <span>/</span> <button onclick="statBreadcrumbMonth(\''+m+'\')">'+String(parseInt(m.slice(5),10))+'月</button>';
+    }
+    if(top.type==='dayDetail'){
+      html+=' <span>/</span> <span class="stat-current">'+escapeHtml(top.date.slice(8))+'日</span>';
+    }
+  }
+  el.innerHTML=html;
 }
 
 function setStatTypeFilter(name){
   statTypeFilter=name;
-  renderStatTypeCard();
   statViewStack=[];
-  document.getElementById('statContent').innerHTML='<div class="empty-tip">點上方卡片查看統計</div>';
-  refreshStatCards();
+  renderStatTypeCard();
+  renderStatView();
+}
+
+function showStatDefault(){
+  statViewStack=[];
+  renderStatTypeCard();
+  renderStatView();
 }
 
 function refreshStatCards(){
-  var today=getBizDate(new Date()),p=today.split('-'),y=p[0],m=p[1],d=p[2],mon=y+'-'+m;
-  document.getElementById('statFcDay').textContent=fmtDayShort(d);
-  document.getElementById('statFcMonth').textContent=fmtMonthShort(m);
-  document.getElementById('statFcYear').textContent=fmtYearShort(y);
-  var ds=calcIncomeStat(today),ms=calcIncomeStat(mon),ys=calcIncomeStat(y);
-  document.getElementById('statFcDayStat').innerHTML='<span class="sum">營業'+ds.sum+'</span><span class="cnt">趟次'+ds.cnt+'</span><span class="fee">手續費'+Math.round(ds.fee)+'</span><span class="net">淨收'+ds.net+'</span>';
-  document.getElementById('statFcMonthStat').innerHTML='<span class="sum">營業'+ms.sum+'</span><span class="cnt">趟次'+ms.cnt+'</span><span class="fee">手續費'+Math.round(ms.fee)+'</span><span class="net">淨收'+ms.net+'</span>';
-  document.getElementById('statFcYearStat').innerHTML='<span class="sum">營業'+ys.sum+'</span><span class="cnt">趟次'+ys.cnt+'</span><span class="fee">手續費'+Math.round(ys.fee)+'</span><span class="net">淨收'+ys.net+'</span>';
-  setTimeout(fitAllStatText, 0);
-}
-function refreshExpCards(){
-  var today=getBizDate(new Date()),p=today.split('-'),y=p[0],m=p[1],d=p[2],mon=y+'-'+m;
-  document.getElementById('expFcDay').textContent=fmtDayShort(d);
-  document.getElementById('expFcMonth').textContent=fmtMonthShort(m);
-  document.getElementById('expFcYear').textContent=fmtYearShort(y);
-  var ds=calcExpStat(today),ms=calcExpStat(mon),ys=calcExpStat(y);
-  document.getElementById('expFcDayStat').innerHTML='<span class="net">淨收 '+ds.net+'</span><span class="fee">支出 '+ds.sum+'</span><span class="bal">餘額 '+ds.balance+'</span><span class="cnt">'+ds.count+'筆</span>';
-  document.getElementById('expFcMonthStat').innerHTML='<span class="net">淨收 '+ms.net+'</span><span class="fee">支出 '+ms.sum+'</span><span class="bal">餘額 '+ms.balance+'</span><span class="cnt">'+ms.count+'筆</span>';
-  document.getElementById('expFcYearStat').innerHTML='<span class="net">淨收 '+ys.net+'</span><span class="fee">支出 '+ys.sum+'</span><span class="bal">餘額 '+ys.balance+'</span><span class="cnt">'+ys.count+'筆</span>';
-  setTimeout(fitAllStatText, 0);
+  renderStatTypeCard();
+  if(document.getElementById('pageStat')&&document.getElementById('pageStat').classList.contains('active'))renderStatView();
 }
 
-function showStatDefault(){statViewStack=[];document.getElementById('statContent').innerHTML='<div class="empty-tip">點上方卡片查看統計</div>';renderStatTypeCard();refreshStatCards();}
-function showExpDefault(){expViewStack=[];document.getElementById('expContent').innerHTML='<div class="empty-tip">點上方卡片查看支出</div>';refreshExpCards();}
-function statGoDayEntry(){statViewStack=[{type:'dayList',month:getBizDate(new Date()).slice(0,7)}];renderStatView();}
-function statGoMonthEntry(){statViewStack=[{type:'monthList',year:getBizDate(new Date()).slice(0,4)}];renderStatView();}
-function statGoYearEntry(){statViewStack=[{type:'yearList'}];renderStatView();}
-function expGoDayEntry(){expViewStack=[{type:'dayList',month:getBizDate(new Date()).slice(0,7)}];renderExpView();}
-function expGoMonthEntry(){expViewStack=[{type:'monthList',year:getBizDate(new Date()).slice(0,4)}];renderExpView();}
-function expGoYearEntry(){expViewStack=[{type:'yearList'}];renderExpView();}
+function statResetLevel(){statViewStack=[];renderStatView();}
+function statBreadcrumbYear(year){statViewStack=[{type:'monthList',year:year}];renderStatView();}
+function statBreadcrumbMonth(month){statViewStack=[{type:'dayList',month:month}];renderStatView();}
+
+function statDrillToMonthList(year){statViewStack=[{type:'monthList',year:String(year)}];renderStatView();}
+function statDrillToDayList(month){statViewStack=[{type:'dayList',month:String(month)}];renderStatView();}
+function statDrillToDayDetail(date){statViewStack=[{type:'dayDetail',date:String(date)}];renderStatView();}
 
 function renderStatView(){
-  if(!statViewStack.length){document.getElementById('statContent').innerHTML='<div class="empty-tip">點上方卡片查看統計</div>';return;}
+  var wrap=document.getElementById('statContent');
+  if(!wrap)return;
+  if(!statViewStack.length){renderStatYearList();return;}
   var top=statViewStack[statViewStack.length-1];
-  if(top.type==='dayList')renderStatDayList(top.month);
+  if(top.type==='yearList')renderStatYearList();
   else if(top.type==='monthList')renderStatMonthList(top.year);
-  else if(top.type==='yearList')renderStatYearList();
+  else if(top.type==='dayList')renderStatDayList(top.month);
   else if(top.type==='dayDetail')renderStatDayDetail(top.date);
-  refreshStatCards();
-}
-function renderExpView(){
-  if(!expViewStack.length){document.getElementById('expContent').innerHTML='<div class="empty-tip">點上方卡片查看支出</div>';return;}
-  var top=expViewStack[expViewStack.length-1];
-  if(top.type==='dayList')renderExpDayList(top.month);
-  else if(top.type==='monthList')renderExpMonthList(top.year);
-  else if(top.type==='yearList')renderExpYearList();
-  else if(top.type==='dayDetail')renderExpDayDetail(top.date);
-  refreshExpCards();
+  updateStatBreadcrumb();
 }
 
-/* ★★★ 統計頁：日/月/年 + 營業合計表頭 ★★★ */
-function renderStatDayList(monthStr){
-  var recs=getFilteredRecords().filter(function(r){return r.date.indexOf(monthStr)===0;}),dayMap={},s=calcIncomeStat(monthStr);
-  var tMap=countByTypePrefix(monthStr);
-  recs.forEach(function(r){var d=r.date.split('-')[2];if(!dayMap[d])dayMap[d]=[];dayMap[d].push(r);});
-  var days=Object.keys(dayMap).sort(),title=(statTypeFilter?statTypeFilter:'全部')+'｜'+monthStr+' 每日統計';
-  var typeName1=config.typeList[0]?config.typeList[0].name:'類別1',typeName2=config.typeList[1]?config.typeList[1].name:'類別2';
-  var html='<div class="crumb">'+title+'</div>'
-    + buildGrandTotalHTML(monthStr+' 當月營業合計', s.sum, s.fee, tMap[typeName1]||0, tMap[typeName2]||0, s.net);
-  if(!days.length){html+='<div class="empty-tip">此月尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;setTimeout(fitAllStatText,0);return;}
-  days.forEach(function(d){
-    var arr=dayMap[d],dSum=arr.reduce(function(a,r){return a+Number(r.raw||0);},0),dFee=arr.reduce(function(a,r){return a+Number(r.fee||0);},0),dNet=arr.reduce(function(a,r){return a+Number(r.net||0);},0);
-    var dayPrefix=monthStr+'-'+d,dMap=countByTypePrefix(dayPrefix);
-    var dCntA=dMap[typeName1]||0,dCntB=dMap[typeName2]||0;
-    html+='<div class="stat-card" onclick="statDrillToDayDetail(\''+dayPrefix+'\')"><span class="sc-name">'+monthStr.slice(5)+'-'+d+'</span><span class="sc-stat"><span class="sum">營業'+dSum+'</span><span class="fee">手續'+Math.round(dFee)+'</span><span class="net">淨收'+dNet+'</span><span class="cnt">'+dCntA+'/'+dCntB+'</span></span></div>';
-  });
-  document.getElementById('statContent').innerHTML=html;
-  setTimeout(fitAllStatText,0);
-}
-function renderStatMonthList(yearStr){
-  var recs=getFilteredRecords().filter(function(r){return r.date.indexOf(yearStr)===0;}),monthMap={},s=calcIncomeStat(yearStr);
-  var tMap=countByTypePrefix(yearStr);
-  recs.forEach(function(r){var m=r.date.split('-')[1];if(!monthMap[m])monthMap[m]=[];monthMap[m].push(r);});
-  var months=Object.keys(monthMap).sort(),title=(statTypeFilter?statTypeFilter:'全部')+'｜'+yearStr+' 每月統計';
-  var typeName1=config.typeList[0]?config.typeList[0].name:'類別1',typeName2=config.typeList[1]?config.typeList[1].name:'類別2';
-  var html='<div class="crumb">'+title+'</div>'
-    + buildGrandTotalHTML(yearStr+' 年度營業合計', s.sum, s.fee, tMap[typeName1]||0, tMap[typeName2]||0, s.net);
-  if(!months.length){html+='<div class="empty-tip">此年尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;setTimeout(fitAllStatText,0);return;}
-  months.forEach(function(m){
-    var arr=monthMap[m],mSum=arr.reduce(function(a,r){return a+Number(r.raw||0);},0),mFee=arr.reduce(function(a,r){return a+Number(r.fee||0);},0),mNet=arr.reduce(function(a,r){return a+Number(r.net||0);},0);
-    var monPrefix=yearStr+'-'+m,monTypeMap=countByTypePrefix(monPrefix);
-    var mCntA=monTypeMap[typeName1]||0,mCntB=monTypeMap[typeName2]||0;
-    html+='<div class="stat-card" onclick="statDrillToDayList(\''+monPrefix+'\')"><span class="sc-name">'+m+' 月</span><span class="sc-stat"><span class="sum">營業'+mSum+'</span><span class="fee">手續'+Math.round(mFee)+'</span><span class="net">淨收'+mNet+'</span><span class="cnt">'+mCntA+'/'+mCntB+'</span></span></div>';
-  });
-  document.getElementById('statContent').innerHTML=html;
-  setTimeout(fitAllStatText,0);
-}
 function renderStatYearList(){
-  var years=[],seen={};getFilteredRecords().forEach(function(r){var y=r.date.split('-')[0];if(!seen[y]){seen[y]=1;years.push(y);}});years.sort().reverse();
-  var totalRecs=getFilteredRecords(),totalSum=totalRecs.reduce(function(s,r){return s+Number(r.raw||0);},0),totalFee=totalRecs.reduce(function(s,r){return s+Number(r.fee||0);},0),totalNet=totalRecs.reduce(function(s,r){return s+Number(r.net||0);},0);
-  var typeName1=config.typeList[0]?config.typeList[0].name:'類別1',typeName2=config.typeList[1]?config.typeList[1].name:'類別2';
-  var totalTypeMap={};
-  totalRecs.forEach(function(r){totalTypeMap[r.type]=(totalTypeMap[r.type]||0)+1;});
-  var html='<div class="crumb">'+(statTypeFilter?statTypeFilter:'全部')+'｜所有年份統計</div>'
-    + buildGrandTotalHTML('全部年度營業合計', totalSum, totalFee, totalTypeMap[typeName1]||0, totalTypeMap[typeName2]||0, totalNet);
-  if(!years.length){html+='<div class="empty-tip">尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;setTimeout(fitAllStatText,0);return;}
+  statViewStack=[];
+  var recs=getFilteredRecords(),yearMap={};
+  recs.forEach(function(r){var y=String(r.date||'').slice(0,4);if(/^\d{4}$/.test(y))yearMap[y]=(yearMap[y]||0)+1;});
+  var years=Object.keys(yearMap).sort().reverse();
+  updateStatSummary(statTypeTitle()+'全部年度合計','');
+  var html='';
+  if(!years.length){html='<div class="empty-tip">尚無營業紀錄</div>';document.getElementById('statContent').innerHTML=html;updateStatBreadcrumb();return;}
+  html+='<div class="stat-list-head"><div>項目</div><div class="head-amount">營業收入</div><div class="head-amount">手續費｜淨收入</div></div>';
   years.forEach(function(y){
-    var s=calcIncomeStat(y),yTypeMap=countByTypePrefix(y);
-    var yCntA=yTypeMap[typeName1]||0,yCntB=yTypeMap[typeName2]||0;
-    html+='<div class="stat-card" onclick="statDrillToMonthList(\''+y+'\')"><span class="sc-name">'+y+' 年</span><span class="sc-stat"><span class="sum">營業'+s.sum+'</span><span class="fee">手續'+Math.round(s.fee)+'</span><span class="net">淨收'+s.net+'</span><span class="cnt">'+yCntA+'/'+yCntB+'</span></span></div>';
+    var s=calcIncomeStat(y);
+    html+='<div class="stat-list-row" onclick="statDrillToMonthList(\''+y+'\')">'
+      +'<div class="item-name">'+y+'年</div>'
+      +'<div class="item-main">'+statMoney(s.sum)+'</div>'
+      +'<div class="item-last"><span class="item-fee">'+statMoney(s.fee)+'</span>｜<span class="item-net">'+statMoney(s.net)+'</span></div>'
+      +'</div>';
   });
   document.getElementById('statContent').innerHTML=html;
-  setTimeout(fitAllStatText,0);
+  updateStatBreadcrumb();
 }
-function renderStatDayDetail(dateStr){
-  var recs=getFilteredRecords().filter(function(r){return r.date===dateStr;}),s=calcIncomeStat(dateStr);
-  var tMap=countByTypePrefix(dateStr);
-  var typeName1=config.typeList[0]?config.typeList[0].name:'類別1',typeName2=config.typeList[1]?config.typeList[1].name:'類別2';
-  var html='<div class="crumb">'+(statTypeFilter?statTypeFilter:'全部')+'｜'+dateStr+' 當日明細</div>'
-    + buildGrandTotalHTML(dateStr+' 當日營業合計', s.sum, s.fee, tMap[typeName1]||0, tMap[typeName2]||0, s.net);
-  if(!recs.length){html+='<div class="empty-tip">此日尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;setTimeout(fitAllStatText,0);return;}
-  var asc=recs.slice().sort(function(a,b){return a.id-b.id;}),cum=0;
-  asc.forEach(function(item,i){cum+=Number(item.net||0);html+='<div class="detail-row" onclick="openEdit('+item.id+')">'+buildDetailRow(item,i+1,cum)+'</div>';});
+
+function renderStatMonthList(yearStr){
+  var recs=getFilteredRecords().filter(function(r){return String(r.date||'').indexOf(yearStr)===0;}),monthMap={};
+  recs.forEach(function(r){var m=String(r.date).slice(0,7);monthMap[m]=(monthMap[m]||0)+1;});
+  var months=Object.keys(monthMap).sort().reverse();
+  updateStatSummary(statTypeTitle()+yearStr+'年所有營業合計',yearStr);
+  var html='';
+  if(!months.length){html='<div class="empty-tip">此年尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;updateStatBreadcrumb();return;}
+  html+='<div class="stat-list-head"><div>項目</div><div class="head-amount">營業收入</div><div class="head-amount">手續費｜淨收入</div></div>';
+  months.forEach(function(m){
+    var s=calcIncomeStat(m);
+    html+='<div class="stat-list-row" onclick="statDrillToDayList(\''+m+'\')">'
+      +'<div class="item-name">'+parseInt(m.slice(5),10)+'月</div>'
+      +'<div class="item-main">'+statMoney(s.sum)+'</div>'
+      +'<div class="item-last"><span class="item-fee">'+statMoney(s.fee)+'</span>｜<span class="item-net">'+statMoney(s.net)+'</span></div>'
+      +'</div>';
+  });
   document.getElementById('statContent').innerHTML=html;
-  setTimeout(fitAllStatText,0);
+  updateStatBreadcrumb();
 }
-function statDrillToDayList(m){statViewStack.push({type:'dayList',month:m});renderStatView();}
-function statDrillToMonthList(y){statViewStack.push({type:'monthList',year:y});renderStatView();}
-function statDrillToDayDetail(d){statViewStack.push({type:'dayDetail',date:d});renderStatView();}
 
-/* ★★★ 支出統計頁 ★★★ */
-function renderExpDayList(monthStr){
-  var list=getExpenses().filter(function(e){return e.date.indexOf(monthStr)===0;}),dayMap={},s=calcExpStat(monthStr);
-  list.forEach(function(e){var d=e.date.split('-')[2];if(!dayMap[d])dayMap[d]=[];dayMap[d].push(e);});
-  var days=Object.keys(dayMap).sort();
-  var html='<div class="crumb">'+monthStr+' 每日支出</div>'
-    + '<div class="grand-total-card"><div class="grand-total-title">'+monthStr+' 當月支出合計</div><div class="grand-total-row">'
-    + '<div class="grand-total-item"><span class="gt-label">淨收</span><span class="gt-value gt-green">'+s.net+'</span></div>'
-    + '<div class="grand-total-item"><span class="gt-label">支出</span><span class="gt-value gt-red">'+s.sum+'</span></div>'
-    + '<div class="grand-total-item"><span class="gt-label">餘額</span><span class="gt-value gt-blue">'+s.balance+'</span></div>'
-    + '<div class="grand-total-item"><span class="gt-label">筆數</span><span class="gt-value">'+s.count+'</span></div>'
-    + '</div></div>';
-  if(!days.length){html+='<div class="empty-tip">此月尚無支出</div>';document.getElementById('expContent').innerHTML=html;setTimeout(fitAllStatText,0);return;}
-  days.forEach(function(d){var arr=dayMap[d],dSum=arr.reduce(function(a,e){return a+Number(e.raw||0);},0),dayPrefix=monthStr+'-'+d,dayStat=calcExpStat(dayPrefix);html+='<div class="stat-card exp" onclick="expDrillToDayDetail(\''+dayPrefix+'\')"><span class="sc-name">'+monthStr.slice(5)+'-'+d+'</span><span class="sc-stat"><span class="net">淨收'+dayStat.net+'</span><span class="fee">支出'+dSum+'</span><span class="bal">餘額'+dayStat.balance+'</span><span class="cnt">'+arr.length+'筆</span></span></div>';});
-  document.getElementById('expContent').innerHTML=html;
+function renderStatDayList(monthStr){
+  var recs=getFilteredRecords().filter(function(r){return String(r.date||'').indexOf(monthStr)===0;}),dayMap={};
+  recs.forEach(function(r){var d=String(r.date).slice(0,10);dayMap[d]=(dayMap[d]||0)+1;});
+  var days=Object.keys(dayMap).sort().reverse();
+  updateStatSummary(statTypeTitle()+monthStr+'月所有營業合計',monthStr);
+  var html='';
+  if(!days.length){html='<div class="empty-tip">此月尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;updateStatBreadcrumb();return;}
+  html+='<div class="stat-list-head"><div>項目</div><div class="head-amount">營業收入</div><div class="head-amount">手續費｜淨收入</div></div>';
+  days.forEach(function(d){
+    var st=calcIncomeStat(d);
+    html+="<div class=\"stat-list-row\" onclick=\"statDrillToDayDetail('"+d+"')\">"
+      +'<div class="item-name">'+parseInt(d.slice(8),10)+'日</div>'
+      +'<div class="item-main">'+statMoney(st.sum)+'</div>'
+      +'<div class="item-last"><span class="item-fee">'+statMoney(st.fee)+'</span>｜<span class="item-net">'+statMoney(st.net)+'</span></div>'
+      +'</div>';
+  });
+  document.getElementById('statContent').innerHTML=html;
+  updateStatBreadcrumb();
+}
+
+function renderStatDayDetail(dateStr){
+  var list=getFilteredRecords().filter(function(r){return r.date===dateStr;}).slice().sort(function(a,b){return Number(a.id)-Number(b.id);});
+  var st=calcIncomeStat(dateStr);
+  updateStatSummary(statTypeTitle()+dateStr+' 當日營業合計',dateStr);
+  var html='<div class="stat-detail-row stat-detail-head"><span>時間</span><span>類別</span><span>付款</span><span class="amount">收入</span><span class="amount">手續</span><span class="amount">淨收</span></div>';
+  if(!list.length){html+='<div class="empty-tip">此日尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;updateStatBreadcrumb();return;}
+  list.forEach(function(r){
+    var typeItem=config.typeList.find(function(t){return t.name===r.type;}),typeColor=typeItem?typeItem.color:'#2563eb';
+    var pay=(r.splits&&r.splits.length)?r.splits.map(function(x){return x.pay;}).join('+'):(r.pay||'');
+    var feeN=Math.round(r.fee||0);
+    html+='<div class="stat-detail-row" onclick="openEdit('+Number(r.id)+')">'
+      +'<span>'+escapeHtml(r.time||'--')+'</span>'
+      +'<span style="color:'+escapeHtml(typeColor)+';font-weight:700;">'+escapeHtml(r.type||'')+'</span>'
+      +'<span>'+escapeHtml(pay)+'</span>'
+      +'<span class="stat-detail-amt">'+statMoney(r.raw)+'</span>'
+      +'<span class="stat-detail-fee">'+feeN+'</span>'
+      +'<span class="stat-detail-net">'+statMoney(r.net)+'</span>'
+      +'</div>';
+  });
+  document.getElementById('statContent').innerHTML=html;
+  updateStatBreadcrumb();
+}
+
+/* ===== 支出統計 ===== */
+
+function updateExpSummary(title,prefix){
+  var s=calcExpStat(prefix||'');
+  document.getElementById('expSummaryTitle').textContent=title;
+  document.getElementById('expSummarySum').textContent=statMoney(s.sum);
+  document.getElementById('expSummaryCount').textContent=s.count;
+  document.getElementById('expSummaryBalance').textContent=statMoney(s.balance);
+}
+
+function updateExpBreadcrumb(){
+  var el=document.getElementById('expBreadcrumb');
+  if(!el)return;
+  var stack=expViewStack||[];
+  var html='<span class="stat-muted">目前：</span><button onclick="expResetLevel()">全部年份</button>';
+  if(stack.length){
+    var top=stack[stack.length-1];
+    if(top.type==='monthList'||top.type==='dayList'||top.type==='dayDetail'){
+      var y=top.year||String((top.month||top.date).slice(0,4));
+      html+=' <span>/</span> <button onclick="expBreadcrumbYear(\''+y+'\')">'+y+'年</button>';
+    }
+    if(top.type==='dayList'||top.type==='dayDetail'){
+      var m=top.month||(top.date||'').slice(0,7);
+      html+=' <span>/</span> <button onclick="expBreadcrumbMonth(\''+m+'\')">'+String(parseInt(m.slice(5),10))+'月</button>';
+    }
+    if(top.type==='dayDetail'){
+      html+=' <span>/</span> <span class="stat-current">'+escapeHtml(top.date.slice(8))+'日</span>';
+    }
+  }
+  el.innerHTML=html;
+}
+
+function expResetLevel(){expViewStack=[];renderExpView();}
+function expBreadcrumbYear(year){expViewStack=[{type:'monthList',year:String(year)}];renderExpView();}
+function expBreadcrumbMonth(month){expViewStack=[{type:'dayList',month:String(month)}];renderExpView();}
+
+function showExpDefault(){
+  expViewStack=[];
+  renderExpTypeCard();
+  renderExpView();
+}
+
+function refreshExpCards(){
+  renderExpTypeCard();
+  if(document.getElementById('pageExpStat')&&document.getElementById('pageExpStat').classList.contains('active'))renderExpView();
+}
+
+function renderExpView(){
+  var wrap=document.getElementById('expContent');
+  if(!wrap)return;
+  if(!expViewStack.length){renderExpYearList();return;}
+  var top=expViewStack[expViewStack.length-1];
+  if(top.type==='yearList')renderExpYearList();
+  else if(top.type==='monthList')renderExpMonthList(top.year);
+  else if(top.type==='dayList')renderExpDayList(top.month);
+  else if(top.type==='dayDetail')renderExpDayDetail(top.date);
+  updateExpBreadcrumb();
   setTimeout(fitAllStatText,0);
 }
-function renderExpMonthList(yearStr){
-  var list=getExpenses().filter(function(e){return e.date.indexOf(yearStr)===0;}),monthMap={},s=calcExpStat(yearStr);
-  list.forEach(function(e){var m=e.date.split('-')[1];if(!monthMap[m])monthMap[m]=[];monthMap[m].push(e);});
-  var months=Object.keys(monthMap).sort();
-  var html='<div class="crumb">'+yearStr+' 每月支出</div>'
-    + '<div class="grand-total-card"><div class="grand-total-title">'+yearStr+' 年度支出合計</div><div class="grand-total-row">'
-    + '<div class="grand-total-item"><span class="gt-label">淨收</span><span class="gt-value gt-green">'+s.net+'</span></div>'
-    + '<div class="grand-total-item"><span class="gt-label">支出</span><span class="gt-value gt-red">'+s.sum+'</span></div>'
-    + '<div class="grand-total-item"><span class="gt-label">餘額</span><span class="gt-value gt-blue">'+s.balance+'</span></div>'
-    + '<div class="grand-total-item"><span class="gt-label">筆數</span><span class="gt-value">'+s.count+'</span></div>'
-    + '</div></div>';
-  if(!months.length){html+='<div class="empty-tip">此年尚無支出</div>';document.getElementById('expContent').innerHTML=html;setTimeout(fitAllStatText,0);return;}
-  months.forEach(function(m){var arr=monthMap[m],mSum=arr.reduce(function(a,e){return a+Number(e.raw||0);},0),monPrefix=yearStr+'-'+m,monStat=calcExpStat(monPrefix);html+='<div class="stat-card exp" onclick="expDrillToDayList(\''+monPrefix+'\')"><span class="sc-name">'+m+' 月</span><span class="sc-stat"><span class="net">淨 '+monStat.net+'</span><span class="fee">支 '+mSum+'</span><span class="bal">餘 '+monStat.balance+'</span><span class="cnt">'+arr.length+'筆</span></span></div>';});
-  document.getElementById('expContent').innerHTML=html;
-  setTimeout(fitAllStatText,0);
-}
+
 function renderExpYearList(){
-  var years=[],seen={};getExpenses().forEach(function(e){var y=e.date.split('-')[0];if(!seen[y]){seen[y]=1;years.push(y);}});years.sort().reverse();
-  var allExp=getExpenses();
-  var totalSum=allExp.reduce(function(s,e){return s+Number(e.raw||0);},0);
-  var totalIncomeNet=calcIncomeStat('').net||0;
-  var totalBalance=totalIncomeNet-totalSum;
-  var html='<div class="crumb">所有年份支出</div>'
-    + '<div class="grand-total-card"><div class="grand-total-title">全部年度支出合計</div><div class="grand-total-row">'
-    + '<div class="grand-total-item"><span class="gt-label">淨收</span><span class="gt-value gt-green">'+totalIncomeNet+'</span></div>'
-    + '<div class="grand-total-item"><span class="gt-label">支出</span><span class="gt-value gt-red">'+totalSum+'</span></div>'
-    + '<div class="grand-total-item"><span class="gt-label">餘額</span><span class="gt-value gt-blue">'+totalBalance+'</span></div>'
-    + '<div class="grand-total-item"><span class="gt-label">筆數</span><span class="gt-value">'+allExp.length+'</span></div>'
-    + '</div></div>';
-  if(!years.length){html+='<div class="empty-tip">尚無支出</div>';document.getElementById('expContent').innerHTML=html;setTimeout(fitAllStatText,0);return;}
-  years.forEach(function(y){var s=calcExpStat(y);html+='<div class="stat-card exp" onclick="expDrillToMonthList(\''+y+'\')"><span class="sc-name">'+y+' 年</span><span class="sc-stat"><span class="net">淨 '+s.net+'</span><span class="fee">支 '+s.sum+'</span><span class="bal">餘 '+s.balance+'</span><span class="cnt">'+s.count+'筆</span></span></div>';});
+  expViewStack=[];
+  var years=[],seen={};
+  getFilteredExpenses().forEach(function(e){var y=String(e.date||'').slice(0,4);if(/^\d{4}$/.test(y)&&!seen[y]){seen[y]=1;years.push(y);}});
+  years.sort().reverse();
+  updateExpSummary('全部年度支出合計','');
+  var html='';
+  if(!years.length){html='<div class="empty-tip">尚無支出紀錄</div>';document.getElementById('expContent').innerHTML=html;updateExpBreadcrumb();return;}
+  html+='<div class="stat-list-head"><div>項目</div><div class="head-amount">支出金額</div><div class="head-amount">筆數｜餘額</div></div>';
+  years.forEach(function(y){
+    var st=calcExpStat(y);
+    html+='<div class="stat-list-row" onclick="expDrillToMonthList(\''+y+'\')">'
+      +'<div class="item-name">'+y+'年</div>'
+      +'<div class="item-main">'+statMoney(st.sum)+'</div>'
+      +'<div class="item-last"><span class="item-fee">'+st.count+'筆</span>｜<span class="item-net">餘'+statMoney(st.balance)+'</span></div>'
+      +'</div>';
+  });
   document.getElementById('expContent').innerHTML=html;
+  updateExpBreadcrumb();
   setTimeout(fitAllStatText,0);
 }
-function renderExpDayDetail(dateStr){
-  var list=getExpenses().filter(function(e){return e.date===dateStr;}),s=calcExpStat(dateStr);
-  var html='<div class="crumb">'+dateStr+' 當日支出</div>'
-    + '<div class="grand-total-card"><div class="grand-total-title">'+dateStr+' 當日支出合計</div><div class="grand-total-row">'
-    + '<div class="grand-total-item"><span class="gt-label">淨收</span><span class="gt-value gt-green">'+s.net+'</span></div>'
-    + '<div class="grand-total-item"><span class="gt-label">支出</span><span class="gt-value gt-red">'+s.sum+'</span></div>'
-    + '<div class="grand-total-item"><span class="gt-label">餘額</span><span class="gt-value gt-blue">'+s.balance+'</span></div>'
-    + '<div class="grand-total-item"><span class="gt-label">筆數</span><span class="gt-value">'+s.count+'</span></div>'
-    + '</div></div>';
-  if(!list.length){html+='<div class="empty-tip">此日尚無支出</div>';document.getElementById('expContent').innerHTML=html;setTimeout(fitAllStatText,0);return;}
-  html+='<div class="section-title"><h3>支出明細（'+list.length+' 筆）</h3></div>';
-  list.slice().sort(function(a,b){return a.id-b.id;}).forEach(function(e){html+='<div class="exp-row" onclick="openEditExp('+e.id+')"><span class="er-time">'+e.time+'</span><span class="er-cat" style="color:'+(e.color||'#dc2626')+';">'+escapeHtml(e.cat)+'</span><span class="er-note">'+escapeHtml(e.note||'')+'</span><span class="er-amt">'+e.raw+'</span></div>';});
-  document.getElementById('expContent').innerHTML=html;
-  setTimeout(fitAllStatText,0);
-}
-function expDrillToDayList(m){expViewStack.push({type:'dayList',month:m});renderExpView();}
-function expDrillToMonthList(y){expViewStack.push({type:'monthList',year:y});renderExpView();}
-function expDrillToDayDetail(d){expViewStack.push({type:'dayDetail',date:d});renderExpView();}
 
-/* 編輯紀錄 */
+function renderExpMonthList(yearStr){
+  var list=getFilteredExpenses().filter(function(e){return String(e.date||'').indexOf(yearStr)===0;}),monthMap={};
+  list.forEach(function(e){var m=String(e.date).slice(0,7);if(!monthMap[m])monthMap[m]=[];monthMap[m].push(e);});
+  var months=Object.keys(monthMap).sort().reverse();
+  updateExpSummary(yearStr+'年支出合計',yearStr);
+  var html='';
+  if(!months.length){html='<div class="empty-tip">此年尚無支出</div>';document.getElementById('expContent').innerHTML=html;updateExpBreadcrumb();return;}
+  html+='<div class="stat-list-head"><div>項目</div><div class="head-amount">支出金額</div><div class="head-amount">筆數｜餘額</div></div>';
+  months.forEach(function(m){
+    var st=calcExpStat(m);
+    html+='<div class="stat-list-row" onclick="expDrillToDayList(\''+m+'\')">'
+      +'<div class="item-name">'+parseInt(m.slice(5),10)+'月</div>'
+      +'<div class="item-main">'+statMoney(st.sum)+'</div>'
+      +'<div class="item-last"><span class="item-fee">'+st.count+'筆</span>｜<span class="item-net">餘'+statMoney(st.balance)+'</span></div>'
+      +'</div>';
+  });
+  document.getElementById('expContent').innerHTML=html;
+  updateExpBreadcrumb();
+  setTimeout(fitAllStatText,0);
+}
+
+function renderExpDayList(monthStr){
+  var list=getFilteredExpenses().filter(function(e){return String(e.date||'').indexOf(monthStr)===0;}),dayMap={};
+  list.forEach(function(e){var d=String(e.date).slice(0,10);if(!dayMap[d])dayMap[d]=[];dayMap[d].push(e);});
+  var days=Object.keys(dayMap).sort().reverse();
+  updateExpSummary(monthStr+'支出合計',monthStr);
+  var html='';
+  if(!days.length){html='<div class="empty-tip">此月尚無支出</div>';document.getElementById('expContent').innerHTML=html;updateExpBreadcrumb();return;}
+  html+='<div class="stat-list-head"><div>項目</div><div class="head-amount">支出金額</div><div class="head-amount">筆數｜餘額</div></div>';
+  days.forEach(function(d){
+    var st=calcExpStat(d),arr=dayMap[d];
+    html+='<div class="stat-list-row" onclick="expDrillToDayDetail(\''+d+'\')">'
+      +'<div class="item-name">'+parseInt(d.slice(8),10)+'日</div>'
+      +'<div class="item-main">'+statMoney(st.sum)+'</div>'
+      +'<div class="item-last"><span class="item-fee">'+arr.length+'筆</span>｜<span class="item-net">餘'+statMoney(st.balance)+'</span></div>'
+      +'</div>';
+  });
+  document.getElementById('expContent').innerHTML=html;
+  updateExpBreadcrumb();
+  setTimeout(fitAllStatText,0);
+}
+
+function renderExpDayDetail(dateStr){
+  var list=getFilteredExpenses().filter(function(e){return e.date===dateStr;}),s=calcExpStat(dateStr);
+  updateExpSummary(dateStr+' 當日支出',dateStr);
+  var html='<div class="stat-detail-row-exp stat-detail-head"><span>時間</span><span>類型</span><span>備註</span><span class="amount">金額</span></div>';
+  if(!list.length){html+='<div class="empty-tip">此日尚無支出</div>';document.getElementById('expContent').innerHTML=html;updateExpBreadcrumb();return;}
+  list.slice().sort(function(a,b){return a.id-b.id;}).forEach(function(e){
+    html+='<div class="stat-detail-row-exp" onclick="openEditExp('+e.id+')">'
+      +'<span>'+escapeHtml(e.time||'--')+'</span>'
+      +'<span style="color:'+escapeHtml(e.color||'#dc2626')+';font-weight:700;">'+escapeHtml(e.cat)+'</span>'
+      +'<span style="color:#475569;">'+escapeHtml(e.note||'')+'</span>'
+      +'<span class="stat-detail-amt" style="color:#dc2626;">'+statMoney(e.raw)+'</span>'
+      +'</div>';
+  });
+  document.getElementById('expContent').innerHTML=html;
+  updateExpBreadcrumb();
+  setTimeout(fitAllStatText,0);
+}
+
+function expDrillToDayList(m){expViewStack=[{type:'dayList',month:String(m)}];renderExpView();}
+function expDrillToMonthList(y){expViewStack=[{type:'monthList',year:String(y)}];renderExpView();}
+function expDrillToDayDetail(d){expViewStack=[{type:'dayDetail',date:String(d)}];renderExpView();}
+
+/* ===== 修改 / 刪除 ===== */
+
 var editModal=document.getElementById('editModal');
 function openEdit(id){
   editId=id;var r=getRecords().find(function(x){return x.id===id;});if(!r)return;
@@ -987,9 +1327,9 @@ function saveEditExp(){
   if(!raw||raw<=0){alert('金額錯誤');return;}
   var catItem=config.expList.find(function(c){return c.name===cat;});
   exps[idx].cat=cat;exps[idx].color=catItem?catItem.color:(exps[idx].color||'#dc2626');exps[idx].raw=raw;exps[idx].note=note;
-  saveExpenses(exps);closeEditExpModal();renderExpView();refreshExpCards();
+  saveExpenses(exps);closeEditExpModal();renderExpView();refreshExpCards();refreshStatCards();
 }
-function deleteExp(){if(editExpId===null)return;if(!confirm('確定要刪除這筆支出嗎？'))return;saveExpenses(getExpenses().filter(function(e){return e.id!==editExpId;}));closeEditExpModal();renderExpView();refreshExpCards();}
+function deleteExp(){if(editExpId===null)return;if(!confirm('確定要刪除這筆支出嗎？'))return;saveExpenses(getExpenses().filter(function(e){return e.id!==editExpId;}));closeEditExpModal();renderExpView();refreshExpCards();refreshStatCards();}
 
 function renderSetting(){
   var tw=document.getElementById('typeListSet');tw.innerHTML='';
@@ -1015,6 +1355,7 @@ function renderSetting(){
     var d=document.createElement('div');d.className='item';
     d.innerHTML='<span class="color-dot" style="background:'+escapeHtml(e.color||'#dc2626')+'" onclick="openColorPicker(\'exp\','+i+')" title="點我改色"></span>'
       +'<input value="'+escapeHtml(e.name)+'" oninput="onExpNameChange('+i+',this.value)" placeholder="支出名稱">'
+      +'<input type="checkbox" class="exp-cost-check" '+(e.isCost?'checked':'')+' onchange="onExpIsCostChange('+i+',this.checked)" title="打勾 = 營業成本">'
       +'<button class="delBtn" onclick="delExpTemp('+i+')">刪除</button>';
     ew.appendChild(d);
   });
@@ -1024,12 +1365,30 @@ function addNewTypeTemp(){var n=document.getElementById('newTypeName').value.tri
 function delTypeTemp(i){config.typeList.splice(i,1);saveConfig();renderSetting();renderHomeTypeBtn();renderStatTypeCard();}
 function addNewPayTemp(){var n=document.getElementById('newPayName').value.trim(),r=Number(document.getElementById('newPayRate').value)||0;if(!n){alert('請輸入名稱');return;}config.payList.push({name:n,rate:r,color:pickUnusedColorFromList(config.payList)});saveConfig();renderSetting();document.getElementById('newPayName').value='';document.getElementById('newPayRate').value='';}
 function delPayTemp(i){config.payList.splice(i,1);saveConfig();renderSetting();}
-function addNewExpTemp(){var n=document.getElementById('newExpName').value.trim();if(!n){alert('請輸入名稱');return;}config.expList.push({name:n,color:pickUnusedColorFromList(config.expList)});saveConfig();renderSetting();document.getElementById('newExpName').value='';}
-function delExpTemp(i){config.expList.splice(i,1);saveConfig();renderSetting();}
+function addNewExpTemp(){var n=document.getElementById('newExpName').value.trim();if(!n){alert('請輸入名稱');return;}config.expList.push({name:n,color:pickUnusedColorFromList(config.expList),isCost:false});saveConfig();renderSetting();renderExpTypeCard();document.getElementById('newExpName').value='';}
+function delExpTemp(i){config.expList.splice(i,1);saveConfig();renderSetting();renderExpTypeCard();}
 
-window.addEventListener('resize', function(){ setTimeout(fitAllStatText, 50); });
+window.addEventListener('resize', function(){
+  setTimeout(fitAllStatText, 50);
+  setTimeout(fitHomeButtons, 50);
+  setTimeout(function(){fitModalContent('inputModal');fitModalContent('expInputModal');},50);
+});
 
-window.onload=function(){ensureTypeColors();applyFontSize(config.fontSize);applyFontWeight(config.fontWeight);renderHomeTypeBtn();calcTotal();renderTodayList();refreshStatCards();refreshExpCards();renderStatTypeCard();updateNavActive('pageHome');updateTodayDateText();setTimeout(fitAllStatText, 100);};
+window.onload=function(){
+  ensureTypeColors();
+  applyFontSize(config.fontSize);
+  applyFontWeight(config.fontWeight);
+  renderHomeTypeBtn();
+  calcTotal();
+  renderTodayList();
+  refreshStatCards();
+  refreshExpCards();
+  renderStatTypeCard();
+  renderExpTypeCard();
+  updateNavActive('pageHome');
+  updateTodayDateText();
+  setTimeout(fitAllStatText, 100);
+};
 </script>
 </body>
 </html>
