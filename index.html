@@ -77,205 +77,32 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .color-dot::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px dashed transparent;}
 .color-dot:hover::after{border-color:#94a3b8;}
 
-.detail-row{display:flex;align-items:center;background:#fff;border-radius:10px;margin:3px 0;padding:3px 2px;box-shadow:0 1px 3px rgba(0,0,0,.05);font-size:calc(1.05px * var(--fs-num));font-family:Consolas,Menlo,monospace;white-space:nowrap;line-height:1.1;cursor:pointer;flex-wrap:wrap;gap:2px 4px;}
-.detail-row:active{background:#f1f5f9;}
-.detail-row>span{flex-shrink:0;white-space:nowrap;}
-.dr-left{color:#0f172a;font-size:calc(.9px * var(--fs-num));}
-.dr-type{margin-right:6px;}
-.dr-amt{text-align:right;margin-right:6px;}
-.dr-net{text-align:right;margin-right:6px;}
-.dr-cum{text-align:right;margin-left:auto;}
-.filter-bar{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
-.filter-card{background:#fff;border-radius:12px;padding:12px 2px;box-shadow:0 2px 8px rgba(0,0,0,.06);cursor:pointer;display:flex;justify-content:space-between;align-items:center;min-width:0;overflow:hidden;}
-.filter-card:active{background:#f8fafc;transform:scale(.99);}
-.filter-card .fc-main{font-size:calc(1.55px * var(--fs-num));color:#0f172a;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-left:2px;}
+/* 首頁明細：與營業統計每日明細同款式 */
+.home-detail-box{background:#fff;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.06);overflow:hidden;}
+.home-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:8px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;}
+.home-detail-row:active{background:#eff6ff;}
+.home-detail-row>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.home-detail-head{font-weight:800;background:#f8fafc;color:#64748b;}
+.home-detail-head .amount{text-align:right;}
+.home-detail-amt{text-align:right;color:#2563eb;font-variant-numeric:tabular-nums;}
+.home-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;}
+.home-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;}
 
-.filter-card .fc-stat{color:#475569;flex:1;line-height:1.5;display:flex;justify-content:flex-end;align-items:baseline;gap:0;min-width:0;overflow:hidden;flex-wrap:nowrap;}
-.filter-card .fc-arrow{color:#94a3b8;font-size:calc(1.25px * var(--fs-num));margin-left:2px;margin-right:2px;flex-shrink:0;}
-
-.filter-card .fc-stat span,
-.summary-card .sc-stat span,
-.stat-card .sc-stat span{
-  flex:1 1 0;
-  min-width:0;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  text-align:center;
-  font-variant-numeric:tabular-nums;
-  font-size:clamp(9px, calc(.92px * var(--fs-num)), 14px);
-}
-.filter-card .fc-stat .sum,.summary-card .sc-stat .sum,.stat-card .sc-stat .sum{color:#2563eb;}
-.filter-card .fc-stat .cnt,.summary-card .sc-stat .cnt,.stat-card .sc-stat .cnt{color:#94a3b8;}
-.filter-card .fc-stat .fee,.summary-card .sc-stat .fee,.stat-card .sc-stat .fee{color:#dc2626;}
-.filter-card .fc-stat .net,.summary-card .sc-stat .net,.stat-card .sc-stat .net{color:#7e22ce;}
-.filter-card .fc-stat .bal,.summary-card .sc-stat .bal,.stat-card .sc-stat .bal{color:#059669;}
-
-.summary-card{background:#fff;border-radius:10px;padding:10px 2px;margin:5px 0 8px;box-shadow:0 1px 4px rgba(0,0,0,.05);display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:calc(1.05px * var(--fs-num));min-width:0;overflow:hidden;}
-.summary-card .sc-name{color:#0f172a;flex-shrink:0;padding-left:2px;}
-.summary-card .sc-stat{flex:1;color:#475569;display:flex;justify-content:flex-end;align-items:baseline;gap:0;min-width:0;overflow:hidden;flex-wrap:nowrap;}
-.stat-card{background:#fff;border-radius:10px;padding:10px 2px;margin:5px 0;box-shadow:0 1px 4px rgba(0,0,0,.05);cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:calc(1.05px * var(--fs-num));gap:6px;min-width:0;overflow:hidden;}
-.stat-card:active{background:#f8fafc;}
-.stat-card .sc-name{color:#2563eb;flex-shrink:0;min-width:52px;padding-left:2px;}
-.stat-card.exp .sc-name{color:#dc2626;}
-.stat-card .sc-stat{flex:1;color:#475569;display:flex;justify-content:flex-end;align-items:baseline;gap:0;min-width:0;overflow:hidden;flex-wrap:nowrap;}
-.crumb{font-size:calc(.95px * var(--fs-num));color:#64748b;margin-bottom:8px;}
-.add-bar{margin-bottom:12px;}
-.add-btn{width:100%;padding:12px;border:none;border-radius:12px;background:#dc2626;color:#fff;font-size:calc(1.1px * var(--fs-num));}
-.exp-row{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:10px;margin:4px 0;padding:8px 2px;box-shadow:0 1px 4px rgba(0,0,0,.05);font-size:calc(1.05px * var(--fs-num));gap:6px;cursor:pointer;flex-wrap:wrap;}
-.exp-row:active{background:#f1f5f9;}
-.exp-row>span{white-space:nowrap;flex-shrink:0;}
-.exp-row .er-time{color:#64748b;font-size:calc(.9px * var(--fs-num));}
-.exp-row .er-note{color:#475569;font-size:calc(.9px * var(--fs-num));flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;}
-.exp-row .er-amt{color:#dc2626;text-align:right;margin-left:auto;}
-
-.fs-wrap{display:flex;align-items:center;gap:10px;margin-top:6px;}
-.fs-wrap input[type="range"]{flex:1;-webkit-appearance:none;height:6px;border-radius:3px;background:#e2e8f0;outline:none;}
-.fs-wrap input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#2563eb;cursor:pointer;}
-.fs-value{font-size:calc(1.05px * var(--fs-num));color:#2563eb;min-width:34px;text-align:right;}
-
-.hidden-color{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;}
-
-.stat-type-card{
-  background:#fff;
-  border-radius:12px;
-  padding:10px;
-  box-shadow:0 2px 8px rgba(0,0,0,.06);
-  margin-bottom:12px;
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(52px, 1fr));
-  gap:6px;
-}
-.stat-type-btn{
-  width:100%;
-  min-width:0;
-  padding:9px 4px;
-  border:none;
-  border-radius:9px;
-  background:#e2e8f0;
-  color:#475569;
-  font-size:clamp(10px, calc(.95px * var(--fs-num)), 15px);
-  font-weight:inherit;
-  cursor:pointer;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  transition:filter .12s,transform .1s,box-shadow .12s;
-  box-shadow:0 1px 3px rgba(0,0,0,.12);
-}
-.stat-type-btn:active{filter:brightness(.88);transform:scale(.96);}
-.stat-type-btn.active{color:#fff!important;box-shadow:0 2px 8px rgba(0,0,0,.25);}
-.stat-type-btn.all-btn.active{background:#0f172a!important;}
-
-
-/* ===== 營業統計：年 → 月 → 日 → 單筆 ===== */
-.stat-page-title{font-size:calc(1.35px * var(--fs-num));font-weight:800;color:#0f172a;margin:2px 2px 8px;}
-.stat-breadcrumb{position:sticky;top:56px;z-index:20;background:#fff;padding:8px 10px;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.08);margin-bottom:8px;font-size:calc(.95px * var(--fs-num));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.stat-breadcrumb button{border:0;background:none;color:#2563eb;font:inherit;font-weight:700;padding:0 3px;cursor:pointer;}
-.stat-breadcrumb .stat-current{color:#475569;font-weight:500;}
-.stat-muted{color:#94a3b8;}
-.stat-summary-box{background:#fff;border-radius:10px;padding:10px 8px;margin-bottom:8px;box-shadow:0 1px 5px rgba(0,0,0,.06);}
-.stat-summary-title{font-size:calc(1.05px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:8px;}
-
-/* 合計區塊：兩行制，營業收入+淨收入 一行，其餘統計一行，彈性收縮 */
-.stat-summary-grid{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px 14px;
-  align-items:baseline;
-}
-.stat-summary-grid>div{
-  display:inline-flex;
-  align-items:baseline;
-  gap:4px;
-  min-width:0;
-  flex:0 1 auto;
-  white-space:nowrap;
-}
-.stat-summary-grid>div.row-main{
-  flex:1 1 100%;
-  justify-content:space-between;
-  gap:10px;
-  border-bottom:1px dashed #e2e8f0;
-  padding-bottom:6px;
-  margin-bottom:2px;
-}
-.stat-summary-grid>div.row-main .pair{
-  display:inline-flex;
-  align-items:baseline;
-  gap:4px;
-  min-width:0;
-  flex:0 1 auto;
-  white-space:nowrap;
-}
-.stat-summary-grid span{
-  color:#64748b;
-  font-size:calc(.82px * var(--fs-num));
-  white-space:nowrap;
-  flex-shrink:0;
-}
-.stat-summary-grid strong{
-  color:#2563eb;
-  font-size:calc(1.12px * var(--fs-num));
-  font-variant-numeric:tabular-nums;
-  white-space:nowrap;
-  flex-shrink:1;
-  min-width:0;
-}
-.stat-summary-grid strong.fee{color:#dc2626;}
-.stat-summary-grid strong.net{color:#059669;}
-.stat-summary-grid strong.cost{color:#ea580c;}
-.stat-list-box{background:#fff;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.06);overflow:hidden;}
-
-/* 年 / 月 / 日列表：第一欄固定寬度，標頭與內容對齊 */
-.stat-list-head,.stat-list-row{
-  display:grid;
-  grid-template-columns:72px 1fr 1fr;
-  gap:5px;
-  align-items:center;
-}
-.stat-list-head{
-  background:#f8fafc;
-  padding:8px 8px;
-  color:#475569;
-  font-size:calc(.86px * var(--fs-num));
-  font-weight:800;
-}
+/* 年 / 月 / 日列表：第一欄 minmax(56px,auto) 讓它也能彈性收縮、平均分配 */
+.stat-list-head,.stat-list-row{display:grid;grid-template-columns:minmax(56px,auto) 1fr 1fr;gap:5px;align-items:center;}
+.stat-list-head{background:#f8fafc;padding:8px 8px;color:#475569;font-size:calc(.86px * var(--fs-num));font-weight:800;}
 .stat-list-head>div{text-align:right;}
 .stat-list-head>div:first-child{text-align:left;}
-.stat-list-row{
-  padding:9px 8px;
-  border-top:1px solid #f1f5f9;
-  font-size:calc(.96px * var(--fs-num));
-  min-width:0;
-  cursor:pointer;
-}
+.stat-list-head .head-amount{text-align:right;}
+.stat-list-row{padding:9px 8px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));min-width:0;cursor:pointer;}
 .stat-list-row:active{background:#eff6ff;}
-.stat-list-row .item-name{
-  color:#2563eb;
-  font-weight:700;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  text-align:left;
-}
-.stat-list-row .item-main{
-  color:#2563eb;
-  text-align:right;
-  font-variant-numeric:tabular-nums;
-  white-space:nowrap;
-}
-.stat-list-row .item-last{
-  text-align:right;
-  font-variant-numeric:tabular-nums;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
+.stat-list-row .item-name{color:#2563eb;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;}
+.stat-list-row .item-main{color:#2563eb;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.stat-list-row .item-last{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .stat-list-row .item-fee{color:#dc2626;}
 .stat-list-row .item-net{color:#059669;}
 
-/* 單筆明細（營業）：時間 48px / 類別 48px / 付款 1fr / 收入 1fr / 手續 1fr / 淨收 1fr */
+/* 單筆明細（營業）：與首頁明細同款式 */
 .stat-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:8px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;}
 .stat-detail-row:active{background:#eff6ff;}
 .stat-detail-row>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -285,31 +112,18 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .stat-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;}
 .stat-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;}
 
-/* 單筆明細（支出）：時間 48px / 類型 48px / 備註 1fr / 金額 1fr */
+/* 單筆明細（支出） */
 .stat-detail-row-exp{display:grid;grid-template-columns:48px 48px 1fr 1fr;gap:4px;align-items:center;padding:8px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;}
 .stat-detail-row-exp:active{background:#eff6ff;}
 .stat-detail-row-exp>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .stat-detail-row-exp.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;}
 .stat-detail-row-exp.stat-detail-head .amount{text-align:right;}
 
-.stat-back{margin:8px 0 2px;width:100%;padding:8px;border:0;border-radius:9px;background:#e0f2fe;color:#0369a1;font-size:calc(.9px * var(--fs-num));font-weight:700;}
-
-/* 支出統計專用 */
-.exp-summary-card{background:#fff;border-radius:10px;padding:10px 8px;margin-bottom:8px;box-shadow:0 1px 5px rgba(0,0,0,.06);}
-.exp-summary-card .stat-summary-title{font-size:calc(1.05px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:8px;}
-.exp-summary-card .stat-summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;}
-.exp-summary-card .stat-summary-grid>div{display:block;}
-.exp-summary-card .stat-summary-grid span{display:block;color:#64748b;font-size:calc(.82px * var(--fs-num));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.exp-summary-card .stat-summary-grid strong{display:block;text-align:right;color:#dc2626;font-size:calc(1.12px * var(--fs-num));font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.exp-summary-card .stat-summary-grid strong.net{color:#059669;}
-
-/* 支出類型 checkbox */
-.exp-cost-check{width:16px;height:16px;flex-shrink:0;cursor:pointer;accent-color:#ea580c;margin:0;}
-
 @media(max-width:400px){
-  .stat-list-head,.stat-list-row{grid-template-columns:60px 1fr 1fr;gap:3px;padding-left:5px;padding-right:5px}
+  .stat-list-head,.stat-list-row{grid-template-columns:minmax(50px,auto) 1fr 1fr;gap:3px;padding-left:5px;padding-right:5px}
   .stat-detail-row{grid-template-columns:40px 40px 1fr 1fr 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
   .stat-detail-row-exp{grid-template-columns:40px 40px 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
+  .home-detail-row{grid-template-columns:40px 40px 1fr 1fr 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
 }
 
 @media(max-width:600px){body{padding:8px 0;}.page{padding:0 4px;}}
@@ -415,7 +229,9 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
   <span class="today-date" id="todayDateText">--</span>
   <button class="sortBtn" id="sortBtn" onclick="toggleSort()">排序</button>
 </div>
-<div id="listToday"></div>
+<div class="home-detail-box">
+  <div id="listToday"></div>
+</div>
 </div>
 
 <div id="pageStat" class="page">
@@ -930,30 +746,32 @@ function calcTotal(){
 }
 function toggleSort(){sortNewFirst=!sortNewFirst;renderTodayList();}
 
-function buildDetailRow(item,idx,cum){
-  var typeStr=(item.type||'').charAt(0),typeItem=config.typeList.find(function(t){return t.name===item.type;}),typeColor=typeItem?typeItem.color:'#0f172a';
-  var feeN=Math.round(item.fee||0),idxStr=idx!==null?String(idx).padStart(2,'0')+'.':'';
-  var payChar=(item.splits&&item.splits.length)?(item.splits[0].pay||'').charAt(0):(item.pay||'').charAt(0);
-  var typePayCombo='('+typeStr+')'+payChar;
-  var timeCol=(idxStr+(item.time||'')).padEnd(11,' '),typeCol=typePayCombo.padEnd(8,' ');
-  var amtFeeCol=(String(item.raw).padStart(4,' ')+'-'+String(feeN).padStart(2,' ')).padEnd(10,' ');
-  var netCol=('淨收'+String(item.net)).padEnd(9,' '),cumCol=('累計'+String(cum)).padEnd(9,' ');
-  return '<span class="dr-left">'+timeCol+'</span><span class="dr-type" style="color:'+typeColor+';">'+typeCol+'</span><span class="dr-amt" style="color:#2563eb;">'+amtFeeCol+'</span><span class="dr-net" style="color:#008822;">'+netCol+'</span><span class="dr-cum" style="color:#7e22ce;">'+cumCol+'</span>';
-}
-
+/* 首頁明細：與營業統計每日明細同款式 */
 function renderTodayList(){
-  var recs=getRecords(),today=getBizDate(new Date()),wrap=document.getElementById('listToday');wrap.innerHTML='';
+  var recs=getRecords(),today=getBizDate(new Date()),wrap=document.getElementById('listToday');
   var tr=recs.filter(function(r){return r.date===today;});
   if(!tr.length){wrap.innerHTML='<div class="empty-tip">今日尚無紀錄</div>';return;}
-  var asc=tr.slice().sort(function(a,b){return a.id-b.id;}),idToNo={},idToCum={},cum=0;
-  asc.forEach(function(it,i){idToNo[it.id]=i+1;cum+=Number(it.net||0);idToCum[it.id]=cum;});
+  var asc=tr.slice().sort(function(a,b){return a.id-b.id;});
   var dl=sortNewFirst?asc.slice().reverse():asc;
-  dl.forEach(function(item){
-    var div=document.createElement('div');div.className='detail-row';
-    div.onclick=function(){openEdit(item.id);};
-    div.innerHTML=buildDetailRow(item,idToNo[item.id],idToCum[item.id]);
-    wrap.appendChild(div);
+  var html='<div class="home-detail-row home-detail-head">'
+    +'<span>時間</span><span>類別</span><span>付款</span>'
+    +'<span class="amount">收入</span><span class="amount">手續</span><span class="amount">淨收</span>'
+    +'</div>';
+  dl.forEach(function(r){
+    var typeItem=config.typeList.find(function(t){return t.name===r.type;});
+    var typeColor=typeItem?typeItem.color:'#2563eb';
+    var pay=(r.splits&&r.splits.length)?r.splits.map(function(x){return x.pay;}).join('+'):(r.pay||'');
+    var feeN=Math.round(r.fee||0);
+    html+='<div class="home-detail-row" onclick="openEdit('+Number(r.id)+')">'
+      +'<span>'+escapeHtml(r.time||'--')+'</span>'
+      +'<span style="color:'+escapeHtml(typeColor)+';font-weight:700;">'+escapeHtml(r.type||'')+'</span>'
+      +'<span>'+escapeHtml(pay)+'</span>'
+      +'<span class="home-detail-amt">'+statMoney(r.raw)+'</span>'
+      +'<span class="home-detail-fee">'+feeN+'</span>'
+      +'<span class="home-detail-net">'+statMoney(r.net)+'</span>'
+      +'</div>';
   });
+  wrap.innerHTML=html;
 }
 
 function getFilteredRecords(){
@@ -1062,17 +880,14 @@ function updateStatSummary(title,prefix){
   var grid=document.getElementById('statSummaryGrid');
   var netAfterCost=s.net-s.cost;
   var html='';
-  // 第一行：營業收入 + 淨收入
   html+='<div class="row-main">'
     +'<span class="pair"><span>營業收入</span><strong>'+statMoney(s.sum)+'</strong></span>'
     +'<span class="pair"><span>'+(hasCost?'淨收入(扣成本)':'淨收入')+'</span><strong class="net">'+statMoney(hasCost?netAfterCost:s.net)+'</strong></span>'
     +'</div>';
-  // 第二行：手續費 + 各類別次數（彈性收縮）
   html+='<div><span>手續費</span><strong class="fee">'+statMoney(s.fee)+'</strong></div>';
   config.typeList.forEach(function(t){
     html+='<div><span>'+escapeHtml(t.name)+'次數</span><strong>'+ (s.typeCount[t.name]||0) +'</strong></div>';
   });
-  // 若有營業成本，單獨一行
   if(hasCost){
     html+='<div><span>營業成本</span><strong class="cost">'+statMoney(s.cost)+'</strong></div>';
   }
