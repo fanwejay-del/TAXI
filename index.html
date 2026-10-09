@@ -88,15 +88,15 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .home-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;}
 .home-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;}
 
-/* 年 / 月 / 日列表：三欄完全平均分配（1fr 1fr 1fr），上下對齊 */
-.stat-list-head,.stat-list-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;align-items:center;}
+/* 年 / 月 / 日列表：第一欄 auto（依內容），後兩欄平均分配；表頭與數字上下對齊 */
+.stat-list-head,.stat-list-row{display:grid;grid-template-columns:auto 1fr 1fr;gap:8px;align-items:center;}
 .stat-list-head{background:#f8fafc;padding:8px 8px;color:#475569;font-size:calc(.86px * var(--fs-num));font-weight:800;}
 .stat-list-head>div{text-align:right;}
-.stat-list-head>div:first-child{text-align:left;}
+.stat-list-head>div:first-child{text-align:left;padding-left:2px;}
 .stat-list-head .head-amount{text-align:right;}
 .stat-list-row{padding:9px 8px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));min-width:0;cursor:pointer;}
 .stat-list-row:active{background:#eff6ff;}
-.stat-list-row .item-name{color:#2563eb;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;}
+.stat-list-row .item-name{color:#2563eb;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;padding-left:2px;}
 .stat-list-row .item-main{color:#2563eb;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
 .stat-list-row .item-last{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .stat-list-row .item-fee{color:#dc2626;}
@@ -153,7 +153,6 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .stat-type-btn.all-btn.active{background:#0f172a !important;}
 
 /* 統計頁面其他 */
-.stat-page-title{font-size:calc(1.35px * var(--fs-num));font-weight:800;color:#0f172a;margin:2px 2px 8px;}
 .stat-breadcrumb{position:sticky;top:56px;z-index:20;background:#fff;padding:8px 10px;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.08);margin-bottom:8px;font-size:calc(.95px * var(--fs-num));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .stat-breadcrumb button{border:0;background:none;color:#2563eb;font:inherit;font-weight:700;padding:0 3px;cursor:pointer;}
 .stat-breadcrumb .stat-current{color:#475569;font-weight:500;}
@@ -161,7 +160,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .stat-summary-box{background:#fff;border-radius:10px;padding:10px 8px;margin-bottom:8px;box-shadow:0 1px 5px rgba(0,0,0,.06);}
 .stat-summary-title{font-size:calc(1.05px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:8px;}
 
-/* 合計區塊：第一行 營業收入+淨收入，第二行 手續費+各類次數（不換行），成本獨立第三行 */
+/* 合計區塊 */
 .stat-summary-grid{
   display:flex;
   flex-wrap:wrap;
@@ -251,7 +250,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .exp-cost-check{width:16px;height:16px;flex-shrink:0;cursor:pointer;accent-color:#ea580c;margin:0;}
 
 @media(max-width:400px){
-  .stat-list-head,.stat-list-row{grid-template-columns:1fr 1fr 1fr;gap:3px;padding-left:5px;padding-right:5px}
+  .stat-list-head,.stat-list-row{grid-template-columns:auto 1fr 1fr;gap:4px;padding-left:6px;padding-right:6px}
   .stat-detail-row{grid-template-columns:40px 40px 1fr 1fr 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
   .stat-detail-row-exp{grid-template-columns:40px 40px 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
   .home-detail-row{grid-template-columns:40px 40px 1fr 1fr 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
@@ -365,7 +364,6 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 </div>
 
 <div id="pageStat" class="page">
-  <div class="stat-page-title">📊 營業統計</div>
   <div class="stat-type-card" id="statTypeCard"></div>
 
   <div id="statBreadcrumb" class="stat-breadcrumb">
@@ -385,7 +383,6 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 
 <!-- 支出統計頁面 -->
 <div id="pageExpStat" class="page">
-  <div class="stat-page-title">💸 支出統計</div>
   <div class="add-bar" style="margin-bottom:8px;"><button class="add-btn" onclick="openExpInputModal()">＋ 新增支出</button></div>
 
   <div class="stat-type-card" id="expTypeCard"></div>
@@ -875,7 +872,6 @@ function calcTotal(){
 }
 function toggleSort(){sortNewFirst=!sortNewFirst;renderTodayList();}
 
-/* 取得付款顯示文字：好孕券只顯示「好孕券」 */
 function getPayDisplay(r){
   if(r.pay==='好孕券')return '好孕券';
   if(r.splits&&Array.isArray(r.splits)&&r.splits.length){
@@ -886,7 +882,6 @@ function getPayDisplay(r){
   return r.pay||'';
 }
 
-/* 取得收入顯示文字：好孕券 >250 顯示「250+X」 */
 function getRawDisplay(r){
   if(r.pay==='好孕券'&&Number(r.raw)>250){
     return '250+'+(Number(r.raw)-250);
@@ -900,7 +895,6 @@ function getRawDisplay(r){
   return statMoney(r.raw);
 }
 
-/* 首頁明細：與營業統計每日明細同款式 */
 function renderTodayList(){
   var recs=getRecords(),today=getBizDate(new Date()),wrap=document.getElementById('listToday');
   var tr=recs.filter(function(r){return r.date===today;});
@@ -1035,19 +1029,16 @@ function updateStatSummary(title,prefix){
   var grid=document.getElementById('statSummaryGrid');
   var netAfterCost=s.net-s.cost;
   var html='';
-  /* 第一行：營業收入 + 淨收入 */
   html+='<div class="row-main">'
     +'<span class="pair"><span>營業收入</span><strong>'+statMoney(s.sum)+'</strong></span>'
     +'<span class="pair"><span>'+(hasCost?'淨收入(扣成本)':'淨收入')+'</span><strong class="net">'+statMoney(hasCost?netAfterCost:s.net)+'</strong></span>'
     +'</div>';
-  /* 第二行：手續費 + 路招次數 + 派遣次數（同一排不換行） */
   html+='<div class="row-sub">';
   html+='<span class="pair"><span>手續費</span><strong class="fee">'+statMoney(s.fee)+'</strong></span>';
   config.typeList.forEach(function(t){
     html+='<span class="pair"><span>'+escapeHtml(t.name)+'次數</span><strong>'+ (s.typeCount[t.name]||0) +'</strong></span>';
   });
   html+='</div>';
-  /* 第三行：營業成本（若存在） */
   if(hasCost){
     html+='<div class="row-cost"><span>營業成本</span><strong class="cost">'+statMoney(s.cost)+'</strong></div>';
   }
@@ -1123,14 +1114,13 @@ function renderStatYearList(){
   updateStatSummary(statTypeTitle()+'全部年度合計','');
   var html='';
   if(!years.length){html='<div class="empty-tip">尚無營業紀錄</div>';document.getElementById('statContent').innerHTML=html;updateStatBreadcrumb();return;}
-  /* 表頭：三欄平均分配 */
-  html+='<div class="stat-list-head"><div>項目</div><div class="head-amount">營業收入</div><div class="head-amount">手續費 淨收入</div></div>';
+  html+='<div class="stat-list-head"><div>項目</div><div class="head-amount">營業收入</div><div class="head-amount">手續費｜淨收入</div></div>';
   years.forEach(function(y){
     var s=calcIncomeStat(y);
     html+='<div class="stat-list-row" onclick="statDrillToMonthList(\''+y+'\')">'
       +'<div class="item-name">'+y+'年</div>'
       +'<div class="item-main">'+statMoney(s.sum)+'</div>'
-      +'<div class="item-last"><span class="item-fee">'+statMoney(s.fee)+'</span> <span class="item-net">'+statMoney(s.net)+'</span></div>'
+      +'<div class="item-last"><span class="item-fee">'+statMoney(s.fee)+'</span>｜<span class="item-net">'+statMoney(s.net)+'</span></div>'
       +'</div>';
   });
   document.getElementById('statContent').innerHTML=html;
@@ -1144,13 +1134,13 @@ function renderStatMonthList(yearStr){
   updateStatSummary(statTypeTitle()+yearStr+'年所有營業合計',yearStr);
   var html='';
   if(!months.length){html='<div class="empty-tip">此年尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;updateStatBreadcrumb();return;}
-  html+='<div class="stat-list-head"><div>項目</div><div class="head-amount">營業收入</div><div class="head-amount">手續費 淨收入</div></div>';
+  html+='<div class="stat-list-head"><div>項目</div><div class="head-amount">營業收入</div><div class="head-amount">手續費｜淨收入</div></div>';
   months.forEach(function(m){
     var s=calcIncomeStat(m);
     html+='<div class="stat-list-row" onclick="statDrillToDayList(\''+m+'\')">'
       +'<div class="item-name">'+parseInt(m.slice(5),10)+'月</div>'
       +'<div class="item-main">'+statMoney(s.sum)+'</div>'
-      +'<div class="item-last"><span class="item-fee">'+statMoney(s.fee)+'</span> <span class="item-net">'+statMoney(s.net)+'</span></div>'
+      +'<div class="item-last"><span class="item-fee">'+statMoney(s.fee)+'</span>｜<span class="item-net">'+statMoney(s.net)+'</span></div>'
       +'</div>';
   });
   document.getElementById('statContent').innerHTML=html;
@@ -1164,13 +1154,13 @@ function renderStatDayList(monthStr){
   updateStatSummary(statTypeTitle()+monthStr+'月所有營業合計',monthStr);
   var html='';
   if(!days.length){html='<div class="empty-tip">此月尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;updateStatBreadcrumb();return;}
-  html+='<div class="stat-list-head"><div>項目</div><div class="head-amount">營業收入</div><div class="head-amount">手續費 淨收入</div></div>';
+  html+='<div class="stat-list-head"><div>項目</div><div class="head-amount">營業收入</div><div class="head-amount">手續費｜淨收入</div></div>';
   days.forEach(function(d){
     var st=calcIncomeStat(d);
     html+="<div class=\"stat-list-row\" onclick=\"statDrillToDayDetail('"+d+"')\">"
       +'<div class="item-name">'+parseInt(d.slice(8),10)+'日</div>'
       +'<div class="item-main">'+statMoney(st.sum)+'</div>'
-      +'<div class="item-last"><span class="item-fee">'+statMoney(st.fee)+'</span> <span class="item-net">'+statMoney(st.net)+'</span></div>'
+      +'<div class="item-last"><span class="item-fee">'+statMoney(st.fee)+'</span>｜<span class="item-net">'+statMoney(st.net)+'</span></div>'
       +'</div>';
   });
   document.getElementById('statContent').innerHTML=html;
@@ -1269,13 +1259,13 @@ function renderExpYearList(){
   updateExpSummary('全部年度支出合計','');
   var html='';
   if(!years.length){html='<div class="empty-tip">尚無支出紀錄</div>';document.getElementById('expContent').innerHTML=html;updateExpBreadcrumb();return;}
-  html+='<div class="stat-list-head"><div>項目</div><div class="head-amount">支出金額</div><div class="head-amount">筆數 餘額</div></div>';
+  html+='<div class="stat-list-head"><div>項目</div><div class="head-amount">支出金額</div><div class="head-amount">筆數｜餘額</div></div>';
   years.forEach(function(y){
     var st=calcExpStat(y);
     html+='<div class="stat-list-row" onclick="expDrillToMonthList(\''+y+'\')">'
       +'<div class="item-name">'+y+'年</div>'
       +'<div class="item-main">'+statMoney(st.sum)+'</div>'
-      +'<div class="item-last"><span class="item-fee">'+st.count+'筆</span> <span class="item-net">餘'+statMoney(st.balance)+'</span></div>'
+      +'<div class="item-last"><span class="item-fee">'+st.count+'筆</span>｜<span class="item-net">餘'+statMoney(st.balance)+'</span></div>'
       +'</div>';
   });
   document.getElementById('expContent').innerHTML=html;
@@ -1290,13 +1280,13 @@ function renderExpMonthList(yearStr){
   updateExpSummary(yearStr+'年支出合計',yearStr);
   var html='';
   if(!months.length){html='<div class="empty-tip">此年尚無支出</div>';document.getElementById('expContent').innerHTML=html;updateExpBreadcrumb();return;}
-  html+='<div class="stat-list-head"><div>項目</div><div class="head-amount">支出金額</div><div class="head-amount">筆數 餘額</div></div>';
+  html+='<div class="stat-list-head"><div>項目</div><div class="head-amount">支出金額</div><div class="head-amount">筆數｜餘額</div></div>';
   months.forEach(function(m){
     var st=calcExpStat(m);
     html+='<div class="stat-list-row" onclick="expDrillToDayList(\''+m+'\')">'
       +'<div class="item-name">'+parseInt(m.slice(5),10)+'月</div>'
       +'<div class="item-main">'+statMoney(st.sum)+'</div>'
-      +'<div class="item-last"><span class="item-fee">'+st.count+'筆</span> <span class="item-net">餘'+statMoney(st.balance)+'</span></div>'
+      +'<div class="item-last"><span class="item-fee">'+st.count+'筆</span>｜<span class="item-net">餘'+statMoney(st.balance)+'</span></div>'
       +'</div>';
   });
   document.getElementById('expContent').innerHTML=html;
@@ -1311,13 +1301,13 @@ function renderExpDayList(monthStr){
   updateExpSummary(monthStr+'支出合計',monthStr);
   var html='';
   if(!days.length){html='<div class="empty-tip">此月尚無支出</div>';document.getElementById('expContent').innerHTML=html;updateExpBreadcrumb();return;}
-  html+='<div class="stat-list-head"><div>項目</div><div class="head-amount">支出金額</div><div class="head-amount">筆數 餘額</div></div>';
+  html+='<div class="stat-list-head"><div>項目</div><div class="head-amount">支出金額</div><div class="head-amount">筆數｜餘額</div></div>';
   days.forEach(function(d){
     var st=calcExpStat(d),arr=dayMap[d];
     html+='<div class="stat-list-row" onclick="expDrillToDayDetail(\''+d+'\')">'
       +'<div class="item-name">'+parseInt(d.slice(8),10)+'日</div>'
       +'<div class="item-main">'+statMoney(st.sum)+'</div>'
-      +'<div class="item-last"><span class="item-fee">'+arr.length+'筆</span> <span class="item-net">餘'+statMoney(st.balance)+'</span></div>'
+      +'<div class="item-last"><span class="item-fee">'+arr.length+'筆</span>｜<span class="item-net">餘'+statMoney(st.balance)+'</span></div>'
       +'</div>';
   });
   document.getElementById('expContent').innerHTML=html;
