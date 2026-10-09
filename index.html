@@ -77,12 +77,12 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .color-dot::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px dashed transparent;}
 .color-dot:hover::after{border-color:#94a3b8;}
 
-/* 首頁明細：與營業統計每日明細同款式 */
+/* 首頁明細：與營業統計每日明細同款式（列高縮小） */
 .home-detail-box{background:#fff;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.06);overflow:hidden;}
-.home-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:8px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;}
+.home-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;}
 .home-detail-row:active{background:#eff6ff;}
 .home-detail-row>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.home-detail-head{font-weight:800;background:#f8fafc;color:#64748b;}
+.home-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:6px 4px;}
 .home-detail-head .amount{text-align:right;}
 .home-detail-amt{text-align:right;color:#2563eb;font-variant-numeric:tabular-nums;}
 .home-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;}
@@ -102,21 +102,21 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .stat-list-row .item-fee{color:#dc2626;}
 .stat-list-row .item-net{color:#059669;}
 
-/* 單筆明細（營業）：與首頁明細同款式 */
-.stat-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:8px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;}
+/* 單筆明細（營業）：與首頁明細同款式（列高縮小） */
+.stat-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;}
 .stat-detail-row:active{background:#eff6ff;}
 .stat-detail-row>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;}
+.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:6px 4px;}
 .stat-detail-head .amount{text-align:right;}
 .stat-detail-amt{text-align:right;color:#2563eb;font-variant-numeric:tabular-nums;}
 .stat-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;}
 .stat-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;}
 
 /* 單筆明細（支出） */
-.stat-detail-row-exp{display:grid;grid-template-columns:48px 48px 1fr 1fr;gap:4px;align-items:center;padding:8px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;}
+.stat-detail-row-exp{display:grid;grid-template-columns:48px 48px 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;}
 .stat-detail-row-exp:active{background:#eff6ff;}
 .stat-detail-row-exp>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.stat-detail-row-exp.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;}
+.stat-detail-row-exp.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:6px 4px;}
 .stat-detail-row-exp.stat-detail-head .amount{text-align:right;}
 
 /* 統計卡片與按鈕（避免被原生樣式蓋掉） */
@@ -190,6 +190,25 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
   gap:4px;
   min-width:0;
   flex:0 1 auto;
+  white-space:nowrap;
+}
+/* 第二行：手續費 + 路招次數 + 派遣次數，同一排不換行 */
+.stat-summary-grid>div.row-sub{
+  flex:1 1 100%;
+  display:flex;
+  flex-wrap:nowrap;
+  gap:6px 10px;
+  justify-content:space-between;
+  align-items:baseline;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.stat-summary-grid>div.row-sub .pair{
+  display:inline-flex;
+  align-items:baseline;
+  gap:4px;
+  min-width:0;
+  flex:0 0 auto;
   white-space:nowrap;
 }
 .stat-summary-grid span{
@@ -851,6 +870,20 @@ function calcTotal(){
 }
 function toggleSort(){sortNewFirst=!sortNewFirst;renderTodayList();}
 
+/* 取得付款顯示文字：好孕券金額 <=250 → 好孕券；>250 → 好孕券+現金 */
+function getPayDisplay(r){
+  if(r.splits&&Array.isArray(r.splits)&&r.splits.length){
+    var hasGood=r.splits.some(function(s){return s.pay==='好孕券';});
+    if(hasGood){
+      var total=r.splits.reduce(function(a,s){return a+Number(s.amount||0);},0);
+      if(total>250)return '好孕券+現金';
+      return '好孕券';
+    }
+    return r.splits.map(function(s){return s.pay;}).join('+');
+  }
+  return r.pay||'';
+}
+
 /* 首頁明細：與營業統計每日明細同款式 */
 function renderTodayList(){
   var recs=getRecords(),today=getBizDate(new Date()),wrap=document.getElementById('listToday');
@@ -865,7 +898,7 @@ function renderTodayList(){
   dl.forEach(function(r){
     var typeItem=config.typeList.find(function(t){return t.name===r.type;});
     var typeColor=typeItem?typeItem.color:'#2563eb';
-    var pay=(r.splits&&r.splits.length)?r.splits.map(function(x){return x.pay;}).join('+'):(r.pay||'');
+    var pay=getPayDisplay(r);
     var feeN=Math.round(r.fee||0);
     html+='<div class="home-detail-row" onclick="openEdit('+Number(r.id)+')">'
       +'<span>'+escapeHtml(r.time||'--')+'</span>'
@@ -985,17 +1018,21 @@ function updateStatSummary(title,prefix){
   var grid=document.getElementById('statSummaryGrid');
   var netAfterCost=s.net-s.cost;
   var html='';
+  /* 第一行：營業收入 + 淨收入 */
   html+='<div class="row-main">'
     +'<span class="pair"><span>營業收入</span><strong>'+statMoney(s.sum)+'</strong></span>'
     +'<span class="pair"><span>'+(hasCost?'淨收入(扣成本)':'淨收入')+'</span><strong class="net">'+statMoney(hasCost?netAfterCost:s.net)+'</strong></span>'
     +'</div>';
-  html+='<div><span>手續費</span><strong class="fee">'+statMoney(s.fee)+'</strong></div>';
+  /* 第二行：手續費 + 路招次數 + 派遣次數 + 營業成本，同一排不換行 */
+  html+='<div class="row-sub">';
+  html+='<span class="pair"><span>手續費</span><strong class="fee">'+statMoney(s.fee)+'</strong></span>';
   config.typeList.forEach(function(t){
-    html+='<div><span>'+escapeHtml(t.name)+'次數</span><strong>'+ (s.typeCount[t.name]||0) +'</strong></div>';
+    html+='<span class="pair"><span>'+escapeHtml(t.name)+'次數</span><strong>'+ (s.typeCount[t.name]||0) +'</strong></span>';
   });
   if(hasCost){
-    html+='<div><span>營業成本</span><strong class="cost">'+statMoney(s.cost)+'</strong></div>';
+    html+='<span class="pair"><span>營業成本</span><strong class="cost">'+statMoney(s.cost)+'</strong></span>';
   }
+  html+='</div>';
   grid.innerHTML=html;
   setTimeout(fitAllStatText,0);
 }
@@ -1129,7 +1166,7 @@ function renderStatDayDetail(dateStr){
   if(!list.length){html+='<div class="empty-tip">此日尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;updateStatBreadcrumb();return;}
   list.forEach(function(r){
     var typeItem=config.typeList.find(function(t){return t.name===r.type;}),typeColor=typeItem?typeItem.color:'#2563eb';
-    var pay=(r.splits&&r.splits.length)?r.splits.map(function(x){return x.pay;}).join('+'):(r.pay||'');
+    var pay=getPayDisplay(r);
     var feeN=Math.round(r.fee||0);
     html+='<div class="stat-detail-row" onclick="openEdit('+Number(r.id)+')">'
       +'<span>'+escapeHtml(r.time||'--')+'</span>'
