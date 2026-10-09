@@ -227,17 +227,51 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .stat-summary-grid strong.cost{color:#ea580c;}
 .stat-list-box{background:#fff;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.06);overflow:hidden;}
 
-/* 年 / 月 / 日列表：項目固定 + 收入/手續/淨收 平均分 */
-.stat-list-head,.stat-list-row{display:grid;grid-template-columns:minmax(60px,auto) 1fr 1fr;gap:5px;align-items:center;}
-.stat-list-head{background:#f8fafc;padding:8px 8px;color:#475569;font-size:calc(.86px * var(--fs-num));font-weight:800;}
+/* 年 / 月 / 日列表：第一欄固定寬度，標頭與內容對齊 */
+.stat-list-head,.stat-list-row{
+  display:grid;
+  grid-template-columns:72px 1fr 1fr;
+  gap:5px;
+  align-items:center;
+}
+.stat-list-head{
+  background:#f8fafc;
+  padding:8px 8px;
+  color:#475569;
+  font-size:calc(.86px * var(--fs-num));
+  font-weight:800;
+}
 .stat-list-head>div{text-align:right;}
 .stat-list-head>div:first-child{text-align:left;}
-.stat-list-head .head-amount{text-align:right;}
-.stat-list-row{padding:9px 8px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));min-width:0;cursor:pointer;}
+.stat-list-row{
+  padding:9px 8px;
+  border-top:1px solid #f1f5f9;
+  font-size:calc(.96px * var(--fs-num));
+  min-width:0;
+  cursor:pointer;
+}
 .stat-list-row:active{background:#eff6ff;}
-.stat-list-row .item-name{color:#2563eb;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;}
-.stat-list-row .item-main{color:#2563eb;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
-.stat-list-row .item-last{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.stat-list-row .item-name{
+  color:#2563eb;
+  font-weight:700;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  text-align:left;
+}
+.stat-list-row .item-main{
+  color:#2563eb;
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+.stat-list-row .item-last{
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
 .stat-list-row .item-fee{color:#dc2626;}
 .stat-list-row .item-net{color:#059669;}
 
@@ -273,7 +307,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .exp-cost-check{width:16px;height:16px;flex-shrink:0;cursor:pointer;accent-color:#ea580c;margin:0;}
 
 @media(max-width:400px){
-  .stat-list-head,.stat-list-row{grid-template-columns:minmax(50px,auto) 1fr 1fr;gap:3px;padding-left:5px;padding-right:5px}
+  .stat-list-head,.stat-list-row{grid-template-columns:60px 1fr 1fr;gap:3px;padding-left:5px;padding-right:5px}
   .stat-detail-row{grid-template-columns:40px 40px 1fr 1fr 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
   .stat-detail-row-exp{grid-template-columns:40px 40px 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
 }
