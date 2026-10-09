@@ -177,11 +177,51 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .stat-summary-box{background:#fff;border-radius:10px;padding:10px 8px;margin-bottom:8px;box-shadow:0 1px 5px rgba(0,0,0,.06);}
 .stat-summary-title{font-size:calc(1.05px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:8px;}
 
-/* 合計區塊：每個格子是一個 flex row，標籤+數字一起換行 */
-.stat-summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px 10px;}
-.stat-summary-grid>div{min-width:0;display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;}
-.stat-summary-grid span{flex-shrink:0;color:#64748b;font-size:calc(.82px * var(--fs-num));white-space:nowrap;}
-.stat-summary-grid strong{flex:1 1 auto;min-width:0;text-align:right;color:#2563eb;font-size:calc(1.12px * var(--fs-num));font-variant-numeric:tabular-nums;white-space:nowrap;margin-left:auto;}
+/* 合計區塊：兩行制，營業收入+淨收入 一行，其餘統計一行，彈性收縮 */
+.stat-summary-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 14px;
+  align-items:baseline;
+}
+.stat-summary-grid>div{
+  display:inline-flex;
+  align-items:baseline;
+  gap:4px;
+  min-width:0;
+  flex:0 1 auto;
+  white-space:nowrap;
+}
+.stat-summary-grid>div.row-main{
+  flex:1 1 100%;
+  justify-content:space-between;
+  gap:10px;
+  border-bottom:1px dashed #e2e8f0;
+  padding-bottom:6px;
+  margin-bottom:2px;
+}
+.stat-summary-grid>div.row-main .pair{
+  display:inline-flex;
+  align-items:baseline;
+  gap:4px;
+  min-width:0;
+  flex:0 1 auto;
+  white-space:nowrap;
+}
+.stat-summary-grid span{
+  color:#64748b;
+  font-size:calc(.82px * var(--fs-num));
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.stat-summary-grid strong{
+  color:#2563eb;
+  font-size:calc(1.12px * var(--fs-num));
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+  flex-shrink:1;
+  min-width:0;
+}
 .stat-summary-grid strong.fee{color:#dc2626;}
 .stat-summary-grid strong.net{color:#059669;}
 .stat-summary-grid strong.cost{color:#ea580c;}
@@ -236,7 +276,6 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
   .stat-list-head,.stat-list-row{grid-template-columns:minmax(50px,auto) 1fr 1fr;gap:3px;padding-left:5px;padding-right:5px}
   .stat-detail-row{grid-template-columns:40px 40px 1fr 1fr 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
   .stat-detail-row-exp{grid-template-columns:40px 40px 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
-  .stat-summary-grid{grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:6px 8px;}
 }
 
 @media(max-width:600px){body{padding:8px 0;}.page{padding:0 4px;}}
@@ -989,16 +1028,19 @@ function updateStatSummary(title,prefix){
   var grid=document.getElementById('statSummaryGrid');
   var netAfterCost=s.net-s.cost;
   var html='';
-  html+='<div><span>營業收入</span><strong>'+statMoney(s.sum)+'</strong></div>';
+  // 第一行：營業收入 + 淨收入
+  html+='<div class="row-main">'
+    +'<span class="pair"><span>營業收入</span><strong>'+statMoney(s.sum)+'</strong></span>'
+    +'<span class="pair"><span>'+(hasCost?'淨收入(扣成本)':'淨收入')+'</span><strong class="net">'+statMoney(hasCost?netAfterCost:s.net)+'</strong></span>'
+    +'</div>';
+  // 第二行：手續費 + 各類別次數（彈性收縮）
   html+='<div><span>手續費</span><strong class="fee">'+statMoney(s.fee)+'</strong></div>';
   config.typeList.forEach(function(t){
     html+='<div><span>'+escapeHtml(t.name)+'次數</span><strong>'+ (s.typeCount[t.name]||0) +'</strong></div>';
   });
+  // 若有營業成本，單獨一行
   if(hasCost){
     html+='<div><span>營業成本</span><strong class="cost">'+statMoney(s.cost)+'</strong></div>';
-    html+='<div><span>淨收入</span><strong class="net">'+statMoney(netAfterCost)+'</strong></div>';
-  }else{
-    html+='<div><span>淨收入</span><strong class="net">'+statMoney(s.net)+'</strong></div>';
   }
   grid.innerHTML=html;
   setTimeout(fitAllStatText,0);
