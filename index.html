@@ -74,7 +74,8 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .empty-tip{text-align:center;color:#94a3b8;padding:24px 16px;font-size:calc(1.05px * var(--fs-num));}
 .section-title{display:flex;justify-content:space-between;align-items:center;margin:12px 0 6px;gap:8px;flex-shrink:0;}
 .section-title h3{font-size:calc(1.15px * var(--fs-num));color:#0f172a;flex-shrink:0;}
-.section-title .today-date{font-size:calc(.95px * var(--fs-num));color:#64748b;margin-left:auto;white-space:nowrap;flex-shrink:0;}
+.section-title .today-date{font-size:calc(.95px * var(--fs-num));color:#64748b;white-space:nowrap;flex-shrink:0;}
+.section-title .today-net{flex:1 1 auto;text-align:center;color:#059669;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:calc(1.05px * var(--fs-num));min-width:0;}
 .sortBtn{border:none;background:#e0f2fe;color:#0369a1;font-size:calc(.9px * var(--fs-num));padding:5px 10px;border-radius:20px;flex-shrink:0;}
 #typeListSet input,#payListSet input,#expListSet input,.setBlock .item input{font-size:calc(.95px * var(--fs-num));padding:4px 8px;height:26px;border-radius:6px;border:1.2px solid #e2e8f0;background:#f8fafc;margin:0;}
 #typeListSet input[type="number"],#payListSet input[type="number"],#expListSet input[type="number"],.setBlock .item input[type="number"]{width:4.5em;max-width:72px;text-align:center;flex-shrink:0;}
@@ -381,7 +382,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 </div>
 <div class="section-title">
   <h3>今日明細</h3>
-  <span id="todayNetTotal" style="flex:1 1 auto;text-align:center;color:#059669;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:calc(1.05px * var(--fs-num));">淨收：0</span>
+  <span class="today-net" id="todayNetTotal">淨收：0</span>
   <span class="today-date" id="todayDateText">--</span>
   <button class="sortBtn" id="sortBtn" onclick="toggleSort()">排序</button>
 </div>
@@ -896,6 +897,7 @@ function calcTotal(){
   document.getElementById('nonCashTotal').textContent=s.nonCashSum;
   document.getElementById('feeTotal').textContent=Math.round(s.feeSum);
   document.getElementById('deductTotal').textContent=Math.round(s.deductSum);
+  document.getElementById('todayNetTotal').textContent='淨收：'+statMoney(s.daySum-s.feeSum-s.deductSum);
   updateTodayDateText();
 }
 function toggleSort(){sortNewFirst=!sortNewFirst;renderTodayList();}
