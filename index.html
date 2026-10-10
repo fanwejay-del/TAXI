@@ -20,8 +20,13 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 
 .card{background:#fff;border-radius:12px;padding:12px 2px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:4px;}
 
-.global-nav{position:sticky;top:0;z-index:50;background:#fff;border-radius:12px;padding:6px 8px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin:0 6px 8px;display:flex;justify-content:space-around;align-items:center;flex-shrink:0;}
-.global-nav .nav-icon{font-size:calc(1.6px * var(--fs-num));padding:6px 10px;border-radius:10px;cursor:pointer;line-height:1;color:#475569;transition:background .15s,transform .1s;}
+/* ===== 全局導覽列 ===== */
+.global-nav{position:sticky;top:0;z-index:50;background:#fff;border-radius:12px;padding:6px 10px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin:0 6px 8px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;gap:8px;}
+.nav-brand{display:flex;align-items:center;gap:6px;flex-shrink:1;min-width:0;}
+.nav-logo{height:calc(2.2px * var(--fs-num));width:auto;max-width:36px;object-fit:contain;flex-shrink:0;border-radius:6px;}
+.nav-title{font-size:calc(1.05px * var(--fs-num));font-weight:800;color:#0f172a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:1;min-width:0;}
+.nav-icons{display:flex;align-items:center;gap:2px;flex-shrink:0;}
+.global-nav .nav-icon{font-size:calc(1.5px * var(--fs-num));padding:6px 8px;border-radius:10px;cursor:pointer;line-height:1;color:#475569;transition:background .15s,transform .1s;}
 .global-nav .nav-icon:active{background:#e2e8f0;transform:scale(.95);}
 .global-nav .nav-icon.active{background:#dbeafe;color:#2563eb;}
 
@@ -81,47 +86,48 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 /* 首頁：只捲動下方列表 */
 .pageHome-top{flex-shrink:0;}
 .home-detail-box{background:#fff;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.06);overflow:hidden;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-.home-detail-row{display:grid;grid-template-columns:36px 48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;}
+/* 首頁明細：加大字體、固定列高、垂直置中 */
+.home-detail-row{display:grid;grid-template-columns:36px 48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;height:40px;padding:0 4px;border-top:1px solid #f1f5f9;font-size:calc(1.05px * var(--fs-num));cursor:pointer;}
 .home-detail-row:active{background:#eff6ff;}
 .home-detail-row>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.home-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:6px 4px;position:sticky;top:0;z-index:2;}
+.home-detail-head{font-weight:800;background:#f8fafc;color:#64748b;height:36px;padding:0 4px;position:sticky;top:0;z-index:2;font-size:calc(1px * var(--fs-num));}
 .home-detail-head .amount{text-align:right;}
 .home-detail-idx{text-align:center;color:#94a3b8;font-variant-numeric:tabular-nums;}
 .home-detail-amt{text-align:right;color:#2563eb;font-variant-numeric:tabular-nums;}
 .home-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;}
 .home-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;}
 
-/* 年 / 月 / 日列表：第一欄固定 72px，後三欄平均分配；表頭與數字上下對齊 */
+/* 年 / 月 / 日列表：加大字體、固定列高、垂直置中 */
 .stat-list-head,.stat-list-row{display:grid;grid-template-columns:72px 1fr 1fr 1fr;gap:8px;align-items:center;}
-.stat-list-head{background:#f8fafc;padding:8px 8px;color:#475569;font-size:calc(.86px * var(--fs-num));font-weight:800;position:sticky;top:0;z-index:2;}
+.stat-list-head{background:#f8fafc;height:36px;padding:0 8px;color:#475569;font-size:calc(.95px * var(--fs-num));font-weight:800;position:sticky;top:0;z-index:2;}
 .stat-list-head>div{text-align:right;}
 .stat-list-head>div:first-child{text-align:left;}
 .stat-list-head .head-amount{text-align:right;}
-.stat-list-row{padding:9px 8px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));min-width:0;cursor:pointer;}
+.stat-list-row{height:44px;padding:0 8px;border-top:1px solid #f1f5f9;font-size:calc(1.15px * var(--fs-num));min-width:0;cursor:pointer;}
 .stat-list-row:active{background:#eff6ff;}
 .stat-list-row .item-name{color:#2563eb;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;}
 .stat-list-row .item-main{color:#2563eb;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
 .stat-list-row .item-fee{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#dc2626;}
 .stat-list-row .item-net{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#059669;}
 
-/* 單筆明細（營業）：與首頁明細同款式 */
-.stat-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;}
+/* 單筆明細（營業）：加大字體、固定列高、垂直置中 */
+.stat-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;height:40px;padding:0 4px;border-top:1px solid #f1f5f9;font-size:calc(1.05px * var(--fs-num));cursor:pointer;}
 .stat-detail-row:active{background:#eff6ff;}
 .stat-detail-row>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:6px 4px;position:sticky;top:0;z-index:2;}
+.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;height:36px;padding:0 4px;position:sticky;top:0;z-index:2;font-size:calc(1px * var(--fs-num));}
 .stat-detail-head .amount{text-align:right;}
 .stat-detail-amt{text-align:right;color:#2563eb;font-variant-numeric:tabular-nums;}
 .stat-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;}
 .stat-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;}
 
-/* 單筆明細（支出） */
-.stat-detail-row-exp{display:grid;grid-template-columns:48px 48px 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;}
+/* 單筆明細（支出）：加大字體、固定列高、垂直置中 */
+.stat-detail-row-exp{display:grid;grid-template-columns:48px 48px 1fr 1fr;gap:4px;align-items:center;height:40px;padding:0 4px;border-top:1px solid #f1f5f9;font-size:calc(1.05px * var(--fs-num));cursor:pointer;}
 .stat-detail-row-exp:active{background:#eff6ff;}
 .stat-detail-row-exp>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.stat-detail-row-exp.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:6px 4px;position:sticky;top:0;z-index:2;}
+.stat-detail-row-exp.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;height:36px;padding:0 4px;position:sticky;top:0;z-index:2;font-size:calc(1px * var(--fs-num));}
 .stat-detail-row-exp.stat-detail-head .amount{text-align:right;}
 
-/* 統計卡片與按鈕（避免被原生樣式蓋掉） */
+/* 統計卡片與按鈕 */
 .stat-type-card{
   background:#fff !important;
   border-radius:12px !important;
@@ -266,6 +272,14 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
   .stat-detail-row{grid-template-columns:40px 40px 1fr 1fr 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
   .stat-detail-row-exp{grid-template-columns:40px 40px 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
   .home-detail-row{grid-template-columns:30px 40px 40px 1fr 1fr 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
+  .nav-title{font-size:calc(.9px * var(--fs-num));}
+  .nav-logo{height:calc(1.9px * var(--fs-num));}
+  
+  /* 手機版列表高度與字體微調 */
+  .home-detail-row{height:36px;font-size:calc(.95px * var(--fs-num));}
+  .stat-list-row{height:40px;font-size:calc(1px * var(--fs-num));}
+  .stat-detail-row{height:36px;font-size:calc(.95px * var(--fs-num));}
+  .stat-detail-row-exp{height:36px;font-size:calc(.95px * var(--fs-num));}
 }
 
 @media(max-width:600px){body{padding:8px 0;}.page{padding:0 4px;}}
@@ -278,11 +292,18 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 <input type="file" id="fileImport" style="display:none" accept=".json">
 <input type="color" id="colorPicker" class="hidden-color">
 
+<!-- 全局導覽列 -->
 <div class="global-nav">
-  <span class="nav-icon" data-page="pageHome" onclick="showPage('pageHome')">🏠</span>
-  <span class="nav-icon" data-page="pageStat" onclick="showPage('pageStat')">📊</span>
-  <span class="nav-icon" data-page="pageExpStat" onclick="showPage('pageExpStat')">💸</span>
-  <span class="nav-icon" data-page="pageSetting" onclick="showPage('pageSetting')">⚙️</span>
+  <div class="nav-brand">
+    <img src="logo.png" alt="Logo" class="nav-logo" onerror="this.style.display='none'">
+    <span class="nav-title">計程車記帳</span>
+  </div>
+  <div class="nav-icons">
+    <span class="nav-icon" data-page="pageHome" onclick="showPage('pageHome')">🏠</span>
+    <span class="nav-icon" data-page="pageStat" onclick="showPage('pageStat')">📊</span>
+    <span class="nav-icon" data-page="pageExpStat" onclick="showPage('pageExpStat')">💸</span>
+    <span class="nav-icon" data-page="pageSetting" onclick="showPage('pageSetting')">⚙️</span>
+  </div>
 </div>
 
 <!-- 收入輸入 Modal -->
