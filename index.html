@@ -136,15 +136,15 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
   padding:10px !important;
   box-shadow:0 2px 8px rgba(0,0,0,.06) !important;
   margin-bottom:12px !important;
-  display:grid !important;
-  grid-template-columns:repeat(auto-fit, minmax(52px, 1fr)) !important;
+  display:flex !important;
+  flex-wrap:wrap !important;
   gap:6px !important;
   flex-shrink:0;
 }
 .stat-type-btn{
-  width:100% !important;
-  min-width:0 !important;
-  padding:9px 4px !important;
+  flex:0 0 auto !important;
+  min-width:56px !important;
+  padding:9px 12px !important;
   border:none !important;
   border-radius:9px !important;
   background:#e2e8f0 !important;
@@ -153,8 +153,6 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
   font-weight:inherit !important;
   cursor:pointer !important;
   white-space:nowrap !important;
-  overflow:hidden !important;
-  text-overflow:ellipsis !important;
   transition:filter .12s,transform .1s,box-shadow .12s !important;
   box-shadow:0 1px 3px rgba(0,0,0,.12) !important;
   font-family:inherit !important;
@@ -278,7 +276,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 
 @media(max-width:600px){body{padding:8px 0;}.page{padding:0 4px;}}
 @media(max-width:400px){
-  .stat-type-btn{font-size:clamp(9px, calc(.82px * var(--fs-num)), 13px) !important;padding:8px 4px !important;}
+  .stat-type-btn{font-size:clamp(9px, calc(.82px * var(--fs-num)), 13px) !important;padding:8px 10px !important;}
 }
 </style>
 </head>
