@@ -35,7 +35,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .bigBtn,.numBtn,.payBtn,.navBtn,.editBtn,.delBtn,.sortBtn,.add-btn,.backup-btn,.stat-btn,.setBlock button{box-shadow:0 2px 6px rgba(0,0,0,.14);transition:filter .12s,box-shadow .12s,transform .1s,background .12s;}
 .bigBtn:active,.numBtn:active,.payBtn:active,.navBtn:active,.editBtn:active,.delBtn:active,.sortBtn:active,.add-btn:active,.backup-btn:active,.stat-btn:active,.setBlock button:active{filter:brightness(.88);box-shadow:0 1px 3px rgba(0,0,0,.18);transform:scale(.97);}
 .bigBtn{padding:0 3px;border:none;border-radius:10px;font-size:clamp(16px,calc(0.85px * var(--fs-num)),18px);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;height:calc(2.6px * var(--fs-num) + 12px);display:flex;align-items:center;justify-content:center;line-height:1;}
-.inputBox{width:100%;padding:16px;font-size:28px;text-align:center;border:2px solid #e2e8f0;border-radius:12px;margin:14px 0;background:#f8fafc;color:#0f172a;}
+.inputBox{width:100%;padding:16px;font-size:28px;text-align:center;border:2px solid #e2e8f0;border-radius:12px;margin:14px 0;background:#f8fafc;color:#0f172a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-variant-numeric:tabular-nums;}
 .numKey{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(5px,2vw,10px);width:100%;min-width:0;flex:0 0 auto;}
 .numBtn{width:100%;min-width:0;padding:clamp(10px,3.8vw,18px) 4px;font-size:clamp(17px,5.5vw,22px);border-radius:12px;border:none;background:#fff;color:#1e293b;overflow:hidden;}
 .numBtn:active{background:#e2e8f0;}
@@ -75,11 +75,11 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .section-title{display:flex;justify-content:space-between;align-items:center;margin:12px 0 6px;gap:8px;flex-shrink:0;}
 .section-title h3{font-size:calc(1.15px * var(--fs-num));color:#0f172a;flex-shrink:0;}
 .section-title .today-date{font-size:calc(.95px * var(--fs-num));color:#64748b;white-space:nowrap;flex-shrink:0;}
-.section-title .today-net{flex:1 1 auto;text-align:center;color:#059669;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:calc(1.05px * var(--fs-num));min-width:0;}
+.section-title .today-net{flex:1 1 auto;text-align:center;color:#059669;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:calc(1.05px * var(--fs-num));min-width:0;max-width:42%;}
 .sortBtn{border:none;background:#e0f2fe;color:#0369a1;font-size:calc(.9px * var(--fs-num));padding:5px 10px;border-radius:20px;flex-shrink:0;}
 #typeListSet input,#payListSet input,#expListSet input,.setBlock .item input{font-size:calc(.95px * var(--fs-num));padding:4px 8px;height:26px;border-radius:6px;border:1.2px solid #e2e8f0;background:#f8fafc;margin:0;}
 #typeListSet input[type="number"],#payListSet input[type="number"],#expListSet input[type="number"],.setBlock .item input[type="number"]{width:4.5em;max-width:72px;text-align:center;flex-shrink:0;}
-#typeListSet input:not([type="number"]),#payListSet input:not([type="number"]),#expListSet input:not([type="number"]),.setBlock .item input:not([type="number"]){flex:1;min-width:0;}
+#typeListSet input:not([type="number"]),#payListSet input:not([type="number"]),#expListSet input:not([type="number"]),.setBlock .item input:not([type="number"]){flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;}
 .item{background:#fff;padding:2px;margin:2px 0;border-radius:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.05);gap:8px;}
 .color-dot{width:22px;height:22px;border-radius:50%;flex-shrink:0;box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.15);cursor:pointer;position:relative;transition:transform .1s;}
 .color-dot:active{transform:scale(.88);}
@@ -89,18 +89,18 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 /* 首頁：只捲動下方列表 */
 .pageHome-top{flex-shrink:0;}
 .home-detail-box{background:#fff;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.06);overflow:hidden;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-.home-detail-row{display:grid;grid-template-columns:36px 48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;}
+.home-detail-row{display:grid;grid-template-columns:36px 48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;}
 .home-detail-row:active{background:#eff6ff;}
 .home-detail-row>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .home-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:6px 4px;position:sticky;top:0;z-index:2;}
 .home-detail-head .amount{text-align:right;}
 .home-detail-idx{text-align:center;color:#94a3b8;font-variant-numeric:tabular-nums;}
-.home-detail-amt{text-align:right;color:#2563eb;font-variant-numeric:tabular-nums;}
-.home-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;}
-.home-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;}
+.home-detail-amt{text-align:right;color:#2563eb;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
+.home-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
+.home-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 
 /* 年 / 月 / 日列表 */
-.stat-list-head,.stat-list-row{display:grid;grid-template-columns:72px 1fr 1fr 1fr;gap:8px;align-items:center;}
+.stat-list-head,.stat-list-row{display:grid;grid-template-columns:72px 1fr 1fr 1fr;gap:8px;align-items:center;font-variant-numeric:tabular-nums;}
 .stat-list-head{background:#f8fafc;padding:8px 8px;color:#475569;font-size:calc(.86px * var(--fs-num));font-weight:800;position:sticky;top:0;z-index:2;}
 .stat-list-head>div{text-align:right;}
 .stat-list-head>div:first-child{text-align:left;}
@@ -108,22 +108,22 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .stat-list-row{padding:9px 8px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));min-width:0;cursor:pointer;}
 .stat-list-row:active{background:#eff6ff;}
 .stat-list-row .item-name{color:#2563eb;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;}
-.stat-list-row .item-main{color:#2563eb;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
-.stat-list-row .item-fee{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#dc2626;}
-.stat-list-row .item-net{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#059669;}
+.stat-list-row .item-main{color:#2563eb;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;letter-spacing:-0.02em;}
+.stat-list-row .item-fee{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#dc2626;letter-spacing:-0.02em;}
+.stat-list-row .item-net{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#059669;letter-spacing:-0.02em;}
 
 /* 單筆明細（營業） */
-.stat-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;}
+.stat-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;}
 .stat-detail-row:active{background:#eff6ff;}
 .stat-detail-row>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:6px 4px;position:sticky;top:0;z-index:2;}
 .stat-detail-head .amount{text-align:right;}
-.stat-detail-amt{text-align:right;color:#2563eb;font-variant-numeric:tabular-nums;}
-.stat-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;}
-.stat-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;}
+.stat-detail-amt{text-align:right;color:#2563eb;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
+.stat-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
+.stat-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 
 /* 單筆明細（支出） */
-.stat-detail-row-exp{display:grid;grid-template-columns:48px 48px 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;}
+.stat-detail-row-exp{display:grid;grid-template-columns:48px 48px 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;}
 .stat-detail-row-exp:active{background:#eff6ff;}
 .stat-detail-row-exp>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .stat-detail-row-exp.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:6px 4px;position:sticky;top:0;z-index:2;}
@@ -235,7 +235,10 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
   font-variant-numeric:tabular-nums;
   white-space:nowrap;
   flex-shrink:1;
-  min-width:0;
+  min-width:3.2em;
+  text-align:right;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 .stat-summary-grid strong.fee{color:#dc2626;}
 .stat-summary-grid strong.net{color:#059669;}
@@ -266,11 +269,34 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 /* 支出類型 checkbox */
 .exp-cost-check{width:16px;height:16px;flex-shrink:0;cursor:pointer;accent-color:#ea580c;margin:0;}
 
+/* 首頁合計排版 */
+#daySummaryCard{
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px 12px;
+  align-items:baseline;
+  line-height:1.45;
+  font-size:calc(1.05px * var(--fs-num));
+}
+#daySummaryCard .stat-pair{
+  display:inline-flex;
+  align-items:baseline;
+  gap:2px;
+  white-space:nowrap;
+  max-width:100%;
+}
+#daySummaryCard .stat-pair > span:last-child{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:7em;
+  font-variant-numeric:tabular-nums;
+}
+
 @media(max-width:400px){
-  .stat-list-head,.stat-list-row{grid-template-columns:60px 1fr 1fr 1fr;gap:5px;padding-left:5px;padding-right:5px}
-  .stat-detail-row{grid-template-columns:40px 40px 1fr 1fr 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
+  .stat-list-head,.stat-list-row{grid-template-columns:52px minmax(0,1fr) minmax(0,0.9fr) minmax(0,1fr);gap:4px;padding-left:5px;padding-right:5px}
+  .stat-detail-row{grid-template-columns:36px 36px minmax(0,1fr) minmax(0,1fr) minmax(0,0.85fr) minmax(0,0.95fr);gap:2px;padding-left:3px;padding-right:3px;font-size:calc(.78px * var(--fs-num));}
   .stat-detail-row-exp{grid-template-columns:40px 40px 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
-  .home-detail-row{grid-template-columns:30px 40px 40px 1fr 1fr 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
+  .home-detail-row{grid-template-columns:28px 36px 36px minmax(0,1.1fr) minmax(0,1fr) minmax(0,0.85fr) minmax(0,0.95fr);gap:2px;padding-left:3px;padding-right:3px;font-size:calc(.78px * var(--fs-num));}
 }
 
 @media(max-width:600px){body{padding:8px 0;}.page{padding:0 4px;}}
@@ -368,12 +394,12 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 <div class="pageHome-top">
 <div id="typeBtnWrap" class="row2"></div>
 <div class="card">
-<div class="day-summary-card" id="daySummaryCard" style="display:flex;flex-wrap:wrap;gap:6px 14px;font-size:calc(1.05px * var(--fs-num));line-height:1.6;">
-<span class="stat-pair" style="display:inline-flex;align-items:baseline;gap:3px;white-space:nowrap;"><span style="color:#475569;">營業額：</span><span style="color:#2563eb;font-size:calc(1.3px * var(--fs-num));font-variant-numeric:tabular-nums;" id="dayTotal">0</span></span>
-<span class="stat-pair" style="display:inline-flex;align-items:baseline;gap:3px;white-space:nowrap;"><span style="color:#475569;">現金：</span><span style="font-variant-numeric:tabular-nums;" id="cashTotal">0</span></span>
-<span class="stat-pair" style="display:inline-flex;align-items:baseline;gap:3px;white-space:nowrap;"><span style="color:#475569;">非現金：</span><span style="font-variant-numeric:tabular-nums;" id="nonCashTotal">0</span></span>
-<span class="stat-pair" style="display:inline-flex;align-items:baseline;gap:3px;white-space:nowrap;"><span style="color:#475569;">手續費：</span><span style="color:#dc2626;font-variant-numeric:tabular-nums;" id="feeTotal">0</span></span>
-<span class="stat-pair" style="display:inline-flex;align-items:baseline;gap:3px;white-space:nowrap;"><span style="color:#475569;">派遣費：</span><span style="color:#dc2626;font-variant-numeric:tabular-nums;" id="deductTotal">0</span></span>
+<div class="day-summary-card" id="daySummaryCard">
+<span class="stat-pair"><span style="color:#475569;">營業額：</span><span style="color:#2563eb;font-size:calc(1.3px * var(--fs-num));font-variant-numeric:tabular-nums;" id="dayTotal">0</span></span>
+<span class="stat-pair"><span style="color:#475569;">現金：</span><span style="font-variant-numeric:tabular-nums;" id="cashTotal">0</span></span>
+<span class="stat-pair"><span style="color:#475569;">非現金：</span><span style="font-variant-numeric:tabular-nums;" id="nonCashTotal">0</span></span>
+<span class="stat-pair"><span style="color:#475569;">手續費：</span><span style="color:#dc2626;font-variant-numeric:tabular-nums;" id="feeTotal">0</span></span>
+<span class="stat-pair"><span style="color:#475569;">派遣費：</span><span style="color:#dc2626;font-variant-numeric:tabular-nums;" id="deductTotal">0</span></span>
 <span class="stat-pair" id="typeCountText" style="color:#475569;"></span>
 </div>
 </div>
@@ -570,7 +596,7 @@ function _getFitCtx(){
   return _fitCanvas.getContext('2d');
 }
 function fitOne(el, minSize){
-  if(!el.clientWidth)return;
+  if(!el||!el.clientWidth)return;
   el.style.fontSize='';
   var cs=getComputedStyle(el);
   var baseSize=parseFloat(cs.fontSize)||12;
@@ -584,8 +610,27 @@ function fitOne(el, minSize){
   el.style.fontSize=newSize.toFixed(2)+'px';
 }
 function fitAllStatText(){
-  var els=document.querySelectorAll('.fc-stat span, .sc-stat span, .stat-type-btn');
-  els.forEach(function(el){ fitOne(el,7); });
+  var sels=[
+    '.fc-stat span',
+    '.sc-stat span',
+    '.stat-type-btn',
+    '.stat-summary-grid strong',
+    '.stat-list-row .item-main',
+    '.stat-list-row .item-fee',
+    '.stat-list-row .item-net',
+    '.home-detail-amt',
+    '.home-detail-fee',
+    '.home-detail-net',
+    '.stat-detail-amt',
+    '.stat-detail-fee',
+    '.stat-detail-net',
+    '#daySummaryCard .stat-pair > span:last-child',
+    '#todayNetTotal',
+    '#expSummarySum',
+    '#expSummaryCount',
+    '#expSummaryBalance'
+  ];
+  document.querySelectorAll(sels.join(',')).forEach(function(el){ fitOne(el,8); });
 }
 
 function fitHomeButtons(){
@@ -616,6 +661,11 @@ function fitModalContent(modalId){
     inputArea.style.height='auto';
     inputArea.style.flex='0 1 auto';
   }
+  modal.querySelectorAll('.numBtn, .payBtn').forEach(function(btn){
+    fitOne(btn, 11);
+  });
+  var amountEl=modal.querySelector('.inputBox');
+  if(amountEl) fitOne(amountEl, 16);
 }
 
 var colorPickTarget=null;
@@ -651,7 +701,12 @@ function getExpenses(){return JSON.parse(localStorage.getItem('taxiExp'))||[];}
 function saveExpenses(l){localStorage.setItem('taxiExp',JSON.stringify(l));}
 function fmtTime(){var d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
 function escapeHtml(v){return String(v==null?"":v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
-function isCashPay(p){var first=config.payList[0];return !!(first&&first.name===p);}
+function isCashPay(p){
+  var name=String(p||'');
+  if(/現金/.test(name)) return true;
+  var first=config.payList[0];
+  return !!(first&&first.name===p);
+}
 function getBizDate(dt){var h=dt.getHours(),sh=Number(config.businessHour&&config.businessHour.start!=null?config.businessHour.start:22),eh=Number(config.businessHour&&config.businessHour.end!=null?config.businessHour.end:8);var d=new Date(dt);if(sh>eh&&h<eh)d.setDate(d.getDate()-1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 
 function getTodayWeekdayText(){
@@ -791,7 +846,7 @@ function showPage(id){
   }
   if(id==='pageStat')showStatDefault();
   if(id==='pageExpStat')showExpDefault();
-  if(id==='pageHome'){renderHomeTypeBtn();updateTodayDateText();}
+  if(id==='pageHome'){renderHomeTypeBtn();updateTodayDateText();setTimeout(fitAllStatText,0);}
 }
 
 function updateTodayDateText(){
@@ -896,6 +951,7 @@ function calcTotal(){
   document.getElementById('deductTotal').textContent=Math.round(s.deductSum);
   document.getElementById('todayNetTotal').textContent='淨收：'+statMoney(s.daySum-s.feeSum-s.deductSum);
   updateTodayDateText();
+  setTimeout(fitAllStatText,0);
 }
 function toggleSort(){sortNewFirst=!sortNewFirst;renderTodayList();}
 
@@ -925,7 +981,7 @@ function getRawDisplay(r){
 function renderTodayList(){
   var recs=getRecords(),today=getBizDate(new Date()),wrap=document.getElementById('listToday');
   var tr=recs.filter(function(r){return r.date===today;});
-  if(!tr.length){wrap.innerHTML='<div class="empty-tip">今日尚無紀錄</div>';return;}
+  if(!tr.length){wrap.innerHTML='<div class="empty-tip">今日尚無紀錄</div>';setTimeout(fitAllStatText,0);return;}
   var asc=tr.slice().sort(function(a,b){return a.id-b.id;});
   var idToNo={};
   asc.forEach(function(it,i){idToNo[it.id]=i+1;});
@@ -952,6 +1008,7 @@ function renderTodayList(){
       +'</div>';
   });
   wrap.innerHTML=html;
+  setTimeout(fitAllStatText,0);
 }
 
 function getFilteredRecords(){
@@ -1157,6 +1214,7 @@ function renderStatYearList(){
   });
   document.getElementById('statContent').innerHTML=html;
   updateStatBreadcrumb();
+  setTimeout(fitAllStatText,0);
 }
 
 function renderStatMonthList(yearStr){
@@ -1178,6 +1236,7 @@ function renderStatMonthList(yearStr){
   });
   document.getElementById('statContent').innerHTML=html;
   updateStatBreadcrumb();
+  setTimeout(fitAllStatText,0);
 }
 
 function renderStatDayList(monthStr){
@@ -1199,6 +1258,7 @@ function renderStatDayList(monthStr){
   });
   document.getElementById('statContent').innerHTML=html;
   updateStatBreadcrumb();
+  setTimeout(fitAllStatText,0);
 }
 
 function renderStatDayDetail(dateStr){
@@ -1223,6 +1283,7 @@ function renderStatDayDetail(dateStr){
   });
   document.getElementById('statContent').innerHTML=html;
   updateStatBreadcrumb();
+  setTimeout(fitAllStatText,0);
 }
 
 /* ===== 支出統計 ===== */
@@ -1233,6 +1294,7 @@ function updateExpSummary(title,prefix){
   document.getElementById('expSummarySum').textContent=statMoney(s.sum);
   document.getElementById('expSummaryCount').textContent=s.count;
   document.getElementById('expSummaryBalance').textContent=statMoney(s.balance);
+  setTimeout(fitAllStatText,0);
 }
 
 function updateExpBreadcrumb(){
@@ -1474,3 +1536,4 @@ window.onload=function(){
 </script>
 </body>
 </html>
+
