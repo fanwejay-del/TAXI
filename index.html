@@ -129,24 +129,22 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .stat-detail-row-exp.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:6px 4px;position:sticky;top:0;z-index:2;}
 .stat-detail-row-exp.stat-detail-head .amount{text-align:right;}
 
-/* 統計卡片與按鈕（避免被原生樣式蓋掉） */
+/* 統計卡片與按鈕 */
 .stat-type-card{
   background:#fff !important;
   border-radius:12px !important;
   padding:10px !important;
   box-shadow:0 2px 8px rgba(0,0,0,.06) !important;
   margin-bottom:12px !important;
-  display:flex !important;
-  flex-wrap:wrap !important;
+  display:grid !important;
+  grid-template-columns:repeat(5, minmax(0,1fr)) !important;
   gap:6px !important;
   flex-shrink:0;
-  overflow:visible !important;
-  white-space:normal !important;
 }
 .stat-type-btn{
-  flex:0 0 auto !important;
-  min-width:56px !important;
-  padding:9px 12px !important;
+  width:100% !important;
+  min-width:0 !important;
+  padding:9px 4px !important;
   border:none !important;
   border-radius:9px !important;
   background:#e2e8f0 !important;
@@ -155,6 +153,8 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
   font-weight:inherit !important;
   cursor:pointer !important;
   white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
   transition:filter .12s,transform .1s,box-shadow .12s !important;
   box-shadow:0 1px 3px rgba(0,0,0,.12) !important;
   font-family:inherit !important;
@@ -205,12 +205,9 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .stat-summary-grid>div.row-sub{
   flex:1 1 100%;
   display:flex;
-  flex-wrap:nowrap;
+  flex-wrap:wrap;
   gap:6px 10px;
-  justify-content:space-between;
   align-items:baseline;
-  overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
 }
 .stat-summary-grid>div.row-sub .pair{
   display:inline-flex;
@@ -278,7 +275,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 
 @media(max-width:600px){body{padding:8px 0;}.page{padding:0 4px;}}
 @media(max-width:400px){
-  .stat-type-btn{font-size:clamp(9px, calc(.82px * var(--fs-num)), 13px) !important;padding:8px 10px !important;}
+  .stat-type-btn{font-size:clamp(9px, calc(.82px * var(--fs-num)), 13px) !important;padding:8px 4px !important;}
 }
 </style>
 </head>
@@ -1069,9 +1066,6 @@ function updateStatSummary(title,prefix){
     +'</div>';
   html+='<div class="row-sub">';
   html+='<span class="pair"><span>手續費</span><strong class="fee">'+statMoney(s.fee)+'</strong></span>';
-  config.typeList.forEach(function(t){
-    html+='<span class="pair"><span>'+escapeHtml(t.name)+'次數</span><strong>'+ (s.typeCount[t.name]||0) +'</strong></span>';
-  });
   html+='</div>';
   if(hasCost){
     html+='<div class="row-cost"><span>營業成本</span><strong class="cost">'+statMoney(s.cost)+'</strong></div>';
