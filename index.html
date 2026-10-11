@@ -461,6 +461,51 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 
 #expInputModal .noteInput { margin-top: 6px; }
 #expInputModal .modal-card > button[onclick*="close"] { margin-top: 4px; }
+
+
+/* ===== 緊湊版版面優化：降低多餘留白，保留原功能 ===== */
+body { margin: 0; }
+header, .header, .topbar, .navbar, .global-nav { gap: 8px; }
+nav, .global-nav { padding-top: 6px; padding-bottom: 6px; }
+nav a, nav button, .global-nav a, .global-nav button { padding: 7px 8px; }
+.app-logo, .logo { margin-right: 6px; }
+.app-name { margin-right: 8px; }
+main, .container, .page, .content, .main-content { padding-top: 10px; padding-bottom: 10px; }
+section, .section, .panel, .card, .setting-card, .stat-card { margin-top: 8px; margin-bottom: 8px; }
+h1, h2, h3, .section-title, .page-title { margin-top: 8px; margin-bottom: 8px; }
+p { margin-top: 5px; margin-bottom: 5px; }
+button, input, select, textarea { min-height: 36px; }
+button { padding: 7px 10px; }
+.home-grid, .category-grid, .payment-grid, .keypad, .button-grid { gap: 6px; }
+.home-grid button, .category-grid button, .payment-grid button { padding: 8px 5px; }
+.summary, .summary-cards, .stats-summary, .totals { gap: 6px; margin: 6px 0; }
+.summary .card, .summary-cards .card, .stats-summary .card { padding: 10px; }
+.detail-row, .record-row, .list-row, .expense-row, .income-row { padding-top: 7px; padding-bottom: 7px; }
+.breadcrumb, .date-nav, .filter-row { margin-top: 6px; margin-bottom: 6px; gap: 6px; }
+.settings, .settings-section, .setting-group { gap: 8px; }
+.settings label, .setting-row, .form-row { margin-bottom: 6px; }
+input, select, textarea { padding: 7px 9px; }
+.modal, .dialog, .entry-modal, .edit-modal { padding: 12px; }
+.modal h2, .dialog h2, .entry-modal h2 { margin-top: 0; margin-bottom: 8px; }
+.keypad button, .number-pad button, .numpad button { min-height: 42px; padding: 6px; }
+.payment-grid button, .type-grid button, .expense-category-grid button { min-height: 38px; padding: 6px 4px; }
+.note-field, .memo-field { margin-top: 6px; margin-bottom: 6px; }
+.modal-actions, .dialog-actions, .form-actions { gap: 8px; margin-top: 8px; }
+.cancel-btn, button.cancel { min-height: 36px; }
+@media (max-height: 700px) {
+  main, .container, .page, .content, .main-content { padding-top: 6px; padding-bottom: 6px; }
+  section, .section, .panel, .card, .setting-card, .stat-card { margin-top: 5px; margin-bottom: 5px; }
+  .keypad button, .number-pad button, .numpad button { min-height: 36px; }
+  .modal, .dialog, .entry-modal, .edit-modal { padding: 9px; }
+}
+@media (max-width: 380px) {
+  nav a, nav button, .global-nav a, .global-nav button { padding-left: 5px; padding-right: 5px; }
+  .app-name { font-size: 15px; }
+  .summary .card, .summary-cards .card, .stats-summary .card { padding: 8px; }
+  .home-grid, .category-grid, .payment-grid, .keypad, .button-grid { gap: 4px; }
+}
+/* ===== 緊湊版優化結束 ===== */
+
 </style>
 </head>
 <body>
