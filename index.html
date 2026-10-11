@@ -121,7 +121,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .backup-btn{padding:8px 10px;border:none;border-radius:8px;color:#fff;font-size:calc(1.05px * var(--fs-num));}
 .exportBtn{background:#16a34a;}
 .importBtn{background:#7c3aed;}
-.empty-tip{text-align:center;color:#94a3b8;padding:24px 16px;font-size:calc(1.05px * var(--fs-num));}
+.empty-tip{text-align:center;color:#94a3b8;padding:16px 12px;font-size:calc(.96px * var(--fs-num));}
 .section-title{display:flex;justify-content:space-between;align-items:center;margin:12px 0 6px;gap:8px;flex-shrink:0;}
 .section-title h3{font-size:calc(1.15px * var(--fs-num));color:#0f172a;flex-shrink:0;}
 .section-title .today-date{font-size:calc(.95px * var(--fs-num));color:#64748b;white-space:nowrap;flex-shrink:0;}
@@ -149,34 +149,34 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .home-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 .home-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 
-/* 年 / 月 / 日列表 */
-.stat-list-head,.stat-list-row{display:grid;grid-template-columns:72px 1fr 1fr 1fr;gap:8px;align-items:center;font-variant-numeric:tabular-nums;}
-.stat-list-head{background:#f8fafc;padding:8px 8px;color:#475569;font-size:calc(.86px * var(--fs-num));font-weight:800;position:sticky;top:0;z-index:2;}
+/* ===== 年 / 月 / 日列表：高度、字體統一跟「當日營業合計」一樣 ===== */
+.stat-list-head,.stat-list-row{display:grid;grid-template-columns:72px 1fr 1fr 1fr;gap:4px;align-items:center;font-variant-numeric:tabular-nums;}
+.stat-list-head{background:#f8fafc;padding:4px 6px;color:#64748b;font-size:calc(.84px * var(--fs-num));font-weight:800;position:sticky;top:0;z-index:2;}
 .stat-list-head>div{text-align:right;}
 .stat-list-head>div:first-child{text-align:left;}
 .stat-list-head .head-amount{text-align:right;}
-.stat-list-row{padding:9px 8px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));min-width:0;cursor:pointer;}
+.stat-list-row{padding:4px 6px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));min-width:0;cursor:pointer;line-height:1.25;}
 .stat-list-row:active{background:#eff6ff;}
 .stat-list-row .item-name{color:#2563eb;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;}
 .stat-list-row .item-main{color:#2563eb;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;letter-spacing:-0.02em;}
 .stat-list-row .item-fee{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#dc2626;letter-spacing:-0.02em;}
 .stat-list-row .item-net{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#059669;letter-spacing:-0.02em;}
 
-/* 單筆明細（營業） */
-.stat-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;}
+/* 單筆明細（營業）：高度、字體統一跟「當日營業合計」一樣 */
+.stat-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.25;}
 .stat-detail-row:active{background:#eff6ff;}
 .stat-detail-row>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:6px 4px;position:sticky;top:0;z-index:2;}
+.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:4px 4px;position:sticky;top:0;z-index:2;font-size:calc(.84px * var(--fs-num));}
 .stat-detail-head .amount{text-align:right;}
 .stat-detail-amt{text-align:right;color:#2563eb;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 .stat-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 .stat-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 
-/* 單筆明細（支出） */
-.stat-detail-row-exp{display:grid;grid-template-columns:48px 48px 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;}
+/* 單筆明細（支出）：高度、字體統一跟「當日營業合計」一樣 */
+.stat-detail-row-exp{display:grid;grid-template-columns:48px 48px 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.25;}
 .stat-detail-row-exp:active{background:#eff6ff;}
 .stat-detail-row-exp>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.stat-detail-row-exp.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:6px 4px;position:sticky;top:0;z-index:2;}
+.stat-detail-row-exp.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:4px 4px;position:sticky;top:0;z-index:2;font-size:calc(.84px * var(--fs-num));}
 .stat-detail-row-exp.stat-detail-head .amount{text-align:right;}
 
 /* ===== 統計卡片與按鈕：壓縮邊距 ===== */
@@ -214,7 +214,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .stat-type-btn.all-btn.active{background:#0f172a !important;}
 
 /* 統計頁面其他：壓縮邊距 */
-.stat-breadcrumb{position:sticky;top:0;z-index:20;background:#fff;padding:5px 10px;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.08);margin-bottom:5px;font-size:calc(.92px * var(--fs-num));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;}
+.stat-breadcrumb{position:sticky;top:0;z-index:20;background:#fff;padding:4px 8px;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.08);margin-bottom:5px;font-size:calc(.92px * var(--fs-num));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;}
 .stat-breadcrumb button{border:0;background:none;color:#2563eb;font:inherit;font-weight:700;padding:0 3px;cursor:pointer;}
 .stat-breadcrumb .stat-current{color:#475569;font-weight:500;}
 .stat-muted{color:#94a3b8;}
@@ -347,7 +347,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
   justify-content:center;
   gap:2px;
   white-space:nowrap;
-  flex:1 1 0;               /* 三個平均分配 */
+  flex:1 1 0;
   min-width:0;
   padding:0 2px;
   box-sizing:border-box;
@@ -367,7 +367,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
   justify-content:center;
   gap:2px;
   white-space:nowrap;
-  flex:1 1 0;               /* 四個平均分配 */
+  flex:1 1 0;
   min-width:0;
   padding:0 2px;
   box-sizing:border-box;
@@ -400,10 +400,9 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 #daySummaryCard #nonCashTotal{color:#ea580c;font-weight:700;}
 #daySummaryCard #feeTotal{color:#dc2626;font-weight:700;}
 #daySummaryCard #deductTotal{color:#0f172a;font-weight:700;}
-/* 營業類別名稱與次數用設定頁顏色（由 JS 動態設定 style） */
 
 @media(max-width:400px){
-  .stat-list-head,.stat-list-row{grid-template-columns:52px minmax(0,1fr) minmax(0,0.9fr) minmax(0,1fr);gap:4px;padding-left:5px;padding-right:5px}
+  .stat-list-head,.stat-list-row{grid-template-columns:52px minmax(0,1fr) minmax(0,0.9fr) minmax(0,1fr);gap:3px;padding-left:4px;padding-right:4px}
   .stat-detail-row{grid-template-columns:36px 36px minmax(0,1fr) minmax(0,1fr) minmax(0,0.85fr) minmax(0,0.95fr);gap:2px;padding-left:3px;padding-right:3px;font-size:calc(.78px * var(--fs-num));}
   .stat-detail-row-exp{grid-template-columns:40px 40px 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
   .home-detail-row{grid-template-columns:28px 36px 36px minmax(0,1.1fr) minmax(0,1fr) minmax(0,0.85fr) minmax(0,0.95fr);gap:2px;padding-left:3px;padding-right:3px;font-size:calc(.78px * var(--fs-num));}
@@ -562,7 +561,6 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
   <div class="summary-line2" id="summaryLine2">
     <span class="stat-pair"><span>手續費：</span><span id="feeTotal">0</span></span>
     <span class="stat-pair"><span>派遣費：</span><span id="deductTotal">0</span></span>
-    <!-- 營業類別由 JS 動態插入這裡 -->
   </div>
 </div>
 </div>
@@ -598,7 +596,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 
 <!-- 支出統計頁面 -->
 <div id="pageExpStat" class="page">
-  <div class="add-bar" style="margin-bottom:5px;"><button class="bigBtn" style="background:#dc2626;width:100%;height:48px;font-size:18px;" onclick="openExpInputModal()">＋ 新增支出</button></div>
+  <div class="add-bar" style="margin-bottom:5px;"><button class="bigBtn" style="background:#dc2626;width:100%;height:44px;font-size:17px;" onclick="openExpInputModal()">＋ 新增支出</button></div>
 
   <div class="stat-type-card" id="expTypeCard"></div>
 
@@ -792,7 +790,6 @@ function fitAllStatText(){
     '#expSummaryCount',
     '#expSummaryBalance'
   ];
-  // 注意：首頁合計的數字不列入 fitOne，避免字體被縮小
   document.querySelectorAll(sels.join(',')).forEach(function(el){ fitOne(el,8); });
 }
 
@@ -1144,8 +1141,7 @@ function calcDayStats(recs,targetDate){
   return{daySum:daySum,cashSum:cashSum,nonCashSum:nonCashSum,feeSum:feeSum,deductSum:deductSum,typeCount:typeCount};
 }
 
-/* 產生第二行營業類別 HTML（手續費、派遣費後面插入類別）
-   每個類別用設定頁顏色，平均彈性分配 */
+/* 產生第二行營業類別 HTML */
 function buildSummaryLine2(typeCount){
   var html='';
   for(var k in typeCount){
@@ -1161,19 +1157,14 @@ function buildSummaryLine2(typeCount){
 
 function calcTotal(){
   var today=getBizDate(new Date()),s=calcDayStats(getRecords(),today);
-  // 第一行：營業額、現金、非現金
   document.getElementById('dayTotal').textContent=s.daySum;
   document.getElementById('cashTotal').textContent=s.cashSum;
   document.getElementById('nonCashTotal').textContent=s.nonCashSum;
-  // 第二行：手續費、派遣費
   document.getElementById('feeTotal').textContent=Math.round(s.feeSum);
   document.getElementById('deductTotal').textContent=Math.round(s.deductSum);
-  // 第二行後面插入營業類別
   var line2=document.getElementById('summaryLine2');
-  // 先移除舊的類別項目
   var oldItems=line2.querySelectorAll('.type-count-item');
   oldItems.forEach(function(el){el.remove();});
-  // 再插入新的類別項目
   line2.insertAdjacentHTML('beforeend', buildSummaryLine2(s.typeCount));
   document.getElementById('todayNetTotal').textContent='淨收：'+statMoney(s.daySum-s.feeSum-s.deductSum);
   updateTodayDateText();
