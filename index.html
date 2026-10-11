@@ -21,9 +21,9 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 
 .card{background:#fff;border-radius:10px;padding:4px 4px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:3px;}
 
-/* ===== 全局導覽：左右空格平均分配 ===== */
+/* ===== 全局導覽：品牌區左右留白對稱 ===== */
 .global-nav{position:sticky;top:0;z-index:50;background:#fff;border-radius:10px;padding:4px 6px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin:0 4px 3px;display:flex;justify-content:space-between;align-items:center;gap:3px;flex-shrink:0;min-width:0;}
-.global-nav .app-brand{display:flex;align-items:center;justify-content:flex-start;gap:6px;min-width:0;flex:1 1 auto;padding:1px 4px;}
+.global-nav .app-brand{display:flex;align-items:center;justify-content:flex-start;gap:6px;min-width:0;flex:1 1 auto;padding:2px 8px 2px 4px;}
 .global-nav .app-logo{width:32px;height:32px;flex:0 0 32px;display:flex;align-items:center;justify-content:center;border-radius:9px;background:transparent;overflow:hidden;}
 .global-nav .app-logo img{width:100%;height:100%;object-fit:contain;display:block;}
 .global-nav .app-name{font-size:clamp(17px,calc(1.5px * var(--fs-num)),22px);font-weight:900;color:#1e293b;white-space:nowrap;letter-spacing:.3px;line-height:1.1;}
@@ -32,7 +32,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .global-nav .nav-label{font-size:10px;line-height:1;white-space:nowrap;font-weight:700;}
 .global-nav .nav-icon:active{background:#e2e8f0;transform:scale(.95);}
 .global-nav .nav-icon.active{background:#dbeafe;color:#2563eb;}
-@media(max-width:380px){.global-nav{padding:3px 5px;gap:2px}.global-nav .app-logo{width:28px;height:28px;flex-basis:28px}.global-nav .app-brand{gap:4px;padding:1px 3px}.global-nav .app-name{font-size:15px}.global-nav .nav-icon{min-width:35px;padding:5px 4px}.global-nav .nav-label{font-size:9px}}
+@media(max-width:380px){.global-nav{padding:3px 5px;gap:2px}.global-nav .app-logo{width:28px;height:28px;flex-basis:28px}.global-nav .app-brand{gap:4px;padding:2px 6px 2px 3px}.global-nav .app-name{font-size:15px}.global-nav .nav-icon{min-width:35px;padding:5px 4px}.global-nav .nav-label{font-size:9px}}
 
 .bigBtn,.numBtn,.payBtn,.navBtn,.editBtn,.delBtn,.sortBtn,.add-btn,.backup-btn,.stat-btn,.setBlock button{box-shadow:0 2px 6px rgba(0,0,0,.14);transition:filter .12s,box-shadow .12s,transform .1s,background .12s;}
 .bigBtn:active,.numBtn:active,.payBtn:active,.navBtn:active,.editBtn:active,.delBtn:active,.sortBtn:active,.add-btn:active,.backup-btn:active,.stat-btn:active,.setBlock button:active{filter:brightness(.88);box-shadow:0 1px 3px rgba(0,0,0,.18);transform:scale(.97);}
