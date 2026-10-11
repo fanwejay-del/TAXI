@@ -206,7 +206,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-type-btn.active{color:#fff !important;box-shadow:0 2px 8px rgba(0,0,0,.25) !important;}
 .stat-type-btn.all-btn.active{background:#0f172a !important;}
 
-/* 新增：付款方式查詢列（與營業類別按鈕同款，一行6個） */
+/* 付款方式查詢列（與營業類別按鈕同款，一行6個） */
 .stat-pay-card{
   background:#fff !important;
   border-radius:10px !important;
@@ -572,7 +572,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <button style="width:100%;padding:14px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:17px;flex-shrink:0;" onclick="closeInputModal()">取消</button>
 </div></div>
 
-<!-- 支出輸入 Modal -->
+<!-- 支出輸入 Modal（已移除支出類別按鈕，類別由外部決定） -->
 <div id="expInputModal" class="modal"><div class="modal-card">
 <h3 id="expModalTitle" style="text-align:center;margin-bottom:6px;font-size:22px;">支出</h3>
 <div id="expAmountShow" class="inputBox">0</div>
@@ -584,7 +584,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   <button class="numBtn" onclick="pressExpNum('7')">7</button><button class="numBtn" onclick="pressExpNum('8')">8</button><button class="numBtn" onclick="pressExpNum('9')">9</button>
   <button class="numBtn" onclick="clearExpNum()">清除</button><button class="numBtn" onclick="pressExpNum('0')">0</button><button class="numBtn" onclick="pressExpNum('00')">00</button>
   </div>
-  <div id="expCatWrap" class="payKey"></div>
 </div>
 
 <input id="expNoteInput" class="noteInput" placeholder="備註（選填）" style="flex-shrink:0;">
@@ -680,11 +679,9 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </div>
 </div>
 
-<!-- 支出統計頁面 -->
+<!-- 支出統計頁面：支出類別按鈕（與首頁邏輯相同） -->
 <div id="pageExpStat" class="page">
-  <div class="add-bar" style="margin-bottom:3px;"><button class="bigBtn" style="background:#dc2626;width:100%;height:42px;font-size:17px;" onclick="openExpInputModal()">＋ 新增支出</button></div>
-
-  <div class="stat-type-card" id="expTypeCard"></div>
+  <div class="stat-type-card" id="expTypeBtnWrap" style="grid-template-columns:repeat(auto-fit,minmax(72px,1fr)) !important;"></div>
 
   <div id="expBreadcrumb" class="stat-breadcrumb">
     <span class="stat-muted">目前：</span>
@@ -708,11 +705,20 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <div id="pageSetting" class="page">
 <div class="setBlock"><h4>字型大小</h4><div class="fs-wrap"><span style="font-size:calc(.9px * var(--fs-num));">小</span><input type="range" id="fontSizeSlider" min="11" max="20" step="1" value="13" oninput="onFontSizeChange(this.value)"><span style="font-size:calc(1.3px * var(--fs-num));">大</span><span id="fontSizeValue" class="fs-value">13</span></div></div>
 <div class="setBlock"><h4>字型粗細</h4><div class="fs-wrap"><span style="font-size:calc(.9px * var(--fs-num));">細</span><input type="range" id="fontWeightSlider" min="300" max="900" step="100" value="700" oninput="onFontWeightChange(this.value)"><span style="font-size:calc(1.3px * var(--fs-num));">粗</span><span id="fontWeightValue" class="fs-value">700</span></div></div>
-<div class="setBlock"><h4>營業時間</h4><div style="display:flex;gap:8px;align-items:center;font-size:calc(1px * var(--fs-num));flex-wrap:wrap;"><span>開始</span><input id="setStartHour" type="number" min="0" max="23" oninput="onHourChange()" style="width:52px;padding:5px;text-align:center;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;"><span>結束</span><input id="setEndHour" type="number" min="0" max="23" oninput="onHourChange()" style="width:52px;padding:5px;text-align:center;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;"><span id="hourPreview" class="hour-preview" style="margin:0;flex:1;">請輸入開始與結束時間</span></div></div>
+<div class="setBlock">
+  <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+    <h4 style="margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;flex-shrink:0;">營業時間</h4>
+    <span id="hourPreview" class="hour-preview" style="margin:0;flex:1;text-align:right;background:transparent;border:none;padding:0;color:#0c4a6e;font-size:calc(.9px * var(--fs-num));">請輸入開始與結束時間</span>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;font-size:calc(1px * var(--fs-num));">
+    <span>開始</span><input id="setStartHour" type="number" min="0" max="23" oninput="onHourChange()" style="width:52px;padding:5px;text-align:center;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;">
+    <span>結束</span><input id="setEndHour" type="number" min="0" max="23" oninput="onHourChange()" style="width:52px;padding:5px;text-align:center;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;">
+  </div>
+</div>
 <div class="setBlock"><h4>營業類別</h4><div id="typeListSet"></div><div style="display:flex;gap:5px;margin-top:5px;"><input id="newTypeName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newTypeDeduct" type="number" placeholder="扣除" style="width:52px;padding:5px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewTypeTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div></div>
 <div class="setBlock"><h4>付款方式</h4><div id="payListSet"></div><div style="display:flex;gap:5px;margin-top:5px;"><input id="newPayName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newPayRate" type="number" placeholder="%" style="width:52px;padding:5px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewPayTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div><div style="font-size:11px;color:#94a3b8;margin-top:4px;">※ 好孕卷自動扣除補助250輸入全額即可其餘視為現金</div></div>
 <div class="setBlock"><h4>支出類型（打勾 = 營業成本）</h4><div id="expListSet"></div><div style="display:flex;gap:5px;margin-top:5px;"><input id="newExpName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><button onclick="addNewExpTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div></div>
-<div class="setBlock"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><h4 style="margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;">資料備份</h4><span style="font-size:calc(.85px * var(--fs-num));color:#64748b;flex:1;text-align:right;">僅紀錄，不含設定</span></div><div class="backup-bar"><button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出</button><button class="backup-btn importBtn" onclick="document.getElementById('fileImport').click()">📥 匯入</button></div><div style="margin-top:8px;font-size:calc(.9px * var(--fs-num));"><a href="https://twplot01-code.github.io/DB-JS/" target="_blank" style="color:#2563eb;word-break:break-all;">DB轉JSON：https://twplot01-code.github.io/DB-JS/</a></div></div>
+<div class="setBlock"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><h4 style="margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;">資料備份</h4><span style="font-size:calc(.85px * var(--fs-num));color:#64748b;flex:1;text-align:right;">僅紀錄，不含設定</span></div><div class="backup-bar"><button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出</button><button class="backup-btn importBtn" onclick="document.getElementById('fileImport').click()">📥 匯入</button></div><div style="margin-top:8px;font-size:calc(.9px * var(--fs-num));"><a href="https://twplot01-code.github.io/DB-JS/" target="_blank" style="color:#2563eb;text-decoration:none;">DB轉JSON</a></div></div>
 </div>
 
 <script>
@@ -721,7 +727,8 @@ if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch
 var currentType="",editId=null,editExpId=null,historyStack=[],modalAmount="",expModalAmount="",sortNewFirst=true,statViewStack=[],expViewStack=[];
 var statTypeFilter="";
 var expCatFilter="";
-var statPayFilter="";   // 新增付款方式篩選
+var statPayFilter="";
+var currentExpCat=null; // 新增：支出輸入時記錄目前選定的支出類別
 
 /* ===== 自訂確認 / 提示 Modal ===== */
 var _confirmResolve=null;
@@ -1229,22 +1236,23 @@ function saveRecord(payItem){
 }
 
 var expModal=document.getElementById('expInputModal');
-function openExpInputModal(){
+function openExpInputModal(cat){
+  currentExpCat = cat || null;
   expModalAmount='';
+  document.getElementById('expModalTitle').textContent = cat ? cat.name : '支出';
   document.getElementById('expAmountShow').textContent='0';
   document.getElementById('expNoteInput').value='';
   expModal.classList.add('active');
-  renderExpCatBtn();
   setTimeout(function(){fitModalContent('expInputModal');},50);
 }
 function closeExpInputModal(){expModal.classList.remove('active');}
 function pressExpNum(n){if(expModalAmount==='0')expModalAmount='';expModalAmount+=n;document.getElementById('expAmountShow').textContent=expModalAmount||'0';}
 function clearExpNum(){expModalAmount='';document.getElementById('expAmountShow').textContent='0';}
-function renderExpCatBtn(){var w=document.getElementById('expCatWrap');w.innerHTML='';config.expList.forEach(function(c){var b=document.createElement('button');b.className='payBtn';b.style.background=c.color||'#dc2626';b.textContent=c.name;b.onclick=function(){saveExpense(c);};w.appendChild(b);});setTimeout(function(){fitModalContent('expInputModal');},50);}
-function saveExpense(cat){
+function saveExpense(){
+  if(!currentExpCat){showAlert('請先選擇支出類別');return;}
   var amt=Number(expModalAmount);if(!amt||amt<=0){showAlert('請輸入金額');return;}
   var note=document.getElementById('expNoteInput').value.trim(),now=new Date(),list=getExpenses();
-  list.unshift({id:nextId(),cat:cat.name,color:cat.color,raw:amt,note:note,date:getBizDate(now),time:fmtTime()});
+  list.unshift({id:nextId(),cat:currentExpCat.name,color:currentExpCat.color,raw:amt,note:note,date:getBizDate(now),time:fmtTime()});
   saveExpenses(list);closeExpInputModal();refreshExpCards();renderExpView();refreshStatCards();
 }
 
@@ -1450,7 +1458,7 @@ function renderStatTypeCard(){
   setTimeout(fitAllStatText,0);
 }
 
-/* 新增：付款方式查詢列 */
+/* 付款方式查詢列 */
 function renderStatPayCard(){
   var card=document.getElementById('statPayCard');
   if(!card)return;
@@ -1743,13 +1751,29 @@ function expBreadcrumbMonth(month){expViewStack=[{type:'dayList',month:String(mo
 
 function showExpDefault(){
   expViewStack=[];
-  renderExpTypeCard();
+  renderExpTypeBtnWrap();
   renderExpView();
 }
 
 function refreshExpCards(){
-  renderExpTypeCard();
+  renderExpTypeBtnWrap();
   if(document.getElementById('pageExpStat')&&document.getElementById('pageExpStat').classList.contains('active'))renderExpView();
+}
+
+/* 支出頁面的類別按鈕（與首頁邏輯相同，點擊直接開啟支出輸入） */
+function renderExpTypeBtnWrap(){
+  var wrap=document.getElementById('expTypeBtnWrap');
+  if(!wrap)return;
+  wrap.innerHTML='';
+  config.expList.forEach(function(t){
+    var btn=document.createElement('button');
+    btn.className='bigBtn';
+    btn.style.background=t.color||'#dc2626';
+    btn.textContent=t.name;
+    btn.onclick=function(){openExpInputModal(t);};
+    wrap.appendChild(btn);
+  });
+  setTimeout(fitHomeButtons,0);
 }
 
 function renderExpView(){
@@ -1939,8 +1963,8 @@ function addNewTypeTemp(){var n=document.getElementById('newTypeName').value.tri
 function delTypeTemp(i){config.typeList.splice(i,1);saveConfig();renderSetting();renderHomeTypeBtn();renderStatTypeCard();}
 function addNewPayTemp(){var n=document.getElementById('newPayName').value.trim(),r=Number(document.getElementById('newPayRate').value)||0;if(!n){showAlert('請輸入名稱');return;}config.payList.push({name:n,rate:r,color:pickUnusedColorFromList(config.payList)});saveConfig();renderSetting();document.getElementById('newPayName').value='';document.getElementById('newPayRate').value='';renderStatPayCard();}
 function delPayTemp(i){config.payList.splice(i,1);saveConfig();renderSetting();renderStatPayCard();}
-function addNewExpTemp(){var n=document.getElementById('newExpName').value.trim();if(!n){showAlert('請輸入名稱');return;}config.expList.push({name:n,color:pickUnusedColorFromList(config.expList),isCost:false});saveConfig();renderSetting();renderExpTypeCard();document.getElementById('newExpName').value='';}
-function delExpTemp(i){config.expList.splice(i,1);saveConfig();renderSetting();renderExpTypeCard();}
+function addNewExpTemp(){var n=document.getElementById('newExpName').value.trim();if(!n){showAlert('請輸入名稱');return;}config.expList.push({name:n,color:pickUnusedColorFromList(config.expList),isCost:false});saveConfig();renderSetting();renderExpTypeBtnWrap();document.getElementById('newExpName').value='';}
+function delExpTemp(i){config.expList.splice(i,1);saveConfig();renderSetting();renderExpTypeBtnWrap();}
 
 window.addEventListener('resize', function(){
   setTimeout(fitAllStatText, 50);
@@ -1960,6 +1984,7 @@ window.onload=function(){
   renderStatTypeCard();
   renderExpTypeCard();
   renderStatPayCard();
+  renderExpTypeBtnWrap();
   updateNavActive('pageHome');
   updateTodayDateText();
   setTimeout(fitAllStatText, 100);
