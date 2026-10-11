@@ -11,40 +11,40 @@ button[data-nf],[data-netlify],#netlify,div[class*="netlify"]{display:none!impor
 :root{--fs-num:13;--fw-num:700;}
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;}
-body{background:#f1f5f9;padding:6px 0;font-size:calc(1px * var(--fs-num));color:#1e293b;line-height:1.3;font-weight:var(--fw-num);display:flex;flex-direction:column;overflow:hidden;}
+body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color:#1e293b;line-height:1.35;font-weight:var(--fw-num);display:flex;flex-direction:column;overflow:hidden;}
 .page{display:none;padding:0 6px;flex:1;min-height:0;flex-direction:column;overflow:hidden;}
 .page.active{display:flex;}
 
-.row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:5px;margin-bottom:5px;overflow:hidden;}
+.row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:7px;margin-bottom:12px;overflow:hidden;}
 .row2 .bigBtn{width:100%;min-width:0;}
 
-.card{background:#fff;border-radius:10px;padding:4px 4px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:3px;}
+.card{background:#fff;border-radius:12px;padding:12px 2px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:4px;}
 
-.global-nav{position:sticky;top:0;z-index:50;background:#fff;border-radius:10px;padding:4px 6px;box-shadow:0 2px 6px rgba(0,0,0,.06);margin:0 6px 4px;display:flex;justify-content:space-between;align-items:center;gap:2px;flex-shrink:0;min-width:0;}
-.global-nav .app-brand{display:flex;align-items:center;gap:4px;min-width:0;flex:1 1 auto;padding:1px 2px 1px 0;}
-.global-nav .app-logo{width:30px;height:30px;flex:0 0 30px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:transparent;overflow:hidden;}
+.global-nav{position:sticky;top:0;z-index:50;background:#fff;border-radius:12px;padding:6px 8px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin:0 6px 8px;display:flex;justify-content:space-between;align-items:center;gap:4px;flex-shrink:0;min-width:0;}
+.global-nav .app-brand{display:flex;align-items:center;gap:6px;min-width:0;flex:1 1 auto;padding:2px 4px 2px 0;}
+.global-nav .app-logo{width:34px;height:34px;flex:0 0 34px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:transparent;overflow:hidden;}
 .global-nav .app-logo img{width:100%;height:100%;object-fit:contain;display:block;}
-.global-nav .app-name{font-size:clamp(16px,calc(1.4px * var(--fs-num)),20px);font-weight:900;color:#1e293b;white-space:nowrap;letter-spacing:.2px;line-height:1.05;}
-.global-nav .nav-icon{font-size:calc(1.2px * var(--fs-num));padding:3px 5px;border-radius:8px;cursor:pointer;line-height:1;color:#475569;transition:background .15s,transform .1s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:0 0 auto;min-width:36px;}
-.global-nav .nav-symbol{font-size:1.1em;line-height:1;}
-.global-nav .nav-label{font-size:9px;line-height:1;white-space:nowrap;font-weight:700;}
+.global-nav .app-name{font-size:clamp(18px,calc(1.6px * var(--fs-num)),24px);font-weight:900;color:#1e293b;white-space:nowrap;letter-spacing:.3px;line-height:1.1;}
+.global-nav .nav-icon{font-size:calc(1.35px * var(--fs-num));padding:6px 7px;border-radius:10px;cursor:pointer;line-height:1;color:#475569;transition:background .15s,transform .1s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;flex:0 0 auto;min-width:43px;}
+.global-nav .nav-symbol{font-size:1.15em;line-height:1;}
+.global-nav .nav-label{font-size:10px;line-height:1;white-space:nowrap;font-weight:700;}
 .global-nav .nav-icon:active{background:#e2e8f0;transform:scale(.95);}
 .global-nav .nav-icon.active{background:#dbeafe;color:#2563eb;}
-@media(max-width:380px){.global-nav{padding:3px 5px;gap:1px}.global-nav .app-logo{width:26px;height:26px;flex-basis:26px}.global-nav .app-brand{gap:3px}.global-nav .app-name{font-size:14px}.global-nav .nav-icon{min-width:32px;padding:3px 3px}.global-nav .nav-label{font-size:8px}}
+@media(max-width:380px){.global-nav{padding:5px 6px;gap:2px}.global-nav .app-logo{width:29px;height:29px;flex-basis:29px}.global-nav .app-brand{gap:4px}.global-nav .app-name{font-size:15px}.global-nav .nav-icon{min-width:37px;padding:6px 4px}.global-nav .nav-label{font-size:9px}}
 
-.bigBtn,.numBtn,.payBtn,.navBtn,.editBtn,.delBtn,.sortBtn,.add-btn,.backup-btn,.stat-btn,.setBlock button{box-shadow:0 1px 4px rgba(0,0,0,.14);transition:filter .12s,box-shadow .12s,transform .1s,background .12s;}
+.bigBtn,.numBtn,.payBtn,.navBtn,.editBtn,.delBtn,.sortBtn,.add-btn,.backup-btn,.stat-btn,.setBlock button{box-shadow:0 2px 6px rgba(0,0,0,.14);transition:filter .12s,box-shadow .12s,transform .1s,background .12s;}
 .bigBtn:active,.numBtn:active,.payBtn:active,.navBtn:active,.editBtn:active,.delBtn:active,.sortBtn:active,.add-btn:active,.backup-btn:active,.stat-btn:active,.setBlock button:active{filter:brightness(.88);box-shadow:0 1px 3px rgba(0,0,0,.18);transform:scale(.97);}
-.bigBtn{padding:0 2px;border:none;border-radius:8px;font-size:clamp(14px,calc(0.8px * var(--fs-num)),17px);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;height:calc(2.2px * var(--fs-num) + 10px);display:flex;align-items:center;justify-content:center;line-height:1;}
+.bigBtn{padding:0 3px;border:none;border-radius:10px;font-size:clamp(16px,calc(0.85px * var(--fs-num)),18px);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;height:calc(2.6px * var(--fs-num) + 12px);display:flex;align-items:center;justify-content:center;line-height:1;}
 
 /* ===== 輸入框：上緣貼近標題、高度減少 ===== */
 .inputBox{
   width:100%;
-  padding:6px 14px;
-  font-size:26px;
+  padding:8px 16px;
+  font-size:28px;
   text-align:center;
   border:2px solid #e2e8f0;
-  border-radius:10px;
-  margin:2px 0 6px;
+  border-radius:12px;
+  margin:4px 0 8px;
   background:#f8fafc;
   color:#0f172a;
   overflow:hidden;
@@ -54,14 +54,14 @@ body{background:#f1f5f9;padding:6px 0;font-size:calc(1px * var(--fs-num));color:
   line-height:1.2;
 }
 
-.numKey{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(4px,1.5vw,8px);width:100%;min-width:0;flex:0 0 auto;}
+.numKey{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(5px,2vw,10px);width:100%;min-width:0;flex:0 0 auto;}
 
 .numBtn{
   width:100%;
   min-width:0;
-  padding:clamp(8px,3vw,14px) 4px;
-  font-size:clamp(16px,5vw,20px);
-  border-radius:10px;
+  padding:clamp(10px,3.8vw,18px) 4px;
+  font-size:clamp(17px,5.5vw,22px);
+  border-radius:12px;
   border:none;
   background:#fff;
   color:#1e293b;
@@ -73,8 +73,8 @@ body{background:#f1f5f9;padding:6px 0;font-size:calc(1px * var(--fs-num));color:
 .payKey{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:clamp(4px,1.5vw,8px);
-  margin-top:5px;
+  gap:clamp(5px,2vw,10px);
+  margin-top:8px;
   width:100%;
   min-width:0;
   overflow:hidden;
@@ -82,32 +82,32 @@ body{background:#f1f5f9;padding:6px 0;font-size:calc(1px * var(--fs-num));color:
 .payBtn{
   width:100%;
   min-width:0;
-  padding:clamp(8px,3vw,13px) 3px;
+  padding:clamp(10px,3.5vw,16px) 4px;
   border:none;
-  border-radius:10px;
+  border-radius:12px;
   color:#fff;
-  font-size:clamp(11px,calc(1px * var(--fs-num)),14px);
+  font-size:clamp(12px,calc(1.05px * var(--fs-num)),15px);
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
 }
-.noteInput{width:100%;padding:8px 10px;margin-top:6px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:calc(1px * var(--fs-num));background:#f8fafc;}
+.noteInput{width:100%;padding:10px 12px;margin-top:10px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:calc(1.05px * var(--fs-num));background:#f8fafc;}
 .noteInput:focus{outline:none;border-color:#2563eb;background:#fff;}
-.delBtn{color:#dc2626;border:none;background:#fef2f2;font-size:calc(.8px * var(--fs-num));padding:3px 6px;border-radius:5px;}
-.setBlock{margin:4px 0;padding:6px 8px;background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.05);}
-.setBlock h4{margin-bottom:4px;font-size:calc(1px * var(--fs-num));color:#0f172a;}
-.setBlock input[type="number"],.setBlock input[type="text"]{width:100%;padding:6px 8px;margin:2px 0 4px;border-radius:6px;border:1.5px solid #e2e8f0;font-size:calc(1px * var(--fs-num));background:#f8fafc;}
-.setBlock button{padding:6px 10px;border:none;border-radius:6px;background:#2563eb;color:#fff;font-size:calc(1px * var(--fs-num));margin-top:4px;}
-.hour-preview{margin-top:4px;padding:6px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:6px;font-size:calc(.9px * var(--fs-num));color:#0c4a6e;line-height:1.3;}
-.modal{position:fixed;top:0;left:0;width:100%;height:100%;height:100dvh;background:#fff;display:none;align-items:stretch;justify-content:center;padding:4px;z-index:100;overflow:hidden;}
+.delBtn{color:#dc2626;border:none;background:#fef2f2;font-size:calc(.85px * var(--fs-num));padding:4px 8px;border-radius:6px;}
+.setBlock{margin:8px 0;padding:10px 12px;background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.setBlock h4{margin-bottom:6px;font-size:calc(1.05px * var(--fs-num));color:#0f172a;}
+.setBlock input[type="number"],.setBlock input[type="text"]{width:100%;padding:8px 10px;margin:3px 0 6px;border-radius:8px;border:1.5px solid #e2e8f0;font-size:calc(1.05px * var(--fs-num));background:#f8fafc;}
+.setBlock button{padding:8px 12px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-size:calc(1.05px * var(--fs-num));margin-top:6px;}
+.hour-preview{margin-top:6px;padding:8px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;font-size:calc(.95px * var(--fs-num));color:#0c4a6e;line-height:1.4;}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;height:100dvh;background:#fff;display:none;align-items:stretch;justify-content:center;padding:6px;z-index:100;overflow:hidden;}
 .modal.active{display:flex;}
-.modal-card{width:100%;height:100%;padding:4px;display:flex;flex-direction:column;overflow:hidden;background:#fff;}
+.modal-card{width:100%;height:100%;padding:6px;display:flex;flex-direction:column;overflow:hidden;background:#fff;}
 
 .modal-card .input-area {
   flex: 0 1 auto;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   min-height: 0;
   min-width: 0;
   width: 100%;
@@ -115,43 +115,43 @@ body{background:#f1f5f9;padding:6px 0;font-size:calc(1px * var(--fs-num));color:
   transform: none !important;
 }
 #inputModal .numKey, #expInputModal .numKey { flex: 0 0 auto; }
-#inputModal .payKey, #expInputModal .payKey { flex: 0 0 auto; min-height: 0; margin-top: 4px; }
+#inputModal .payKey, #expInputModal .payKey { flex: 0 0 auto; min-height: 0; margin-top: 6px; }
 
-.backup-bar{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px;}
-.backup-btn{padding:6px 8px;border:none;border-radius:6px;color:#fff;font-size:calc(1px * var(--fs-num));}
+.backup-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
+.backup-btn{padding:8px 10px;border:none;border-radius:8px;color:#fff;font-size:calc(1.05px * var(--fs-num));}
 .exportBtn{background:#16a34a;}
 .importBtn{background:#7c3aed;}
-.empty-tip{text-align:center;color:#94a3b8;padding:12px 8px;font-size:calc(.92px * var(--fs-num));}
-.section-title{display:flex;justify-content:space-between;align-items:center;margin:5px 0 3px;gap:6px;flex-shrink:0;}
-.section-title h3{font-size:calc(1.1px * var(--fs-num));color:#0f172a;flex-shrink:0;}
-.section-title .today-date{font-size:calc(.9px * var(--fs-num));color:#64748b;white-space:nowrap;flex-shrink:0;}
-.section-title .today-net{flex:1 1 auto;text-align:center;color:#059669;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:calc(1px * var(--fs-num));min-width:0;max-width:42%;}
-.sortBtn{border:none;background:#e0f2fe;color:#0369a1;font-size:calc(.85px * var(--fs-num));padding:4px 8px;border-radius:16px;flex-shrink:0;}
-#typeListSet input,#payListSet input,#expListSet input,.setBlock .item input{font-size:calc(.9px * var(--fs-num));padding:3px 6px;height:24px;border-radius:5px;border:1.2px solid #e2e8f0;background:#f8fafc;margin:0;}
-#typeListSet input[type="number"],#payListSet input[type="number"],#expListSet input[type="number"],.setBlock .item input[type="number"]{width:4em;max-width:64px;text-align:center;flex-shrink:0;}
+.empty-tip{text-align:center;color:#94a3b8;padding:16px 12px;font-size:calc(.96px * var(--fs-num));}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:12px 0 6px;gap:8px;flex-shrink:0;}
+.section-title h3{font-size:calc(1.15px * var(--fs-num));color:#0f172a;flex-shrink:0;}
+.section-title .today-date{font-size:calc(.95px * var(--fs-num));color:#64748b;white-space:nowrap;flex-shrink:0;}
+.section-title .today-net{flex:1 1 auto;text-align:center;color:#059669;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:calc(1.05px * var(--fs-num));min-width:0;max-width:42%;}
+.sortBtn{border:none;background:#e0f2fe;color:#0369a1;font-size:calc(.9px * var(--fs-num));padding:5px 10px;border-radius:20px;flex-shrink:0;}
+#typeListSet input,#payListSet input,#expListSet input,.setBlock .item input{font-size:calc(.95px * var(--fs-num));padding:4px 8px;height:26px;border-radius:6px;border:1.2px solid #e2e8f0;background:#f8fafc;margin:0;}
+#typeListSet input[type="number"],#payListSet input[type="number"],#expListSet input[type="number"],.setBlock .item input[type="number"]{width:4.5em;max-width:72px;text-align:center;flex-shrink:0;}
 #typeListSet input:not([type="number"]),#payListSet input:not([type="number"]),#expListSet input:not([type="number"]),.setBlock .item input:not([type="number"]){flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;}
-.item{background:#fff;padding:2px;margin:2px 0;border-radius:8px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.05);gap:6px;}
-.color-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.15);cursor:pointer;position:relative;transition:transform .1s;}
+.item{background:#fff;padding:2px;margin:2px 0;border-radius:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.05);gap:8px;}
+.color-dot{width:22px;height:22px;border-radius:50%;flex-shrink:0;box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.15);cursor:pointer;position:relative;transition:transform .1s;}
 .color-dot:active{transform:scale(.88);}
 .color-dot::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px dashed transparent;}
 .color-dot:hover::after{border-color:#94a3b8;}
 
-/* 首頁：只捲動下方列表（保留卡片） */
+/* 首頁：只捲動下方列表 */
 .pageHome-top{flex-shrink:0;}
-.home-detail-box{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-.home-detail-row{display:grid;grid-template-columns:36px 48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:3px 4px;border-top:1px solid #f1f5f9;font-size:calc(.92px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.25;}
+.home-detail-box{background:#fff;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.06);overflow:hidden;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.home-detail-row{display:grid;grid-template-columns:36px 48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;}
 .home-detail-row:active{background:#eff6ff;}
 .home-detail-row>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.home-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:4px 4px;position:sticky;top:0;z-index:2;font-size:calc(.92px * var(--fs-num));}
+.home-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:6px 4px;position:sticky;top:0;z-index:2;}
 .home-detail-head .amount{text-align:right;}
 .home-detail-idx{text-align:center;color:#94a3b8;font-variant-numeric:tabular-nums;}
 .home-detail-amt{text-align:right;color:#2563eb;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 .home-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 .home-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 
-/* ===== 年 / 月 / 日列表：保留卡片，字型統一 .96px ===== */
+/* ===== 年 / 月 / 日列表：高度、字體統一跟「當日營業合計」一樣 ===== */
 .stat-list-head,.stat-list-row{display:grid;grid-template-columns:72px 1fr 1fr 1fr;gap:4px;align-items:center;font-variant-numeric:tabular-nums;}
-.stat-list-head{background:#f8fafc;padding:4px 6px;color:#64748b;font-size:calc(.96px * var(--fs-num));font-weight:800;position:sticky;top:0;z-index:2;}
+.stat-list-head{background:#f8fafc;padding:4px 6px;color:#64748b;font-size:calc(.84px * var(--fs-num));font-weight:800;position:sticky;top:0;z-index:2;}
 .stat-list-head>div{text-align:right;}
 .stat-list-head>div:first-child{text-align:left;}
 .stat-list-head .head-amount{text-align:right;}
@@ -162,44 +162,44 @@ body{background:#f1f5f9;padding:6px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-list-row .item-fee{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#dc2626;letter-spacing:-0.02em;}
 .stat-list-row .item-net{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#059669;letter-spacing:-0.02em;}
 
-/* 單筆明細（營業）：保留卡片，字型統一 .96px */
-.stat-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:4px 6px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.25;}
+/* 單筆明細（營業）：高度、字體統一跟「當日營業合計」一樣 */
+.stat-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.25;}
 .stat-detail-row:active{background:#eff6ff;}
 .stat-detail-row>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:4px 6px;position:sticky;top:0;z-index:2;font-size:calc(.96px * var(--fs-num));}
+.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:4px 4px;position:sticky;top:0;z-index:2;font-size:calc(.84px * var(--fs-num));}
 .stat-detail-head .amount{text-align:right;}
 .stat-detail-amt{text-align:right;color:#2563eb;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 .stat-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 .stat-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 
-/* 單筆明細（支出）：保留卡片，字型統一 .96px */
-.stat-detail-row-exp{display:grid;grid-template-columns:48px 48px 1fr 1fr;gap:4px;align-items:center;padding:4px 6px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.25;}
+/* 單筆明細（支出）：高度、字體統一跟「當日營業合計」一樣 */
+.stat-detail-row-exp{display:grid;grid-template-columns:48px 48px 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.25;}
 .stat-detail-row-exp:active{background:#eff6ff;}
 .stat-detail-row-exp>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.stat-detail-row-exp.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:4px 6px;position:sticky;top:0;z-index:2;font-size:calc(.96px * var(--fs-num));}
+.stat-detail-row-exp.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:4px 4px;position:sticky;top:0;z-index:2;font-size:calc(.84px * var(--fs-num));}
 .stat-detail-row-exp.stat-detail-head .amount{text-align:right;}
 
 /* ===== 統計卡片與按鈕：壓縮邊距 ===== */
 .stat-type-card{
   background:#fff !important;
-  border-radius:10px !important;
-  padding:4px !important;
-  box-shadow:0 1px 4px rgba(0,0,0,.06) !important;
-  margin-bottom:3px !important;
+  border-radius:12px !important;
+  padding:6px !important;
+  box-shadow:0 2px 8px rgba(0,0,0,.06) !important;
+  margin-bottom:5px !important;
   display:grid !important;
   grid-template-columns:repeat(5, minmax(0,1fr)) !important;
-  gap:4px !important;
+  gap:5px !important;
   flex-shrink:0;
 }
 .stat-type-btn{
   width:100% !important;
   min-width:0 !important;
-  padding:6px 3px !important;
+  padding:7px 4px !important;
   border:none !important;
-  border-radius:8px !important;
+  border-radius:9px !important;
   background:#e2e8f0 !important;
   color:#475569 !important;
-  font-size:clamp(10px, calc(.92px * var(--fs-num)), 14px) !important;
+  font-size:clamp(10px, calc(.92px * var(--fs-num)), 15px) !important;
   font-weight:inherit !important;
   cursor:pointer !important;
   white-space:nowrap !important;
@@ -210,23 +210,23 @@ body{background:#f1f5f9;padding:6px 0;font-size:calc(1px * var(--fs-num));color:
   font-family:inherit !important;
 }
 .stat-type-btn:active{filter:brightness(.88) !important;transform:scale(.96) !important;}
-.stat-type-btn.active{color:#fff !important;box-shadow:0 1px 6px rgba(0,0,0,.25) !important;}
+.stat-type-btn.active{color:#fff !important;box-shadow:0 2px 8px rgba(0,0,0,.25) !important;}
 .stat-type-btn.all-btn.active{background:#0f172a !important;}
 
 /* 統計頁面其他：壓縮邊距 */
-.stat-breadcrumb{position:sticky;top:0;z-index:20;background:#fff;padding:3px 8px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:3px;font-size:calc(.9px * var(--fs-num));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;}
+.stat-breadcrumb{position:sticky;top:0;z-index:20;background:#fff;padding:4px 8px;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.08);margin-bottom:5px;font-size:calc(.92px * var(--fs-num));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;}
 .stat-breadcrumb button{border:0;background:none;color:#2563eb;font:inherit;font-weight:700;padding:0 3px;cursor:pointer;}
 .stat-breadcrumb .stat-current{color:#475569;font-weight:500;}
 .stat-muted{color:#94a3b8;}
 
 /* ===== 合計區塊：字體與列表一致、完全移除空行 ===== */
-.stat-summary-box{background:#fff;border-radius:10px;padding:4px 6px;margin-bottom:3px;box-shadow:0 1px 4px rgba(0,0,0,.06);flex-shrink:0;}
-.stat-summary-title{font-size:calc(.96px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:2px;}
+.stat-summary-box{background:#fff;border-radius:10px;padding:6px 8px;margin-bottom:5px;box-shadow:0 1px 5px rgba(0,0,0,.06);flex-shrink:0;}
+.stat-summary-title{font-size:calc(.96px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:3px;}
 
 .stat-summary-grid{
   display:flex;
   flex-wrap:wrap;
-  gap:0 8px;
+  gap:1px 8px;
   align-items:baseline;
   line-height:1.25;
 }
@@ -258,7 +258,7 @@ body{background:#f1f5f9;padding:6px 0;font-size:calc(1px * var(--fs-num));color:
   flex:1 1 100%;
   display:flex;
   flex-wrap:wrap;
-  gap:0 8px;
+  gap:1px 8px;
   align-items:baseline;
 }
 .stat-summary-grid>div.row-sub .pair{
@@ -298,8 +298,8 @@ body{background:#f1f5f9;padding:6px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-summary-grid strong.cash{color:#16a34a;}
 .stat-summary-grid strong.pay{color:#0891b2;}
 
-/* 統計頁：只捲動列表（保留卡片） */
-.stat-list-box{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+/* 統計頁：只捲動列表 */
+.stat-list-box{background:#fff;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.06);overflow:hidden;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 
 /* 設定頁：可捲動 */
 #pageSetting{overflow-y:auto;}
@@ -312,25 +312,25 @@ body{background:#f1f5f9;padding:6px 0;font-size:calc(1px * var(--fs-num));color:
 .hidden-color{display:none !important;position:absolute !important;width:1px !important;height:1px !important;opacity:0 !important;pointer-events:none !important;}
 
 /* 支出統計專用：字體與列表一致、壓縮邊距 */
-.exp-summary-card{background:#fff;border-radius:10px;padding:4px 6px;margin-bottom:3px;box-shadow:0 1px 4px rgba(0,0,0,.06);flex-shrink:0;}
-.exp-summary-card .stat-summary-title{font-size:calc(.96px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:2px;}
-.exp-summary-card .stat-summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;}
+.exp-summary-card{background:#fff;border-radius:10px;padding:6px 8px;margin-bottom:5px;box-shadow:0 1px 5px rgba(0,0,0,.06);flex-shrink:0;}
+.exp-summary-card .stat-summary-title{font-size:calc(.96px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:3px;}
+.exp-summary-card .stat-summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;}
 .exp-summary-card .stat-summary-grid>div{display:block;}
 .exp-summary-card .stat-summary-grid span{display:block;color:#64748b;font-size:calc(.84px * var(--fs-num));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .exp-summary-card .stat-summary-grid strong{display:block;text-align:right;color:#dc2626;font-size:calc(.96px * var(--fs-num));font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .exp-summary-card .stat-summary-grid strong.net{color:#059669;}
 
 /* 支出類型 checkbox */
-.exp-cost-check{width:14px;height:14px;flex-shrink:0;cursor:pointer;accent-color:#ea580c;margin:0;}
+.exp-cost-check{width:16px;height:16px;flex-shrink:0;cursor:pointer;accent-color:#ea580c;margin:0;}
 
 /* ===== 首頁合計卡片：固定 2 行 ===== */
 #daySummaryCard{
   display:flex;
   flex-direction:column;
-  gap:1px;
+  gap:2px;
   width:100%;
   font-size:calc(.96px * var(--fs-num));
-  line-height:1.25;
+  line-height:1.3;
 }
 
 /* 第一行：營業額、現金、非現金（平均彈性分配） */
@@ -403,55 +403,55 @@ body{background:#f1f5f9;padding:6px 0;font-size:calc(1px * var(--fs-num));color:
 
 @media(max-width:400px){
   .stat-list-head,.stat-list-row{grid-template-columns:52px minmax(0,1fr) minmax(0,0.9fr) minmax(0,1fr);gap:3px;padding-left:4px;padding-right:4px}
-  .stat-detail-row{grid-template-columns:36px 36px minmax(0,1fr) minmax(0,1fr) minmax(0,0.85fr) minmax(0,0.95fr);gap:2px;padding-left:3px;padding-right:3px;font-size:calc(.9px * var(--fs-num));}
+  .stat-detail-row{grid-template-columns:36px 36px minmax(0,1fr) minmax(0,1fr) minmax(0,0.85fr) minmax(0,0.95fr);gap:2px;padding-left:3px;padding-right:3px;font-size:calc(.78px * var(--fs-num));}
   .stat-detail-row-exp{grid-template-columns:40px 40px 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
-  .home-detail-row{grid-template-columns:28px 36px 36px minmax(0,1.1fr) minmax(0,1fr) minmax(0,0.85fr) minmax(0,0.95fr);gap:2px;padding-left:3px;padding-right:3px;font-size:calc(.86px * var(--fs-num));}
+  .home-detail-row{grid-template-columns:28px 36px 36px minmax(0,1.1fr) minmax(0,1fr) minmax(0,0.85fr) minmax(0,0.95fr);gap:2px;padding-left:3px;padding-right:3px;font-size:calc(.78px * var(--fs-num));}
 }
 
-@media(max-width:600px){body{padding:4px 0;}.page{padding:0 4px;}}
+@media(max-width:600px){body{padding:8px 0;}.page{padding:0 4px;}}
 @media(max-width:400px){
-  .stat-type-btn{font-size:clamp(9px, calc(.8px * var(--fs-num)), 13px) !important;padding:5px 3px !important;}
+  .stat-type-btn{font-size:clamp(9px, calc(.8px * var(--fs-num)), 13px) !important;padding:6px 4px !important;}
 }
 
 /* ===== 輸入頁面按鈕強化：明顯、字大、有立體感 ===== */
 .numBtn, .payBtn {
   font-weight: 800 !important;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
   text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 .numBtn {
   background: #f8fafc;
   border: 1.5px solid #cbd5e1;
-  box-shadow: 0 3px 0 #94a3b8, 0 5px 10px rgba(0,0,0,0.12) !important;
-  font-size: clamp(18px, 5.5vw, 24px) !important;
-  padding: clamp(10px, 4vw, 18px) 4px !important;
+  box-shadow: 0 4px 0 #94a3b8, 0 6px 12px rgba(0,0,0,0.12) !important;
+  font-size: clamp(20px, 6vw, 26px) !important;
+  padding: clamp(12px, 4.5vw, 22px) 4px !important;
   color: #0f172a;
   transition: all 0.06s ease;
 }
 .numBtn:active {
   transform: translateY(2px) scale(0.98) !important;
-  box-shadow: 0 1px 0 #64748b, 0 3px 8px rgba(0,0,0,0.2) !important;
+  box-shadow: 0 2px 0 #64748b, 0 3px 8px rgba(0,0,0,0.2) !important;
   background: #e2e8f0;
 }
 .payBtn {
-  font-size: clamp(13px, 3.8vw, 16px) !important;
-  padding: clamp(10px, 3.5vw, 15px) 4px !important;
+  font-size: clamp(14px, 4vw, 18px) !important;
+  padding: clamp(12px, 4vw, 18px) 4px !important;
   border: 1.5px solid rgba(0,0,0,0.1);
-  box-shadow: 0 3px 0 rgba(0,0,0,0.25), 0 5px 12px rgba(0,0,0,0.18) !important;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.25), 0 6px 14px rgba(0,0,0,0.18) !important;
   text-shadow: 0 1px 3px rgba(0,0,0,0.3);
   transition: all 0.06s ease;
 }
 .payBtn:active {
-  transform: translateY(2px) scale(0.97) !important;
+  transform: translateY(3px) scale(0.97) !important;
   box-shadow: 0 1px 0 rgba(0,0,0,0.3), 0 3px 8px rgba(0,0,0,0.2) !important;
   filter: brightness(0.92);
 }
 #expCatWrap .payBtn {
-  font-size: clamp(13px, 3.8vw, 16px) !important;
+  font-size: clamp(14px, 4vw, 18px) !important;
 }
 .modal-card > button[onclick*="close"] {
   font-weight: 700;
-  box-shadow: 0 2px 0 #64748b, 0 4px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 3px 0 #64748b, 0 5px 10px rgba(0,0,0,0.15);
   transition: all 0.06s ease;
 }
 .modal-card > button[onclick*="close"]:active {
@@ -459,8 +459,121 @@ body{background:#f1f5f9;padding:6px 0;font-size:calc(1px * var(--fs-num));color:
   box-shadow: 0 1px 0 #475569, 0 3px 8px rgba(0,0,0,0.15);
 }
 
-#expInputModal .noteInput { margin-top: 4px; }
-#expInputModal .modal-card > button[onclick*="close"] { margin-top: 3px; }
+#expInputModal .noteInput { margin-top: 6px; }
+#expInputModal .modal-card > button[onclick*="close"] { margin-top: 4px; }
+
+
+/* ===== 緊湊版版面優化：降低多餘留白，保留原功能 ===== */
+body { margin: 0; }
+header, .header, .topbar, .navbar, .global-nav { gap: 8px; }
+nav, .global-nav { padding-top: 6px; padding-bottom: 6px; }
+nav a, nav button, .global-nav a, .global-nav button { padding: 7px 8px; }
+.app-logo, .logo { margin-right: 6px; }
+.app-name { margin-right: 8px; }
+main, .container, .page, .content, .main-content { padding-top: 10px; padding-bottom: 10px; }
+section, .section, .panel, .card, .setting-card, .stat-card { margin-top: 8px; margin-bottom: 8px; }
+h1, h2, h3, .section-title, .page-title { margin-top: 8px; margin-bottom: 8px; }
+p { margin-top: 5px; margin-bottom: 5px; }
+button, input, select, textarea { min-height: 36px; }
+button { padding: 7px 10px; }
+.home-grid, .category-grid, .payment-grid, .keypad, .button-grid { gap: 6px; }
+.home-grid button, .category-grid button, .payment-grid button { padding: 8px 5px; }
+.summary, .summary-cards, .stats-summary, .totals { gap: 6px; margin: 6px 0; }
+.summary .card, .summary-cards .card, .stats-summary .card { padding: 10px; }
+.detail-row, .record-row, .list-row, .expense-row, .income-row { padding-top: 7px; padding-bottom: 7px; }
+.breadcrumb, .date-nav, .filter-row { margin-top: 6px; margin-bottom: 6px; gap: 6px; }
+.settings, .settings-section, .setting-group { gap: 8px; }
+.settings label, .setting-row, .form-row { margin-bottom: 6px; }
+input, select, textarea { padding: 7px 9px; }
+.modal, .dialog, .entry-modal, .edit-modal { padding: 12px; }
+.modal h2, .dialog h2, .entry-modal h2 { margin-top: 0; margin-bottom: 8px; }
+.keypad button, .number-pad button, .numpad button { min-height: 42px; padding: 6px; }
+.payment-grid button, .type-grid button, .expense-category-grid button { min-height: 38px; padding: 6px 4px; }
+.note-field, .memo-field { margin-top: 6px; margin-bottom: 6px; }
+.modal-actions, .dialog-actions, .form-actions { gap: 8px; margin-top: 8px; }
+.cancel-btn, button.cancel { min-height: 36px; }
+@media (max-height: 700px) {
+  main, .container, .page, .content, .main-content { padding-top: 6px; padding-bottom: 6px; }
+  section, .section, .panel, .card, .setting-card, .stat-card { margin-top: 5px; margin-bottom: 5px; }
+  .keypad button, .number-pad button, .numpad button { min-height: 36px; }
+  .modal, .dialog, .entry-modal, .edit-modal { padding: 9px; }
+}
+@media (max-width: 380px) {
+  nav a, nav button, .global-nav a, .global-nav button { padding-left: 5px; padding-right: 5px; }
+  .app-name { font-size: 15px; }
+  .summary .card, .summary-cards .card, .stats-summary .card { padding: 8px; }
+  .home-grid, .category-grid, .payment-grid, .keypad, .button-grid { gap: 4px; }
+}
+/* ===== 緊湊版優化結束 ===== */
+
+
+/* ===== 極限緊湊模式：盡量消除非必要間距 ===== */
+html, body { height:100%; }
+body { padding:0 !important; margin:0 !important; line-height:1.15 !important; }
+.page { padding:0 2px !important; }
+.global-nav { margin:0 2px 2px !important; padding:2px 3px !important; gap:2px !important; border-radius:6px !important; }
+.global-nav .app-brand { gap:2px !important; padding:0 !important; }
+.global-nav .app-logo { width:25px !important; height:25px !important; flex-basis:25px !important; }
+.global-nav .app-name { font-size:15px !important; letter-spacing:0 !important; }
+.global-nav .nav-icon { min-width:30px !important; padding:3px 2px !important; gap:2px !important; border-radius:5px !important; }
+.global-nav .nav-label { font-size:8px !important; }
+.global-nav .nav-symbol { font-size:1em !important; }
+.row2 { gap:3px !important; margin-bottom:3px !important; }
+.bigBtn { height:30px !important; min-height:0 !important; padding:2px !important; border-radius:6px !important; font-size:14px !important; }
+.card { padding:5px 2px !important; margin:0 0 2px !important; border-radius:6px !important; box-shadow:0 1px 3px rgba(0,0,0,.05) !important; }
+.section-title { margin:3px 0 2px !important; gap:3px !important; }
+.section-title h3 { font-size:13px !important; }
+.home-detail-box { border-radius:5px !important; }
+.home-detail-row { padding:2px 2px !important; gap:2px !important; }
+.home-detail-head { padding:3px 2px !important; }
+.stat-list-head,.stat-list-row { gap:2px !important; }
+.stat-list-head { padding:2px 3px !important; }
+.stat-list-row { padding:2px 3px !important; line-height:1.1 !important; }
+.stat-detail-row,.stat-detail-row-exp { gap:2px !important; padding:2px !important; line-height:1.1 !important; }
+.stat-detail-head,.stat-detail-row-exp.stat-detail-head { padding:2px !important; }
+.item { padding:1px !important; margin:1px 0 !important; gap:3px !important; border-radius:5px !important; }
+.color-dot { width:17px !important; height:17px !important; }
+.setBlock { margin:3px 0 !important; padding:5px 6px !important; border-radius:6px !important; }
+.setBlock h4 { margin-bottom:2px !important; }
+.setBlock input[type="number"],.setBlock input[type="text"] { padding:3px 5px !important; margin:1px 0 2px !important; min-height:0 !important; }
+.setBlock button,.backup-btn { padding:4px 6px !important; margin-top:2px !important; min-height:0 !important; }
+.backup-bar { gap:3px !important; margin-top:3px !important; }
+.empty-tip { padding:6px 4px !important; }
+.inputBox { padding:3px 6px !important; margin:1px 0 3px !important; font-size:23px !important; border-radius:6px !important; border-width:1px !important; }
+.modal { padding:2px !important; }
+.modal-card { padding:2px !important; }
+.modal-card .input-area { gap:2px !important; }
+.numKey { gap:3px !important; }
+.numBtn { padding:5px 2px !important; min-height:0 !important; font-size:18px !important; border-radius:6px !important; box-shadow:0 1px 2px rgba(0,0,0,.12) !important; }
+.payKey { gap:3px !important; margin-top:3px !important; }
+.payBtn { padding:5px 2px !important; min-height:0 !important; font-size:12px !important; border-radius:6px !important; box-shadow:0 1px 2px rgba(0,0,0,.12) !important; text-shadow:none !important; }
+.noteInput { padding:5px 6px !important; margin-top:3px !important; min-height:0 !important; border-radius:5px !important; }
+.modal-card > button[onclick*="close"] { padding:5px 6px !important; margin-top:2px !important; min-height:0 !important; box-shadow:0 1px 2px rgba(0,0,0,.12) !important; }
+button,input,select,textarea { min-height:0 !important; }
+button { line-height:1.1 !important; }
+main,.container,.content,.main-content { padding-top:0 !important; padding-bottom:0 !important; }
+section,.section,.panel,.setting-card,.stat-card { margin-top:2px !important; margin-bottom:2px !important; }
+h1,h2,h3,.page-title { margin-top:2px !important; margin-bottom:2px !important; }
+p { margin-top:2px !important; margin-bottom:2px !important; }
+.summary,.summary-cards,.stats-summary,.totals { gap:3px !important; margin:2px 0 !important; }
+.summary .card,.summary-cards .card,.stats-summary .card { padding:4px 2px !important; }
+.breadcrumb,.date-nav,.filter-row { margin-top:2px !important; margin-bottom:2px !important; gap:3px !important; }
+.settings,.settings-section,.setting-group { gap:3px !important; }
+.settings label,.setting-row,.form-row { margin-bottom:2px !important; }
+input,select,textarea { padding:4px 5px !important; }
+@media(max-height:700px) {
+ .numBtn { padding:4px 2px !important; }
+ .payBtn { padding:4px 2px !important; }
+ .inputBox { padding:2px 5px !important; margin:1px 0 2px !important; }
+}
+@media(max-width:380px) {
+ .global-nav .app-name { font-size:13px !important; }
+ .global-nav .app-logo { width:22px !important; height:22px !important; flex-basis:22px !important; }
+ .global-nav .nav-icon { min-width:27px !important; padding:3px 1px !important; }
+ .global-nav .nav-label { font-size:7px !important; }
+}
+/* ===== 極限緊湊模式結束 ===== */
+
 </style>
 </head>
 <body>
@@ -482,7 +595,7 @@ body{background:#f1f5f9;padding:6px 0;font-size:calc(1px * var(--fs-num));color:
 
 <!-- 收入輸入 Modal -->
 <div id="inputModal" class="modal"><div class="modal-card">
-<h3 id="modalTitle" style="text-align:center;margin-bottom:4px;font-size:20px;">路招</h3>
+<h3 id="modalTitle" style="text-align:center;margin-bottom:6px;font-size:22px;">路招</h3>
 <div id="amountShow" class="inputBox">0</div>
 
 <div class="input-area">
@@ -495,12 +608,12 @@ body{background:#f1f5f9;padding:6px 0;font-size:calc(1px * var(--fs-num));color:
   <div id="payBtnWrap" class="payKey"></div>
 </div>
 
-<button style="width:100%;padding:12px;background:#94a3b8;color:#fff;border:none;border-radius:10px;font-size:16px;flex-shrink:0;" onclick="closeInputModal()">取消</button>
+<button style="width:100%;padding:14px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:17px;flex-shrink:0;" onclick="closeInputModal()">取消</button>
 </div></div>
 
 <!-- 支出輸入 Modal -->
 <div id="expInputModal" class="modal"><div class="modal-card">
-<h3 id="expModalTitle" style="text-align:center;margin-bottom:4px;font-size:20px;">支出</h3>
+<h3 id="expModalTitle" style="text-align:center;margin-bottom:6px;font-size:22px;">支出</h3>
 <div id="expAmountShow" class="inputBox">0</div>
 
 <div class="input-area">
@@ -514,39 +627,39 @@ body{background:#f1f5f9;padding:6px 0;font-size:calc(1px * var(--fs-num));color:
 </div>
 
 <input id="expNoteInput" class="noteInput" placeholder="備註（選填）" style="flex-shrink:0;">
-<button style="width:100%;padding:12px;background:#94a3b8;color:#fff;border:none;border-radius:10px;font-size:16px;flex-shrink:0;margin-top:3px;" onclick="closeExpInputModal()">取消</button>
+<button style="width:100%;padding:14px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:17px;flex-shrink:0;margin-top:4px;" onclick="closeExpInputModal()">取消</button>
 </div></div>
 
 <!-- 修改收入 Modal -->
 <div id="editModal" class="modal"><div class="modal-card">
-<h3 style="text-align:center;margin-bottom:12px;font-size:17px;">修改紀錄</h3>
-<label style="font-size:12px;color:#64748b;">類別</label>
-<select id="editType" style="width:100%;padding:10px;margin:4px 0 10px;border-radius:8px;border:1.5px solid #e2e8f0;font-size:13px;background:#f8fafc;"></select>
-<label style="font-size:12px;color:#64748b;">金額</label>
-<input id="editAmount" type="number" class="inputBox" style="font-size:20px;padding:12px;margin:4px 0 10px;">
-<label style="font-size:12px;color:#64748b;">付款方式</label>
-<select id="editPay" style="width:100%;padding:10px;margin:4px 0 12px;border-radius:8px;border:1.5px solid #e2e8f0;font-size:13px;background:#f8fafc;"></select>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-<button onclick="saveEdit()" style="padding:10px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-size:13px;">儲存</button>
-<button onclick="closeEditModal()" style="padding:10px;border:none;border-radius:8px;background:#94a3b8;color:#fff;font-size:13px;">取消</button>
+<h3 style="text-align:center;margin-bottom:16px;font-size:18px;">修改紀錄</h3>
+<label style="font-size:13px;color:#64748b;">類別</label>
+<select id="editType" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:10px;border:1.5px solid #e2e8f0;font-size:14px;background:#f8fafc;"></select>
+<label style="font-size:13px;color:#64748b;">金額</label>
+<input id="editAmount" type="number" class="inputBox" style="font-size:22px;padding:14px;margin:6px 0 12px;">
+<label style="font-size:13px;color:#64748b;">付款方式</label>
+<select id="editPay" style="width:100%;padding:12px;margin:6px 0 16px;border-radius:10px;border:1.5px solid #e2e8f0;font-size:14px;background:#f8fafc;"></select>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+<button onclick="saveEdit()" style="padding:12px;border:none;border-radius:12px;background:#2563eb;color:#fff;font-size:14px;">儲存</button>
+<button onclick="closeEditModal()" style="padding:12px;border:none;border-radius:12px;background:#94a3b8;color:#fff;font-size:14px;">取消</button>
 </div>
-<button onclick="deleteRec()" style="width:100%;margin-top:8px;padding:10px;border:none;border-radius:8px;background:#dc2626;color:#fff;font-size:13px;">刪除此筆</button>
+<button onclick="deleteRec()" style="width:100%;margin-top:12px;padding:12px;border:none;border-radius:12px;background:#dc2626;color:#fff;font-size:14px;">刪除此筆</button>
 </div></div>
 
 <!-- 修改支出 Modal -->
 <div id="editExpModal" class="modal"><div class="modal-card">
-<h3 style="text-align:center;margin-bottom:12px;font-size:17px;">修改支出</h3>
-<label style="font-size:12px;color:#64748b;">類型</label>
-<select id="editExpCat" style="width:100%;padding:10px;margin:4px 0 10px;border-radius:8px;border:1.5px solid #e2e8f0;font-size:13px;background:#f8fafc;"></select>
-<label style="font-size:12px;color:#64748b;">金額</label>
-<input id="editExpAmount" type="number" class="inputBox" style="font-size:20px;padding:12px;margin:4px 0 10px;">
-<label style="font-size:12px;color:#64748b;">備註</label>
-<input id="editExpNote" type="text" style="width:100%;padding:10px;margin:4px 0 12px;border-radius:8px;border:1.5px solid #e2e8f0;font-size:13px;background:#f8fafc;">
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-<button onclick="saveEditExp()" style="padding:10px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-size:13px;">儲存</button>
-<button onclick="closeEditExpModal()" style="padding:10px;border:none;border-radius:8px;background:#94a3b8;color:#fff;font-size:13px;">取消</button>
+<h3 style="text-align:center;margin-bottom:16px;font-size:18px;">修改支出</h3>
+<label style="font-size:13px;color:#64748b;">類型</label>
+<select id="editExpCat" style="width:100%;padding:12px;margin:6px 0 12px;border-radius:10px;border:1.5px solid #e2e8f0;font-size:14px;background:#f8fafc;"></select>
+<label style="font-size:13px;color:#64748b;">金額</label>
+<input id="editExpAmount" type="number" class="inputBox" style="font-size:22px;padding:14px;margin:6px 0 12px;">
+<label style="font-size:13px;color:#64748b;">備註</label>
+<input id="editExpNote" type="text" style="width:100%;padding:12px;margin:6px 0 16px;border-radius:10px;border:1.5px solid #e2e8f0;font-size:14px;background:#f8fafc;">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+<button onclick="saveEditExp()" style="padding:12px;border:none;border-radius:12px;background:#2563eb;color:#fff;font-size:14px;">儲存</button>
+<button onclick="closeEditExpModal()" style="padding:12px;border:none;border-radius:12px;background:#94a3b8;color:#fff;font-size:14px;">取消</button>
 </div>
-<button onclick="deleteExp()" style="width:100%;margin-top:8px;padding:10px;border:none;border-radius:8px;background:#dc2626;color:#fff;font-size:13px;">刪除此筆</button>
+<button onclick="deleteExp()" style="width:100%;margin-top:12px;padding:12px;border:none;border-radius:12px;background:#dc2626;color:#fff;font-size:14px;">刪除此筆</button>
 </div></div>
 <div id="pageHome" class="page active">
 <div class="pageHome-top">
@@ -596,7 +709,7 @@ body{background:#f1f5f9;padding:6px 0;font-size:calc(1px * var(--fs-num));color:
 
 <!-- 支出統計頁面 -->
 <div id="pageExpStat" class="page">
-  <div class="add-bar" style="margin-bottom:3px;"><button class="bigBtn" style="background:#dc2626;width:100%;height:40px;font-size:16px;" onclick="openExpInputModal()">＋ 新增支出</button></div>
+  <div class="add-bar" style="margin-bottom:5px;"><button class="bigBtn" style="background:#dc2626;width:100%;height:44px;font-size:17px;" onclick="openExpInputModal()">＋ 新增支出</button></div>
 
   <div class="stat-type-card" id="expTypeCard"></div>
 
@@ -622,11 +735,11 @@ body{background:#f1f5f9;padding:6px 0;font-size:calc(1px * var(--fs-num));color:
 <div id="pageSetting" class="page">
 <div class="setBlock"><h4>字型大小</h4><div class="fs-wrap"><span style="font-size:calc(.9px * var(--fs-num));">小</span><input type="range" id="fontSizeSlider" min="11" max="20" step="1" value="13" oninput="onFontSizeChange(this.value)"><span style="font-size:calc(1.3px * var(--fs-num));">大</span><span id="fontSizeValue" class="fs-value">13</span></div></div>
 <div class="setBlock"><h4>字型粗細</h4><div class="fs-wrap"><span style="font-size:calc(.9px * var(--fs-num));">細</span><input type="range" id="fontWeightSlider" min="300" max="900" step="100" value="700" oninput="onFontWeightChange(this.value)"><span style="font-size:calc(1.3px * var(--fs-num));">粗</span><span id="fontWeightValue" class="fs-value">700</span></div></div>
-<div class="setBlock"><h4>營業時間</h4><div style="display:flex;gap:6px;align-items:center;font-size:calc(1px * var(--fs-num));"><span>開始</span><input id="setStartHour" type="number" min="0" max="23" oninput="onHourChange()" style="width:52px;padding:5px;text-align:center;font-size:13px;border:1.5px solid #e2e8f0;border-radius:6px;background:#f8fafc;"><span>結束</span><input id="setEndHour" type="number" min="0" max="23" oninput="onHourChange()" style="width:52px;padding:5px;text-align:center;font-size:13px;border:1.5px solid #e2e8f0;border-radius:6px;background:#f8fafc;"></div><div id="hourPreview" class="hour-preview">請輸入開始與結束時間</div></div>
-<div class="setBlock"><h4>營業類別</h4><div id="typeListSet"></div><div style="display:flex;gap:4px;margin-top:4px;"><input id="newTypeName" placeholder="名稱" style="flex:1;padding:5px 6px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:6px;background:#f8fafc;min-width:0;"><input id="newTypeDeduct" type="number" placeholder="扣除" style="width:52px;padding:5px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:6px;background:#f8fafc;text-align:center;"><button onclick="addNewTypeTemp()" style="padding:5px 8px;font-size:12px;border:none;border-radius:6px;background:#2563eb;color:#fff;">＋</button></div></div>
-<div class="setBlock"><h4>付款方式</h4><div id="payListSet"></div><div style="display:flex;gap:4px;margin-top:4px;"><input id="newPayName" placeholder="名稱" style="flex:1;padding:5px 6px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:6px;background:#f8fafc;min-width:0;"><input id="newPayRate" type="number" placeholder="%" style="width:52px;padding:5px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:6px;background:#f8fafc;text-align:center;"><button onclick="addNewPayTemp()" style="padding:5px 8px;font-size:12px;border:none;border-radius:6px;background:#2563eb;color:#fff;">＋</button></div><div style="font-size:11px;color:#94a3b8;margin-top:4px;">※ 好孕卷自動扣除補助250輸入全額即可其餘視為現金</div></div>
-<div class="setBlock"><h4>支出類型（打勾 = 營業成本）</h4><div id="expListSet"></div><div style="display:flex;gap:4px;margin-top:4px;"><input id="newExpName" placeholder="名稱" style="flex:1;padding:5px 6px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:6px;background:#f8fafc;min-width:0;"><button onclick="addNewExpTemp()" style="padding:5px 8px;font-size:12px;border:none;border-radius:6px;background:#2563eb;color:#fff;">＋</button></div></div>
-<div class="setBlock"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><h4 style="margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;">資料備份</h4><span style="font-size:calc(.8px * var(--fs-num));color:#64748b;flex:1;text-align:right;">僅紀錄，不含設定</span></div><div class="backup-bar"><button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出</button><button class="backup-btn importBtn" onclick="document.getElementById('fileImport').click()">📥 匯入</button></div></div>
+<div class="setBlock"><h4>營業時間</h4><div style="display:flex;gap:8px;align-items:center;font-size:calc(1.05px * var(--fs-num));"><span>開始</span><input id="setStartHour" type="number" min="0" max="23" oninput="onHourChange()" style="width:56px;padding:6px;text-align:center;font-size:14px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;"><span>結束</span><input id="setEndHour" type="number" min="0" max="23" oninput="onHourChange()" style="width:56px;padding:6px;text-align:center;font-size:14px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;"></div><div id="hourPreview" class="hour-preview">請輸入開始與結束時間</div></div>
+<div class="setBlock"><h4>營業類別</h4><div id="typeListSet"></div><div style="display:flex;gap:6px;margin-top:6px;"><input id="newTypeName" placeholder="名稱" style="flex:1;padding:6px 8px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newTypeDeduct" type="number" placeholder="扣除" style="width:56px;padding:6px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewTypeTemp()" style="padding:6px 10px;font-size:13px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div></div>
+<div class="setBlock"><h4>付款方式</h4><div id="payListSet"></div><div style="display:flex;gap:6px;margin-top:6px;"><input id="newPayName" placeholder="名稱" style="flex:1;padding:6px 8px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newPayRate" type="number" placeholder="%" style="width:56px;padding:6px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewPayTemp()" style="padding:6px 10px;font-size:13px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div><div style="font-size:12px;color:#94a3b8;margin-top:6px;">※ 好孕卷自動扣除補助250輸入全額即可其餘視為現金</div></div>
+<div class="setBlock"><h4>支出類型（打勾 = 營業成本）</h4><div id="expListSet"></div><div style="display:flex;gap:6px;margin-top:6px;"><input id="newExpName" placeholder="名稱" style="flex:1;padding:6px 8px;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><button onclick="addNewExpTemp()" style="padding:6px 10px;font-size:13px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div></div>
+<div class="setBlock"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><h4 style="margin:0;font-size:calc(1.05px * var(--fs-num));color:#0f172a;">資料備份</h4><span style="font-size:calc(.85px * var(--fs-num));color:#64748b;flex:1;text-align:right;">僅紀錄，不含設定</span></div><div class="backup-bar"><button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出</button><button class="backup-btn importBtn" onclick="document.getElementById('fileImport').click()">📥 匯入</button></div></div>
 </div>
 
 <script>
@@ -1141,6 +1254,7 @@ function calcDayStats(recs,targetDate){
   return{daySum:daySum,cashSum:cashSum,nonCashSum:nonCashSum,feeSum:feeSum,deductSum:deductSum,typeCount:typeCount};
 }
 
+/* 產生第二行營業類別 HTML */
 function buildSummaryLine2(typeCount){
   var html='';
   for(var k in typeCount){
