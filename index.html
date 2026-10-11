@@ -275,7 +275,6 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
   align-items:baseline;
   gap:3px;
 }
-/* 字體與下方列表一致：span = .84px、strong = .96px */
 .stat-summary-grid span{
   color:#64748b;
   font-size:calc(.84px * var(--fs-num));
@@ -324,69 +323,57 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 /* 支出類型 checkbox */
 .exp-cost-check{width:16px;height:16px;flex-shrink:0;cursor:pointer;accent-color:#ea580c;margin:0;}
 
-/* ===== 首頁合計卡片：字體與列表一致、每個類別平均彈性分配 ===== */
+/* ===== 首頁合計卡片 ===== */
 #daySummaryCard{
   display:flex;
-  flex-wrap:wrap;
-  gap:2px 0;
-  align-items:baseline;
-  line-height:1.3;
-  font-size:calc(.96px * var(--fs-num));
+  flex-direction:column;
+  gap:1px;
   width:100%;
-}
-#daySummaryCard .stat-pair{
-  display:inline-flex;
-  align-items:baseline;
-  justify-content:center;
-  gap:2px;
-  white-space:nowrap;
-  flex:1 1 auto;            /* 平均彈性分配 */
-  min-width:0;
-  padding:0 2px;
-  box-sizing:border-box;
-}
-#daySummaryCard .stat-pair > span:first-child{
-  color:#64748b;
-  font-size:calc(.84px * var(--fs-num));
-  white-space:nowrap;
-  flex-shrink:0;
-}
-#daySummaryCard .stat-pair > span:last-child{
-  overflow:hidden;
-  text-overflow:ellipsis;
-  max-width:7em;
-  font-variant-numeric:tabular-nums;
   font-size:calc(.96px * var(--fs-num));
-  flex-shrink:1;
-  min-width:0;
+  line-height:1.3;
 }
-#daySummaryCard #dayTotal{
-  font-size:calc(1.05px * var(--fs-num)) !important;
-}
-/* 類別計數（路招:1 派遣:2）單獨一行、平均分配 */
-#daySummaryCard #typeCountText{
-  flex:1 1 100%;
+
+/* 第一行：營業額、現金、非現金、手續費、派遣費（格數夠就同一行，不夠整組換行） */
+#daySummaryCard .summary-line1{
   display:flex;
   flex-wrap:wrap;
-  justify-content:space-between;
-  gap:1px 0;
-  margin-top:1px;
-  padding:0;
+  align-items:baseline;
+  gap:1px 10px;
   width:100%;
 }
-#daySummaryCard #typeCountText .type-count-item{
+#daySummaryCard .summary-line1 .stat-pair{
   display:inline-flex;
   align-items:baseline;
   justify-content:center;
   gap:2px;
-  flex:1 1 0;              /* 每個類別平均分配 */
+  white-space:nowrap;
+  flex:0 0 auto;
+  min-width:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+/* 第二行：營業類別（不管幾個，整組在同一行，每個類別平均分配） */
+#daySummaryCard .summary-line2{
+  display:flex;
+  flex-wrap:nowrap;
+  align-items:baseline;
+  gap:0;
+  width:100%;
+  margin-top:1px;
+}
+#daySummaryCard .summary-line2 .type-count-item{
+  display:inline-flex;
+  align-items:baseline;
+  justify-content:center;
+  gap:2px;
+  flex:1 1 0;               /* 每個類別平均分配 */
   min-width:0;
   white-space:nowrap;
   padding:0 2px;
   box-sizing:border-box;
 }
-#daySummaryCard #typeCountText .type-count-item .tc-name{
-  color:#64748b;
+#daySummaryCard .summary-line2 .type-count-item .tc-name{
   font-size:calc(.84px * var(--fs-num));
   overflow:hidden;
   text-overflow:ellipsis;
@@ -394,14 +381,38 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
   min-width:0;
   flex-shrink:1;
 }
-#daySummaryCard #typeCountText .type-count-item .tc-num{
-  color:#2563eb;
+#daySummaryCard .summary-line2 .type-count-item .tc-num{
   font-size:calc(.96px * var(--fs-num));
   font-variant-numeric:tabular-nums;
   flex-shrink:0;
   min-width:1.2em;
   text-align:right;
 }
+
+/* 標籤統一字體 */
+#daySummaryCard .stat-pair > span:first-child{
+  color:#64748b;
+  font-size:calc(.84px * var(--fs-num));
+  white-space:nowrap;
+  flex-shrink:0;
+}
+/* 數字統一字體大小 */
+#daySummaryCard .stat-pair > span:last-child{
+  font-size:calc(.96px * var(--fs-num));
+  font-variant-numeric:tabular-nums;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  flex-shrink:1;
+  min-width:0;
+}
+
+/* 數字顏色：營業額黑色、現金藍色、非現金橘色、手續費紅色、派遣費黑色 */
+#daySummaryCard #dayTotal{color:#0f172a;font-weight:700;}
+#daySummaryCard #cashTotal{color:#2563eb;font-weight:700;}
+#daySummaryCard #nonCashTotal{color:#ea580c;font-weight:700;}
+#daySummaryCard #feeTotal{color:#dc2626;font-weight:700;}
+#daySummaryCard #deductTotal{color:#0f172a;font-weight:700;}
 
 @media(max-width:400px){
   .stat-list-head,.stat-list-row{grid-template-columns:52px minmax(0,1fr) minmax(0,0.9fr) minmax(0,1fr);gap:4px;padding-left:5px;padding-right:5px}
@@ -555,12 +566,14 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 <div id="typeBtnWrap" class="row2"></div>
 <div class="card">
 <div class="day-summary-card" id="daySummaryCard">
-<span class="stat-pair"><span>營業額：</span><span id="dayTotal">0</span></span>
-<span class="stat-pair"><span>現金：</span><span id="cashTotal">0</span></span>
-<span class="stat-pair"><span>非現金：</span><span id="nonCashTotal">0</span></span>
-<span class="stat-pair"><span>手續費：</span><span id="feeTotal" class="num-value">0</span></span>
-<span class="stat-pair"><span>派遣費：</span><span id="deductTotal" class="num-value">0</span></span>
-<span class="stat-pair" id="typeCountText"></span>
+  <div class="summary-line1">
+    <span class="stat-pair"><span>營業額：</span><span id="dayTotal">0</span></span>
+    <span class="stat-pair"><span>現金：</span><span id="cashTotal">0</span></span>
+    <span class="stat-pair"><span>非現金：</span><span id="nonCashTotal">0</span></span>
+    <span class="stat-pair"><span>手續費：</span><span id="feeTotal">0</span></span>
+    <span class="stat-pair"><span>派遣費：</span><span id="deductTotal">0</span></span>
+  </div>
+  <div class="summary-line2" id="typeCountText"></div>
 </div>
 </div>
 <div class="section-title">
@@ -785,6 +798,7 @@ function fitAllStatText(){
     '.stat-detail-fee',
     '.stat-detail-net',
     '#daySummaryCard .stat-pair > span:last-child',
+    '#daySummaryCard .summary-line2 .tc-num',
     '#todayNetTotal',
     '#expSummarySum',
     '#expSummaryCount',
@@ -849,6 +863,7 @@ document.getElementById('colorPicker').addEventListener('input', function(e){
   renderHomeTypeBtn();
   renderStatTypeCard();
   renderExpTypeCard();
+  calcTotal();
 });
 document.getElementById('colorPicker').addEventListener('change', function(){
   colorPickTarget=null;
@@ -1139,9 +1154,23 @@ function calcDayStats(recs,targetDate){
   });
   return{daySum:daySum,cashSum:cashSum,nonCashSum:nonCashSum,feeSum:feeSum,deductSum:deductSum,typeCount:typeCount};
 }
+
+/* 產生類別計數 HTML：每個類別平均彈性分配，使用設定頁的顏色 */
+function buildTypeCountHtml(typeCount){
+  var html='';
+  for(var k in typeCount){
+    var typeItem=config.typeList.find(function(t){return t.name===k;});
+    var color=typeItem?typeItem.color:'#2563eb';
+    html+='<span class="type-count-item">'
+      +'<span class="tc-name" style="color:'+escapeHtml(color)+';">'+escapeHtml(k)+'</span>'
+      +'<span class="tc-num" style="color:'+escapeHtml(color)+';">'+typeCount[k]+'</span>'
+      +'</span>';
+  }
+  return html;
+}
+
 function calcTotal(){
-  var today=getBizDate(new Date()),s=calcDayStats(getRecords(),today),typeArr=[];
-  for(var k in s.typeCount)typeArr.push(k+':'+s.typeCount[k]);
+  var today=getBizDate(new Date()),s=calcDayStats(getRecords(),today);
   document.getElementById('typeCountText').innerHTML=buildTypeCountHtml(s.typeCount);
   document.getElementById('dayTotal').textContent=s.daySum;
   document.getElementById('cashTotal').textContent=s.cashSum;
@@ -1152,19 +1181,6 @@ function calcTotal(){
   updateTodayDateText();
   setTimeout(fitAllStatText,0);
 }
-
-/* 產生類別計數 HTML：每個類別平均彈性分配 */
-function buildTypeCountHtml(typeCount){
-  var html='';
-  for(var k in typeCount){
-    html+='<span class="type-count-item">'
-      +'<span class="tc-name">'+escapeHtml(k)+'</span>'
-      +'<span class="tc-num">'+typeCount[k]+'</span>'
-      +'</span>';
-  }
-  return html;
-}
-
 function toggleSort(){sortNewFirst=!sortNewFirst;renderTodayList();}
 
 function getPayDisplay(r){
