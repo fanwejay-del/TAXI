@@ -18,13 +18,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:4px;margin-bottom:4px;overflow:hidden;}
 .row2 .bigBtn{width:100%;min-width:0;}
 
-/* ===== 首頁營業類別按鈕：上下間隙加大 ===== */
-#typeBtnWrap{
-  padding:8px 0 8px;
-  gap:8px;
-  margin-bottom:8px;
-}
-
 .card{background:#fff;border-radius:10px;padding:4px 4px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:3px;}
 
 .global-nav{position:sticky;top:0;z-index:50;background:#fff;border-radius:10px;padding:4px 6px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin:0 4px 3px;display:flex;justify-content:space-between;align-items:center;gap:3px;flex-shrink:0;min-width:0;}
@@ -43,7 +36,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .bigBtn:active,.numBtn:active,.payBtn:active,.navBtn:active,.editBtn:active,.delBtn:active,.sortBtn:active,.add-btn:active,.backup-btn:active,.stat-btn:active,.setBlock button:active{filter:brightness(.88);box-shadow:0 1px 3px rgba(0,0,0,.18);transform:scale(.97);}
 .bigBtn{padding:0 3px;border:none;border-radius:10px;font-size:clamp(16px,calc(0.85px * var(--fs-num)),18px);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;height:calc(2.4px * var(--fs-num) + 10px);display:flex;align-items:center;justify-content:center;line-height:1;}
 
-/* ===== 輸入框：上緣貼近標題、高度減少 ===== */
 .inputBox{
   width:100%;
   padding:8px 16px;
@@ -76,7 +68,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 }
 .numBtn:active{background:#e2e8f0;}
 
-/* ===== 付款／支出類別：一行 3 個、彈性平均分配 ===== */
 .payKey{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
@@ -143,7 +134,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .color-dot::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px dashed transparent;}
 .color-dot:hover::after{border-color:#94a3b8;}
 
-/* 首頁：只捲動下方列表 */
 .pageHome-top{flex-shrink:0;}
 .home-detail-box{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .home-detail-row{display:grid;grid-template-columns:36px 48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.9px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.25;}
@@ -156,7 +146,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .home-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 .home-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 
-/* ===== 年 / 月 / 日列表：字體統一 .96px ===== */
 .stat-list-head,.stat-list-row{display:grid;grid-template-columns:72px 1fr 1fr 1fr;gap:4px;align-items:center;font-variant-numeric:tabular-nums;}
 .stat-list-head{background:#f8fafc;padding:4px 6px;color:#64748b;font-size:calc(.96px * var(--fs-num));font-weight:800;position:sticky;top:0;z-index:2;}
 .stat-list-head>div{text-align:right;}
@@ -169,7 +158,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-list-row .item-fee{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#dc2626;letter-spacing:-0.02em;}
 .stat-list-row .item-net{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#059669;letter-spacing:-0.02em;}
 
-/* 單筆明細（營業）：字體統一 .96px */
 .stat-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:4px 6px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.25;}
 .stat-detail-row:active{background:#eff6ff;}
 .stat-detail-row>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -179,14 +167,12 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 .stat-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 
-/* 單筆明細（支出）：字體統一 .96px */
 .stat-detail-row-exp{display:grid;grid-template-columns:48px 48px 1fr 1fr;gap:4px;align-items:center;padding:4px 6px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.25;}
 .stat-detail-row-exp:active{background:#eff6ff;}
 .stat-detail-row-exp>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .stat-detail-row-exp.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:4px 6px;position:sticky;top:0;z-index:2;font-size:calc(.96px * var(--fs-num));}
 .stat-detail-row-exp.stat-detail-head .amount{text-align:right;}
 
-/* ===== 統計卡片與按鈕：壓縮邊距 ===== */
 .stat-type-card{
   background:#fff !important;
   border-radius:10px !important;
@@ -220,13 +206,11 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-type-btn.active{color:#fff !important;box-shadow:0 2px 8px rgba(0,0,0,.25) !important;}
 .stat-type-btn.all-btn.active{background:#0f172a !important;}
 
-/* 統計頁面其他：壓縮邊距 */
 .stat-breadcrumb{position:sticky;top:0;z-index:20;background:#fff;padding:3px 8px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:3px;font-size:calc(.92px * var(--fs-num));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;}
 .stat-breadcrumb button{border:0;background:none;color:#2563eb;font:inherit;font-weight:700;padding:0 3px;cursor:pointer;}
 .stat-breadcrumb .stat-current{color:#475569;font-weight:500;}
 .stat-muted{color:#94a3b8;}
 
-/* ===== 合計區塊：字體與列表一致、完全移除空行 ===== */
 .stat-summary-box{background:#fff;border-radius:10px;padding:4px 6px;margin-bottom:3px;box-shadow:0 1px 4px rgba(0,0,0,.06);flex-shrink:0;}
 .stat-summary-title{font-size:calc(.96px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:2px;}
 
@@ -305,20 +289,15 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-summary-grid strong.cash{color:#16a34a;}
 .stat-summary-grid strong.pay{color:#0891b2;}
 
-/* 統計頁：只捲動列表 */
 .stat-list-box{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 
-/* 設定頁：可捲動 */
 #pageSetting{overflow-y:auto;}
 
-/* 支出統計頁 */
 #pageExpStat{overflow:hidden;}
 #expContent{overflow-y:auto;-webkit-overflow-scrolling:touch;}
 
-/* 隱藏顏色選擇器 */
 .hidden-color{display:none !important;position:absolute !important;width:1px !important;height:1px !important;opacity:0 !important;pointer-events:none !important;}
 
-/* 支出統計專用：字體與列表一致、壓縮邊距 */
 .exp-summary-card{background:#fff;border-radius:10px;padding:4px 6px;margin-bottom:3px;box-shadow:0 1px 4px rgba(0,0,0,.06);flex-shrink:0;}
 .exp-summary-card .stat-summary-title{font-size:calc(.96px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:2px;}
 .exp-summary-card .stat-summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;}
@@ -327,10 +306,8 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .exp-summary-card .stat-summary-grid strong{display:block;text-align:right;color:#dc2626;font-size:calc(.96px * var(--fs-num));font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .exp-summary-card .stat-summary-grid strong.net{color:#059669;}
 
-/* 支出類型 checkbox */
 .exp-cost-check{width:14px;height:14px;flex-shrink:0;cursor:pointer;accent-color:#ea580c;margin:0;}
 
-/* ===== 首頁合計卡片：固定 2 行 ===== */
 #daySummaryCard{
   display:flex;
   flex-direction:column;
@@ -340,7 +317,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   line-height:1.25;
 }
 
-/* 第一行：營業額、現金、非現金（平均彈性分配） */
 #daySummaryCard .summary-line1{
   display:flex;
   flex-wrap:nowrap;
@@ -360,7 +336,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   box-sizing:border-box;
 }
 
-/* 第二行：類別統計（可自動換行，整組一起換） */
 #daySummaryCard .summary-line2{
   display:flex;
   flex-wrap:wrap;
@@ -380,7 +355,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   box-sizing:border-box;
 }
 
-/* 標籤統一字體 */
 #daySummaryCard .stat-pair > span:first-child{
   color:#64748b;
   font-size:calc(.84px * var(--fs-num));
@@ -390,7 +364,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   text-overflow:ellipsis;
   min-width:0;
 }
-/* 數字統一字體大小 */
 #daySummaryCard .stat-pair > span:last-child{
   font-size:calc(.96px * var(--fs-num)) !important;
   font-variant-numeric:tabular-nums;
@@ -401,7 +374,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   min-width:0;
 }
 
-/* 數字顏色：營業額黑色、現金藍色、非現金橘色、手續費紅色、派遣費黑色 */
 #daySummaryCard #dayTotal{color:#0f172a;font-weight:700;}
 #daySummaryCard #cashTotal{color:#2563eb;font-weight:700;}
 #daySummaryCard #nonCashTotal{color:#ea580c;font-weight:700;}
@@ -420,7 +392,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   .stat-type-btn{font-size:clamp(9px, calc(.8px * var(--fs-num)), 13px) !important;padding:5px 3px !important;}
 }
 
-/* ===== 輸入頁面按鈕強化：明顯、字大、有立體感 ===== */
 .numBtn, .payBtn {
   font-weight: 800 !important;
   letter-spacing: 0.03em;
@@ -468,6 +439,52 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 
 #expInputModal .noteInput { margin-top: 4px; }
 #expInputModal .modal-card > button[onclick*="close"] { margin-top: 3px; }
+
+/* ===== 自訂確認 Modal ===== */
+#confirmModal{
+  background:rgba(0,0,0,.45);
+  align-items:center;
+  justify-content:center;
+}
+#confirmModal.active{display:flex;}
+#confirmModal .confirm-box{
+  background:#fff;
+  border-radius:16px;
+  padding:24px 20px;
+  box-shadow:0 8px 30px rgba(0,0,0,.25);
+  max-width:320px;
+  width:100%;
+  text-align:center;
+}
+#confirmModal .confirm-msg{
+  font-size:16px;
+  font-weight:700;
+  color:#0f172a;
+  margin-bottom:20px;
+  line-height:1.5;
+  white-space:pre-line;
+}
+#confirmModal .confirm-btns{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+#confirmModal .confirm-btns button{
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  font-size:15px;
+  font-weight:700;
+  box-shadow:none;
+}
+#confirmModal .confirm-cancel{
+  background:#e2e8f0;
+  color:#475569;
+}
+#confirmModal .confirm-ok{
+  background:#dc2626;
+  color:#fff;
+}
 
 </style>
 </head>
@@ -556,6 +573,18 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 </div>
 <button onclick="deleteExp()" style="width:100%;margin-top:12px;padding:12px;border:none;border-radius:12px;background:#dc2626;color:#fff;font-size:14px;">刪除此筆</button>
 </div></div>
+
+<!-- 自訂確認 Modal -->
+<div id="confirmModal" class="modal">
+  <div class="confirm-box">
+    <div id="confirmMsg" class="confirm-msg">確定要刪除這筆紀錄嗎？</div>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="closeConfirm(false)">取消</button>
+      <button class="confirm-ok" onclick="closeConfirm(true)">確定</button>
+    </div>
+  </div>
+</div>
+
 <div id="pageHome" class="page active">
 <div class="pageHome-top">
 <div id="typeBtnWrap" class="row2"></div>
@@ -643,6 +672,22 @@ if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch
 var currentType="",editId=null,editExpId=null,historyStack=[],modalAmount="",expModalAmount="",sortNewFirst=true,statViewStack=[],expViewStack=[];
 var statTypeFilter="";
 var expCatFilter="";
+
+/* ===== 自訂確認 Modal ===== */
+var _confirmResolve=null;
+function showConfirm(msg,callback){
+  document.getElementById('confirmMsg').textContent=msg;
+  document.getElementById('confirmModal').classList.add('active');
+  _confirmResolve=callback;
+}
+function closeConfirm(result){
+  document.getElementById('confirmModal').classList.remove('active');
+  if(_confirmResolve){
+    var cb=_confirmResolve;
+    _confirmResolve=null;
+    cb(result);
+  }
+}
 
 function nextId(){var seq=Number(localStorage.getItem('taxiSeq')||0)+1;localStorage.setItem('taxiSeq',seq);return Date.now()*1000+(seq%1000);}
 
@@ -906,73 +951,76 @@ document.getElementById('fileImport').onchange=function(e){
       if(d.records.find(function(x){return !isValidRecord(x);})){alert('❌ 收入紀錄格式錯誤，已中止匯入');return;}
       if(d.expenses&&!Array.isArray(d.expenses)){alert('❌ 支出紀錄格式錯誤');return;}
       if(d.expenses&&d.expenses.find(function(x){return !isValidExpense(x);})){alert('❌ 支出紀錄格式錯誤，已中止匯入');return;}
-      if(!confirm('📥 匯入將逐筆比對：\n· id 本機沒有 → 補上\n· id 本機已有且內容相同 → 跳過\n· id 撞到但內容不同 → 補上（自動配新 id）\n不會刪除任何紀錄，也不會改設定。\n確定繼續？'))return;
 
-      var backupNow = {saveTime:new Date().toISOString(),config:config,records:getRecords(),expenses:getExpenses()};
-      var blob = new Blob([JSON.stringify(backupNow,null,2)],{type:'application/json'});
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = url;
-      a.download = '匯入前備份_'+new Date().toISOString().slice(0,10)+'.json';
-      a.click();
-      URL.revokeObjectURL(url);
+      showConfirm('📥 匯入將逐筆比對：\n· id 本機沒有 → 補上\n· id 本機已有且內容相同 → 跳過\n· id 撞到但內容不同 → 補上（自動配新 id）\n不會刪除任何紀錄，也不會改設定。\n確定繼續？', function(ok){
+        if(!ok)return;
 
-      var curRecs = getRecords();
-      var curRecById = {};
-      var curRecFp = {};
-      curRecs.forEach(function(x){
-        curRecById[x.id] = x;
-        curRecFp[recFingerprint(x)] = 1;
+        var backupNow = {saveTime:new Date().toISOString(),config:config,records:getRecords(),expenses:getExpenses()};
+        var blob = new Blob([JSON.stringify(backupNow,null,2)],{type:'application/json'});
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = '匯入前備份_'+new Date().toISOString().slice(0,10)+'.json';
+        a.click();
+        URL.revokeObjectURL(url);
+
+        var curRecs = getRecords();
+        var curRecById = {};
+        var curRecFp = {};
+        curRecs.forEach(function(x){
+          curRecById[x.id] = x;
+          curRecFp[recFingerprint(x)] = 1;
+        });
+
+        var addRecs = [], skipRecs = 0;
+        d.records.forEach(function(r){
+          var nr = JSON.parse(JSON.stringify(r));
+          var fp = recFingerprint(nr);
+          var exist = curRecById[nr.id];
+          if(exist){
+            if(recFingerprint(exist) === fp){ skipRecs++; return; }
+            nr.id = nextId();
+          }
+          if(curRecFp[fp]){ skipRecs++; return; }
+          curRecFp[fp] = 1;
+          curRecById[nr.id] = nr;
+          addRecs.push(nr);
+        });
+        saveRecords(curRecs.concat(addRecs));
+
+        var curExps = getExpenses();
+        var curExpById = {};
+        var curExpFp = {};
+        curExps.forEach(function(x){
+          curExpById[x.id] = x;
+          curExpFp[expFingerprint(x)] = 1;
+        });
+
+        var addExps = [], skipExps = 0;
+        (Array.isArray(d.expenses)?d.expenses:[]).forEach(function(x){
+          var nx = JSON.parse(JSON.stringify(x));
+          var fp = expFingerprint(nx);
+          var exist = curExpById[nx.id];
+          if(exist){
+            if(expFingerprint(exist) === fp){ skipExps++; return; }
+            nx.id = nextId();
+          }
+          if(curExpFp[fp]){ skipExps++; return; }
+          curExpFp[fp] = 1;
+          curExpById[nx.id] = nx;
+          addExps.push(nx);
+        });
+        saveExpenses(curExps.concat(addExps));
+
+        var msg = '✅ 匯入完成（逐筆比對）！\n'
+          + '收入：新增 ' + addRecs.length + ' 筆，跳過 ' + skipRecs + ' 筆（已存在）\n'
+          + '支出：新增 ' + addExps.length + ' 筆，跳過 ' + skipExps + ' 筆（已存在）\n'
+          + '設定維持不變。\n'
+          + '匯入前資料已自動備份到「下載」資料夾。';
+        alert(msg);
+
+        renderHomeTypeBtn();calcTotal();renderTodayList();refreshStatCards();refreshExpCards();renderStatTypeCard();renderExpTypeCard();
       });
-
-      var addRecs = [], skipRecs = 0;
-      d.records.forEach(function(r){
-        var nr = JSON.parse(JSON.stringify(r));
-        var fp = recFingerprint(nr);
-        var exist = curRecById[nr.id];
-        if(exist){
-          if(recFingerprint(exist) === fp){ skipRecs++; return; }
-          nr.id = nextId();
-        }
-        if(curRecFp[fp]){ skipRecs++; return; }
-        curRecFp[fp] = 1;
-        curRecById[nr.id] = nr;
-        addRecs.push(nr);
-      });
-      saveRecords(curRecs.concat(addRecs));
-
-      var curExps = getExpenses();
-      var curExpById = {};
-      var curExpFp = {};
-      curExps.forEach(function(x){
-        curExpById[x.id] = x;
-        curExpFp[expFingerprint(x)] = 1;
-      });
-
-      var addExps = [], skipExps = 0;
-      (Array.isArray(d.expenses)?d.expenses:[]).forEach(function(x){
-        var nx = JSON.parse(JSON.stringify(x));
-        var fp = expFingerprint(nx);
-        var exist = curExpById[nx.id];
-        if(exist){
-          if(expFingerprint(exist) === fp){ skipExps++; return; }
-          nx.id = nextId();
-        }
-        if(curExpFp[fp]){ skipExps++; return; }
-        curExpFp[fp] = 1;
-        curExpById[nx.id] = nx;
-        addExps.push(nx);
-      });
-      saveExpenses(curExps.concat(addExps));
-
-      var msg = '✅ 匯入完成（逐筆比對）！\n'
-        + '收入：新增 ' + addRecs.length + ' 筆，跳過 ' + skipRecs + ' 筆（已存在）\n'
-        + '支出：新增 ' + addExps.length + ' 筆，跳過 ' + skipExps + ' 筆（已存在）\n'
-        + '設定維持不變。\n'
-        + '匯入前資料已自動備份到「下載」資料夾。';
-      alert(msg);
-
-      renderHomeTypeBtn();calcTotal();renderTodayList();refreshStatCards();refreshExpCards();renderStatTypeCard();renderExpTypeCard();
     }catch(err){alert('❌ 檔案讀取失敗');}
   };
   r.readAsText(f);this.value=null;
@@ -998,7 +1046,6 @@ function updateNavActive(pageId){
   });
 }
 
-/* ===== 手機上一頁 / 返回鍵攔截 ===== */
 var _pageHistory = ['pageHome'];
 var _isPopping = false;
 
@@ -1149,7 +1196,6 @@ function calcDayStats(recs,targetDate){
   return{daySum:daySum,cashSum:cashSum,nonCashSum:nonCashSum,feeSum:feeSum,deductSum:deductSum,typeCount:typeCount};
 }
 
-/* 產生第二行營業類別 HTML */
 function buildSummaryLine2(typeCount){
   var html='';
   for(var k in typeCount){
@@ -1536,8 +1582,6 @@ function renderStatDayDetail(dateStr){
   setTimeout(fitAllStatText,0);
 }
 
-/* ===== 支出統計 ===== */
-
 function updateExpSummary(title,prefix){
   var s=calcExpStat(prefix||'');
   document.getElementById('expSummaryTitle').textContent=title;
@@ -1686,8 +1730,6 @@ function expDrillToDayList(m){expViewStack=[{type:'dayList',month:String(m)}];re
 function expDrillToMonthList(y){expViewStack=[{type:'monthList',year:String(y)}];renderExpView();}
 function expDrillToDayDetail(d){expViewStack=[{type:'dayDetail',date:String(d)}];renderExpView();}
 
-/* ===== 修改 / 刪除 ===== */
-
 var editModal=document.getElementById('editModal');
 function openEdit(id){
   editId=id;var r=getRecords().find(function(x){return x.id===id;});if(!r)return;
@@ -1705,7 +1747,14 @@ function saveEdit(){
   else{var fee2=raw*Number(pi.rate||0)/100,net2=raw-fee2;if(ti)net2-=Number(ti.deduct||0);if(net2<0)net2=0;recs[idx].type=type;recs[idx].pay=payName;recs[idx].raw=raw;recs[idx].fee=fee2;recs[idx].deduct=ti?Number(ti.deduct||0):0;recs[idx].net=Math.round(net2);delete recs[idx].splits;}
   saveRecords(recs);closeEditModal();calcTotal();renderTodayList();renderStatView();renderStatTypeCard();refreshStatCards();refreshExpCards();
 }
-function deleteRec(){if(editId===null)return;if(!confirm('確定要刪除這筆紀錄嗎？'))return;saveRecords(getRecords().filter(function(r){return r.id!==editId;}));closeEditModal();calcTotal();renderTodayList();renderStatView();renderStatTypeCard();refreshStatCards();refreshExpCards();}
+function deleteRec(){
+  if(editId===null)return;
+  showConfirm('確定要刪除這筆紀錄嗎？', function(ok){
+    if(!ok)return;
+    saveRecords(getRecords().filter(function(r){return r.id!==editId;}));
+    closeEditModal();calcTotal();renderTodayList();renderStatView();renderStatTypeCard();refreshStatCards();refreshExpCards();
+  });
+}
 
 var editExpModal=document.getElementById('editExpModal');
 function openEditExp(id){
@@ -1723,7 +1772,14 @@ function saveEditExp(){
   exps[idx].cat=cat;exps[idx].color=catItem?catItem.color:(exps[idx].color||'#dc2626');exps[idx].raw=raw;exps[idx].note=note;
   saveExpenses(exps);closeEditExpModal();renderExpView();refreshExpCards();refreshStatCards();
 }
-function deleteExp(){if(editExpId===null)return;if(!confirm('確定要刪除這筆支出嗎？'))return;saveExpenses(getExpenses().filter(function(e){return e.id!==editExpId;}));closeEditExpModal();renderExpView();refreshExpCards();refreshStatCards();}
+function deleteExp(){
+  if(editExpId===null)return;
+  showConfirm('確定要刪除這筆支出嗎？', function(ok){
+    if(!ok)return;
+    saveExpenses(getExpenses().filter(function(e){return e.id!==editExpId;}));
+    closeEditExpModal();renderExpView();refreshExpCards();refreshStatCards();
+  });
+}
 
 function renderSetting(){
   var tw=document.getElementById('typeListSet');tw.innerHTML='';
