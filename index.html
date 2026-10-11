@@ -149,34 +149,51 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .home-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 .home-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 
-/* ===== 年 / 月 / 日列表：高度、字體統一跟「當日營業合計」一樣 ===== */
+/* ===== 統計列表：不用卡片、直接鋪滿、整排可點 ===== */
+.stat-list-box{
+  background:transparent;
+  border-radius:0;
+  box-shadow:none;
+  overflow:hidden;
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  margin:0 -6px;
+  padding:0 6px;
+}
+
+/* 年 / 月 / 日列表：字型統一 .96px，整排可點 */
 .stat-list-head,.stat-list-row{display:grid;grid-template-columns:72px 1fr 1fr 1fr;gap:4px;align-items:center;font-variant-numeric:tabular-nums;}
-.stat-list-head{background:#f8fafc;padding:4px 6px;color:#64748b;font-size:calc(.84px * var(--fs-num));font-weight:800;position:sticky;top:0;z-index:2;}
+.stat-list-head{background:#fff;padding:5px 6px;color:#64748b;font-size:calc(.96px * var(--fs-num));font-weight:800;position:sticky;top:0;z-index:2;border-bottom:1px solid #e2e8f0;}
 .stat-list-head>div{text-align:right;}
 .stat-list-head>div:first-child{text-align:left;}
 .stat-list-head .head-amount{text-align:right;}
-.stat-list-row{padding:4px 6px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));min-width:0;cursor:pointer;line-height:1.25;}
+.stat-list-row{padding:5px 6px;border-bottom:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));min-width:0;cursor:pointer;line-height:1.25;transition:background .1s;}
+.stat-list-row:last-child{border-bottom:none;}
 .stat-list-row:active{background:#eff6ff;}
 .stat-list-row .item-name{color:#2563eb;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;}
 .stat-list-row .item-main{color:#2563eb;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;letter-spacing:-0.02em;}
 .stat-list-row .item-fee{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#dc2626;letter-spacing:-0.02em;}
 .stat-list-row .item-net{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#059669;letter-spacing:-0.02em;}
 
-/* 單筆明細（營業）：高度、字體統一跟「當日營業合計」一樣 */
-.stat-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.25;}
+/* 單筆明細（營業）：字型統一 .96px，整排可點 */
+.stat-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:5px 6px;border-bottom:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.25;transition:background .1s;}
+.stat-detail-row:last-child{border-bottom:none;}
 .stat-detail-row:active{background:#eff6ff;}
 .stat-detail-row>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:4px 4px;position:sticky;top:0;z-index:2;font-size:calc(.84px * var(--fs-num));}
-.stat-detail-head .amount{text-align:right;}
+.stat-detail-row.stat-detail-head{font-weight:800;background:#fff;color:#64748b;padding:5px 6px;position:sticky;top:0;z-index:2;font-size:calc(.96px * var(--fs-num));border-bottom:1px solid #e2e8f0;}
+.stat-detail-row.stat-detail-head .amount{text-align:right;}
 .stat-detail-amt{text-align:right;color:#2563eb;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 .stat-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 .stat-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 
-/* 單筆明細（支出）：高度、字體統一跟「當日營業合計」一樣 */
-.stat-detail-row-exp{display:grid;grid-template-columns:48px 48px 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.84px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.25;}
+/* 單筆明細（支出）：字型統一 .96px，整排可點 */
+.stat-detail-row-exp{display:grid;grid-template-columns:48px 48px 1fr 1fr;gap:4px;align-items:center;padding:5px 6px;border-bottom:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.25;transition:background .1s;}
+.stat-detail-row-exp:last-child{border-bottom:none;}
 .stat-detail-row-exp:active{background:#eff6ff;}
 .stat-detail-row-exp>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.stat-detail-row-exp.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:4px 4px;position:sticky;top:0;z-index:2;font-size:calc(.84px * var(--fs-num));}
+.stat-detail-row-exp.stat-detail-head{font-weight:800;background:#fff;color:#64748b;padding:5px 6px;position:sticky;top:0;z-index:2;font-size:calc(.96px * var(--fs-num));border-bottom:1px solid #e2e8f0;}
 .stat-detail-row-exp.stat-detail-head .amount{text-align:right;}
 
 /* ===== 統計卡片與按鈕：壓縮邊距 ===== */
@@ -298,9 +315,6 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .stat-summary-grid strong.cash{color:#16a34a;}
 .stat-summary-grid strong.pay{color:#0891b2;}
 
-/* 統計頁：只捲動列表 */
-.stat-list-box{background:#fff;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.06);overflow:hidden;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-
 /* 設定頁：可捲動 */
 #pageSetting{overflow-y:auto;}
 
@@ -403,7 +417,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 
 @media(max-width:400px){
   .stat-list-head,.stat-list-row{grid-template-columns:52px minmax(0,1fr) minmax(0,0.9fr) minmax(0,1fr);gap:3px;padding-left:4px;padding-right:4px}
-  .stat-detail-row{grid-template-columns:36px 36px minmax(0,1fr) minmax(0,1fr) minmax(0,0.85fr) minmax(0,0.95fr);gap:2px;padding-left:3px;padding-right:3px;font-size:calc(.78px * var(--fs-num));}
+  .stat-detail-row{grid-template-columns:36px 36px minmax(0,1fr) minmax(0,1fr) minmax(0,0.85fr) minmax(0,0.95fr);gap:2px;padding-left:3px;padding-right:3px;font-size:calc(.9px * var(--fs-num));}
   .stat-detail-row-exp{grid-template-columns:40px 40px 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
   .home-detail-row{grid-template-columns:28px 36px 36px minmax(0,1.1fr) minmax(0,1fr) minmax(0,0.85fr) minmax(0,0.95fr);gap:2px;padding-left:3px;padding-right:3px;font-size:calc(.78px * var(--fs-num));}
 }
@@ -1773,7 +1787,7 @@ window.onload=function(){
   renderExpTypeCard();
   updateNavActive('pageHome');
   updateTodayDateText();
-  setTimeout(fitAllStatText, 100);
+  setTimeout(fitAllStatText,100);
 };
 </script>
 </body>
