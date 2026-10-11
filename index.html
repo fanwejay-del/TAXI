@@ -44,7 +44,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
   text-align:center;
   border:2px solid #e2e8f0;
   border-radius:12px;
-  margin:4px 0 8px;      /* 上緣貼近標題、下緣也縮短 */
+  margin:4px 0 8px;
   background:#f8fafc;
   color:#0f172a;
   overflow:hidden;
@@ -72,7 +72,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 /* ===== 付款／支出類別：一行 3 個、彈性平均分配 ===== */
 .payKey{
   display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));  /* 改成 3 欄 */
+  grid-template-columns:repeat(3,minmax(0,1fr));
   gap:clamp(5px,2vw,10px);
   margin-top:8px;
   width:100%;
@@ -82,7 +82,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .payBtn{
   width:100%;
   min-width:0;
-  padding:clamp(10px,3.5vw,16px) 4px;   /* 稍微縮小 padding 以符合 3 欄 */
+  padding:clamp(10px,3.5vw,16px) 4px;
   border:none;
   border-radius:12px;
   color:#fff;
@@ -294,6 +294,10 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .stat-summary-grid strong.net{color:#059669;}
 .stat-summary-grid strong.cost{color:#ea580c;}
 
+/* 新增：現金／非現金付款方式的金額顏色 */
+.stat-summary-grid strong.cash{color:#16a34a;}
+.stat-summary-grid strong.pay{color:#0891b2;}
+
 /* 統計頁：只捲動列表 */
 .stat-list-box{background:#fff;border-radius:10px;box-shadow:0 1px 5px rgba(0,0,0,.06);overflow:hidden;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 
@@ -387,11 +391,9 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
   box-shadow: 0 1px 0 rgba(0,0,0,0.3), 0 3px 8px rgba(0,0,0,0.2) !important;
   filter: brightness(0.92);
 }
-/* 支出類別按鈕也套用相同強化（它們也是 .payBtn） */
 #expCatWrap .payBtn {
   font-size: clamp(14px, 4vw, 18px) !important;
 }
-/* 取消按鈕稍微低調但還是清楚 */
 .modal-card > button[onclick*="close"] {
   font-weight: 700;
   box-shadow: 0 3px 0 #64748b, 0 5px 10px rgba(0,0,0,0.15);
@@ -402,7 +404,6 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
   box-shadow: 0 1px 0 #475569, 0 3px 8px rgba(0,0,0,0.15);
 }
 
-/* 支出輸入頁：縮小備註與取消按鈕的邊距 */
 #expInputModal .noteInput { margin-top: 6px; }
 #expInputModal .modal-card > button[onclick*="close"] { margin-top: 4px; }
 </style>
@@ -1131,18 +1132,35 @@ function getCostExpenses(prefix){
 function calcIncomeStat(prefix){
   var recs=getFilteredRecords().filter(function(r){return String(r.date||'').indexOf(prefix)===0;});
   var sum=0,fee=0,net=0,typeCount={};
+  var cashSum=0, nonCashSum=0;
+  var paySum={};  // 每個付款方式的金額
+  config.payList.forEach(function(p){paySum[p.name]=0;});
   config.typeList.forEach(function(t){typeCount[t.name]=0;});
   recs.forEach(function(r){
     sum+=Number(r.raw||0);
     fee+=Number(r.fee||0);
     net+=Number(r.net||0);
     typeCount[r.type]=(typeCount[r.type]||0)+1;
+
+    // 計算現金 / 非現金 / 各付款方式金額（使用 splits 或 pay）
+    if(r.splits&&Array.isArray(r.splits)){
+      r.splits.forEach(function(s){
+        if(isCashPay(s.pay))cashSum+=Number(s.amount||0);
+        else nonCashSum+=Number(s.amount||0);
+        paySum[s.pay]=(paySum[s.pay]||0)+Number(s.amount||0);
+      });
+    }else{
+      if(isCashPay(r.pay))cashSum+=Number(r.raw||0);
+      else nonCashSum+=Number(r.raw||0);
+      paySum[r.pay]=(paySum[r.pay]||0)+Number(r.raw||0);
+    }
   });
   var costList=getCostExpenses(prefix);
   var cost=costList.reduce(function(s,e){return s+Number(e.raw||0);},0);
   return{
     sum:sum,fee:fee,net:net,cnt:recs.length,
-    typeCount:typeCount,cost:cost
+    typeCount:typeCount,cost:cost,
+    cashSum:cashSum, nonCashSum:nonCashSum, paySum:paySum
   };
 }
 
@@ -1225,6 +1243,13 @@ function updateStatSummary(title,prefix){
     +'</div>';
   html+='<div class="row-sub">';
   html+='<span class="pair"><span>手續費</span><strong class="fee">'+statMoney(s.fee)+'</strong></span>';
+  // 現金 / 非現金 / 各付款方式
+  html+='<span class="pair"><span>現金</span><strong class="cash">'+statMoney(s.cashSum)+'</strong></span>';
+  config.payList.forEach(function(p){
+    if(isCashPay(p.name))return; // 現金已在上面單獨顯示
+    var amt=s.paySum[p.name]||0;
+    html+='<span class="pair"><span>'+escapeHtml(p.name)+'</span><strong class="pay">'+statMoney(amt)+'</strong></span>';
+  });
   config.typeList.forEach(function(t){
     html+='<span class="pair"><span>'+escapeHtml(t.name)+'</span><strong>'+ (s.typeCount[t.name]||0) +'</strong></span>';
   });
