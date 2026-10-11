@@ -15,8 +15,8 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .page{display:none;padding:0 4px;flex:1;min-height:0;flex-direction:column;overflow:hidden;}
 .page.active{display:flex;}
 
-/* ===== 首頁營業類別按鈕：一行最多 4 個，第 5 個自動換行 ===== */
-.row2{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:8px;margin-bottom:8px;overflow:hidden;}
+/* ===== 首頁營業類別按鈕：彈性收縮，最多一行 4 個，第 5 個換行 ===== */
+.row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:7px;margin-top:8px;margin-bottom:8px;overflow:hidden;}
 .row2 .bigBtn{width:100%;min-width:0;}
 
 .card{background:#fff;border-radius:10px;padding:4px 4px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:3px;}
