@@ -351,7 +351,6 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
   font-variant-numeric:tabular-nums;
   font-size:calc(.96px * var(--fs-num));
 }
-/* 首頁營業額那個數字稍微大一點就好 */
 #daySummaryCard #dayTotal{
   font-size:calc(1.05px * var(--fs-num)) !important;
 }
@@ -942,12 +941,26 @@ function updateNavActive(pageId){
   });
 }
 
-function showPage(id){
+/* ===== 手機上一頁 / 返回鍵攔截 ===== */
+var _pageHistory = ['pageHome'];  // 記錄頁面切換歷程
+var _isPopping = false;            // 避免 popstate 遞迴
+
+function showPage(id, skipHistory){
   var cur=document.querySelector('.page.active');
-  if(cur&&cur.id!==id&&id!=='pageHome'){if(historyStack[historyStack.length-1]!==cur.id)historyStack.push(cur.id);}
+  var curId = cur ? cur.id : 'pageHome';
+
+  // 如果頁面沒變，不做事
+  if(curId === id){
+    updateNavActive(id);
+    return;
+  }
+
+  // 切換頁面
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
   document.getElementById(id).classList.add('active');
   updateNavActive(id);
+
+  // 頁面初始化
   if(id==='pageSetting'){
     document.getElementById('setStartHour').value=config.businessHour.start;
     document.getElementById('setEndHour').value=config.businessHour.end;
@@ -960,7 +973,41 @@ function showPage(id){
   if(id==='pageStat')showStatDefault();
   if(id==='pageExpStat')showExpDefault();
   if(id==='pageHome'){renderHomeTypeBtn();updateTodayDateText();setTimeout(fitAllStatText,0);}
+
+  // 歷史紀錄：只有在不是 popstate 觸發時才 pushState
+  if(!skipHistory){
+    _pageHistory.push(id);
+    try{
+      history.pushState({page:id, ts:Date.now()}, '', location.href);
+    }catch(e){}
+  }
 }
+
+/* 手機上一頁 / 返回鍵：在 App 內切換頁面，首頁再按才離開 */
+window.addEventListener('popstate', function(e){
+  if(_isPopping) return;
+
+  // 如果目前不在首頁，就退回上一個頁面
+  if(_pageHistory.length > 1){
+    _isPopping = true;
+    _pageHistory.pop();                       // 移除目前頁
+    var prev = _pageHistory[_pageHistory.length-1] || 'pageHome';
+    showPage(prev, true);                      // skipHistory = true（不再 push）
+    _isPopping = false;
+
+    // 因為 popstate 已經退了一筆，這裡要再補一筆，避免下次按上一頁直接跳出
+    try{
+      history.pushState({page:prev, ts:Date.now()}, '', location.href);
+    }catch(e){}
+  }
+  // 若已在首頁，讓瀏覽器自然離開 App
+});
+
+/* 初始化：先塞一筆歷史，讓首次按上一頁時能攔截 */
+try{
+  history.replaceState({page:'pageHome', ts:Date.now()}, '', location.href);
+  history.pushState({page:'pageHome', ts:Date.now()}, '', location.href);
+}catch(e){}
 
 function updateTodayDateText(){
   var el=document.getElementById('todayDateText');
@@ -1247,13 +1294,11 @@ function updateStatSummary(title,prefix){
   var netAfterCost=s.net-s.cost;
   var html='';
 
-  // 第一行：營業收入 + 淨收入（同一行）
   html+='<div class="row-main">'
     +'<span class="pair"><span>營業收入</span><strong>'+statMoney(s.sum)+'</strong></span>'
     +'<span class="pair"><span>'+(hasCost?'淨收入(扣成本)':'淨收入')+'</span><strong class="net">'+statMoney(hasCost?netAfterCost:s.net)+'</strong></span>'
     +'</div>';
 
-  // 第二行：手續費、現金、各非現金付款方式、類別筆數
   html+='<div class="row-sub">';
   html+='<span class="pair"><span>手續費</span><strong class="fee">'+statMoney(s.fee)+'</strong></span>';
   html+='<span class="pair"><span>現金</span><strong class="cash">'+statMoney(s.cashSum)+'</strong></span>';
@@ -1267,7 +1312,6 @@ function updateStatSummary(title,prefix){
   });
   html+='</div>';
 
-  // 第三行：營業成本（若有）
   if(hasCost){
     html+='<div class="row-cost"><span>營業成本</span><strong class="cost">'+statMoney(s.cost)+'</strong></div>';
   }
