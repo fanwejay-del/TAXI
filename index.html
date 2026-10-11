@@ -440,11 +440,12 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 #expInputModal .noteInput { margin-top: 4px; }
 #expInputModal .modal-card > button[onclick*="close"] { margin-top: 3px; }
 
-/* ===== 自訂確認 Modal ===== */
+/* ===== 自訂確認 / 提示 Modal ===== */
 #confirmModal{
   background:rgba(0,0,0,.45);
   align-items:center;
   justify-content:center;
+  z-index:200;
 }
 #confirmModal.active{display:flex;}
 #confirmModal .confirm-box{
@@ -452,7 +453,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   border-radius:16px;
   padding:24px 20px;
   box-shadow:0 8px 30px rgba(0,0,0,.25);
-  max-width:320px;
+  max-width:340px;
   width:100%;
   text-align:center;
 }
@@ -461,13 +462,17 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   font-weight:700;
   color:#0f172a;
   margin-bottom:20px;
-  line-height:1.5;
+  line-height:1.6;
   white-space:pre-line;
+  text-align:left;
 }
 #confirmModal .confirm-btns{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:10px;
+}
+#confirmModal .confirm-btns.single{
+  grid-template-columns:1fr;
 }
 #confirmModal .confirm-btns button{
   padding:12px;
@@ -483,6 +488,10 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 }
 #confirmModal .confirm-ok{
   background:#dc2626;
+  color:#fff;
+}
+#confirmModal .confirm-ok-blue{
+  background:#2563eb;
   color:#fff;
 }
 
@@ -578,7 +587,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <div id="confirmModal" class="modal">
   <div class="confirm-box">
     <div id="confirmMsg" class="confirm-msg">確定要刪除這筆紀錄嗎？</div>
-    <div class="confirm-btns">
+    <div id="confirmBtns" class="confirm-btns">
       <button class="confirm-cancel" onclick="closeConfirm(false)">取消</button>
       <button class="confirm-ok" onclick="closeConfirm(true)">確定</button>
     </div>
@@ -673,13 +682,31 @@ var currentType="",editId=null,editExpId=null,historyStack=[],modalAmount="",exp
 var statTypeFilter="";
 var expCatFilter="";
 
-/* ===== 自訂確認 Modal ===== */
+/* ===== 自訂確認 / 提示 Modal ===== */
 var _confirmResolve=null;
-function showConfirm(msg,callback){
+
+function showConfirm(msg,callback,opts){
+  opts=opts||{};
   document.getElementById('confirmMsg').textContent=msg;
+  var btnWrap=document.getElementById('confirmBtns');
+  if(opts.single){
+    btnWrap.classList.add('single');
+    btnWrap.innerHTML='<button class="'+(opts.okClass||'confirm-ok-blue')+'" onclick="closeConfirm(true)">'+(opts.okText||'確定')+'</button>';
+  }else{
+    btnWrap.classList.remove('single');
+    btnWrap.innerHTML='<button class="confirm-cancel" onclick="closeConfirm(false)">'+(opts.cancelText||'取消')+'</button>'
+      +'<button class="'+(opts.okClass||'confirm-ok')+'" onclick="closeConfirm(true)">'+(opts.okText||'確定')+'</button>';
+  }
   document.getElementById('confirmModal').classList.add('active');
   _confirmResolve=callback;
 }
+
+function showAlert(msg,callback){
+  showConfirm(msg, function(){
+    if(callback)callback();
+  }, {single:true, okText:'確定', okClass:'confirm-ok-blue'});
+}
+
 function closeConfirm(result){
   document.getElementById('confirmModal').classList.remove('active');
   if(_confirmResolve){
@@ -929,7 +956,17 @@ function getTodayWeekdayText(){
   return (d.getMonth()+1)+'/'+String(d.getDate()).padStart(2,'0')+' 週'+wd;
 }
 
-function exportBackup(){var data={saveTime:new Date().toISOString(),records:getRecords(),expenses:getExpenses()};var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='計程車記帳備份_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);alert('✅ 備份檔已下載！（僅紀錄，不含設定）');}
+function exportBackup(){
+  var data={saveTime:new Date().toISOString(),records:getRecords(),expenses:getExpenses()};
+  var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='計程車記帳備份_'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showAlert('✅ 備份檔已下載！\n（僅紀錄，不含設定）');
+}
 
 function isValidRecord(r){return r&&typeof r==='object'&&typeof r.id!=='undefined'&&typeof r.type==='string'&&typeof r.pay==='string'&&Number.isFinite(Number(r.raw))&&Number.isFinite(Number(r.net))&&typeof r.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(r.date);}
 function isValidExpense(e){return e&&typeof e==='object'&&typeof e.id!=='undefined'&&typeof e.cat==='string'&&Number.isFinite(Number(e.raw))&&typeof e.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(e.date);}
@@ -947,10 +984,10 @@ document.getElementById('fileImport').onchange=function(e){
   r.onload=function(ev){
     try{
       var d=JSON.parse(ev.target.result);
-      if(!Array.isArray(d.records)){alert('❌ 備份檔格式錯誤（缺少 records）');return;}
-      if(d.records.find(function(x){return !isValidRecord(x);})){alert('❌ 收入紀錄格式錯誤，已中止匯入');return;}
-      if(d.expenses&&!Array.isArray(d.expenses)){alert('❌ 支出紀錄格式錯誤');return;}
-      if(d.expenses&&d.expenses.find(function(x){return !isValidExpense(x);})){alert('❌ 支出紀錄格式錯誤，已中止匯入');return;}
+      if(!Array.isArray(d.records)){showAlert('❌ 備份檔格式錯誤（缺少 records）');return;}
+      if(d.records.find(function(x){return !isValidRecord(x);})){showAlert('❌ 收入紀錄格式錯誤，已中止匯入');return;}
+      if(d.expenses&&!Array.isArray(d.expenses)){showAlert('❌ 支出紀錄格式錯誤');return;}
+      if(d.expenses&&d.expenses.find(function(x){return !isValidExpense(x);})){showAlert('❌ 支出紀錄格式錯誤，已中止匯入');return;}
 
       showConfirm('📥 匯入將逐筆比對：\n· id 本機沒有 → 補上\n· id 本機已有且內容相同 → 跳過\n· id 撞到但內容不同 → 補上（自動配新 id）\n不會刪除任何紀錄，也不會改設定。\n確定繼續？', function(ok){
         if(!ok)return;
@@ -1012,16 +1049,16 @@ document.getElementById('fileImport').onchange=function(e){
         });
         saveExpenses(curExps.concat(addExps));
 
-        var msg = '✅ 匯入完成（逐筆比對）！\n'
+        var msg = '✅ 匯入完成（逐筆比對）！\n\n'
           + '收入：新增 ' + addRecs.length + ' 筆，跳過 ' + skipRecs + ' 筆（已存在）\n'
           + '支出：新增 ' + addExps.length + ' 筆，跳過 ' + skipExps + ' 筆（已存在）\n'
           + '設定維持不變。\n'
           + '匯入前資料已自動備份到「下載」資料夾。';
-        alert(msg);
+        showAlert(msg);
 
         renderHomeTypeBtn();calcTotal();renderTodayList();refreshStatCards();refreshExpCards();renderStatTypeCard();renderExpTypeCard();
       });
-    }catch(err){alert('❌ 檔案讀取失敗');}
+    }catch(err){showAlert('❌ 檔案讀取失敗');}
   };
   r.readAsText(f);this.value=null;
 };
@@ -1132,7 +1169,7 @@ function clearNum(){modalAmount='';document.getElementById('amountShow').textCon
 function renderPayBtn(){var w=document.getElementById('payBtnWrap');w.innerHTML='';config.payList.forEach(function(p){var b=document.createElement('button');b.className='payBtn';b.style.background=p.color||'#557799';b.textContent=p.name;b.onclick=function(){saveRecord(p);};w.appendChild(b);});setTimeout(function(){fitModalContent('inputModal');},50);}
 
 function saveRecord(payItem){
-  var amt=Number(modalAmount);if(!amt||amt<=0){alert('請輸入金額');return;}
+  var amt=Number(modalAmount);if(!amt||amt<=0){showAlert('請輸入金額');return;}
   var now=new Date(),typeItem=config.typeList.find(function(t){return t.name===currentType;});
   if(payItem.name==='好孕券'&&amt>250){
     var fee=0,net=amt-fee;if(typeItem)net-=Number(typeItem.deduct||0);if(net<0)net=0;
@@ -1162,7 +1199,7 @@ function pressExpNum(n){if(expModalAmount==='0')expModalAmount='';expModalAmount
 function clearExpNum(){expModalAmount='';document.getElementById('expAmountShow').textContent='0';}
 function renderExpCatBtn(){var w=document.getElementById('expCatWrap');w.innerHTML='';config.expList.forEach(function(c){var b=document.createElement('button');b.className='payBtn';b.style.background=c.color||'#dc2626';b.textContent=c.name;b.onclick=function(){saveExpense(c);};w.appendChild(b);});setTimeout(function(){fitModalContent('expInputModal');},50);}
 function saveExpense(cat){
-  var amt=Number(expModalAmount);if(!amt||amt<=0){alert('請輸入金額');return;}
+  var amt=Number(expModalAmount);if(!amt||amt<=0){showAlert('請輸入金額');return;}
   var note=document.getElementById('expNoteInput').value.trim(),now=new Date(),list=getExpenses();
   list.unshift({id:nextId(),cat:cat.name,color:cat.color,raw:amt,note:note,date:getBizDate(now),time:fmtTime()});
   saveExpenses(list);closeExpInputModal();refreshExpCards();renderExpView();refreshStatCards();
@@ -1741,7 +1778,7 @@ function closeEditModal(){editModal.classList.remove('active');editId=null;}
 function saveEdit(){
   var recs=getRecords(),idx=recs.findIndex(function(r){return r.id===editId;});if(idx<0)return;
   var type=document.getElementById('editType').value,payName=document.getElementById('editPay').value,raw=Number(document.getElementById('editAmount').value);
-  if(!raw||raw<=0){alert('金額錯誤');return;}
+  if(!raw||raw<=0){showAlert('金額錯誤');return;}
   var pi=config.payList.find(function(p){return p.name===payName;}),ti=config.typeList.find(function(t){return t.name===type;});if(!pi)return;
   if(payName==='好孕券'&&raw>250){var fee=0,net=raw;if(ti)net-=Number(ti.deduct||0);if(net<0)net=0;recs[idx].type=type;recs[idx].pay='好孕券';recs[idx].raw=raw;recs[idx].fee=fee;recs[idx].deduct=ti?Number(ti.deduct||0):0;recs[idx].net=Math.round(net);recs[idx].splits=[{pay:'好孕券',amount:250},{pay:(config.payList[0]&&config.payList[0].name)||'現金',amount:raw-250}];}
   else{var fee2=raw*Number(pi.rate||0)/100,net2=raw-fee2;if(ti)net2-=Number(ti.deduct||0);if(net2<0)net2=0;recs[idx].type=type;recs[idx].pay=payName;recs[idx].raw=raw;recs[idx].fee=fee2;recs[idx].deduct=ti?Number(ti.deduct||0):0;recs[idx].net=Math.round(net2);delete recs[idx].splits;}
@@ -1767,7 +1804,7 @@ function closeEditExpModal(){editExpModal.classList.remove('active');editExpId=n
 function saveEditExp(){
   var exps=getExpenses(),idx=exps.findIndex(function(e){return e.id===editExpId;});if(idx<0)return;
   var cat=document.getElementById('editExpCat').value,raw=Number(document.getElementById('editExpAmount').value),note=document.getElementById('editExpNote').value.trim();
-  if(!raw||raw<=0){alert('金額錯誤');return;}
+  if(!raw||raw<=0){showAlert('金額錯誤');return;}
   var catItem=config.expList.find(function(c){return c.name===cat;});
   exps[idx].cat=cat;exps[idx].color=catItem?catItem.color:(exps[idx].color||'#dc2626');exps[idx].raw=raw;exps[idx].note=note;
   saveExpenses(exps);closeEditExpModal();renderExpView();refreshExpCards();refreshStatCards();
@@ -1811,11 +1848,11 @@ function renderSetting(){
   });
 }
 
-function addNewTypeTemp(){var n=document.getElementById('newTypeName').value.trim(),d=Number(document.getElementById('newTypeDeduct').value)||0;if(!n){alert('請輸入名稱');return;}config.typeList.push({name:n,deduct:d,color:pickUnusedColorFromList(config.typeList)});saveConfig();renderSetting();renderHomeTypeBtn();renderStatTypeCard();document.getElementById('newTypeName').value='';document.getElementById('newTypeDeduct').value='';}
+function addNewTypeTemp(){var n=document.getElementById('newTypeName').value.trim(),d=Number(document.getElementById('newTypeDeduct').value)||0;if(!n){showAlert('請輸入名稱');return;}config.typeList.push({name:n,deduct:d,color:pickUnusedColorFromList(config.typeList)});saveConfig();renderSetting();renderHomeTypeBtn();renderStatTypeCard();document.getElementById('newTypeName').value='';document.getElementById('newTypeDeduct').value='';}
 function delTypeTemp(i){config.typeList.splice(i,1);saveConfig();renderSetting();renderHomeTypeBtn();renderStatTypeCard();}
-function addNewPayTemp(){var n=document.getElementById('newPayName').value.trim(),r=Number(document.getElementById('newPayRate').value)||0;if(!n){alert('請輸入名稱');return;}config.payList.push({name:n,rate:r,color:pickUnusedColorFromList(config.payList)});saveConfig();renderSetting();document.getElementById('newPayName').value='';document.getElementById('newPayRate').value='';}
+function addNewPayTemp(){var n=document.getElementById('newPayName').value.trim(),r=Number(document.getElementById('newPayRate').value)||0;if(!n){showAlert('請輸入名稱');return;}config.payList.push({name:n,rate:r,color:pickUnusedColorFromList(config.payList)});saveConfig();renderSetting();document.getElementById('newPayName').value='';document.getElementById('newPayRate').value='';}
 function delPayTemp(i){config.payList.splice(i,1);saveConfig();renderSetting();}
-function addNewExpTemp(){var n=document.getElementById('newExpName').value.trim();if(!n){alert('請輸入名稱');return;}config.expList.push({name:n,color:pickUnusedColorFromList(config.expList),isCost:false});saveConfig();renderSetting();renderExpTypeCard();document.getElementById('newExpName').value='';}
+function addNewExpTemp(){var n=document.getElementById('newExpName').value.trim();if(!n){showAlert('請輸入名稱');return;}config.expList.push({name:n,color:pickUnusedColorFromList(config.expList),isCost:false});saveConfig();renderSetting();renderExpTypeCard();document.getElementById('newExpName').value='';}
 function delExpTemp(i){config.expList.splice(i,1);saveConfig();renderSetting();renderExpTypeCard();}
 
 window.addEventListener('resize', function(){
