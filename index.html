@@ -206,6 +206,40 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-type-btn.active{color:#fff !important;box-shadow:0 2px 8px rgba(0,0,0,.25) !important;}
 .stat-type-btn.all-btn.active{background:#0f172a !important;}
 
+/* 新增：付款方式查詢列（與營業類別按鈕同款，一行6個） */
+.stat-pay-card{
+  background:#fff !important;
+  border-radius:10px !important;
+  padding:4px !important;
+  box-shadow:0 1px 4px rgba(0,0,0,.06) !important;
+  margin-bottom:3px !important;
+  display:grid !important;
+  grid-template-columns:repeat(6, minmax(0,1fr)) !important;
+  gap:4px !important;
+  flex-shrink:0;
+}
+.stat-pay-btn{
+  width:100% !important;
+  min-width:0 !important;
+  padding:6px 3px !important;
+  border:none !important;
+  border-radius:8px !important;
+  background:#e2e8f0 !important;
+  color:#475569 !important;
+  font-size:clamp(10px, calc(.92px * var(--fs-num)), 15px) !important;
+  font-weight:inherit !important;
+  cursor:pointer !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  transition:filter .12s,transform .1s,box-shadow .12s !important;
+  box-shadow:0 1px 3px rgba(0,0,0,.12) !important;
+  font-family:inherit !important;
+}
+.stat-pay-btn:active{filter:brightness(.88) !important;transform:scale(.96) !important;}
+.stat-pay-btn.active{color:#fff !important;box-shadow:0 2px 8px rgba(0,0,0,.25) !important;}
+.stat-pay-btn.all-btn.active{background:#0f172a !important;}
+
 .stat-breadcrumb{position:sticky;top:0;z-index:20;background:#fff;padding:3px 8px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:3px;font-size:calc(.92px * var(--fs-num));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;}
 .stat-breadcrumb button{border:0;background:none;color:#2563eb;font:inherit;font-weight:700;padding:0 3px;cursor:pointer;}
 .stat-breadcrumb .stat-current{color:#475569;font-weight:500;}
@@ -390,6 +424,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 @media(max-width:600px){body{padding:4px 0;}.page{padding:0 4px;}}
 @media(max-width:400px){
   .stat-type-btn{font-size:clamp(9px, calc(.8px * var(--fs-num)), 13px) !important;padding:5px 3px !important;}
+  .stat-pay-btn{font-size:clamp(9px, calc(.8px * var(--fs-num)), 13px) !important;padding:5px 3px !important;}
 }
 
 .numBtn, .payBtn {
@@ -494,6 +529,11 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   background:#2563eb;
   color:#fff;
 }
+
+/* 首頁間隙加寬 */
+.pageHome-top .card{margin-bottom:8px;}
+.pageHome-top .section-title{margin:8px 0 6px;}
+#typeBtnWrap{margin-bottom:6px;}
 
 </style>
 </head>
@@ -624,7 +664,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 
 <div id="pageStat" class="page">
   <div class="stat-type-card" id="statTypeCard"></div>
-
+  <div class="stat-pay-card" id="statPayCard"></div>
   <div id="statBreadcrumb" class="stat-breadcrumb">
     <span class="stat-muted">目前：</span>
     <button onclick="statResetLevel()">全部年份</button>
@@ -668,11 +708,11 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <div id="pageSetting" class="page">
 <div class="setBlock"><h4>字型大小</h4><div class="fs-wrap"><span style="font-size:calc(.9px * var(--fs-num));">小</span><input type="range" id="fontSizeSlider" min="11" max="20" step="1" value="13" oninput="onFontSizeChange(this.value)"><span style="font-size:calc(1.3px * var(--fs-num));">大</span><span id="fontSizeValue" class="fs-value">13</span></div></div>
 <div class="setBlock"><h4>字型粗細</h4><div class="fs-wrap"><span style="font-size:calc(.9px * var(--fs-num));">細</span><input type="range" id="fontWeightSlider" min="300" max="900" step="100" value="700" oninput="onFontWeightChange(this.value)"><span style="font-size:calc(1.3px * var(--fs-num));">粗</span><span id="fontWeightValue" class="fs-value">700</span></div></div>
-<div class="setBlock"><h4>營業時間</h4><div style="display:flex;gap:8px;align-items:center;font-size:calc(1px * var(--fs-num));"><span>開始</span><input id="setStartHour" type="number" min="0" max="23" oninput="onHourChange()" style="width:52px;padding:5px;text-align:center;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;"><span>結束</span><input id="setEndHour" type="number" min="0" max="23" oninput="onHourChange()" style="width:52px;padding:5px;text-align:center;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;"></div><div id="hourPreview" class="hour-preview">請輸入開始與結束時間</div></div>
+<div class="setBlock"><h4>營業時間</h4><div style="display:flex;gap:8px;align-items:center;font-size:calc(1px * var(--fs-num));flex-wrap:wrap;"><span>開始</span><input id="setStartHour" type="number" min="0" max="23" oninput="onHourChange()" style="width:52px;padding:5px;text-align:center;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;"><span>結束</span><input id="setEndHour" type="number" min="0" max="23" oninput="onHourChange()" style="width:52px;padding:5px;text-align:center;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;"><span id="hourPreview" class="hour-preview" style="margin:0;flex:1;">請輸入開始與結束時間</span></div></div>
 <div class="setBlock"><h4>營業類別</h4><div id="typeListSet"></div><div style="display:flex;gap:5px;margin-top:5px;"><input id="newTypeName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newTypeDeduct" type="number" placeholder="扣除" style="width:52px;padding:5px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewTypeTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div></div>
 <div class="setBlock"><h4>付款方式</h4><div id="payListSet"></div><div style="display:flex;gap:5px;margin-top:5px;"><input id="newPayName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newPayRate" type="number" placeholder="%" style="width:52px;padding:5px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewPayTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div><div style="font-size:11px;color:#94a3b8;margin-top:4px;">※ 好孕卷自動扣除補助250輸入全額即可其餘視為現金</div></div>
 <div class="setBlock"><h4>支出類型（打勾 = 營業成本）</h4><div id="expListSet"></div><div style="display:flex;gap:5px;margin-top:5px;"><input id="newExpName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><button onclick="addNewExpTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div></div>
-<div class="setBlock"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><h4 style="margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;">資料備份</h4><span style="font-size:calc(.85px * var(--fs-num));color:#64748b;flex:1;text-align:right;">僅紀錄，不含設定</span></div><div class="backup-bar"><button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出</button><button class="backup-btn importBtn" onclick="document.getElementById('fileImport').click()">📥 匯入</button></div></div>
+<div class="setBlock"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><h4 style="margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;">資料備份</h4><span style="font-size:calc(.85px * var(--fs-num));color:#64748b;flex:1;text-align:right;">僅紀錄，不含設定</span></div><div class="backup-bar"><button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出</button><button class="backup-btn importBtn" onclick="document.getElementById('fileImport').click()">📥 匯入</button></div><div style="margin-top:8px;font-size:calc(.9px * var(--fs-num));"><a href="https://twplot01-code.github.io/DB-JS/" target="_blank" style="color:#2563eb;word-break:break-all;">DB轉JSON：https://twplot01-code.github.io/DB-JS/</a></div></div>
 </div>
 
 <script>
@@ -681,6 +721,7 @@ if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch
 var currentType="",editId=null,editExpId=null,historyStack=[],modalAmount="",expModalAmount="",sortNewFirst=true,statViewStack=[],expViewStack=[];
 var statTypeFilter="";
 var expCatFilter="";
+var statPayFilter="";   // 新增付款方式篩選
 
 /* ===== 自訂確認 / 提示 Modal ===== */
 var _confirmResolve=null;
@@ -815,7 +856,7 @@ function onPayNameChange(i,v){
   config.payList[i].name=newName;
   saveConfig();
   if(oldName&&newName)renameInRecords(oldName,newName,'pay');
-  calcTotal();renderTodayList();refreshStatCards();refreshExpCards();
+  calcTotal();renderTodayList();refreshStatCards();refreshExpCards();renderStatPayCard();
 }
 function onPayRateChange(i,v){if(config.payList[i]){config.payList[i].rate=Math.max(0,Number(v)||0);saveConfig();}}
 function onExpNameChange(i,v){
@@ -855,6 +896,7 @@ function fitAllStatText(){
     '.fc-stat span',
     '.sc-stat span',
     '.stat-type-btn',
+    '.stat-pay-btn',
     '.stat-summary-grid strong',
     '.stat-list-row .item-main',
     '.stat-list-row .item-fee',
@@ -929,6 +971,7 @@ document.getElementById('colorPicker').addEventListener('input', function(e){
   renderHomeTypeBtn();
   renderStatTypeCard();
   renderExpTypeCard();
+  renderStatPayCard();
   calcTotal();
 });
 document.getElementById('colorPicker').addEventListener('change', function(){
@@ -1056,7 +1099,7 @@ document.getElementById('fileImport').onchange=function(e){
           + '匯入前資料已自動備份到「下載」資料夾。';
         showAlert(msg);
 
-        renderHomeTypeBtn();calcTotal();renderTodayList();refreshStatCards();refreshExpCards();renderStatTypeCard();renderExpTypeCard();
+        renderHomeTypeBtn();calcTotal();renderTodayList();refreshStatCards();refreshExpCards();renderStatTypeCard();renderExpTypeCard();renderStatPayCard();
       });
     }catch(err){showAlert('❌ 檔案讀取失敗');}
   };
@@ -1321,8 +1364,19 @@ function renderTodayList(){
 
 function getFilteredRecords(){
   var recs=getRecords();
-  if(!statTypeFilter)return recs;
-  return recs.filter(function(r){return r.type===statTypeFilter;});
+  var out=recs;
+  if(statTypeFilter){
+    out=out.filter(function(r){return r.type===statTypeFilter;});
+  }
+  if(statPayFilter){
+    out=out.filter(function(r){
+      if(r.splits&&Array.isArray(r.splits)&&r.splits.length){
+        return r.splits.some(function(s){return s.pay===statPayFilter;});
+      }
+      return r.pay===statPayFilter;
+    });
+  }
+  return out;
 }
 
 function getCostExpenses(prefix){
@@ -1396,6 +1450,36 @@ function renderStatTypeCard(){
   setTimeout(fitAllStatText,0);
 }
 
+/* 新增：付款方式查詢列 */
+function renderStatPayCard(){
+  var card=document.getElementById('statPayCard');
+  if(!card)return;
+  card.innerHTML='';
+  var allBtn=document.createElement('button');
+  allBtn.className='stat-pay-btn all-btn'+(statPayFilter===''?' active':'');
+  allBtn.textContent='全部';
+  allBtn.onclick=function(){setStatPayFilter('');};
+  card.appendChild(allBtn);
+  config.payList.forEach(function(p){
+    var b=document.createElement('button');
+    var isActive=(statPayFilter===p.name);
+    b.className='stat-pay-btn'+(isActive?' active':'');
+    b.textContent=p.name;
+    b.style.background=isActive?(p.color||'#557799'):'#e2e8f0';
+    b.style.color=isActive?'#fff':'#475569';
+    b.onclick=function(){setStatPayFilter(p.name);};
+    card.appendChild(b);
+  });
+  setTimeout(fitAllStatText,0);
+}
+
+function setStatPayFilter(name){
+  statPayFilter=name;
+  statViewStack=[];
+  renderStatPayCard();
+  renderStatView();
+}
+
 function renderExpTypeCard(){
   var card=document.getElementById('expTypeCard');
   if(!card)return;
@@ -1433,6 +1517,7 @@ function getFilteredExpenses(){
 
 function statMoney(n){return Math.round(Number(n||0)).toLocaleString('zh-TW');}
 function statTypeTitle(){return statTypeFilter?statTypeFilter+'｜':'';}
+function statPayTitle(){return statPayFilter?statPayFilter+'｜':'';}
 
 function updateStatSummary(title,prefix){
   var s=calcIncomeStat(prefix||'');
@@ -1499,11 +1584,13 @@ function setStatTypeFilter(name){
 function showStatDefault(){
   statViewStack=[];
   renderStatTypeCard();
+  renderStatPayCard();
   renderStatView();
 }
 
 function refreshStatCards(){
   renderStatTypeCard();
+  renderStatPayCard();
   if(document.getElementById('pageStat')&&document.getElementById('pageStat').classList.contains('active'))renderStatView();
 }
 
@@ -1532,7 +1619,7 @@ function renderStatYearList(){
   var recs=getFilteredRecords(),yearMap={};
   recs.forEach(function(r){var y=String(r.date||'').slice(0,4);if(/^\d{4}$/.test(y))yearMap[y]=(yearMap[y]||0)+1;});
   var years=Object.keys(yearMap).sort().reverse();
-  updateStatSummary(statTypeTitle()+'全部年度合計','');
+  updateStatSummary(statTypeTitle()+statPayTitle()+'全部年度合計','');
   var html='';
   if(!years.length){html='<div class="empty-tip">尚無營業紀錄</div>';document.getElementById('statContent').innerHTML=html;updateStatBreadcrumb();return;}
   html+='<div class="stat-list-head"><div>年份</div><div class="head-amount">營業收入</div><div class="head-amount">手續費</div><div class="head-amount">淨收入</div></div>';
@@ -1554,7 +1641,7 @@ function renderStatMonthList(yearStr){
   var recs=getFilteredRecords().filter(function(r){return String(r.date||'').indexOf(yearStr)===0;}),monthMap={};
   recs.forEach(function(r){var m=String(r.date).slice(0,7);monthMap[m]=(monthMap[m]||0)+1;});
   var months=Object.keys(monthMap).sort().reverse();
-  updateStatSummary(statTypeTitle()+yearStr+'年所有營業合計',yearStr);
+  updateStatSummary(statTypeTitle()+statPayTitle()+yearStr+'年所有營業合計',yearStr);
   var html='';
   if(!months.length){html='<div class="empty-tip">此年尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;updateStatBreadcrumb();return;}
   html+='<div class="stat-list-head"><div>月份</div><div class="head-amount">營業收入</div><div class="head-amount">手續費</div><div class="head-amount">淨收入</div></div>';
@@ -1576,7 +1663,7 @@ function renderStatDayList(monthStr){
   var recs=getFilteredRecords().filter(function(r){return String(r.date||'').indexOf(monthStr)===0;}),dayMap={};
   recs.forEach(function(r){var d=String(r.date).slice(0,10);dayMap[d]=(dayMap[d]||0)+1;});
   var days=Object.keys(dayMap).sort().reverse();
-  updateStatSummary(statTypeTitle()+monthStr+'月所有營業合計',monthStr);
+  updateStatSummary(statTypeTitle()+statPayTitle()+monthStr+'月所有營業合計',monthStr);
   var html='';
   if(!days.length){html='<div class="empty-tip">此月尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;updateStatBreadcrumb();return;}
   html+='<div class="stat-list-head"><div>日期</div><div class="head-amount">營業收入</div><div class="head-amount">手續費</div><div class="head-amount">淨收入</div></div>';
@@ -1597,7 +1684,7 @@ function renderStatDayList(monthStr){
 function renderStatDayDetail(dateStr){
   var list=getFilteredRecords().filter(function(r){return r.date===dateStr;}).slice().sort(function(a,b){return Number(a.id)-Number(b.id);});
   var st=calcIncomeStat(dateStr);
-  updateStatSummary(statTypeTitle()+dateStr+' 當日營業合計',dateStr);
+  updateStatSummary(statTypeTitle()+statPayTitle()+dateStr+' 當日營業合計',dateStr);
   var html='<div class="stat-detail-row stat-detail-head"><span>時間</span><span>類別</span><span>付款</span><span class="amount">收入</span><span class="amount">手續</span><span class="amount">淨收</span></div>';
   if(!list.length){html+='<div class="empty-tip">此日尚無紀錄</div>';document.getElementById('statContent').innerHTML=html;updateStatBreadcrumb();return;}
   list.forEach(function(r){
@@ -1850,8 +1937,8 @@ function renderSetting(){
 
 function addNewTypeTemp(){var n=document.getElementById('newTypeName').value.trim(),d=Number(document.getElementById('newTypeDeduct').value)||0;if(!n){showAlert('請輸入名稱');return;}config.typeList.push({name:n,deduct:d,color:pickUnusedColorFromList(config.typeList)});saveConfig();renderSetting();renderHomeTypeBtn();renderStatTypeCard();document.getElementById('newTypeName').value='';document.getElementById('newTypeDeduct').value='';}
 function delTypeTemp(i){config.typeList.splice(i,1);saveConfig();renderSetting();renderHomeTypeBtn();renderStatTypeCard();}
-function addNewPayTemp(){var n=document.getElementById('newPayName').value.trim(),r=Number(document.getElementById('newPayRate').value)||0;if(!n){showAlert('請輸入名稱');return;}config.payList.push({name:n,rate:r,color:pickUnusedColorFromList(config.payList)});saveConfig();renderSetting();document.getElementById('newPayName').value='';document.getElementById('newPayRate').value='';}
-function delPayTemp(i){config.payList.splice(i,1);saveConfig();renderSetting();}
+function addNewPayTemp(){var n=document.getElementById('newPayName').value.trim(),r=Number(document.getElementById('newPayRate').value)||0;if(!n){showAlert('請輸入名稱');return;}config.payList.push({name:n,rate:r,color:pickUnusedColorFromList(config.payList)});saveConfig();renderSetting();document.getElementById('newPayName').value='';document.getElementById('newPayRate').value='';renderStatPayCard();}
+function delPayTemp(i){config.payList.splice(i,1);saveConfig();renderSetting();renderStatPayCard();}
 function addNewExpTemp(){var n=document.getElementById('newExpName').value.trim();if(!n){showAlert('請輸入名稱');return;}config.expList.push({name:n,color:pickUnusedColorFromList(config.expList),isCost:false});saveConfig();renderSetting();renderExpTypeCard();document.getElementById('newExpName').value='';}
 function delExpTemp(i){config.expList.splice(i,1);saveConfig();renderSetting();renderExpTypeCard();}
 
@@ -1872,6 +1959,7 @@ window.onload=function(){
   refreshExpCards();
   renderStatTypeCard();
   renderExpTypeCard();
+  renderStatPayCard();
   updateNavActive('pageHome');
   updateTodayDateText();
   setTimeout(fitAllStatText, 100);
