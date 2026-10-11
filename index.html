@@ -35,12 +35,62 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 .bigBtn,.numBtn,.payBtn,.navBtn,.editBtn,.delBtn,.sortBtn,.add-btn,.backup-btn,.stat-btn,.setBlock button{box-shadow:0 2px 6px rgba(0,0,0,.14);transition:filter .12s,box-shadow .12s,transform .1s,background .12s;}
 .bigBtn:active,.numBtn:active,.payBtn:active,.navBtn:active,.editBtn:active,.delBtn:active,.sortBtn:active,.add-btn:active,.backup-btn:active,.stat-btn:active,.setBlock button:active{filter:brightness(.88);box-shadow:0 1px 3px rgba(0,0,0,.18);transform:scale(.97);}
 .bigBtn{padding:0 3px;border:none;border-radius:10px;font-size:clamp(16px,calc(0.85px * var(--fs-num)),18px);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;height:calc(2.6px * var(--fs-num) + 12px);display:flex;align-items:center;justify-content:center;line-height:1;}
-.inputBox{width:100%;padding:16px;font-size:28px;text-align:center;border:2px solid #e2e8f0;border-radius:12px;margin:14px 0;background:#f8fafc;color:#0f172a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-variant-numeric:tabular-nums;}
+
+/* ===== 輸入框：上緣貼近標題、高度減少 ===== */
+.inputBox{
+  width:100%;
+  padding:8px 16px;
+  font-size:28px;
+  text-align:center;
+  border:2px solid #e2e8f0;
+  border-radius:12px;
+  margin:4px 0 8px;      /* 上緣貼近標題、下緣也縮短 */
+  background:#f8fafc;
+  color:#0f172a;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+  line-height:1.2;
+}
+
 .numKey{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(5px,2vw,10px);width:100%;min-width:0;flex:0 0 auto;}
-.numBtn{width:100%;min-width:0;padding:clamp(10px,3.8vw,18px) 4px;font-size:clamp(17px,5.5vw,22px);border-radius:12px;border:none;background:#fff;color:#1e293b;overflow:hidden;}
+
+.numBtn{
+  width:100%;
+  min-width:0;
+  padding:clamp(10px,3.8vw,18px) 4px;
+  font-size:clamp(17px,5.5vw,22px);
+  border-radius:12px;
+  border:none;
+  background:#fff;
+  color:#1e293b;
+  overflow:hidden;
+}
 .numBtn:active{background:#e2e8f0;}
-.payKey{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(6px,2.5vw,12px);margin-top:8px;width:100%;min-width:0;overflow:hidden;}
-.payBtn{width:100%;min-width:0;padding:clamp(12px,4vw,20px) 6px;border:none;border-radius:12px;color:#fff;font-size:clamp(12px,calc(1.2px * var(--fs-num)),16px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* ===== 付款／支出類別：一行 3 個、彈性平均分配 ===== */
+.payKey{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));  /* 改成 3 欄 */
+  gap:clamp(5px,2vw,10px);
+  margin-top:8px;
+  width:100%;
+  min-width:0;
+  overflow:hidden;
+}
+.payBtn{
+  width:100%;
+  min-width:0;
+  padding:clamp(10px,3.5vw,16px) 4px;   /* 稍微縮小 padding 以符合 3 欄 */
+  border:none;
+  border-radius:12px;
+  color:#fff;
+  font-size:clamp(12px,calc(1.05px * var(--fs-num)),15px);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
 .noteInput{width:100%;padding:10px 12px;margin-top:10px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:calc(1.05px * var(--fs-num));background:#f8fafc;}
 .noteInput:focus{outline:none;border-color:#2563eb;background:#fff;}
 .delBtn{color:#dc2626;border:none;background:#fef2f2;font-size:calc(.85px * var(--fs-num));padding:4px 8px;border-radius:6px;}
@@ -325,8 +375,8 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
   background: #e2e8f0;
 }
 .payBtn {
-  font-size: clamp(15px, 4.2vw, 20px) !important;
-  padding: clamp(14px, 4.5vw, 24px) 6px !important;
+  font-size: clamp(14px, 4vw, 18px) !important;
+  padding: clamp(12px, 4vw, 18px) 4px !important;
   border: 1.5px solid rgba(0,0,0,0.1);
   box-shadow: 0 4px 0 rgba(0,0,0,0.25), 0 6px 14px rgba(0,0,0,0.18) !important;
   text-shadow: 0 1px 3px rgba(0,0,0,0.3);
@@ -339,7 +389,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 }
 /* 支出類別按鈕也套用相同強化（它們也是 .payBtn） */
 #expCatWrap .payBtn {
-  font-size: clamp(15px, 4.2vw, 20px) !important;
+  font-size: clamp(14px, 4vw, 18px) !important;
 }
 /* 取消按鈕稍微低調但還是清楚 */
 .modal-card > button[onclick*="close"] {
@@ -351,6 +401,10 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
   transform: translateY(2px);
   box-shadow: 0 1px 0 #475569, 0 3px 8px rgba(0,0,0,0.15);
 }
+
+/* 支出輸入頁：縮小備註與取消按鈕的邊距 */
+#expInputModal .noteInput { margin-top: 6px; }
+#expInputModal .modal-card > button[onclick*="close"] { margin-top: 4px; }
 </style>
 </head>
 <body>
@@ -372,7 +426,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 
 <!-- 收入輸入 Modal -->
 <div id="inputModal" class="modal"><div class="modal-card">
-<h3 id="modalTitle" style="text-align:center;margin-bottom:8px;font-size:22px;">路招</h3>
+<h3 id="modalTitle" style="text-align:center;margin-bottom:6px;font-size:22px;">路招</h3>
 <div id="amountShow" class="inputBox">0</div>
 
 <div class="input-area">
@@ -390,7 +444,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 
 <!-- 支出輸入 Modal -->
 <div id="expInputModal" class="modal"><div class="modal-card">
-<h3 id="expModalTitle" style="text-align:center;margin-bottom:8px;font-size:22px;">支出</h3>
+<h3 id="expModalTitle" style="text-align:center;margin-bottom:6px;font-size:22px;">支出</h3>
 <div id="expAmountShow" class="inputBox">0</div>
 
 <div class="input-area">
@@ -404,7 +458,7 @@ body{background:#f1f5f9;padding:10px 0;font-size:calc(1px * var(--fs-num));color
 </div>
 
 <input id="expNoteInput" class="noteInput" placeholder="備註（選填）" style="flex-shrink:0;">
-<button style="width:100%;padding:14px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:17px;flex-shrink:0;" onclick="closeExpInputModal()">取消</button>
+<button style="width:100%;padding:14px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:17px;flex-shrink:0;margin-top:4px;" onclick="closeExpInputModal()">取消</button>
 </div></div>
 
 <!-- 修改收入 Modal -->
