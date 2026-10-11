@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2563eb">
 <style>
 button[data-nf],[data-netlify],#netlify,div[class*="netlify"]{display:none!important;}
-:root{--fs-num:13;--fw-num:700;}
+:root{--fs-num:13;--fw-num:700;--numBtnH:calc(2 * clamp(10px,3.8vw,18px) + 1.2em * clamp(17px,5.5vw,22px));}
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;}
 body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:#1e293b;line-height:1.3;font-weight:var(--fw-num);display:flex;flex-direction:column;overflow:hidden;}
@@ -58,20 +58,25 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 
 .numKey{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(5px,2vw,10px);width:100%;min-width:0;flex:0 0 auto;}
 
+/* 數字按鈕：用 CSS 變數定義高度，方便類別按鈕對齊 */
 .numBtn{
   width:100%;
   min-width:0;
-  padding:clamp(10px,3.8vw,18px) 4px;
+  height:var(--numBtnH);
+  padding:0 4px;
   font-size:clamp(17px,5.5vw,22px);
   border-radius:12px;
   border:none;
   background:#fff;
   color:#1e293b;
   overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 .numBtn:active{background:#e2e8f0;}
 
-/* ===== 付款／支出類別：flex 自動分配高度 ===== */
+/* ===== 付款／支出類別：flex 自動分配高度，最高 = 數字按鈕高度 ===== */
 .payKey{
   display:flex;
   flex-wrap:wrap;
@@ -101,6 +106,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   justify-content:center;
   min-height:0;
   height:auto;
+  max-height:var(--numBtnH);   /* ★ 最高跟數字按鈕一樣高 */
 }
 .noteInput{width:100%;padding:10px 12px;margin-top:10px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:calc(1.05px * var(--fs-num));background:#f8fafc;}
 .noteInput:focus{outline:none;border-color:#2563eb;background:#fff;}
@@ -430,7 +436,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   border: 1.5px solid #cbd5e1;
   box-shadow: 0 4px 0 #94a3b8, 0 6px 12px rgba(0,0,0,0.12) !important;
   font-size: clamp(20px, 6vw, 26px) !important;
-  padding: clamp(12px, 4.5vw, 22px) 4px !important;
   color: #0f172a;
   transition: all 0.06s ease;
 }
