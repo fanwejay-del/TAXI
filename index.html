@@ -15,14 +15,14 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .page{display:none;padding:0 4px;flex:1;min-height:0;flex-direction:column;overflow:hidden;}
 .page.active{display:flex;}
 
-/* ===== 首頁營業類別按鈕：上下間隙一樣 ===== */
-.row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:7px;margin-top:7px;margin-bottom:7px;overflow:hidden;}
+/* ===== 首頁營業類別按鈕：上下間隙 8px / 8px ===== */
+.row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:7px;margin-top:8px;margin-bottom:8px;overflow:hidden;}
 .row2 .bigBtn{width:100%;min-width:0;}
 
 .card{background:#fff;border-radius:10px;padding:4px 4px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:3px;}
 
 /* ===== 全局導覽：品牌區左右留白平均分配 ===== */
-.global-nav{position:sticky;top:0;z-index:50;background:#fff;border-radius:10px;padding:4px 8px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin:0 4px 3px;display:flex;justify-content:space-between;align-items:center;gap:3px;flex-shrink:0;min-width:0;}
+.global-nav{position:sticky;top:0;z-index:50;background:#fff;border-radius:10px;padding:4px 8px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin:0 4px 0;display:flex;justify-content:space-between;align-items:center;gap:3px;flex-shrink:0;min-width:0;}
 .global-nav .app-brand{display:flex;align-items:center;justify-content:flex-start;gap:8px;min-width:0;flex:1 1 auto;padding:0;}
 .global-nav .app-logo{width:32px;height:32px;flex:0 0 32px;display:flex;align-items:center;justify-content:center;border-radius:9px;background:transparent;overflow:hidden;margin-left:0;margin-right:0;}
 .global-nav .app-logo img{width:100%;height:100%;object-fit:contain;display:block;}
