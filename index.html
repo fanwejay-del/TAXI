@@ -15,13 +15,13 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .page{display:none;padding:0 4px;flex:1;min-height:0;flex-direction:column;overflow:hidden;}
 .page.active{display:flex;}
 
-/* ===== 首頁營業類別按鈕：彈性收縮，最多一行 4 個，第 5 個換行 ===== */
+/* ===== 首頁營業類別按鈕：彈性收縮 ===== */
 .row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:7px;margin-top:8px;margin-bottom:8px;overflow:hidden;}
 .row2 .bigBtn{width:100%;min-width:0;}
 
 .card{background:#fff;border-radius:10px;padding:4px 4px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:3px;}
 
-/* ===== 全局導覽：品牌區左右留白平均分配 ===== */
+/* ===== 全局導覽 ===== */
 .global-nav{position:sticky;top:0;z-index:50;background:#fff;border-radius:10px;padding:4px 8px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin:0 4px 0;display:flex;justify-content:space-between;align-items:center;gap:3px;flex-shrink:0;min-width:0;}
 .global-nav .app-brand{display:flex;align-items:center;justify-content:flex-start;gap:8px;min-width:0;flex:1 1 auto;padding:0;}
 .global-nav .app-logo{width:32px;height:32px;flex:0 0 32px;display:flex;align-items:center;justify-content:center;border-radius:9px;background:transparent;overflow:hidden;margin-left:0;margin-right:0;}
@@ -71,27 +71,34 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 }
 .numBtn:active{background:#e2e8f0;}
 
-/* ===== 付款／支出類別：一行 3 個、彈性平均分配 ===== */
+/* ===== 付款／支出類別：不捲動，高度彈性收縮 ===== */
 .payKey{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:clamp(5px,2vw,10px);
-  margin-top:8px;
+  gap:clamp(4px,1.5vw,8px);
+  margin-top:6px;
   width:100%;
   min-width:0;
   overflow:hidden;
+  flex:0 1 auto;
+  align-content:start;
 }
 .payBtn{
   width:100%;
   min-width:0;
-  padding:clamp(10px,3.5vw,16px) 4px;
+  padding:0 4px;
   border:none;
-  border-radius:12px;
+  border-radius:10px;
   color:#fff;
-  font-size:clamp(12px,calc(1.05px * var(--fs-num)),15px);
+  font-size:clamp(11px,calc(1px * var(--fs-num)),14px);
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100%;
+  min-height:0;
 }
 .noteInput{width:100%;padding:10px 12px;margin-top:10px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:calc(1.05px * var(--fs-num));background:#f8fafc;}
 .noteInput:focus{outline:none;border-color:#2563eb;background:#fff;}
@@ -106,7 +113,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .modal-card{width:100%;height:100%;padding:4px;display:flex;flex-direction:column;overflow:hidden;background:#fff;}
 
 .modal-card .input-area {
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -117,7 +124,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   transform: none !important;
 }
 #inputModal .numKey, #expInputModal .numKey { flex: 0 0 auto; }
-#inputModal .payKey, #expInputModal .payKey { flex: 0 0 auto; min-height: 0; margin-top: 4px; }
+#inputModal .payKey, #expInputModal .payKey { flex: 0 1 auto; min-height: 0; margin-top: 4px; }
 
 .backup-bar{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px;}
 .backup-btn{padding:6px 8px;border:none;border-radius:8px;color:#fff;font-size:calc(1px * var(--fs-num));}
@@ -151,7 +158,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .home-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 .home-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 
-/* ===== 年 / 月 / 日列表：字體統一 .96px ===== */
+/* ===== 年 / 月 / 日列表 ===== */
 .stat-list-head,.stat-list-row{display:grid;grid-template-columns:72px 1fr 1fr 1fr;gap:4px;align-items:center;font-variant-numeric:tabular-nums;}
 .stat-list-head{background:#f8fafc;padding:4px 6px;color:#64748b;font-size:calc(.96px * var(--fs-num));font-weight:800;position:sticky;top:0;z-index:2;}
 .stat-list-head>div{text-align:right;}
@@ -164,7 +171,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-list-row .item-fee{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#dc2626;letter-spacing:-0.02em;}
 .stat-list-row .item-net{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#059669;letter-spacing:-0.02em;}
 
-/* 單筆明細（營業）：字體統一 .96px */
+/* 單筆明細（營業） */
 .stat-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:4px 6px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.25;}
 .stat-detail-row:active{background:#eff6ff;}
 .stat-detail-row>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -174,14 +181,14 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 .stat-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 
-/* 單筆明細（支出）：字體統一 .96px */
+/* 單筆明細（支出） */
 .stat-detail-row-exp{display:grid;grid-template-columns:48px 48px 1fr 1fr;gap:4px;align-items:center;padding:4px 6px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.25;}
 .stat-detail-row-exp:active{background:#eff6ff;}
 .stat-detail-row-exp>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .stat-detail-row-exp.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:4px 6px;position:sticky;top:0;z-index:2;font-size:calc(.96px * var(--fs-num));}
 .stat-detail-row-exp.stat-detail-head .amount{text-align:right;}
 
-/* ===== 統計卡片與按鈕：壓縮邊距 ===== */
+/* ===== 統計卡片與按鈕 ===== */
 .stat-type-card{
   background:#fff !important;
   border-radius:10px !important;
@@ -215,13 +222,13 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-type-btn.active{color:#fff !important;box-shadow:0 2px 8px rgba(0,0,0,.25) !important;}
 .stat-type-btn.all-btn.active{background:#0f172a !important;}
 
-/* 統計頁面其他：壓縮邊距 */
+/* 統計頁面其他 */
 .stat-breadcrumb{position:sticky;top:0;z-index:20;background:#fff;padding:3px 8px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:3px;font-size:calc(.92px * var(--fs-num));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;}
 .stat-breadcrumb button{border:0;background:none;color:#2563eb;font:inherit;font-weight:700;padding:0 3px;cursor:pointer;}
 .stat-breadcrumb .stat-current{color:#475569;font-weight:500;}
 .stat-muted{color:#94a3b8;}
 
-/* ===== 合計區塊：字體與列表一致、完全移除空行 ===== */
+/* ===== 合計區塊 ===== */
 .stat-summary-box{background:#fff;border-radius:10px;padding:4px 6px;margin-bottom:3px;box-shadow:0 1px 4px rgba(0,0,0,.06);flex-shrink:0;}
 .stat-summary-title{font-size:calc(.96px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:2px;}
 
@@ -313,7 +320,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 /* 隱藏顏色選擇器 */
 .hidden-color{display:none !important;position:absolute !important;width:1px !important;height:1px !important;opacity:0 !important;pointer-events:none !important;}
 
-/* 支出統計專用：字體與列表一致、壓縮邊距 */
+/* 支出統計專用 */
 .exp-summary-card{background:#fff;border-radius:10px;padding:4px 6px;margin-bottom:3px;box-shadow:0 1px 4px rgba(0,0,0,.06);flex-shrink:0;}
 .exp-summary-card .stat-summary-title{font-size:calc(.96px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:2px;}
 .exp-summary-card .stat-summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;}
@@ -325,7 +332,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 /* 支出類型 checkbox */
 .exp-cost-check{width:14px;height:14px;flex-shrink:0;cursor:pointer;accent-color:#ea580c;margin:0;}
 
-/* ===== 首頁合計卡片：固定 2 行 ===== */
+/* ===== 首頁合計卡片 ===== */
 #daySummaryCard{
   display:flex;
   flex-direction:column;
@@ -335,7 +342,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   line-height:1.25;
 }
 
-/* 第一行：營業額、現金、非現金（平均彈性分配） */
 #daySummaryCard .summary-line1{
   display:flex;
   flex-wrap:nowrap;
@@ -355,7 +361,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   box-sizing:border-box;
 }
 
-/* 第二行：手續費、派遣費、路招、派遣…（可換行，塞不下時自動到下一行） */
 #daySummaryCard .summary-line2{
   display:flex;
   flex-wrap:wrap;
@@ -375,7 +380,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   box-sizing:border-box;
 }
 
-/* 標籤統一字體 */
 #daySummaryCard .stat-pair > span:first-child{
   color:#64748b;
   font-size:calc(.84px * var(--fs-num));
@@ -385,7 +389,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   text-overflow:ellipsis;
   min-width:0;
 }
-/* 數字統一字體大小 */
 #daySummaryCard .stat-pair > span:last-child{
   font-size:calc(.96px * var(--fs-num)) !important;
   font-variant-numeric:tabular-nums;
@@ -396,7 +399,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   min-width:0;
 }
 
-/* 數字顏色：營業額黑色、現金藍色、非現金橘色、手續費紅色、派遣費黑色 */
 #daySummaryCard #dayTotal{color:#0f172a;font-weight:700;}
 #daySummaryCard #cashTotal{color:#2563eb;font-weight:700;}
 #daySummaryCard #nonCashTotal{color:#ea580c;font-weight:700;}
@@ -415,7 +417,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   .stat-type-btn{font-size:clamp(9px, calc(.8px * var(--fs-num)), 13px) !important;padding:5px 3px !important;}
 }
 
-/* ===== 輸入頁面按鈕強化：明顯、字大、有立體感 ===== */
+/* ===== 輸入頁面按鈕強化 ===== */
 .numBtn, .payBtn {
   font-weight: 800 !important;
   letter-spacing: 0.03em;
@@ -436,20 +438,19 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   background: #e2e8f0;
 }
 .payBtn {
-  font-size: clamp(14px, 4vw, 18px) !important;
-  padding: clamp(12px, 4vw, 18px) 4px !important;
+  font-size: clamp(13px, 3.5vw, 16px) !important;
   border: 1.5px solid rgba(0,0,0,0.1);
-  box-shadow: 0 4px 0 rgba(0,0,0,0.25), 0 6px 14px rgba(0,0,0,0.18) !important;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.25), 0 5px 12px rgba(0,0,0,0.18) !important;
   text-shadow: 0 1px 3px rgba(0,0,0,0.3);
   transition: all 0.06s ease;
 }
 .payBtn:active {
-  transform: translateY(3px) scale(0.97) !important;
+  transform: translateY(2px) scale(0.97) !important;
   box-shadow: 0 1px 0 rgba(0,0,0,0.3), 0 3px 8px rgba(0,0,0,0.2) !important;
   filter: brightness(0.92);
 }
 #expCatWrap .payBtn {
-  font-size: clamp(14px, 4vw, 18px) !important;
+  font-size: clamp(13px, 3.5vw, 16px) !important;
 }
 .modal-card > button[onclick*="close"] {
   font-weight: 700;
@@ -822,9 +823,9 @@ function fitModalContent(modalId){
   if(inputArea){
     inputArea.style.transform='none';
     inputArea.style.height='auto';
-    inputArea.style.flex='0 1 auto';
+    inputArea.style.flex='1 1 auto';
   }
-  modal.querySelectorAll('.numBtn, .payBtn').forEach(function(btn){
+  modal.querySelectorAll('.numBtn').forEach(function(btn){
     fitOne(btn, 11);
   });
   var amountEl=modal.querySelector('.inputBox');
@@ -1144,7 +1145,6 @@ function calcDayStats(recs,targetDate){
   return{daySum:daySum,cashSum:cashSum,nonCashSum:nonCashSum,feeSum:feeSum,deductSum:deductSum,typeCount:typeCount};
 }
 
-/* 產生第二行營業類別 HTML */
 function buildSummaryLine2(typeCount){
   var html='';
   for(var k in typeCount){
