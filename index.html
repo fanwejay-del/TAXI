@@ -349,33 +349,78 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 
 .hidden-color{display:none !important;position:absolute !important;width:1px !important;height:1px !important;opacity:0 !important;pointer-events:none !important;}
 
-/* 支出摘要卡片：支出總額 + 支出合計 + 各類別次數，整組自動換行 */
+/* ===== 支出摘要卡片：第一行 標題+支出總額；第二行 合計筆數+各類別 ===== */
 .exp-summary-card{background:#fff;border-radius:10px;padding:4px 6px;margin-bottom:3px;box-shadow:0 1px 4px rgba(0,0,0,.06);flex-shrink:0;}
-.exp-summary-card .stat-summary-title{font-size:calc(.96px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:2px;}
-.exp-summary-card .stat-summary-grid{
+
+/* 第一行：標題 + 支出總額 */
+.exp-summary-card .exp-summary-head{
   display:flex;
   flex-wrap:wrap;
-  gap:2px 10px;
+  gap:2px 12px;
+  align-items:baseline;
+  margin-bottom:2px;
+}
+.exp-summary-card .exp-summary-head .title{
+  font-size:calc(.96px * var(--fs-num));
+  font-weight:800;
+  color:#0f172a;
+  white-space:nowrap;
+}
+.exp-summary-card .exp-summary-head .pair{
+  display:inline-flex;
+  align-items:baseline;
+  gap:3px;
+  white-space:nowrap;
+}
+.exp-summary-card .exp-summary-head span.label{
+  color:#64748b;
+  font-size:calc(.84px * var(--fs-num));
+}
+.exp-summary-card .exp-summary-head strong{
+  color:#dc2626;
+  font-size:calc(.96px * var(--fs-num));
+  font-variant-numeric:tabular-nums;
+}
+
+/* 第二行：合計筆數 + 各類別次數，自動換行、平均分配 */
+.exp-summary-card .exp-summary-body{
+  display:flex;
+  flex-wrap:wrap;
+  gap:2px 12px;
   align-items:baseline;
 }
-.exp-summary-card .stat-summary-grid .pair{
+.exp-summary-card .exp-summary-body .pair{
   display:inline-flex;
   align-items:baseline;
   gap:3px;
   white-space:nowrap;
   flex:0 0 auto;
+  min-width:0;
 }
-.exp-summary-card .stat-summary-grid span{
+.exp-summary-card .exp-summary-body .pair.total-pair{
+  font-weight:800;
+}
+.exp-summary-card .exp-summary-body .pair.total-pair span.label{
+  color:#0f172a;
+}
+.exp-summary-card .exp-summary-body .pair.total-pair strong{
+  color:#dc2626;
+}
+.exp-summary-card .exp-summary-body .pair span{
   color:#64748b;
   font-size:calc(.84px * var(--fs-num));
+  overflow:hidden;
+  text-overflow:ellipsis;
+  min-width:0;
 }
-.exp-summary-card .stat-summary-grid strong{
+.exp-summary-card .exp-summary-body .pair strong{
   color:#dc2626;
   font-size:calc(.96px * var(--fs-num));
   font-variant-numeric:tabular-nums;
-}
-.exp-summary-card .stat-summary-grid strong.net{
-  color:#059669;
+  display:inline-block;
+  min-width:2.6em;      /* 約 4 位數空間 */
+  text-align:right;
+  flex-shrink:0;
 }
 
 .exp-cost-check{width:14px;height:14px;flex-shrink:0;cursor:pointer;accent-color:#ea580c;margin:0;}
@@ -729,10 +774,10 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
     <button onclick="expResetLevel()">全部年份</button>
   </div>
 
-  <!-- 支出摘要：支出總額 + 支出合計 + 各類別次數，整組自動換行，不顯示餘額 -->
+  <!-- 支出摘要：第一行 標題+支出總額；第二行 合計筆數+各類別次數 -->
   <div class="exp-summary-card stat-summary-box">
-    <div class="stat-summary-title" id="expSummaryTitle">全部年度支出合計</div>
-    <div class="stat-summary-grid" id="expSummaryGrid"></div>
+    <div class="exp-summary-head" id="expSummaryHead"></div>
+    <div class="exp-summary-body" id="expSummaryBody"></div>
   </div>
 
   <div class="stat-list-box">
@@ -954,8 +999,10 @@ function fitAllStatText(){
     '.stat-detail-fee',
     '.stat-detail-net',
     '#todayNetTotal',
-    '#expSummaryGrid strong',
-    '#expSummaryGrid span'
+    '#expSummaryHead strong',
+    '#expSummaryHead span.label',
+    '#expSummaryBody strong',
+    '#expSummaryBody span'
   ];
   document.querySelectorAll(sels.join(',')).forEach(function(el){ fitOne(el,8); });
 }
@@ -1771,30 +1818,36 @@ function renderStatDayDetail(dateStr){
   setTimeout(fitAllStatText,0);
 }
 
-/* ===== 支出摘要：支出總額 + 支出合計 + 各類別次數，整組自動換行，不顯示餘額 ===== */
+/* ===== 支出摘要：第一行 標題+支出總額；第二行 合計筆數+各類別次數 ===== */
 function updateExpSummary(title,prefix){
   var s=calcExpStat(prefix||'');
-  document.getElementById('expSummaryTitle').textContent=title;
 
-  var grid=document.getElementById('expSummaryGrid');
-  var html='';
+  // 第一行：標題 + 支出總額
+  var head=document.getElementById('expSummaryHead');
+  var headHtml='';
+  headHtml+='<span class="title">'+escapeHtml(title)+'</span>';
+  headHtml+='<span class="pair"><span class="label">支出總額</span><strong>'+statMoney(s.sum)+'</strong></span>';
+  head.innerHTML=headHtml;
 
-  // 支出總額 與 支出合計 同一行
-  html+='<span class="pair"><span>支出總額</span><strong>'+statMoney(s.sum)+'</strong></span>';
-  html+='<span class="pair"><span>支出合計</span><strong>'+s.count+'筆</strong></span>';
-
-  // 各支出類別次數
+  // 第二行：合計筆數 + 各類別次數（右側固定 4 位數空間）
   var list=getFilteredExpenses().filter(function(e){
     return String(e.date||'').indexOf(prefix||'')===0;
   });
   var catCount={};
   config.expList.forEach(function(c){catCount[c.name]=0;});
   list.forEach(function(e){catCount[e.cat]=(catCount[e.cat]||0)+1;});
-  config.expList.forEach(function(c){
-    html+='<span class="pair"><span>'+escapeHtml(c.name)+'</span><strong>'+catCount[c.name]+'</strong></span>';
-  });
 
-  grid.innerHTML=html;
+  var body=document.getElementById('expSummaryBody');
+  var bodyHtml='';
+  bodyHtml+='<span class="pair total-pair"><span class="label">合計</span><strong>'+s.count+'筆</strong></span>';
+  config.expList.forEach(function(c){
+    bodyHtml+='<span class="pair">'
+      +'<span>'+escapeHtml(c.name)+'</span>'
+      +'<strong>'+catCount[c.name]+'</strong>'
+      +'</span>';
+  });
+  body.innerHTML=bodyHtml;
+
   setTimeout(fitAllStatText,0);
 }
 
