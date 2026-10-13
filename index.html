@@ -696,26 +696,40 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .voice-settings-bar{
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:6px;
   padding:8px 10px;
   background:#fff;
   border-radius:10px;
   box-shadow:0 1px 4px rgba(0,0,0,.05);
   margin:4px 0;
 }
-.voice-settings-bar .vs-icon{font-size:20px;flex-shrink:0;}
+.voice-settings-bar .vs-icon{font-size:18px;flex-shrink:0;}
 .voice-settings-bar .vs-label{font-size:calc(.95px * var(--fs-num));font-weight:700;color:#0f172a;flex-shrink:0;}
 .voice-settings-bar input[type="number"]{
-  width:60px;
-  padding:6px 8px;
+  width:42px;
+  padding:5px 4px;
   border:1.5px solid #e2e8f0;
   border-radius:8px;
   font-size:calc(.95px * var(--fs-num));
   text-align:center;
   background:#f8fafc;
   font-variant-numeric:tabular-nums;
+  flex-shrink:0;
 }
 .voice-settings-bar .vs-unit{font-size:calc(.85px * var(--fs-num));color:#64748b;flex-shrink:0;}
+.voice-settings-bar .vs-help-btn{
+  font-size:calc(.85px * var(--fs-num));
+  padding:5px 8px;
+  border:none;
+  border-radius:8px;
+  background:#dbeafe;
+  color:#2563eb;
+  font-weight:700;
+  cursor:pointer;
+  flex-shrink:0;
+  white-space:nowrap;
+}
+.voice-settings-bar .vs-help-btn:active{filter:brightness(.9);}
 .voice-settings-bar .vs-toggle{
   margin-left:auto;
   position:relative;
@@ -746,6 +760,116 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 }
 .voice-settings-bar .vs-toggle input:checked + .vs-slider{background:#2563eb;}
 .voice-settings-bar .vs-toggle input:checked + .vs-slider::before{transform:translateX(22px);}
+
+/* 營業類別標題列開關 */
+.setBlock .set-title-row{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-bottom:4px;
+}
+.setBlock .set-title-row h4{
+  margin:0;
+  font-size:calc(1px * var(--fs-num));
+  color:#0f172a;
+  flex-shrink:0;
+}
+.setBlock .set-title-row .vs-toggle{
+  margin-left:auto;
+  position:relative;
+  width:48px;
+  height:26px;
+  flex-shrink:0;
+  cursor:pointer;
+}
+.setBlock .set-title-row .vs-toggle input{opacity:0;width:0;height:0;}
+.setBlock .set-title-row .vs-slider{
+  position:absolute;
+  inset:0;
+  background:#cbd5e1;
+  border-radius:26px;
+  transition:background .2s;
+}
+.setBlock .set-title-row .vs-slider::before{
+  content:'';
+  position:absolute;
+  width:20px;
+  height:20px;
+  left:3px;
+  top:3px;
+  background:#fff;
+  border-radius:50%;
+  transition:transform .2s;
+  box-shadow:0 1px 3px rgba(0,0,0,.2);
+}
+.setBlock .set-title-row .vs-toggle input:checked + .vs-slider{background:#2563eb;}
+.setBlock .set-title-row .vs-toggle input:checked + .vs-slider::before{transform:translateX(22px);}
+
+/* 使用說明視窗 */
+#helpModal{
+  background:rgba(0,0,0,.5);
+  align-items:center;
+  justify-content:center;
+  z-index:400;
+}
+#helpModal.active{display:flex;}
+#helpModal .help-box{
+  background:#fff;
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 8px 30px rgba(0,0,0,.3);
+  max-width:400px;
+  width:calc(100% - 32px);
+  max-height:80vh;
+  display:flex;
+  flex-direction:column;
+}
+#helpModal .help-title{
+  font-size:17px;
+  font-weight:800;
+  color:#0f172a;
+  margin-bottom:10px;
+  text-align:center;
+  flex-shrink:0;
+}
+#helpModal .help-body{
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  flex:1;
+  min-height:0;
+  font-size:13px;
+  line-height:1.7;
+  color:#1e293b;
+  padding-right:4px;
+}
+#helpModal .help-body h4{
+  font-size:13px;
+  font-weight:800;
+  color:#2563eb;
+  margin:10px 0 4px;
+}
+#helpModal .help-body h4:first-child{margin-top:0;}
+#helpModal .help-body p{margin:0 0 6px;}
+#helpModal .help-body ul{
+  margin:0 0 6px 18px;
+  padding:0;
+}
+#helpModal .help-body li{margin-bottom:2px;}
+#helpModal .help-body .hl{color:#dc2626;font-weight:700;}
+#helpModal .help-close{
+  width:100%;
+  padding:12px;
+  margin-top:12px;
+  border:none;
+  border-radius:10px;
+  background:#2563eb;
+  color:#fff;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  flex-shrink:0;
+}
+#helpModal .help-close:active{filter:brightness(.9);}
 
 </style>
 </head>
@@ -850,6 +974,63 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </div>
 </div>
 
+<!-- 使用說明視窗 -->
+<div id="helpModal" class="modal" onclick="if(event.target===this)closeHelpModal()">
+  <div class="help-box">
+    <div class="help-title">🎤 語音輸入使用說明</div>
+    <div class="help-body">
+      <h4>【基本用法】</h4>
+      <p>按下首頁最上方的「語音 🎤 輸入」按鈕，跳出視窗後直接說話，倒數結束會<span class="hl">自動儲存</span>，完全不用再按任何按鈕。</p>
+
+      <h4>【怎麼說】</h4>
+      <p>說出「<b>類別 + 金額 + 付款方式</b>」，<b>順序不拘</b>，只要關鍵字有出現就好。</p>
+      <p>例如：</p>
+      <ul>
+        <li>派遣 100 信用卡</li>
+        <li>信用卡 150</li>
+        <li>路招 200</li>
+        <li>加油 500</li>
+      </ul>
+
+      <h4>【關鍵字規則】</h4>
+      <ul>
+        <li>有類別 + 金額 + 付款 → 照你說的記錄</li>
+        <li>只有金額（例如「150」）→ 類別用第一項、付款用第一項</li>
+        <li>有類別 + 金額，沒說付款 → 付款用第一項</li>
+        <li>有支出類別（例如「加油」）→ 記成<b>支出</b></li>
+        <li>只說類別，沒說金額 → 會提示「找不到金額」</li>
+      </ul>
+
+      <h4>【聽錯字也沒關係】</h4>
+      <p>語音辨識偶爾會出錯，例如「好孕券」聽成「好運卷」、「企業簽單」聽成「企業千單」。</p>
+      <p>只要關鍵字有<span class="hl">兩個字符合</span>，系統就會自動判斷。</p>
+
+      <h4>【注意事項】</h4>
+      <ul>
+        <li><b>Android Chrome</b> 才能正常使用，iOS 的 PWA 幾乎無法運作</li>
+        <li>第一次使用要<b>允許麥克風權限</b></li>
+        <li>需要<b>網路連線</b>（語音辨識會送到 Google 伺服器處理）</li>
+        <li>語速放慢一點，辨識率會更高</li>
+      </ul>
+
+      <h4>【可以調整的地方】</h4>
+      <p>在設定頁可以調整：</p>
+      <ul>
+        <li>倒數秒數：預設 5 秒，可改成 1～30 秒</li>
+        <li>開關：關閉後首頁不會顯示語音按鈕</li>
+      </ul>
+
+      <h4>【儲存後】</h4>
+      <ul>
+        <li>畫面中央會出現「✅ 已記錄⋯」提示，2.5 秒後自動消失</li>
+        <li>手機也會<b>語音唸出</b>「已記錄 派遣 100 元」</li>
+        <li>首頁列表馬上出現這筆記錄</li>
+      </ul>
+    </div>
+    <button class="help-close" onclick="closeHelpModal()">關閉</button>
+  </div>
+</div>
+
 <div id="pageHome" class="page active">
 <div class="pageHome-top">
 <button id="voiceInputBtn" class="voice-input-btn" onclick="openVoiceModal()">
@@ -926,6 +1107,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   <span class="vs-label">語音輸入</span>
   <input type="number" id="voiceSeconds" min="1" max="30" value="5" oninput="onVoiceSecondsChange(this.value)">
   <span class="vs-unit">秒</span>
+  <button class="vs-help-btn" onclick="openHelpModal()">📖 說明</button>
   <label class="vs-toggle">
     <input type="checkbox" id="voiceToggle" checked onchange="onVoiceToggleChange(this.checked)">
     <span class="vs-slider"></span>
@@ -943,7 +1125,17 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
     <span>結束</span><input id="setEndHour" type="number" min="0" max="23" oninput="onHourChange()" style="width:52px;padding:5px;text-align:center;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;">
   </div>
 </div>
-<div class="setBlock"><h4>營業類別</h4><div id="typeListSet"></div><div style="display:flex;gap:5px;margin-top:5px;"><input id="newTypeName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newTypeDeduct" type="number" placeholder="扣除" style="width:52px;padding:5px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewTypeTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div></div>
+<div class="setBlock">
+  <div class="set-title-row">
+    <h4>營業類別</h4>
+    <label class="vs-toggle">
+      <input type="checkbox" id="typeBtnToggle" checked onchange="onTypeBtnToggleChange(this.checked)">
+      <span class="vs-slider"></span>
+    </label>
+  </div>
+  <div id="typeListSet"></div>
+  <div style="display:flex;gap:5px;margin-top:5px;"><input id="newTypeName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newTypeDeduct" type="number" placeholder="扣除" style="width:52px;padding:5px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewTypeTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div>
+</div>
 <div class="setBlock"><h4>付款方式</h4><div id="payListSet"></div><div style="display:flex;gap:5px;margin-top:5px;"><input id="newPayName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newPayRate" type="number" placeholder="%" style="width:52px;padding:5px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewPayTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div><div style="font-size:11px;color:#94a3b8;margin-top:4px;">※ 好孕卷自動扣除補助250輸入全額即可其餘視為現金</div></div>
 <div class="setBlock"><h4>支出類型（打勾 = 營業成本）</h4><div id="expListSet"></div><div style="display:flex;gap:5px;margin-top:5px;"><input id="newExpName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><button onclick="addNewExpTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div></div>
 <div class="setBlock"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><h4 style="margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;">資料備份</h4><span style="font-size:calc(.85px * var(--fs-num));color:#64748b;flex:1;text-align:right;">僅紀錄，不含設定</span></div><div class="backup-bar"><button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出</button><button class="backup-btn importBtn" onclick="document.getElementById('fileImport').click()">📥 匯入</button></div><div style="margin-top:8px;font-size:calc(1.3px * var(--fs-num));"><a href="https://twplot01-code.github.io/DB-JS/" target="_blank" style="color:#2563eb;text-decoration:none;font-weight:700;">(DB轉JSON)</a></div>
@@ -998,7 +1190,7 @@ var config=JSON.parse(localStorage.getItem('taxiConfig'))||{
   payList:[{name:"現金",rate:0,color:"#16a34a"},{name:"悠遊卡",rate:3,color:"#22aabb"},{name:"信用卡",rate:3,color:"#7c3aed"},{name:"企業簽單",rate:15,color:"#9333ea"},{name:"好孕券",rate:0,color:"#0891b2"}],
   expList:[{name:"加油",color:"#dc2626",isCost:false},{name:"維修",color:"#ea580c",isCost:false},{name:"餐費",color:"#9333ea",isCost:false},{name:"停車",color:"#0891b2",isCost:false},{name:"其他",color:"#475569",isCost:false}],
   businessHour:{start:22,end:8},fontSize:13,fontWeight:700,
-  voiceEnabled:true,voiceSeconds:5
+  voiceEnabled:true,voiceSeconds:5,typeBtnEnabled:true
 };
 if(!config.businessHour)config.businessHour={start:22,end:8};
 if(!config.fontSize)config.fontSize=13;
@@ -1006,6 +1198,7 @@ if(!config.fontWeight)config.fontWeight=700;
 if(!config.expList)config.expList=[{name:"加油",color:"#dc2626",isCost:false},{name:"其他",color:"#475569",isCost:false}];
 if(typeof config.voiceEnabled==='undefined')config.voiceEnabled=true;
 if(typeof config.voiceSeconds==='undefined')config.voiceSeconds=5;
+if(typeof config.typeBtnEnabled==='undefined')config.typeBtnEnabled=true;
 config.expList.forEach(function(e){if(typeof e.isCost==='undefined')e.isCost=false;});
 
 var TYPE_COLORS=[
@@ -1348,7 +1541,13 @@ document.getElementById('fileImport').onchange=function(e){
 
 function renderHomeTypeBtn(){
   var wrap=document.getElementById('typeBtnWrap');
+  if(!wrap)return;
   wrap.innerHTML='';
+  if(!config.typeBtnEnabled){
+    wrap.style.display='none';
+    return;
+  }
+  wrap.style.display='';
   config.typeList.forEach(function(t){
     var btn=document.createElement('button');
     btn.className='bigBtn';
@@ -1358,6 +1557,12 @@ function renderHomeTypeBtn(){
     wrap.appendChild(btn);
   });
   setTimeout(fitHomeButtons,0);
+}
+
+function onTypeBtnToggleChange(checked) {
+  config.typeBtnEnabled = !!checked;
+  saveConfig();
+  renderHomeTypeBtn();
 }
 
 function renderExpTypeBtnWrap(){
@@ -1406,6 +1611,7 @@ function showPage(id, skipHistory){
     document.getElementById('fontWeightValue').textContent=config.fontWeight;
     document.getElementById('voiceSeconds').value=config.voiceSeconds;
     document.getElementById('voiceToggle').checked=config.voiceEnabled;
+    document.getElementById('typeBtnToggle').checked=config.typeBtnEnabled;
     updateHourPreview();renderSetting();
   }
   if(id==='pageStat')showStatDefault();
@@ -2221,6 +2427,14 @@ function delPayTemp(i){config.payList.splice(i,1);saveConfig();renderSetting();r
 function addNewExpTemp(){var n=document.getElementById('newExpName').value.trim();if(!n){showAlert('請輸入名稱');return;}config.expList.push({name:n,color:pickUnusedColorFromList(config.expList),isCost:false});saveConfig();renderSetting();renderExpTypeBtnWrap();renderExpTypeCard();document.getElementById('newExpName').value='';}
 function delExpTemp(i){config.expList.splice(i,1);saveConfig();renderSetting();renderExpTypeBtnWrap();renderExpTypeCard();}
 
+/* ===== 使用說明 ===== */
+function openHelpModal() {
+  document.getElementById('helpModal').classList.add('active');
+}
+function closeHelpModal() {
+  document.getElementById('helpModal').classList.remove('active');
+}
+
 /* ===== 語音輸入 ===== */
 var voiceRecognition = null;
 var voiceCountdownTimer = null;
@@ -2389,7 +2603,6 @@ function processVoiceCommand(text) {
     return;
   }
 
-  // 用模糊比對找類別（取最長匹配）
   var matchedType = null, typeLen = 0;
   config.typeList.forEach(function(t) {
     if (fuzzyMatch(text, t.name) && t.name.length > typeLen) {
@@ -2397,7 +2610,6 @@ function processVoiceCommand(text) {
     }
   });
 
-  // 用模糊比對找支出類別
   var matchedExp = null, expLen = 0;
   config.expList.forEach(function(e) {
     if (fuzzyMatch(text, e.name) && e.name.length > expLen) {
@@ -2405,7 +2617,6 @@ function processVoiceCommand(text) {
     }
   });
 
-  // 用模糊比對找付款方式
   var matchedPay = null, payLen = 0;
   config.payList.forEach(function(p) {
     if (fuzzyMatch(text, p.name) && p.name.length > payLen) {
@@ -2424,7 +2635,6 @@ function processVoiceCommand(text) {
   if (matchedExp && !matchedType) {
     isExpense = true;
   } else if (matchedExp && matchedType) {
-    // 兩個都有，比較關鍵字前兩字在文字中出現的位置
     var expPos = text.indexOf(matchedExp.name.slice(0, 2));
     var typePos = text.indexOf(matchedType.name.slice(0, 2));
     isExpense = expPos >= 0 && (typePos < 0 || expPos < typePos);
@@ -2610,8 +2820,10 @@ window.onload=function(){
   updateVoiceBtnVisibility();
   var vsInput = document.getElementById('voiceSeconds');
   var vsToggle = document.getElementById('voiceToggle');
+  var tbToggle = document.getElementById('typeBtnToggle');
   if (vsInput) vsInput.value = config.voiceSeconds;
   if (vsToggle) vsToggle.checked = config.voiceEnabled;
+  if (tbToggle) tbToggle.checked = config.typeBtnEnabled;
   setTimeout(fitAllStatText, 100);
 };
 </script>
