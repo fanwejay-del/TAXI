@@ -869,6 +869,25 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 }
 #helpModal .help-close:active{filter:brightness(.9);}
 
+/* 頁尾連結 */
+.footer-links{
+  text-align:center;
+  margin:8px 0 4px;
+  padding:10px;
+  background:#fff;
+  border-radius:10px;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+.footer-links a{
+  display:inline-block;
+  margin:0 8px;
+  color:#2563eb;
+  text-decoration:none;
+  font-weight:700;
+  font-size:calc(1px * var(--fs-num));
+}
+.footer-links a:hover{text-decoration:underline;}
+
 </style>
 </head>
 <body>
@@ -1020,7 +1039,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
       <h4>【儲存後】</h4>
       <ul>
         <li>畫面中央會出現「✅ 已記錄⋯」提示，2.5 秒後自動消失</li>
-        <li>手機也會<b>語音唸出</b>「已記錄 派遣 100 元」</li>
+        <li>手機也會<b>語音唸出</b>「已記錄 類別 付款方式 金額 元」</li>
         <li>首頁列表馬上出現這筆記錄</li>
       </ul>
     </div>
@@ -1136,6 +1155,13 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <div class="setBlock"><h4>付款方式</h4><div id="payListSet"></div><div style="display:flex;gap:5px;margin-top:5px;"><input id="newPayName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newPayRate" type="number" placeholder="%" style="width:52px;padding:5px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewPayTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div><div style="font-size:11px;color:#94a3b8;margin-top:4px;">※ 好孕卷自動扣除補助250輸入全額即可其餘視為現金</div></div>
 <div class="setBlock"><h4>支出類型（打勾 = 營業成本）</h4><div id="expListSet"></div><div style="display:flex;gap:5px;margin-top:5px;"><input id="newExpName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><button onclick="addNewExpTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div></div>
 <div class="setBlock"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><h4 style="margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;">資料備份</h4><span style="font-size:calc(.85px * var(--fs-num));color:#64748b;flex:1;text-align:right;">僅紀錄，不含設定</span></div><div class="backup-bar"><button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出</button><button class="backup-btn importBtn" onclick="document.getElementById('fileImport').click()">📥 匯入</button></div><div style="margin-top:8px;font-size:calc(1.3px * var(--fs-num));"><a href="https://twplot01-code.github.io/DB-JS/" target="_blank" style="color:#2563eb;text-decoration:none;font-weight:700;">(DB轉JSON)</a></div>
+</div>
+
+<!-- 頁尾連結：關於我們 / 隱私政策 / 聯絡我們 -->
+<div class="footer-links">
+  <a href="about.html">關於我們</a>
+  <a href="privacy.html">隱私政策</a>
+  <a href="contact.html">聯絡我們</a>
 </div>
 
 <script>
@@ -2462,21 +2488,13 @@ function updateVoiceBtnVisibility() {
 
 /* 音近字修正表 */
 var VOICE_FIX = {
-  // 孕
   '運':'孕','韵':'孕','蕴':'孕','晕':'孕',
-  // 券
-  '捲':'券','卷':'券','拳':'券','勸':'券',
-  // 签
+  '捲':'券','卷':'券','拳':'券','勸':'券','眷':'券','倦':'券',
   '簽':'签','千':'签','遷':'签',
-  // 悠
   '佑':'悠','優':'悠','幽':'悠',
-  // 信
   '新':'信','芯':'信',
-  // 招
   '昭':'招','找':'招','召':'招',
-  // 派
   '拍':'派','排':'派',
-  // 加
   '家':'加','佳':'加'
 };
 
