@@ -761,7 +761,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .voice-settings-bar .vs-toggle input:checked + .vs-slider{background:#2563eb;}
 .voice-settings-bar .vs-toggle input:checked + .vs-slider::before{transform:translateX(22px);}
 
-/* 營業類別標題列開關 */
 .setBlock .set-title-row{
   display:flex;
   align-items:center;
@@ -805,7 +804,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .setBlock .set-title-row .vs-toggle input:checked + .vs-slider{background:#2563eb;}
 .setBlock .set-title-row .vs-toggle input:checked + .vs-slider::before{transform:translateX(22px);}
 
-/* 使用說明視窗 */
 #helpModal{
   background:rgba(0,0,0,.5);
   align-items:center;
@@ -974,7 +972,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </div>
 </div>
 
-<!-- 使用說明視窗 -->
 <div id="helpModal" class="modal" onclick="if(event.target===this)closeHelpModal()">
   <div class="help-box">
     <div class="help-title">🎤 語音輸入使用說明</div>
@@ -1003,7 +1000,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 
       <h4>【聽錯字也沒關係】</h4>
       <p>語音辨識偶爾會出錯，例如「好孕券」聽成「好運卷」、「企業簽單」聽成「企業千單」。</p>
-      <p>只要關鍵字有<span class="hl">兩個字符合</span>，系統就會自動判斷。</p>
+      <p>系統會自動修正常見的錯字，只要關鍵字有<span class="hl">兩個字符合</span>就會自動判斷。</p>
 
       <h4>【注意事項】</h4>
       <ul>
@@ -2463,17 +2460,57 @@ function updateVoiceBtnVisibility() {
   btn.style.display = config.voiceEnabled ? '' : 'none';
 }
 
-/* 模糊比對：關鍵字任兩個連續字出現在文字中就匹配 */
+/* 音近字修正表 */
+var VOICE_FIX = {
+  // 孕
+  '運':'孕','韵':'孕','蕴':'孕','晕':'孕',
+  // 券
+  '捲':'券','卷':'券','拳':'券','勸':'券',
+  // 签
+  '簽':'签','千':'签','遷':'签',
+  // 悠
+  '佑':'悠','優':'悠','幽':'悠',
+  // 信
+  '新':'信','芯':'信',
+  // 招
+  '昭':'招','找':'招','召':'招',
+  // 派
+  '拍':'派','排':'派',
+  // 加
+  '家':'加','佳':'加'
+};
+
+function fixVoiceText(text) {
+  var out = '';
+  for (var i = 0; i < text.length; i++) {
+    out += VOICE_FIX[text[i]] || text[i];
+  }
+  return out;
+}
+
+/* 模糊比對：
+   2 字關鍵字 → 任 1 字符合就匹配
+   3 字以上關鍵字 → 任 2 字符合就匹配 */
 function fuzzyMatch(text, keyword) {
   if (!keyword) return false;
   if (keyword.length < 2) {
     return text.indexOf(keyword) >= 0;
   }
+  if (keyword.length === 2) {
+    for (var i = 0; i < 2; i++) {
+      if (text.indexOf(keyword[i]) >= 0) return true;
+    }
+    return false;
+  }
   for (var i = 0; i <= keyword.length - 2; i++) {
     var twoChars = keyword.slice(i, i + 2);
     if (text.indexOf(twoChars) >= 0) return true;
   }
-  return false;
+  var matchCount = 0;
+  for (var j = 0; j < keyword.length; j++) {
+    if (text.indexOf(keyword[j]) >= 0) matchCount++;
+  }
+  return matchCount >= 2;
 }
 
 function openVoiceModal() {
@@ -2597,6 +2634,7 @@ function finishVoiceInput() {
 
 function processVoiceCommand(text) {
   text = (text || '').replace(/[\s，,。、！!？?]/g, '');
+  text = fixVoiceText(text);
 
   if (!text) {
     showToast('⚠️ 沒有聽到聲音，請再試一次');
