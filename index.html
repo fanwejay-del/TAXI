@@ -611,7 +611,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .pageHome-top .section-title{margin:8px 0 6px;}
 #typeBtnWrap{margin-bottom:6px;}
 
-/* ===== 語音輸入 ===== */
 .voice-input-btn{
   width:100%;
   height:calc(2.4px * var(--fs-num) + 10px);
@@ -767,7 +766,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   <span class="nav-icon" data-page="pageSetting" onclick="showPage('pageSetting')" aria-label="設定"><span class="nav-symbol">⚙️</span><span class="nav-label">設定</span></span>
 </div>
 
-<!-- 收入輸入 Modal -->
 <div id="inputModal" class="modal"><div class="modal-card">
 <h3 id="modalTitle" style="text-align:center;margin-bottom:6px;font-size:22px;">路招</h3>
 <div id="amountShow" class="inputBox">0</div>
@@ -785,7 +783,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <button style="width:100%;padding:14px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:17px;flex-shrink:0;" onclick="closeInputModal()">取消</button>
 </div></div>
 
-<!-- 支出輸入 Modal -->
 <div id="expInputModal" class="modal"><div class="modal-card">
 <h3 id="expModalTitle" style="text-align:center;margin-bottom:6px;font-size:22px;">支出</h3>
 <div id="expAmountShow" class="inputBox">0</div>
@@ -804,7 +801,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <button style="width:100%;padding:14px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:17px;flex-shrink:0;margin-top:4px;" onclick="closeExpInputModal()">取消</button>
 </div></div>
 
-<!-- 修改收入 Modal -->
 <div id="editModal" class="modal"><div class="modal-card">
 <h3 style="text-align:center;margin-bottom:16px;font-size:18px;">修改紀錄</h3>
 <label style="font-size:13px;color:#64748b;">類別</label>
@@ -820,7 +816,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <button onclick="deleteRec()" style="width:100%;margin-top:12px;padding:12px;border:none;border-radius:12px;background:#dc2626;color:#fff;font-size:14px;">刪除此筆</button>
 </div></div>
 
-<!-- 修改支出 Modal -->
 <div id="editExpModal" class="modal"><div class="modal-card">
 <h3 style="text-align:center;margin-bottom:16px;font-size:18px;">修改支出</h3>
 <label style="font-size:13px;color:#64748b;">類型</label>
@@ -836,7 +831,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <button onclick="deleteExp()" style="width:100%;margin-top:12px;padding:12px;border:none;border-radius:12px;background:#dc2626;color:#fff;font-size:14px;">刪除此筆</button>
 </div></div>
 
-<!-- 自訂確認 Modal -->
 <div id="confirmModal" class="modal">
   <div class="confirm-box">
     <div id="confirmMsg" class="confirm-msg">確定要刪除這筆紀錄嗎？</div>
@@ -847,7 +841,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </div>
 </div>
 
-<!-- 語音輸入視窗 -->
 <div id="voiceModal" class="modal">
   <div class="voice-box">
     <div id="voiceCountdown" class="voice-countdown">5</div>
@@ -2062,14 +2055,13 @@ function renderExpYearList(){
   updateExpSummary('全部年度支出合計','');
   var html='';
   if(!years.length){html='<div class="empty-tip">尚無支出紀錄</div>';document.getElementById('expContent').innerHTML=html;updateExpBreadcrumb();return;}
-  html+='<div class="stat-list-head"><div>年份</div><div class="head-amount">支出金額</div><div class="head-amount">筆數</div><div class="head-amount">餘額</div></div>';
+  html+='<div class="stat-list-head" style="grid-template-columns:72px 1fr 1fr;"><div>年份</div><div class="head-amount">支出金額</div><div class="head-amount">筆數</div></div>';
   years.forEach(function(y){
     var st=calcExpStat(y);
-    html+='<div class="stat-list-row" onclick="expDrillToMonthList(\''+y+'\')">'
+    html+='<div class="stat-list-row" style="grid-template-columns:72px 1fr 1fr;" onclick="expDrillToMonthList(\''+y+'\')">'
       +'<div class="item-name">'+y+'年</div>'
       +'<div class="item-main">'+statMoney(st.sum)+'</div>'
       +'<div class="item-fee">'+st.count+'筆</div>'
-      +'<div class="item-net">餘'+statMoney(st.balance)+'</div>'
       +'</div>';
   });
   document.getElementById('expContent').innerHTML=html;
@@ -2084,14 +2076,13 @@ function renderExpMonthList(yearStr){
   updateExpSummary(yearStr+'年支出合計',yearStr);
   var html='';
   if(!months.length){html='<div class="empty-tip">此年尚無支出</div>';document.getElementById('expContent').innerHTML=html;updateExpBreadcrumb();return;}
-  html+='<div class="stat-list-head"><div>月份</div><div class="head-amount">支出金額</div><div class="head-amount">筆數</div><div class="head-amount">餘額</div></div>';
+  html+='<div class="stat-list-head" style="grid-template-columns:72px 1fr 1fr;"><div>月份</div><div class="head-amount">支出金額</div><div class="head-amount">筆數</div></div>';
   months.forEach(function(m){
     var st=calcExpStat(m);
-    html+='<div class="stat-list-row" onclick="expDrillToDayList(\''+m+'\')">'
+    html+='<div class="stat-list-row" style="grid-template-columns:72px 1fr 1fr;" onclick="expDrillToDayList(\''+m+'\')">'
       +'<div class="item-name">'+parseInt(m.slice(5),10)+'月</div>'
       +'<div class="item-main">'+statMoney(st.sum)+'</div>'
       +'<div class="item-fee">'+st.count+'筆</div>'
-      +'<div class="item-net">餘'+statMoney(st.balance)+'</div>'
       +'</div>';
   });
   document.getElementById('expContent').innerHTML=html;
@@ -2106,14 +2097,13 @@ function renderExpDayList(monthStr){
   updateExpSummary(monthStr+'支出合計',monthStr);
   var html='';
   if(!days.length){html='<div class="empty-tip">此月尚無支出</div>';document.getElementById('expContent').innerHTML=html;updateExpBreadcrumb();return;}
-  html+='<div class="stat-list-head"><div>日期</div><div class="head-amount">支出金額</div><div class="head-amount">筆數</div><div class="head-amount">餘額</div></div>';
+  html+='<div class="stat-list-head" style="grid-template-columns:72px 1fr 1fr;"><div>日期</div><div class="head-amount">支出金額</div><div class="head-amount">筆數</div></div>';
   days.forEach(function(d){
     var st=calcExpStat(d),arr=dayMap[d];
-    html+='<div class="stat-list-row" onclick="expDrillToDayDetail(\''+d+'\')">'
+    html+='<div class="stat-list-row" style="grid-template-columns:72px 1fr 1fr;" onclick="expDrillToDayDetail(\''+d+'\')">'
       +'<div class="item-name">'+parseInt(d.slice(8),10)+'日</div>'
       +'<div class="item-main">'+statMoney(st.sum)+'</div>'
       +'<div class="item-fee">'+arr.length+'筆</div>'
-      +'<div class="item-net">餘'+statMoney(st.balance)+'</div>'
       +'</div>';
   });
   document.getElementById('expContent').innerHTML=html;
@@ -2259,6 +2249,19 @@ function updateVoiceBtnVisibility() {
   btn.style.display = config.voiceEnabled ? '' : 'none';
 }
 
+/* 模糊比對：關鍵字任兩個連續字出現在文字中就匹配 */
+function fuzzyMatch(text, keyword) {
+  if (!keyword) return false;
+  if (keyword.length < 2) {
+    return text.indexOf(keyword) >= 0;
+  }
+  for (var i = 0; i <= keyword.length - 2; i++) {
+    var twoChars = keyword.slice(i, i + 2);
+    if (text.indexOf(twoChars) >= 0) return true;
+  }
+  return false;
+}
+
 function openVoiceModal() {
   if (!config.voiceEnabled) return;
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -2366,13 +2369,10 @@ function finishVoiceInput() {
   if (!voiceIsRecording) return;
   voiceIsRecording = false;
 
-  // 強制停止語音辨識
   try { if (voiceRecognition) voiceRecognition.abort(); } catch (e) {}
 
-  // 立即關閉視窗
   document.getElementById('voiceModal').classList.remove('active');
 
-  // 自動解析並儲存
   if (!voiceAutoSaveDone) {
     voiceAutoSaveDone = true;
     setTimeout(function() {
@@ -2389,23 +2389,26 @@ function processVoiceCommand(text) {
     return;
   }
 
+  // 用模糊比對找類別（取最長匹配）
   var matchedType = null, typeLen = 0;
   config.typeList.forEach(function(t) {
-    if (text.indexOf(t.name) >= 0 && t.name.length > typeLen) {
+    if (fuzzyMatch(text, t.name) && t.name.length > typeLen) {
       matchedType = t; typeLen = t.name.length;
     }
   });
 
+  // 用模糊比對找支出類別
   var matchedExp = null, expLen = 0;
   config.expList.forEach(function(e) {
-    if (text.indexOf(e.name) >= 0 && e.name.length > expLen) {
+    if (fuzzyMatch(text, e.name) && e.name.length > expLen) {
       matchedExp = e; expLen = e.name.length;
     }
   });
 
+  // 用模糊比對找付款方式
   var matchedPay = null, payLen = 0;
   config.payList.forEach(function(p) {
-    if (text.indexOf(p.name) >= 0 && p.name.length > payLen) {
+    if (fuzzyMatch(text, p.name) && p.name.length > payLen) {
       matchedPay = p; payLen = p.name.length;
     }
   });
@@ -2421,7 +2424,10 @@ function processVoiceCommand(text) {
   if (matchedExp && !matchedType) {
     isExpense = true;
   } else if (matchedExp && matchedType) {
-    isExpense = text.indexOf(matchedExp.name) < text.indexOf(matchedType.name);
+    // 兩個都有，比較關鍵字前兩字在文字中出現的位置
+    var expPos = text.indexOf(matchedExp.name.slice(0, 2));
+    var typePos = text.indexOf(matchedType.name.slice(0, 2));
+    isExpense = expPos >= 0 && (typePos < 0 || expPos < typePos);
   }
 
   if (isExpense) {
