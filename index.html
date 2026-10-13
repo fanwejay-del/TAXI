@@ -206,7 +206,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-type-btn.active{color:#fff !important;box-shadow:0 2px 8px rgba(0,0,0,.25) !important;}
 .stat-type-btn.all-btn.active{background:#0f172a !important;}
 
-/* 付款方式查詢列（與營業類別按鈕同款，一行6個） */
 .stat-pay-card{
   background:#fff !important;
   border-radius:10px !important;
@@ -240,7 +239,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-pay-btn.active{color:#fff !important;box-shadow:0 2px 8px rgba(0,0,0,.25) !important;}
 .stat-pay-btn.all-btn.active{background:#0f172a !important;}
 
-/* 支出頁面：支出類別按鈕（一行5個，高度3/4） */
 .exp-type-btn-card{
   background:#fff !important;
   border-radius:10px !important;
@@ -349,10 +347,8 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 
 .hidden-color{display:none !important;position:absolute !important;width:1px !important;height:1px !important;opacity:0 !important;pointer-events:none !important;}
 
-/* ===== 支出摘要卡片：第一行 標題+支出總額；第二行 合計筆數+各類別 ===== */
 .exp-summary-card{background:#fff;border-radius:10px;padding:4px 6px;margin-bottom:3px;box-shadow:0 1px 4px rgba(0,0,0,.06);flex-shrink:0;}
 
-/* 第一行：標題 + 支出總額 */
 .exp-summary-card .exp-summary-head{
   display:flex;
   flex-wrap:wrap;
@@ -382,7 +378,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   font-variant-numeric:tabular-nums;
 }
 
-/* 第二行：合計筆數 + 各類別次數，自動換行、平均分配 */
 .exp-summary-card .exp-summary-body{
   display:flex;
   flex-wrap:wrap;
@@ -418,7 +413,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   font-size:calc(.96px * var(--fs-num));
   font-variant-numeric:tabular-nums;
   display:inline-block;
-  min-width:2.6em;      /* 約 4 位數空間 */
+  min-width:2.6em;
   text-align:right;
   flex-shrink:0;
 }
@@ -558,7 +553,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 #expInputModal .noteInput { margin-top: 4px; }
 #expInputModal .modal-card > button[onclick*="close"] { margin-top: 3px; }
 
-/* ===== 自訂確認 / 提示 Modal ===== */
 #confirmModal{
   background:rgba(0,0,0,.45);
   align-items:center;
@@ -613,10 +607,146 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   color:#fff;
 }
 
-/* 首頁間隙加寬 */
 .pageHome-top .card{margin-bottom:8px;}
 .pageHome-top .section-title{margin:8px 0 6px;}
 #typeBtnWrap{margin-bottom:6px;}
+
+/* ===== 語音輸入 ===== */
+.voice-input-btn{
+  width:100%;
+  height:calc(2.4px * var(--fs-num) + 10px);
+  padding:0 3px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(135deg,#7c3aed,#2563eb);
+  color:#fff;
+  font-size:clamp(15px, calc(0.85px * var(--fs-num)), 18px);
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  cursor:pointer;
+  margin-bottom:6px;
+  box-shadow:0 2px 6px rgba(0,0,0,.14);
+  transition:filter .12s, transform .1s;
+  white-space:nowrap;
+  overflow:hidden;
+}
+.voice-input-btn:active{
+  filter:brightness(.88);
+  transform:scale(.97);
+}
+.voice-input-btn .voice-icon{
+  font-size:1.3em;
+  line-height:1;
+}
+
+#voiceModal{
+  background:rgba(0,0,0,.6);
+  align-items:center;
+  justify-content:center;
+  z-index:300;
+}
+#voiceModal.active{display:flex;}
+#voiceModal .voice-box{
+  background:#fff;
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 8px 30px rgba(0,0,0,.3);
+  max-width:340px;
+  width:calc(100% - 32px);
+  text-align:center;
+}
+#voiceModal .voice-countdown{
+  font-size:48px;
+  font-weight:900;
+  color:#2563eb;
+  font-variant-numeric:tabular-nums;
+  margin-bottom:8px;
+  line-height:1;
+}
+#voiceModal .voice-countdown.urgent{color:#dc2626;}
+#voiceModal .voice-status{
+  font-size:13px;
+  color:#64748b;
+  margin-bottom:12px;
+}
+#voiceModal .voice-text{
+  background:#f8fafc;
+  border:1.5px solid #e2e8f0;
+  border-radius:10px;
+  padding:14px;
+  font-size:16px;
+  color:#1e293b;
+  min-height:60px;
+  line-height:1.5;
+  text-align:left;
+  word-break:break-all;
+}
+#voiceModal .voice-text .kw-type{color:#2563eb;font-weight:800;background:#dbeafe;padding:0 3px;border-radius:3px;}
+#voiceModal .voice-text .kw-pay{color:#0891b2;font-weight:800;background:#cffafe;padding:0 3px;border-radius:3px;}
+#voiceModal .voice-text .kw-exp{color:#dc2626;font-weight:800;background:#fee2e2;padding:0 3px;border-radius:3px;}
+#voiceModal .voice-text .kw-amount{color:#16a34a;font-weight:800;background:#dcfce7;padding:0 3px;border-radius:3px;}
+#voiceModal .voice-hint{
+  font-size:11px;
+  color:#94a3b8;
+  margin-top:10px;
+}
+
+.voice-settings-bar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 10px;
+  background:#fff;
+  border-radius:10px;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+  margin:4px 0;
+}
+.voice-settings-bar .vs-icon{font-size:20px;flex-shrink:0;}
+.voice-settings-bar .vs-label{font-size:calc(.95px * var(--fs-num));font-weight:700;color:#0f172a;flex-shrink:0;}
+.voice-settings-bar input[type="number"]{
+  width:60px;
+  padding:6px 8px;
+  border:1.5px solid #e2e8f0;
+  border-radius:8px;
+  font-size:calc(.95px * var(--fs-num));
+  text-align:center;
+  background:#f8fafc;
+  font-variant-numeric:tabular-nums;
+}
+.voice-settings-bar .vs-unit{font-size:calc(.85px * var(--fs-num));color:#64748b;flex-shrink:0;}
+.voice-settings-bar .vs-toggle{
+  margin-left:auto;
+  position:relative;
+  width:48px;
+  height:26px;
+  flex-shrink:0;
+  cursor:pointer;
+}
+.voice-settings-bar .vs-toggle input{opacity:0;width:0;height:0;}
+.voice-settings-bar .vs-slider{
+  position:absolute;
+  inset:0;
+  background:#cbd5e1;
+  border-radius:26px;
+  transition:background .2s;
+}
+.voice-settings-bar .vs-slider::before{
+  content:'';
+  position:absolute;
+  width:20px;
+  height:20px;
+  left:3px;
+  top:3px;
+  background:#fff;
+  border-radius:50%;
+  transition:transform .2s;
+  box-shadow:0 1px 3px rgba(0,0,0,.2);
+}
+.voice-settings-bar .vs-toggle input:checked + .vs-slider{background:#2563eb;}
+.voice-settings-bar .vs-toggle input:checked + .vs-slider::before{transform:translateX(22px);}
 
 </style>
 </head>
@@ -655,7 +785,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <button style="width:100%;padding:14px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:17px;flex-shrink:0;" onclick="closeInputModal()">取消</button>
 </div></div>
 
-<!-- 支出輸入 Modal（已移除支出類別按鈕，類別由外部決定） -->
+<!-- 支出輸入 Modal -->
 <div id="expInputModal" class="modal"><div class="modal-card">
 <h3 id="expModalTitle" style="text-align:center;margin-bottom:6px;font-size:22px;">支出</h3>
 <div id="expAmountShow" class="inputBox">0</div>
@@ -717,8 +847,23 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </div>
 </div>
 
+<!-- 語音輸入視窗 -->
+<div id="voiceModal" class="modal">
+  <div class="voice-box">
+    <div id="voiceCountdown" class="voice-countdown">5</div>
+    <div id="voiceStatus" class="voice-status">請開始說話⋯</div>
+    <div id="voiceText" class="voice-text">（等待語音⋯）</div>
+    <div class="voice-hint">說「類別 + 金額 + 付款方式」，順序不拘</div>
+  </div>
+</div>
+
 <div id="pageHome" class="page active">
 <div class="pageHome-top">
+<button id="voiceInputBtn" class="voice-input-btn" onclick="openVoiceModal()">
+  <span>語音</span>
+  <span class="voice-icon">🎤</span>
+  <span>輸入</span>
+</button>
 <div id="typeBtnWrap" class="row2"></div>
 <div class="card">
 <div class="day-summary-card" id="daySummaryCard">
@@ -763,11 +908,8 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </div>
 </div>
 
-<!-- 支出統計頁面：支出類別按鈕（一行5個，高度3/4）+ 查詢按鈕 + 摘要 + 列表 -->
 <div id="pageExpStat" class="page">
-  <!-- 支出類別按鈕（點擊直接開啟支出輸入） -->
   <div class="exp-type-btn-card" id="expTypeBtnWrap"></div>
-  <!-- 支出類別查詢按鈕 -->
   <div class="stat-type-card" id="expTypeCard"></div>
 
   <div id="expBreadcrumb" class="stat-breadcrumb">
@@ -775,7 +917,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
     <button onclick="expResetLevel()">全部年份</button>
   </div>
 
-  <!-- 支出摘要：第一行 標題+支出總額；第二行 合計筆數+各類別次數 -->
   <div class="exp-summary-card stat-summary-box">
     <div class="exp-summary-head" id="expSummaryHead"></div>
     <div class="exp-summary-body" id="expSummaryBody"></div>
@@ -787,6 +928,16 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 </div>
 
 <div id="pageSetting" class="page">
+<div class="voice-settings-bar">
+  <span class="vs-icon">🎤</span>
+  <span class="vs-label">語音輸入</span>
+  <input type="number" id="voiceSeconds" min="1" max="30" value="5" oninput="onVoiceSecondsChange(this.value)">
+  <span class="vs-unit">秒</span>
+  <label class="vs-toggle">
+    <input type="checkbox" id="voiceToggle" checked onchange="onVoiceToggleChange(this.checked)">
+    <span class="vs-slider"></span>
+  </label>
+</div>
 <div class="setBlock"><h4>字型大小</h4><div class="fs-wrap"><span style="font-size:calc(.9px * var(--fs-num));">小</span><input type="range" id="fontSizeSlider" min="11" max="20" step="1" value="13" oninput="onFontSizeChange(this.value)"><span style="font-size:calc(1.3px * var(--fs-num));">大</span><span id="fontSizeValue" class="fs-value">13</span></div></div>
 <div class="setBlock"><h4>字型粗細</h4><div class="fs-wrap"><span style="font-size:calc(.9px * var(--fs-num));">細</span><input type="range" id="fontWeightSlider" min="300" max="900" step="100" value="700" oninput="onFontWeightChange(this.value)"><span style="font-size:calc(1.3px * var(--fs-num));">粗</span><span id="fontWeightValue" class="fs-value">700</span></div></div>
 <div class="setBlock">
@@ -812,7 +963,7 @@ var currentType="",editId=null,editExpId=null,historyStack=[],modalAmount="",exp
 var statTypeFilter="";
 var expCatFilter="";
 var statPayFilter="";
-var currentExpCat=null; // 支出輸入時記錄目前選定的支出類別
+var currentExpCat=null;
 
 /* ===== 自訂確認 / 提示 Modal ===== */
 var _confirmResolve=null;
@@ -854,12 +1005,15 @@ var config=JSON.parse(localStorage.getItem('taxiConfig'))||{
   typeList:[{name:"路招",deduct:0,color:"#2563eb"},{name:"派遣",deduct:10,color:"#ea580c"}],
   payList:[{name:"現金",rate:0,color:"#16a34a"},{name:"悠遊卡",rate:3,color:"#22aabb"},{name:"信用卡",rate:3,color:"#7c3aed"},{name:"企業簽單",rate:15,color:"#9333ea"},{name:"好孕券",rate:0,color:"#0891b2"}],
   expList:[{name:"加油",color:"#dc2626",isCost:false},{name:"維修",color:"#ea580c",isCost:false},{name:"餐費",color:"#9333ea",isCost:false},{name:"停車",color:"#0891b2",isCost:false},{name:"其他",color:"#475569",isCost:false}],
-  businessHour:{start:22,end:8},fontSize:13,fontWeight:700
+  businessHour:{start:22,end:8},fontSize:13,fontWeight:700,
+  voiceEnabled:true,voiceSeconds:5
 };
 if(!config.businessHour)config.businessHour={start:22,end:8};
 if(!config.fontSize)config.fontSize=13;
 if(!config.fontWeight)config.fontWeight=700;
 if(!config.expList)config.expList=[{name:"加油",color:"#dc2626",isCost:false},{name:"其他",color:"#475569",isCost:false}];
+if(typeof config.voiceEnabled==='undefined')config.voiceEnabled=true;
+if(typeof config.voiceSeconds==='undefined')config.voiceSeconds=5;
 config.expList.forEach(function(e){if(typeof e.isCost==='undefined')e.isCost=false;});
 
 var TYPE_COLORS=[
@@ -1214,7 +1368,6 @@ function renderHomeTypeBtn(){
   setTimeout(fitHomeButtons,0);
 }
 
-/* 支出頁面的支出類別按鈕（一行5個，高度3/4，點擊直接開啟支出輸入） */
 function renderExpTypeBtnWrap(){
   var wrap=document.getElementById('expTypeBtnWrap');
   if(!wrap)return;
@@ -1259,11 +1412,13 @@ function showPage(id, skipHistory){
     document.getElementById('fontSizeValue').textContent=config.fontSize;
     document.getElementById('fontWeightSlider').value=config.fontWeight;
     document.getElementById('fontWeightValue').textContent=config.fontWeight;
+    document.getElementById('voiceSeconds').value=config.voiceSeconds;
+    document.getElementById('voiceToggle').checked=config.voiceEnabled;
     updateHourPreview();renderSetting();
   }
   if(id==='pageStat')showStatDefault();
   if(id==='pageExpStat')showExpDefault();
-  if(id==='pageHome'){renderHomeTypeBtn();updateTodayDateText();setTimeout(fitAllStatText,0);}
+  if(id==='pageHome'){renderHomeTypeBtn();updateTodayDateText();updateVoiceBtnVisibility();setTimeout(fitAllStatText,0);}
 
   if(!skipHistory){
     _pageHistory.push(id);
@@ -1561,7 +1716,6 @@ function renderStatTypeCard(){
   setTimeout(fitAllStatText,0);
 }
 
-/* 付款方式查詢列 */
 function renderStatPayCard(){
   var card=document.getElementById('statPayCard');
   if(!card)return;
@@ -1648,12 +1802,12 @@ function updateStatSummary(title,prefix){
   html+='<span class="pair"><span>現金</span><strong class="cash">'+statMoney(s.cashSum)+'</strong></span>';
   config.payList.forEach(function(p){
     if(isCashPay(p.name))return;
-    if(statPayFilter && statPayFilter!==p.name)return; // 有付款篩選時只顯示該付款
+    if(statPayFilter && statPayFilter!==p.name)return;
     var amt=s.paySum[p.name]||0;
     html+='<span class="pair"><span>'+escapeHtml(p.name)+'</span><strong class="pay">'+statMoney(amt)+'</strong></span>';
   });
   config.typeList.forEach(function(t){
-    if(statTypeFilter && statTypeFilter!==t.name)return; // 有類別篩選時只顯示該類別
+    if(statTypeFilter && statTypeFilter!==t.name)return;
     html+='<span class="pair"><span>'+escapeHtml(t.name)+'</span><strong>'+ (s.typeCount[t.name]||0) +'</strong></span>';
   });
   html+='</div>';
@@ -1819,18 +1973,15 @@ function renderStatDayDetail(dateStr){
   setTimeout(fitAllStatText,0);
 }
 
-/* ===== 支出摘要：第一行 標題+支出總額；第二行 合計筆數+各類別次數 ===== */
 function updateExpSummary(title,prefix){
   var s=calcExpStat(prefix||'');
 
-  // 第一行：標題 + 支出總額
   var head=document.getElementById('expSummaryHead');
   var headHtml='';
   headHtml+='<span class="title">'+escapeHtml(title)+'</span>';
   headHtml+='<span class="pair"><span class="label">支出總額</span><strong>'+statMoney(s.sum)+'</strong></span>';
   head.innerHTML=headHtml;
 
-  // 第二行：合計筆數 + 各類別次數（右側固定 4 位數空間）
   var list=getFilteredExpenses().filter(function(e){
     return String(e.date||'').indexOf(prefix||'')===0;
   });
@@ -2081,6 +2232,331 @@ function delPayTemp(i){config.payList.splice(i,1);saveConfig();renderSetting();r
 function addNewExpTemp(){var n=document.getElementById('newExpName').value.trim();if(!n){showAlert('請輸入名稱');return;}config.expList.push({name:n,color:pickUnusedColorFromList(config.expList),isCost:false});saveConfig();renderSetting();renderExpTypeBtnWrap();renderExpTypeCard();document.getElementById('newExpName').value='';}
 function delExpTemp(i){config.expList.splice(i,1);saveConfig();renderSetting();renderExpTypeBtnWrap();renderExpTypeCard();}
 
+/* ===== 語音輸入 ===== */
+var voiceRecognition = null;
+var voiceCountdownTimer = null;
+var voiceRemaining = 0;
+var voiceRecognizedText = '';
+var voiceIsRecording = false;
+var voiceAutoSaveDone = false;
+
+function onVoiceSecondsChange(v) {
+  var n = Number(v);
+  if (!Number.isInteger(n) || n < 1) n = 1;
+  if (n > 30) n = 30;
+  config.voiceSeconds = n;
+  saveConfig();
+}
+
+function onVoiceToggleChange(checked) {
+  config.voiceEnabled = !!checked;
+  saveConfig();
+  updateVoiceBtnVisibility();
+}
+
+function updateVoiceBtnVisibility() {
+  var btn = document.getElementById('voiceInputBtn');
+  if (!btn) return;
+  btn.style.display = config.voiceEnabled ? '' : 'none';
+}
+
+function openVoiceModal() {
+  if (!config.voiceEnabled) return;
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) {
+    showAlert('此瀏覽器不支援語音輸入\n請使用 Android Chrome 瀏覽器');
+    return;
+  }
+
+  voiceRecognizedText = '';
+  voiceAutoSaveDone = false;
+  voiceIsRecording = true;
+  voiceRemaining = config.voiceSeconds || 5;
+
+  var modal = document.getElementById('voiceModal');
+  var countdownEl = document.getElementById('voiceCountdown');
+  var statusEl = document.getElementById('voiceStatus');
+  var textEl = document.getElementById('voiceText');
+
+  countdownEl.textContent = voiceRemaining;
+  countdownEl.classList.remove('urgent');
+  statusEl.textContent = '請開始說話⋯';
+  textEl.innerHTML = '<span style="color:#94a3b8;">（等待語音⋯）</span>';
+  modal.classList.add('active');
+
+  voiceRecognition = new SR();
+  voiceRecognition.lang = 'zh-TW';
+  voiceRecognition.interimResults = true;
+  voiceRecognition.continuous = true;
+  voiceRecognition.maxAlternatives = 1;
+
+  voiceRecognition.onresult = function(event) {
+    var interim = '';
+    var final = '';
+    for (var i = event.resultIndex; i < event.results.length; i++) {
+      var t = event.results[i][0].transcript;
+      if (event.results[i].isFinal) {
+        final += t;
+      } else {
+        interim += t;
+      }
+    }
+    if (final) voiceRecognizedText += final;
+    var display = voiceRecognizedText + (interim ? interim : '');
+    renderVoiceText(display);
+  };
+
+  voiceRecognition.onerror = function(e) {
+    if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
+      statusEl.textContent = '⚠️ 請允許麥克風權限';
+    } else if (e.error === 'network') {
+      statusEl.textContent = '⚠️ 網路連線異常';
+    }
+  };
+
+  try {
+    voiceRecognition.start();
+  } catch (e) {
+    statusEl.textContent = '⚠️ 無法啟動語音辨識';
+  }
+
+  clearInterval(voiceCountdownTimer);
+  voiceCountdownTimer = setInterval(function() {
+    voiceRemaining--;
+    if (voiceRemaining <= 0) {
+      clearInterval(voiceCountdownTimer);
+      finishVoiceInput();
+      return;
+    }
+    countdownEl.textContent = voiceRemaining;
+    if (voiceRemaining <= 2) countdownEl.classList.add('urgent');
+  }, 1000);
+}
+
+function renderVoiceText(text) {
+  if (!text) {
+    document.getElementById('voiceText').innerHTML = '<span style="color:#94a3b8;">（等待語音⋯）</span>';
+    return;
+  }
+
+  var html = escapeHtml(text);
+
+  var keywords = [];
+  config.typeList.forEach(function(t) { keywords.push({ name: t.name, cls: 'kw-type' }); });
+  config.payList.forEach(function(p) { keywords.push({ name: p.name, cls: 'kw-pay' }); });
+  config.expList.forEach(function(e) { keywords.push({ name: e.name, cls: 'kw-exp' }); });
+
+  keywords.sort(function(a, b) { return b.name.length - a.name.length; });
+
+  keywords.forEach(function(k) {
+    if (!k.name) return;
+    var escaped = escapeHtml(k.name);
+    var regex = new RegExp(escaped, 'g');
+    html = html.replace(regex, '<span class="' + k.cls + '">' + escaped + '</span>');
+  });
+
+  html = html.replace(/(\d+)/g, function(m) {
+    return '<span class="kw-amount">' + m + '</span>';
+  });
+
+  document.getElementById('voiceText').innerHTML = html;
+}
+
+function finishVoiceInput() {
+  if (!voiceIsRecording) return;
+  voiceIsRecording = false;
+
+  try { if (voiceRecognition) voiceRecognition.stop(); } catch (e) {}
+
+  setTimeout(function() {
+    document.getElementById('voiceModal').classList.remove('active');
+    if (!voiceAutoSaveDone) {
+      voiceAutoSaveDone = true;
+      processVoiceCommand(voiceRecognizedText);
+    }
+  }, 300);
+}
+
+function processVoiceCommand(text) {
+  text = (text || '').replace(/[\s，,。、！!？?]/g, '');
+
+  if (!text) {
+    showAlert('沒有聽到聲音\n請再試一次');
+    return;
+  }
+
+  var matchedType = null, typeLen = 0;
+  config.typeList.forEach(function(t) {
+    if (text.indexOf(t.name) >= 0 && t.name.length > typeLen) {
+      matchedType = t; typeLen = t.name.length;
+    }
+  });
+
+  var matchedExp = null, expLen = 0;
+  config.expList.forEach(function(e) {
+    if (text.indexOf(e.name) >= 0 && e.name.length > expLen) {
+      matchedExp = e; expLen = e.name.length;
+    }
+  });
+
+  var matchedPay = null, payLen = 0;
+  config.payList.forEach(function(p) {
+    if (text.indexOf(p.name) >= 0 && p.name.length > payLen) {
+      matchedPay = p; payLen = p.name.length;
+    }
+  });
+
+  var amount = extractAmount(text);
+
+  if (!amount || amount <= 0) {
+    showAlert('聽到的內容：「' + text + '」\n\n找不到金額\n請說出金額，例如「派遣100」');
+    return;
+  }
+
+  var isExpense = false;
+  if (matchedExp && !matchedType) {
+    isExpense = true;
+  } else if (matchedExp && matchedType) {
+    isExpense = text.indexOf(matchedExp.name) < text.indexOf(matchedType.name);
+  }
+
+  if (isExpense) {
+    saveVoiceExpense(matchedExp, amount, text);
+    return;
+  }
+
+  if (!matchedType) {
+    matchedType = config.typeList[0];
+  }
+  if (!matchedPay) {
+    matchedPay = config.payList[0];
+  }
+  if (!matchedType || !matchedPay) {
+    showAlert('設定缺少類別或付款方式');
+    return;
+  }
+
+  saveVoiceIncome(matchedType, matchedPay, amount, text);
+}
+
+function saveVoiceIncome(typeItem, payItem, amount, originalText) {
+  var now = new Date();
+  var fee = amount * Number(payItem.rate || 0) / 100;
+  var net = amount - fee - Number(typeItem.deduct || 0);
+  if (net < 0) net = 0;
+
+  var record = {
+    id: nextId(),
+    type: typeItem.name,
+    pay: payItem.name,
+    raw: amount,
+    fee: fee,
+    net: Math.round(net),
+    deduct: Number(typeItem.deduct || 0),
+    date: getBizDate(now),
+    time: fmtTime()
+  };
+
+  if (payItem.name === '好孕券' && amount > 250) {
+    record.fee = 0;
+    record.net = amount - Number(typeItem.deduct || 0);
+    if (record.net < 0) record.net = 0;
+    record.splits = [
+      { pay: '好孕券', amount: 250 },
+      { pay: (config.payList[0] && config.payList[0].name) || '現金', amount: amount - 250 }
+    ];
+  }
+
+  var list = getRecords();
+  list.unshift(record);
+  saveRecords(list);
+
+  calcTotal(); renderTodayList(); refreshStatCards(); refreshExpCards();
+  speakText('已記錄 ' + typeItem.name + ' ' + amount + ' 元');
+  showAlert('✅ 已記錄\n類別：' + typeItem.name + '\n付款：' + payItem.name + '\n金額：' + amount + '\n\n辨識：「' + originalText + '」');
+}
+
+function saveVoiceExpense(expItem, amount, originalText) {
+  var now = new Date();
+  var list = getExpenses();
+  list.unshift({
+    id: nextId(),
+    cat: expItem.name,
+    color: expItem.color,
+    raw: amount,
+    note: '語音輸入',
+    date: getBizDate(now),
+    time: fmtTime()
+  });
+  saveExpenses(list);
+
+  renderExpView(); refreshExpCards(); refreshStatCards();
+  speakText('已記錄支出 ' + expItem.name + ' ' + amount + ' 元');
+  showAlert('✅ 已記錄支出\n類別：' + expItem.name + '\n金額：' + amount + '\n\n辨識：「' + originalText + '」');
+}
+
+function extractAmount(text) {
+  var m = text.match(/\d+/);
+  if (m) return Number(m[0]);
+
+  var cnPattern = /[零一二兩三四五六七八九十百千萬]+/g;
+  var matches = text.match(cnPattern);
+  if (matches) {
+    for (var i = 0; i < matches.length; i++) {
+      var n = cnToNumber(matches[i]);
+      if (n > 0) return n;
+    }
+  }
+  return null;
+}
+
+function cnToNumber(str) {
+  if (!str) return 0;
+  var cnMap = {'零':0,'一':1,'二':2,'兩':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9};
+  var unitMap = {'十':10,'百':100,'千':1000,'萬':10000};
+
+  var result = 0, current = 0, lastUnit = 0, hasZero = false;
+
+  for (var i = 0; i < str.length; i++) {
+    var ch = str[i];
+    if (ch === '零') { hasZero = true; continue; }
+    if (cnMap[ch] !== undefined) {
+      current = cnMap[ch];
+    } else if (unitMap[ch] !== undefined) {
+      var unit = unitMap[ch];
+      if (current === 0) current = 1;
+      if (unit === 10000) {
+        result = (result + current) * unit;
+      } else {
+        result += current * unit;
+      }
+      lastUnit = unit;
+      current = 0;
+      hasZero = false;
+    }
+  }
+
+  if (current > 0) {
+    if (!hasZero && lastUnit >= 100) {
+      result += current * (lastUnit / 10);
+    } else {
+      result += current;
+    }
+  }
+  return result;
+}
+
+function speakText(text) {
+  if ('speechSynthesis' in window) {
+    try {
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang = 'zh-TW';
+      u.rate = 1.1;
+      speechSynthesis.speak(u);
+    } catch (e) {}
+  }
+}
+
 window.addEventListener('resize', function(){
   setTimeout(fitAllStatText, 50);
   setTimeout(fitHomeButtons, 50);
@@ -2102,6 +2578,11 @@ window.onload=function(){
   renderExpTypeBtnWrap();
   updateNavActive('pageHome');
   updateTodayDateText();
+  updateVoiceBtnVisibility();
+  var vsInput = document.getElementById('voiceSeconds');
+  var vsToggle = document.getElementById('voiceToggle');
+  if (vsInput) vsInput.value = config.voiceSeconds;
+  if (vsToggle) vsToggle.checked = config.voiceEnabled;
   setTimeout(fitAllStatText, 100);
 };
 </script>
