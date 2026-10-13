@@ -2730,7 +2730,7 @@ function saveVoiceIncome(typeItem, payItem, amount, originalText) {
   saveRecords(list);
 
   calcTotal(); renderTodayList(); refreshStatCards(); refreshExpCards();
-  speakText('已記錄 ' + typeItem.name + ' ' + amount + ' 元');
+  speakText('已記錄 ' + typeItem.name + ' ' + payItem.name + ' ' + amount + ' 元');
   showToast('✅ 已記錄 ' + typeItem.name + ' / ' + payItem.name + ' / ' + amount + ' 元');
 }
 
