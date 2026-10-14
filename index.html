@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>計程車記帳</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2563eb">
@@ -478,7 +478,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   min-width:0;
 }
 #daySummaryCard .stat-pair > span:last-child{
-  font-size:calc(0.95px * var(--fs-num)) !important;
+  font-size:calc(1.25px * var(--fs-num)) !important;
   font-variant-numeric:tabular-nums;
   overflow:hidden;
   text-overflow:ellipsis;
@@ -970,6 +970,48 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   text-align:center;
   width:4.5em;
   max-width:72px;
+}
+
+/* ===== 橫屏優化 ===== */
+@media (orientation: landscape) and (max-height: 500px) {
+  .global-nav{padding:2px 4px;margin:0 2px 2px;gap:2px;}
+  .global-nav .app-logo{width:24px;height:24px;flex-basis:24px;}
+  .global-nav .app-name{font-size:13px;}
+  .global-nav .nav-icon{padding:3px 4px;min-width:32px;}
+  .global-nav .nav-symbol{font-size:1em;}
+  .global-nav .nav-label{font-size:8px;}
+
+  .pageHome-top .card{margin-bottom:4px;padding:2px;}
+  .voice-input-btn{height:32px;font-size:13px;margin-bottom:4px;}
+  #typeBtnWrap{gap:3px;margin-bottom:3px;}
+  #typeBtnWrap .bigBtn{height:32px;font-size:14px;}
+
+  #daySummaryCard{font-size:calc(.9px * var(--fs-num));gap:0;}
+  #daySummaryCard .stat-pair > span:first-child{font-size:calc(.8px * var(--fs-num));}
+  #daySummaryCard .stat-pair > span:last-child{font-size:calc(1px * var(--fs-num)) !important;}
+
+  .section-title{margin:3px 0 2px;}
+  .section-title h3{font-size:calc(.9px * var(--fs-num));}
+  .section-title .today-net{font-size:calc(.85px * var(--fs-num));}
+  .section-title .today-date{font-size:calc(.8px * var(--fs-num));}
+  .home-detail-row{padding:2px 4px;font-size:calc(.8px * var(--fs-num));}
+  .home-detail-head{padding:3px 4px;font-size:calc(.8px * var(--fs-num));}
+
+  .stat-type-card{padding:2px !important;margin-bottom:2px !important;gap:2px !important;}
+  .stat-type-btn{padding:4px 2px !important;font-size:11px !important;}
+  .stat-pay-card{padding:2px !important;margin-bottom:2px !important;gap:2px !important;}
+  .stat-pay-btn{padding:4px 2px !important;font-size:11px !important;}
+  .exp-type-btn-card{padding:2px !important;margin-bottom:2px !important;gap:2px !important;}
+  .exp-type-btn-card .bigBtn{height:26px !important;font-size:12px !important;}
+  .stat-breadcrumb{padding:2px 6px;margin-bottom:2px;font-size:calc(.85px * var(--fs-num));}
+  .stat-summary-box{padding:3px 5px;margin-bottom:2px;}
+  .stat-summary-title{font-size:calc(.85px * var(--fs-num));}
+  .stat-list-head{padding:3px 5px;font-size:calc(.85px * var(--fs-num));}
+  .stat-list-row{padding:3px 5px;font-size:calc(.85px * var(--fs-num));}
+
+  .setBlock{margin:2px 0;padding:4px 6px;}
+  .setBlock h4{font-size:calc(.9px * var(--fs-num));}
+  .voice-settings-bar{padding:4px 8px;margin:2px 0;}
 }
 
 </style>
