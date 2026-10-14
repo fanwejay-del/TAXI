@@ -68,6 +68,7 @@
     z-index: 1;
     transform-origin: center top;
     transition: transform 200ms ease;
+    margin: 0 auto;
   }
 
   .game { width: 500px; padding: 18px; }
@@ -672,12 +673,19 @@
     const availW = window.innerWidth - 16;
     const topReserved = 50;
     const availH = window.innerHeight - 16;
-    const scale = Math.min(1, availW / baseW, (availH - topReserved) / baseH);
+
+    // 分開計算寬度和高度的縮放比例，取較小值確保完整顯示
+    const scaleW = availW / baseW;
+    const scaleH = (availH - topReserved) / baseH;
+    const scale = Math.min(1, scaleW, scaleH);
+
     const scaledH = baseH * scale;
-    // 上方佔 70%、下方佔 30%（把原本的上下比例對調）
+    // 上方佔 70%、下方佔 30%
     const extraTop = topReserved + Math.max(0, (availH - topReserved - scaledH) * 0.7);
+
     wrap.style.transform = 'translateY(' + extraTop + 'px) scale(' + scale + ')';
     wrap.style.transformOrigin = 'center top';
+    wrap.style.margin = '0 auto';
   }
   window.addEventListener('resize', fit);
   window.addEventListener('orientationchange', () => setTimeout(fit, 200));
