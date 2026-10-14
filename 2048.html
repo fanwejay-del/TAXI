@@ -663,10 +663,17 @@
     const wrap = document.querySelector('.scale-wrap');
     const baseW = 500;
     const baseH = 640;
-    const scale = Math.min(1, (window.innerWidth - 16) / baseW, (window.innerHeight - 16) / baseH);
-    wrap.style.transform = 'scale(' + scale + ')';
+    const availW = window.innerWidth - 16;
+    const availH = window.innerHeight - 16;
+    const scale = Math.min(1, availW / baseW, availH / baseH);
+    const scaledH = baseH * scale;
+    // 原本是上下各半，改成上方佔 70%、下方佔 30%
+    const extraTop = Math.max(0, (availH - scaledH) * 0.7);
+    wrap.style.transform = 'translateY(' + extraTop + 'px) scale(' + scale + ')';
+    wrap.style.transformOrigin = 'center top';
   }
   window.addEventListener('resize', fit);
+  window.addEventListener('orientationchange', () => setTimeout(fit, 200));
 
   fit();
   newGame();
