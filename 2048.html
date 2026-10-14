@@ -28,7 +28,7 @@
 
   body {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     min-height: 100vh;
     overflow: hidden;
@@ -49,16 +49,16 @@
 
   .back-home {
     position: fixed;
-    top: 8px;
-    right: 8px;
+    top: 12px;
+    left: 12px;
     z-index: 100;
     background: #2563eb;
     color: #fff;
-    padding: 6px 12px;
-    border-radius: 8px;
+    padding: 10px 16px;
+    border-radius: 10px;
     text-decoration: none;
     font-weight: 700;
-    font-size: 12px;
+    font-size: 14px;
     box-shadow: 0 2px 8px rgba(0,0,0,.2);
   }
   .back-home:active { filter: brightness(.9); }
@@ -66,9 +66,8 @@
   .scale-wrap {
     position: relative;
     z-index: 1;
-    transform-origin: center top;
+    transform-origin: center center;
     transition: transform 200ms ease;
-    margin: 0 auto;
   }
 
   .game { width: 500px; padding: 18px; }
@@ -292,7 +291,7 @@
   /* ===== 橫屏優化 ===== */
   @media (orientation: landscape) and (max-height: 500px) {
     body { padding: 4px; }
-    .back-home { padding: 4px 8px; font-size: 11px; top: 4px; right: 4px; }
+    .back-home { padding: 6px 12px; font-size: 12px; top: 6px; left: 6px; }
   }
 </style>
 </head>
@@ -671,21 +670,10 @@
     const baseW = 500;
     const baseH = 640;
     const availW = window.innerWidth - 16;
-    const topReserved = 50;
     const availH = window.innerHeight - 16;
-
-    // 分開計算寬度和高度的縮放比例，取較小值確保完整顯示
-    const scaleW = availW / baseW;
-    const scaleH = (availH - topReserved) / baseH;
-    const scale = Math.min(1, scaleW, scaleH);
-
-    const scaledH = baseH * scale;
-    // 上方佔 70%、下方佔 30%
-    const extraTop = topReserved + Math.max(0, (availH - topReserved - scaledH) * 0.7);
-
-    wrap.style.transform = 'translateY(' + extraTop + 'px) scale(' + scale + ')';
-    wrap.style.transformOrigin = 'center top';
-    wrap.style.margin = '0 auto';
+    const scale = Math.min(1, availW / baseW, availH / baseH);
+    wrap.style.transform = 'scale(' + scale + ')';
+    wrap.style.transformOrigin = 'center center';
   }
   window.addEventListener('resize', fit);
   window.addEventListener('orientationchange', () => setTimeout(fit, 200));
