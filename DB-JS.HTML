@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>計程車記帳 - DB 轉換</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { font-family: -apple-system, "Segoe UI", "Microsoft JhengHei", sans-serif;
+    background: #f3f4f6; margin: 0; padding: 16px; color: #111827;
+    -webkit-text-size-adjust: 100%; }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  .sub { color: #6b7280; font-size: 13px; margin-bottom: 16px; }
+  .card { background: #fff; border-radius: 14px; padding: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08); margin-bottom: 14px; }
+  .card h2 { font-size: 15px; margin: 0 0 12px; }
+  #drop { border: 2px dashed #cbd5e1; border-radius: 12px; padding: 28px 16px;
+    text-align: center; color: #6b7280; cursor: pointer; transition: .15s; background: #f9fafb; }
+  #drop.hover { border-color: #2563eb; background: #eff6ff; color: #2563eb; }
+  #drop strong { color: #111827; }
+  .file-info { margin-top: 12px; font-size: 13px; color: #059669; display: none;
+    word-break: break-all; }
+  button { width: 100%; padding: 16px; font-size: 16px; font-weight: 600;
+    border: none; border-radius: 10px; cursor: pointer; transition: .15s;
+    touch-action: manipulation; }
+  #go { background: #2563eb; color: #fff; }
+  #go:hover:not(:disabled) { background: #1d4ed8; }
+  #go:disabled { background: #cbd5e1; cursor: not-allowed; }
+  #dl { background: #059669; color: #fff; display: none; margin-top: 12px; }
+  #dl:hover { background: #047857; }
+  #log { background: #0f172a; color: #e2e8f0; font-family: ui-monospace, Menlo, monospace;
+    font-size: 12px; padding: 12px; border-radius: 10px; min-height: 50px;
+    white-space: pre-wrap; line-height: 1.6; display: none; }
+  .note { font-size: 13px; color: #6b7280; line-height: 1.8; }
+  .note b { color: #dc2626; }
+
+  h3.sec { font-size: 14px; color: #111827; margin: 18px 0 8px; }
+  h3.sec:first-child { margin-top: 0; }
+  h3.sec span { color: #9ca3af; font-weight: 400; font-size: 12px; margin-left: 6px; }
+
+  /* 手機優先的對應表：預設卡片式 */
+  .map-item { padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
+  .map-item:last-child { border-bottom: none; }
+  .map-item .top { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+  .map-item .old { font-family: ui-monospace, monospace; font-size: 14px;
+    color: #374151; flex: 1; word-break: break-all; }
+  .map-item .cnt { color: #9ca3af; font-size: 12px; white-space: nowrap; }
+  .map-item .arrow { color: #9ca3af; font-size: 13px; margin: 0 4px; }
+  .map-item input { width: 100%; padding: 12px; font-size: 16px;
+    border: 1px solid #d1d5db; border-radius: 10px; }
+  .map-item input:focus { outline: none; border-color: #2563eb;
+    box-shadow: 0 0 0 3px #dbeafe; }
+
+  /* 桌機時改成兩欄表格 */
+  @media (min-width: 600px) {
+    body { padding: 24px; }
+    h1 { font-size: 22px; }
+    .card { padding: 20px; }
+    #drop { padding: 36px 16px; }
+    .map-item { display: flex; align-items: center; gap: 10px; }
+    .map-item .top { display: contents; }
+    .map-item .old { flex: 1; }
+    .map-item .arrow { display: inline; }
+    .map-item input { flex: 1.2; width: auto; }
+    .map-item .cnt { order: 99; width: 60px; text-align: right; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>計程車記帳 — DB 轉換</h1>
+  <div class="sub">把 money.db 轉成 backup.json</div>
+
+  <div class="card">
+    <h2>步驟 1：選擇資料庫</h2>
+    <div id="drop">
+      <div style="font-size:32px;margin-bottom:8px">📂</div>
+      <div><strong>點此選擇</strong> 或把 money.db 拖進來</div>
+    </div>
+    <div class="file-info" id="fileInfo"></div>
+  </div>
+
+  <div class="card" id="mapCard" style="display:none">
+    <h2>步驟 2：改成要用的名稱</h2>
+    <div id="mapArea"></div>
+  </div>
+
+  <div class="card">
+    <h2>步驟 3：開始轉換</h2>
+    <button id="go" disabled>開始轉檔</button>
+    <button id="dl">📥 下載 backup.json</button>
+    <div id="log"></div>
+  </div>
+
+  <div class="card note">
+    <b>注意：</b><br>
+    1. 轉檔前請先備份 <b>money.db</b>。<br>
+    2. 掃描後會列出實際出現的名稱，逐一改成你要用的名稱即可。<br>
+    3. 金額直接沿用 DB 算好的 cnet / cpayment / ccase，不重算。<br>
+    4. 產生的 backup.json 用「設定 → 📥 匯入」載入。<br>
+    5. 手機下載後：<b>Android</b> 存到「下載」資料夾，<b>iPhone</b> 存到「檔案 App → 下載項目」。
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g,
+  c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+
+let dbFile = null, jsonOut = null, SQLmod = null, parsed = null;
+
+function guessType(text) {
+  const s = String(text || "").trim();
+  if (s.includes("路邊") || s.includes("路招")) return "路招";
+  if (s.includes("車隊") || s.includes("派遣")) return "派遣";
+  return s || "其他";
+}
+function guessPay(text) {
+  const s = String(text || "").trim();
+  if (s.includes("現金")) return "現金";
+  if (s.includes("電子") || s.includes("紙本") || s.includes("企業")) return "企業簽單";
+  if (s.includes("信用卡") || s.includes("綁定")) return "信用卡";
+  if (s.includes("悠遊")) return "悠遊卡";
+  if (s.includes("好孕")) return "好孕券";
+  return s || "其他";
+}
+
+const drop = $("drop");
+drop.onclick = () => {
+  const i = document.createElement("input");
+  i.type = "file"; i.accept = ".db,.sqlite,.sqlite3";
+  i.onchange = e => setFile(e.target.files[0]);
+  i.click();
+};
+["dragenter","dragover"].forEach(ev => drop.addEventListener(ev, e => {
+  e.preventDefault(); drop.classList.add("hover");
+}));
+["dragleave","drop"].forEach(ev => drop.addEventListener(ev, e => {
+  e.preventDefault(); drop.classList.remove("hover");
+}));
+drop.addEventListener("drop", e => setFile(e.dataTransfer.files[0]));
+
+async function setFile(f) {
+  if (!f) return;
+  dbFile = f; parsed = null; jsonOut = null;
+  $("fileInfo").style.display = "block";
+  $("fileInfo").textContent = `已選擇：${f.name}（${(f.size/1024).toFixed(1)} KB）`;
+  $("go").disabled = true;
+  $("dl").style.display = "none";
+  $("log").style.display = "none";
+  $("log").textContent = "";
+  $("mapCard").style.display = "none";
+  $("mapArea").innerHTML = "";
+
+  logShow("載入 SQLite 引擎...");
+  try {
+    if (!SQLmod) {
+      SQLmod = await initSqlJs({ locateFile: x =>
+        `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${x}` });
+    }
+    logAppend("讀取檔案...");
+    const buf = await dbFile.arrayBuffer();
+    const db = new SQLmod.Database(new Uint8Array(buf));
+
+    const tables = db.exec("SELECT name FROM sqlite_master WHERE type='table'");
+    const names = tables[0] ? tables[0].values.map(r => r[0]) : [];
+    if (!names.includes("money"))
+      throw new Error("找不到 money 資料表，這可能不是正確的資料庫。");
+
+    logAppend("讀取 money 資料表...");
+    const res = db.exec("SELECT * FROM money");
+    if (!res[0]) throw new Error("money 表沒有資料。");
+    parsed = { cols: res[0].columns, rows: res[0].values };
+    logAppend(`找到 ${parsed.rows.length} 筆資料，掃描類別中...`);
+
+    renderMapping(parsed);
+    $("go").disabled = false;
+    logAppend("✅ 掃描完成，請確認對應名稱後按「開始轉檔」");
+  } catch (err) {
+    logAppend("❌ 錯誤：" + err.message);
+    console.error(err);
+  }
+}
+
+function renderMapping({ cols, rows }) {
+  const ci = n => cols.indexOf(n);
+  const i_type = ci("cpassengerT"), i_pay = ci("cpaymentM");
+  if (i_type < 0) throw new Error("找不到 cpassengerT 欄位");
+  if (i_pay  < 0) throw new Error("找不到 cpaymentM 欄位");
+
+  const typeStats = {}, payStats = {};
+  rows.forEach(r => {
+    const t = String(r[i_type] ?? "").trim();
+    const p = String(r[i_pay]  ?? "").trim();
+    typeStats[t] = (typeStats[t] || 0) + 1;
+    payStats[p]  = (payStats[p]  || 0) + 1;
+  });
+
+  const sortByCount = o => Object.entries(o).sort((a, b) => b[1] - a[1]);
+  const label = s => s === "" ? "(空白)" : s;
+
+  function section(title, stats, kind, guessFn) {
+    let h = `<h3 class="sec">${title} <span>（共 ${Object.keys(stats).length} 種）</span></h3>`;
+    sortByCount(stats).forEach(([old, cnt]) => {
+      h += `<div class="map-item">
+        <div class="top">
+          <div class="old">${esc(label(old))}</div>
+          <div class="arrow">→</div>
+          <div class="cnt">${cnt} 筆</div>
+        </div>
+        <input class="new-name" data-kind="${kind}" data-old="${esc(old)}"
+          value="${esc(guessFn(old))}" placeholder="輸入新名稱">
+      </div>`;
+    });
+    return h;
+  }
+
+  let html = section("營業類別", typeStats, "type", guessType);
+  html += section("付款方式", payStats, "pay", guessPay);
+
+  $("mapArea").innerHTML = html;
+  $("mapCard").style.display = "block";
+  $("mapCard").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function readMapping() {
+  const typeMap = {}, payMap = {};
+  document.querySelectorAll('input[data-kind="type"]').forEach(i =>
+    typeMap[i.dataset.old] = i.value.trim() || "其他");
+  document.querySelectorAll('input[data-kind="pay"]').forEach(i =>
+    payMap[i.dataset.old] = i.value.trim() || "其他");
+  return { typeMap, payMap };
+}
+
+function logShow(msg) {
+  const el = $("log"); el.style.display = "block"; el.textContent = msg + "\n";
+}
+function logAppend(msg) {
+  const el = $("log"); el.style.display = "block";
+  el.textContent += msg + "\n"; el.scrollTop = el.scrollHeight;
+}
+
+const pad = n => String(n).padStart(2, "0");
+function normDate(s) {
+  if (!s) return "";
+  s = String(s).trim().replace(/\//g, "-");
+  const m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if (m) return `${m[1]}-${pad(m[2])}-${pad(m[3])}`;
+  return s;
+}
+function normTime(s) {
+  if (!s) return "00:00";
+  s = String(s).trim();
+  const m = s.match(/^(\d{1,2}):(\d{2})/);
+  if (m) return `${pad(m[1])}:${m[2]}`;
+  return "00:00";
+}
+
+$("go").onclick = () => {
+  if (!parsed) return;
+  $("go").disabled = true;
+  $("dl").style.display = "none";
+  jsonOut = null;
+
+  try {
+    const { cols, rows } = parsed;
+    const ci = n => cols.indexOf(n);
+    const i_id   = ci("_id");
+    const i_date = ci("cdate");
+    const i_time = ci("ctime");
+    const i_inc  = ci("cincome");
+    const i_type = ci("cpassengerT");
+    const i_pay  = ci("cpaymentM");
+    const i_fee  = ci("cpayment");
+    const i_case = ci("ccase");
+    const i_net  = ci("cnet");
+
+    const { typeMap, payMap } = readMapping();
+
+    logAppend("開始轉檔...");
+    const records = [];
+    let missType = 0, missPay = 0;
+
+    rows.forEach((r, idx) => {
+      const raw     = Number(r[i_inc]) || 0;
+      const oldType = String(r[i_type] ?? "").trim();
+      const oldPay  = String(r[i_pay]  ?? "").trim();
+      const date = normDate(r[i_date]);
+      const time = normTime(r[i_time]);
+      const type = typeMap[oldType] ?? "其他";
+      const pay  = payMap[oldPay]   ?? "其他";
+      if (!(oldType in typeMap)) missType++;
+      if (!(oldPay  in payMap))  missPay++;
+
+      const fee    = i_fee  >= 0 ? (Number(r[i_fee])  || 0) : 0;
+      const deduct = i_case >= 0 ? (Number(r[i_case]) || 0) : 0;
+      let   net    = i_net  >= 0 ? Number(r[i_net]) : null;
+      if (net === null || isNaN(net)) net = Math.round(raw - fee - deduct);
+
+      const baseId = Number(r[i_id]) || (Date.now() + idx);
+      records.push({ id: baseId, type, pay, raw, fee, net, deduct, date, time });
+    });
+
+    const typeSet = new Map(), paySet = new Map();
+    records.forEach(r => {
+      if (!typeSet.has(r.type)) typeSet.set(r.type, 0);
+      if (!paySet.has(r.pay))   paySet.set(r.pay, 0);
+    });
+
+    const typeColor = ["#2563eb", "#ea580c", "#9333ea", "#0891b2", "#dc2626", "#475569"];
+    const payColor  = ["#16a34a", "#22aabb", "#7c3aed", "#9333ea", "#0891b2", "#dc2626", "#475569"];
+
+    const typeDeductCount = {};
+    records.forEach(r => {
+      if (!typeDeductCount[r.type]) typeDeductCount[r.type] = {};
+      typeDeductCount[r.type][r.deduct] = (typeDeductCount[r.type][r.deduct] || 0) + 1;
+    });
+    const typeDeduct = {};
+    Object.entries(typeDeductCount).forEach(([t, m]) => {
+      let best = 0, bestN = -1;
+      Object.entries(m).forEach(([d, n]) => { if (n > bestN) { bestN = n; best = Number(d); } });
+      typeDeduct[t] = best;
+    });
+
+    const payRateAcc = {};
+    records.forEach(r => {
+      if (!payRateAcc[r.pay]) payRateAcc[r.pay] = { sumRaw: 0, sumFee: 0 };
+      payRateAcc[r.pay].sumRaw += r.raw;
+      payRateAcc[r.pay].sumFee += r.fee;
+    });
+    const payRate = {};
+    Object.entries(payRateAcc).forEach(([p, a]) => {
+      payRate[p] = a.sumRaw > 0 ? Math.round(a.sumFee / a.sumRaw * 1000) / 10 : 0;
+    });
+
+    jsonOut = {
+      saveTime: new Date().toISOString(),
+      config: {
+        typeList: [...typeSet.keys()].map((name, i) =>
+          ({ name, deduct: typeDeduct[name] ?? 0, color: typeColor[i % typeColor.length] })),
+        payList: [...paySet.keys()].map((name, i) =>
+          ({ name, rate: payRate[name] ?? 0, color: payColor[i % payColor.length] })),
+        businessHour: { start: 22, end: 8 },
+        fontSize: 16, fontWeight: 700,
+        expList: [
+          { name: "加油", color: "#dc2626" },
+          { name: "其他", color: "#475569" }
+        ]
+      },
+      records,
+      expenses: []
+    };
+
+    logAppend(`轉換完成：${records.length} 筆`);
+    if (missType || missPay) {
+      logAppend(`⚠️ 有 ${missType} 筆類型、${missPay} 筆付款方式沒對應到，已歸為「其他」`);
+    }
+    logAppend(`營業類別：${[...typeSet.keys()].join("、")}`);
+    logAppend(`付款方式：${[...paySet.keys()].join("、")}`);
+    logAppend("✅ 可以下載 backup.json 了");
+    $("dl").style.display = "block";
+  } catch (err) {
+    logAppend("❌ 錯誤：" + err.message);
+    console.error(err);
+  } finally {
+    $("go").disabled = false;
+  }
+};
+
+$("dl").onclick = () => {
+  if (!jsonOut) return;
+  const blob = new Blob([JSON.stringify(jsonOut)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "backup.json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+</script>
+</body>
+</html>
