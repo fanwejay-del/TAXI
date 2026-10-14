@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -20,7 +20,7 @@
   html, body {
     height: 100%;
     font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue",
-      "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      "PingFang TC", "Microsoft JhengHei", Arial, sans-serif;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
     -webkit-user-select: none;
@@ -46,6 +46,22 @@
   }
   body::before { width: 420px; height: 420px; background: #f3c98b; top: -140px; left: -100px; }
   body::after  { width: 420px; height: 420px; background: #d9c7a8; bottom: -160px; right: -100px; }
+
+  .back-home {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 100;
+    background: #2563eb;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  }
+  .back-home:active { filter: brightness(.9); }
 
   .scale-wrap {
     position: relative;
@@ -120,6 +136,7 @@
     opacity: 0;
     transform: scale(0.6);
     transition: all 200ms ease;
+    white-space: nowrap;
   }
   .new-best-badge.show { opacity: 1; transform: scale(1); }
 
@@ -273,28 +290,30 @@
 </style>
 </head>
 <body>
+  <a href="index.html" class="back-home">← 回首頁</a>
+
   <div class="scale-wrap">
     <div class="game">
       <div class="header">
         <div class="title-box">
           <div class="title">2048</div>
-          <div class="subtitle">滑动方块 · 合并相同数字</div>
+          <div class="subtitle">滑動方塊 · 合併相同數字</div>
         </div>
         <div class="scores">
           <div class="score-box" id="score-box">
-            <div class="label">分数</div>
+            <div class="label">分數</div>
             <div class="value" id="score">0</div>
           </div>
           <div class="score-box best" id="best-box">
             <div class="label">🏆 最高</div>
             <div class="value" id="best">0</div>
-            <div class="new-best-badge" id="new-best">新纪录</div>
+            <div class="new-best-badge" id="new-best">新紀錄</div>
           </div>
         </div>
       </div>
 
       <div class="actions">
-        <button class="btn primary" id="new-game">🔄 新游戏</button>
+        <button class="btn primary" id="new-game">🔄 新遊戲</button>
         <button class="btn hint" id="undo" title="撤回一步">↩ 撤回</button>
       </div>
 
@@ -307,17 +326,17 @@
         <div class="tile-layer" id="tile-layer"></div>
 
         <div class="overlay" id="overlay">
-          <div class="o-title" id="o-title">Game Over</div>
+          <div class="o-title" id="o-title">遊戲結束</div>
           <div class="o-msg" id="o-msg"></div>
           <div class="o-actions">
-            <button class="btn" id="keep-going" style="display:none">继续挑战</button>
-            <button class="btn primary" id="try-again">再来一局</button>
+            <button class="btn" id="keep-going" style="display:none">繼續挑戰</button>
+            <button class="btn primary" id="try-again">再來一局</button>
           </div>
         </div>
       </div>
 
       <div class="footer">
-        方向键 <kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd> 或 <kbd>WASD</kbd> 操作 · 触屏滑动也可以
+        方向鍵 <kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd> 或 <kbd>WASD</kbd> 操作 · 觸屏滑動也可以
       </div>
     </div>
   </div>
@@ -534,14 +553,14 @@
       for (let r = 0; r < SIZE; r++) for (let c = 0; c < SIZE; c++) {
         if (grid[r][c] && grid[r][c].value >= 2048) {
           won = true;
-          showOverlay('你赢了！', '成功拼出 2048！可以继续冲击更高分数。', true);
+          showOverlay('你贏了！', '成功拼出 2048！可以繼續挑戰更高分數。', true);
           return;
         }
       }
     }
     if (!canMove()) {
       over = true;
-      showOverlay('游戏结束', '没有可以移动的方块了，再试一次吧。', false);
+      showOverlay('遊戲結束', '沒有可以移動的方塊了，再試一次吧。', false);
     }
   }
 
