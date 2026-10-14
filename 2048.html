@@ -28,7 +28,7 @@
 
   body {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     min-height: 100vh;
     overflow: hidden;
@@ -66,7 +66,7 @@
   .scale-wrap {
     position: relative;
     z-index: 1;
-    transform-origin: center center;
+    transform-origin: center top;
     transition: transform 200ms ease;
   }
 
@@ -672,8 +672,14 @@
     const availW = window.innerWidth - 16;
     const availH = window.innerHeight - 16;
     const scale = Math.min(1, availW / baseW, availH / baseH);
-    wrap.style.transform = 'scale(' + scale + ')';
-    wrap.style.transformOrigin = 'center center';
+    const scaledH = baseH * scale;
+
+    // 下方留 2 格遊戲格子的高度（每格 = 100px + 12px gap = 112px，2 格 = 224px）
+    const bottomSpace = 224 * scale;
+    const extraTop = Math.max(0, (availH - scaledH - bottomSpace) / 2);
+
+    wrap.style.transform = 'translateY(' + extraTop + 'px) scale(' + scale + ')';
+    wrap.style.transformOrigin = 'center top';
   }
   window.addEventListener('resize', fit);
   window.addEventListener('orientationchange', () => setTimeout(fit, 200));
