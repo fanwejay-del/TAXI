@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>貪吃蛇</title>
+<meta name="theme-color" content="#2563eb">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{
+  background:#f1f5f9;
+  color:#1e293b;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  padding:8px;
+  font-size:15px;
+  user-select:none;
+  -webkit-user-select:none;
+}
+.game-header{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 14px;
+  background:#fff;
+  border-radius:10px;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+  margin-bottom:6px;
+  flex-shrink:0;
+}
+.game-score{color:#0f172a;font-weight:700;}
+.game-score strong{color:#2563eb;font-size:1.15em;}
+.game-high{color:#64748b;font-weight:700;}
+.game-high strong{color:#dc2626;font-size:1.15em;}
+.game-reset-btn{
+  margin-left:auto;
+  padding:8px 14px;
+  border:none;
+  border-radius:8px;
+  background:#2563eb;
+  color:#fff;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+}
+.game-reset-btn:active{filter:brightness(.9);}
+
+.game-canvas-wrapper{
+  flex:1;
+  min-height:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#fff;
+  border-radius:10px;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+  padding:8px;
+  overflow:hidden;
+  margin-bottom:6px;
+  position:relative;
+}
+#gameCanvas{display:block;border-radius:6px;touch-action:none;}
+
+.game-controls{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  flex-shrink:0;
+  padding:6px 0;
+}
+.game-dir-row{display:flex;gap:8px;}
+.game-dir-btn{
+  width:64px;
+  height:64px;
+  border:none;
+  border-radius:14px;
+  background:#f8fafc;
+  color:#2563eb;
+  font-size:26px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 2px 6px rgba(0,0,0,.1), 0 4px 0 #cbd5e1;
+  transition:filter .12s, transform .08s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.game-dir-btn:active{
+  filter:brightness(.92);
+  transform:translateY(3px);
+  box-shadow:0 1px 3px rgba(0,0,0,.15), 0 1px 0 #cbd5e1;
+}
+.game-hint{
+  font-size:11px;
+  color:#94a3b8;
+  text-align:center;
+  margin-top:2px;
+}
+@media(max-width:400px){
+  .game-dir-btn{width:56px;height:56px;font-size:22px;}
+}
+</style>
+</head>
+<body>
+
+<div class="game-header">
+  <span class="game-score">得分：<strong id="gameScore">0</strong></span>
+  <span class="game-high">最高：<strong id="gameHighScore">0</strong></span>
+  <button class="game-reset-btn" onclick="resetSnakeGame()">重新開始</button>
+</div>
+
+<div class="game-canvas-wrapper">
+  <canvas id="gameCanvas"></canvas>
+</div>
+
+<div class="game-controls">
+  <button class="game-dir-btn" ontouchstart="event.preventDefault();changeDir('up')" onclick="changeDir('up')">↑</button>
+  <div class="game-dir-row">
+    <button class="game-dir-btn" ontouchstart="event.preventDefault();changeDir('left')" onclick="changeDir('left')">←</button>
+    <button class="game-dir-btn" ontouchstart="event.preventDefault();changeDir('down')" onclick="changeDir('down')">↓</button>
+    <button class="game-dir-btn" ontouchstart="event.preventDefault();changeDir('right')" onclick="changeDir('right')">→</button>
+  </div>
+  <div class="game-hint">點方向按鈕開始遊戲</div>
+</div>
+
+<script>
+var canvas, ctx, grid = 18, cellSize = 0;
+var snake = [], dir = 'right', nextDir = 'right';
+var food = {x: 0, y: 0};
+var score = 0;
+var highScore = Number(localStorage.getItem('snakeHighScore') || 0);
+var gameInterval = null;
+var running = false;
+
+function initGame() {
+  canvas = document.getElementById('gameCanvas');
+  ctx = canvas.getContext('2d');
+
+  var wrapper = canvas.parentElement;
+  var maxW = wrapper.clientWidth - 16;
+  var maxH = wrapper.clientHeight - 16;
+  var size = Math.min(maxW, maxH);
+  if (size < 220) size = 220;
+  canvas.width = size;
+  canvas.height = size;
+  cellSize = size / grid;
+
+  snake = [
+    {x: 9, y: 9},
+    {x: 8, y: 9},
+    {x: 7, y: 9}
+  ];
+  dir = 'right';
+  nextDir = 'right';
+  score = 0;
+  document.getElementById('gameScore').textContent = '0';
+  document.getElementById('gameHighScore').textContent = highScore;
+
+  placeFood();
+  draw();
+}
+
+function placeFood() {
+  var tries = 0;
+  do {
+    food.x = Math.floor(Math.random() * grid);
+    food.y = Math.floor(Math.random() * grid);
+    tries++;
+  } while (snake.some(function(s) { return s.x === food.x && s.y === food.y; }) && tries < 500);
+}
+
+function draw() {
+  if (!ctx) return;
+
+  ctx.fillStyle = '#f8fafc';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.strokeStyle = '#e2e8f0';
+  ctx.lineWidth = 1;
+  for (var i = 0; i <= grid; i++) {
+    ctx.beginPath();
+    ctx.moveTo(i * cellSize, 0);
+    ctx.lineTo(i * cellSize, canvas.height);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0, i * cellSize);
+    ctx.lineTo(canvas.width, i * cellSize);
+    ctx.stroke();
+  }
+
+  snake.forEach(function(s, i) {
+    ctx.fillStyle = i === 0 ? '#2563eb' : '#60a5fa';
+    ctx.fillRect(
+      s.x * cellSize + 1,
+      s.y * cellSize + 1,
+      cellSize - 2,
+      cellSize - 2
+    );
+  });
+
+  ctx.fillStyle = '#dc2626';
+  ctx.beginPath();
+  ctx.arc(
+    food.x * cellSize + cellSize / 2,
+    food.y * cellSize + cellSize / 2,
+    cellSize / 2 - 2,
+    0, Math.PI * 2
+  );
+  ctx.fill();
+}
+
+function changeDir(d) {
+  if (!running) {
+    startGame();
+    return;
+  }
+  if (d === 'up' && dir !== 'down') nextDir = 'up';
+  else if (d === 'down' && dir !== 'up') nextDir = 'down';
+  else if (d === 'left' && dir !== 'right') nextDir = 'left';
+  else if (d === 'right' && dir !== 'left') nextDir = 'right';
+}
+
+function tick() {
+  dir = nextDir;
+  var head = {x: snake[0].x, y: snake[0].y};
+  if (dir === 'up') head.y--;
+  else if (dir === 'down') head.y++;
+  else if (dir === 'left') head.x--;
+  else if (dir === 'right') head.x++;
+
+  if (head.x < 0 || head.x >= grid || head.y < 0 || head.y >= grid) {
+    gameOver();
+    return;
+  }
+  if (snake.some(function(s) { return s.x === head.x && s.y === head.y; })) {
+    gameOver();
+    return;
+  }
+
+  snake.unshift(head);
+
+  if (head.x === food.x && head.y === food.y) {
+    score += 10;
+    document.getElementById('gameScore').textContent = score;
+    placeFood();
+  } else {
+    snake.pop();
+  }
+  draw();
+}
+
+function startGame() {
+  if (running) return;
+  running = true;
+  clearInterval(gameInterval);
+  var speed = Math.max(80, 160 - Math.floor(score / 50) * 10);
+  gameInterval = setInterval(tick, speed);
+}
+
+function gameOver() {
+  clearInterval(gameInterval);
+  gameInterval = null;
+  running = false;
+
+  if (score > highScore) {
+    highScore = score;
+    localStorage.setItem('snakeHighScore', highScore);
+    document.getElementById('gameHighScore').textContent = highScore;
+  }
+
+  ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'center';
+  ctx.font = 'bold ' + Math.round(canvas.width * 0.08) + 'px sans-serif';
+  ctx.fillText('遊戲結束', canvas.width / 2, canvas.height / 2 - 20);
+  ctx.font = 'bold ' + Math.round(canvas.width * 0.06) + 'px sans-serif';
+  ctx.fillText('得分：' + score, canvas.width / 2, canvas.height / 2 + 20);
+  ctx.font = Math.round(canvas.width * 0.045) + 'px sans-serif';
+  ctx.fillStyle = '#cbd5e1';
+  ctx.fillText('按方向鍵再玩一次', canvas.width / 2, canvas.height / 2 + 55);
+}
+
+function resetSnakeGame() {
+  clearInterval(gameInterval);
+  gameInterval = null;
+  running = false;
+  initGame();
+  startGame();
+}
+
+document.addEventListener('keydown', function(e) {
+  if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].indexOf(e.key) >= 0) {
+    e.preventDefault();
+  }
+  if (e.key === 'ArrowUp') changeDir('up');
+  else if (e.key === 'ArrowDown') changeDir('down');
+  else if (e.key === 'ArrowLeft') changeDir('left');
+  else if (e.key === 'ArrowRight') changeDir('right');
+  else if (e.key === ' ') resetSnakeGame();
+});
+
+window.addEventListener('resize', function() {
+  var wasRunning = running;
+  clearInterval(gameInterval);
+  running = false;
+  initGame();
+  if (wasRunning) startGame();
+});
+
+window.addEventListener('load', function() {
+  initGame();
+});
+</script>
+</body>
+</html>
