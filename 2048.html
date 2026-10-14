@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>2048 · 精美版</title>
 <style>
   :root {
@@ -66,7 +66,7 @@
   .scale-wrap {
     position: relative;
     z-index: 1;
-    transform-origin: center center;
+    transform-origin: center top;
     transition: transform 200ms ease;
   }
 
@@ -286,12 +286,6 @@
     font-family: inherit;
     font-size: 11px;
     box-shadow: 0 1px 0 #ddd0bd;
-  }
-
-  /* ===== 橫屏優化 ===== */
-  @media (orientation: landscape) and (max-height: 500px) {
-    body { padding: 4px; }
-    .back-home { padding: 6px 12px; font-size: 12px; top: 6px; left: 6px; }
   }
 </style>
 </head>
@@ -669,14 +663,10 @@
     const wrap = document.querySelector('.scale-wrap');
     const baseW = 500;
     const baseH = 640;
-    const availW = window.innerWidth - 16;
-    const availH = window.innerHeight - 16;
-    const scale = Math.min(1, availW / baseW, availH / baseH);
+    const scale = Math.min(1, (window.innerWidth - 16) / baseW, (window.innerHeight - 16) / baseH);
     wrap.style.transform = 'scale(' + scale + ')';
-    wrap.style.transformOrigin = 'center center';
   }
   window.addEventListener('resize', fit);
-  window.addEventListener('orientationchange', () => setTimeout(fit, 200));
 
   fit();
   newGame();
