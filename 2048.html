@@ -49,16 +49,16 @@
 
   .back-home {
     position: fixed;
-    top: 12px;
-    left: 12px;
+    top: 8px;
+    right: 8px;
     z-index: 100;
     background: #2563eb;
     color: #fff;
-    padding: 10px 16px;
-    border-radius: 10px;
+    padding: 6px 12px;
+    border-radius: 8px;
     text-decoration: none;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,.2);
   }
   .back-home:active { filter: brightness(.9); }
@@ -291,7 +291,7 @@
   /* ===== 橫屏優化 ===== */
   @media (orientation: landscape) and (max-height: 500px) {
     body { padding: 4px; }
-    .back-home { padding: 6px 12px; font-size: 12px; top: 6px; left: 6px; }
+    .back-home { padding: 4px 8px; font-size: 11px; top: 4px; right: 4px; }
   }
 </style>
 </head>
@@ -670,14 +670,12 @@
     const baseW = 500;
     const baseH = 640;
     const availW = window.innerWidth - 16;
+    const topReserved = 50;
     const availH = window.innerHeight - 16;
-    const scale = Math.min(1, availW / baseW, availH / baseH);
+    const scale = Math.min(1, availW / baseW, (availH - topReserved) / baseH);
     const scaledH = baseH * scale;
-
-    // 下方留 2 格遊戲格子的高度（每格 = 100px + 12px gap = 112px，2 格 = 224px）
-    const bottomSpace = 224 * scale;
-    const extraTop = Math.max(0, (availH - scaledH - bottomSpace) / 2);
-
+    // 上方佔 70%、下方佔 30%（把原本的上下比例對調）
+    const extraTop = topReserved + Math.max(0, (availH - topReserved - scaledH) * 0.7);
     wrap.style.transform = 'translateY(' + extraTop + 'px) scale(' + scale + ')';
     wrap.style.transformOrigin = 'center top';
   }
