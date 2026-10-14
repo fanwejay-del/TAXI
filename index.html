@@ -420,13 +420,14 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 
 .exp-cost-check{width:14px;height:14px;flex-shrink:0;cursor:pointer;accent-color:#ea580c;margin:0;}
 
+/* ===== 首頁統計卡片：加大字體與彈性收縮 ===== */
 #daySummaryCard{
   display:flex;
   flex-direction:column;
-  gap:1px;
+  gap:2px;
   width:100%;
-  font-size:calc(.96px * var(--fs-num));
-  line-height:1.25;
+  font-size:calc(1.1px * var(--fs-num));
+  line-height:1.3;
 }
 
 #daySummaryCard .summary-line1{
@@ -440,11 +441,11 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   display:inline-flex;
   align-items:baseline;
   justify-content:center;
-  gap:2px;
+  gap:3px;
   white-space:nowrap;
   flex:1 1 0;
   min-width:0;
-  padding:0 2px;
+  padding:0 3px;
   box-sizing:border-box;
 }
 
@@ -452,24 +453,24 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   display:flex;
   flex-wrap:wrap;
   align-items:baseline;
-  gap:2px 8px;
+  gap:3px 10px;
   width:100%;
 }
 #daySummaryCard .summary-line2 .stat-pair{
   display:inline-flex;
   align-items:baseline;
   justify-content:center;
-  gap:2px;
+  gap:3px;
   white-space:nowrap;
   flex:0 0 auto;
   min-width:0;
-  padding:0 2px;
+  padding:0 3px;
   box-sizing:border-box;
 }
 
 #daySummaryCard .stat-pair > span:first-child{
   color:#64748b;
-  font-size:calc(.84px * var(--fs-num));
+  font-size:calc(.95px * var(--fs-num));
   white-space:nowrap;
   flex-shrink:0;
   overflow:hidden;
@@ -477,20 +478,20 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   min-width:0;
 }
 #daySummaryCard .stat-pair > span:last-child{
-  font-size:calc(.96px * var(--fs-num)) !important;
+  font-size:calc(1.25px * var(--fs-num)) !important;
   font-variant-numeric:tabular-nums;
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
-  flex-shrink:0;
+  flex-shrink:1;
   min-width:0;
 }
 
-#daySummaryCard #dayTotal{color:#0f172a;font-weight:700;}
-#daySummaryCard #cashTotal{color:#2563eb;font-weight:700;}
-#daySummaryCard #nonCashTotal{color:#ea580c;font-weight:700;}
-#daySummaryCard #feeTotal{color:#dc2626;font-weight:700;}
-#daySummaryCard #deductTotal{color:#0f172a;font-weight:700;}
+#daySummaryCard #dayTotal{color:#0f172a;font-weight:800;}
+#daySummaryCard #cashTotal{color:#2563eb;font-weight:800;}
+#daySummaryCard #nonCashTotal{color:#ea580c;font-weight:800;}
+#daySummaryCard #feeTotal{color:#dc2626;font-weight:800;}
+#daySummaryCard #deductTotal{color:#0f172a;font-weight:800;}
 
 @media(max-width:400px){
   .stat-list-head,.stat-list-row{grid-template-columns:52px minmax(0,1fr) minmax(0,0.9fr) minmax(0,1fr);gap:3px;padding-left:4px;padding-right:4px}
@@ -869,6 +870,78 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 }
 #helpModal .help-close:active{filter:brightness(.9);}
 
+/* ===== 遊戲選擇 Modal ===== */
+#gameModal{
+  background:rgba(0,0,0,.55);
+  align-items:center;
+  justify-content:center;
+  z-index:500;
+}
+#gameModal.active{display:flex;}
+#gameModal .game-box{
+  background:#fff;
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 8px 30px rgba(0,0,0,.3);
+  max-width:340px;
+  width:calc(100% - 32px);
+  text-align:center;
+}
+#gameModal .game-title{
+  font-size:18px;
+  font-weight:800;
+  color:#0f172a;
+  margin-bottom:6px;
+}
+#gameModal .game-sub{
+  font-size:12px;
+  color:#64748b;
+  margin-bottom:16px;
+}
+#gameModal .game-options{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:14px;
+}
+#gameModal .game-opt{
+  padding:20px 8px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg,#dbeafe,#bfdbfe);
+  color:#1e40af;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  font-weight:700;
+  font-size:14px;
+  transition:filter .12s, transform .1s;
+  box-shadow:0 2px 8px rgba(37,99,235,.15);
+}
+#gameModal .game-opt:active{
+  filter:brightness(.92);
+  transform:scale(.97);
+}
+#gameModal .game-opt .game-opt-icon{
+  font-size:34px;
+  line-height:1;
+}
+#gameModal .game-close{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  background:#e2e8f0;
+  color:#475569;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+}
+#gameModal .game-close:active{filter:brightness(.9);}
+
 /* 頁尾連結 */
 .footer-links{
   text-align:center;
@@ -888,6 +961,17 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 }
 .footer-links a:hover{text-decoration:underline;}
 
+/* 固定扣款說明 */
+.deduct-label{
+  font-size:calc(.75px * var(--fs-num));
+  color:#94a3b8;
+  margin:0 0 1px 0;
+  line-height:1.1;
+  text-align:center;
+  width:4.5em;
+  max-width:72px;
+}
+
 </style>
 </head>
 <body>
@@ -905,6 +989,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   <span class="nav-icon" data-page="pageStat" onclick="showPage('pageStat')" aria-label="統計"><span class="nav-symbol">📊</span><span class="nav-label">統計</span></span>
   <span class="nav-icon" data-page="pageExpStat" onclick="showPage('pageExpStat')" aria-label="支出"><span class="nav-symbol">💸</span><span class="nav-label">支出</span></span>
   <span class="nav-icon" data-page="pageSetting" onclick="showPage('pageSetting')" aria-label="設定"><span class="nav-symbol">⚙️</span><span class="nav-label">設定</span></span>
+  <span class="nav-icon" onclick="openGameModal()" aria-label="遊戲"><span class="nav-symbol">🎮</span><span class="nav-label">遊戲</span></span>
 </div>
 
 <div id="inputModal" class="modal"><div class="modal-card">
@@ -1047,6 +1132,25 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </div>
 </div>
 
+<!-- 遊戲選擇 Modal -->
+<div id="gameModal" class="modal" onclick="if(event.target===this)closeGameModal()">
+  <div class="game-box">
+    <div class="game-title">🎮 選擇遊戲</div>
+    <div class="game-sub">排班等待時打發時間</div>
+    <div class="game-options">
+      <button class="game-opt" onclick="goToGame('2048.html')">
+        <span class="game-opt-icon">🔢</span>
+        <span>2048</span>
+      </button>
+      <button class="game-opt" onclick="goToGame('minesweeper.html')">
+        <span class="game-opt-icon">💣</span>
+        <span>踩地雷</span>
+      </button>
+    </div>
+    <button class="game-close" onclick="closeGameModal()">關閉</button>
+  </div>
+</div>
+
 <div id="pageHome" class="page active">
 <div class="pageHome-top">
 <button id="voiceInputBtn" class="voice-input-btn" onclick="openVoiceModal()">
@@ -1154,7 +1258,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 </div>
 <div class="setBlock"><h4>付款方式</h4><div id="payListSet"></div><div style="display:flex;gap:5px;margin-top:5px;"><input id="newPayName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newPayRate" type="number" placeholder="%" style="width:52px;padding:5px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewPayTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div><div style="font-size:11px;color:#94a3b8;margin-top:4px;">※ 好孕卷自動扣除補助250輸入全額即可其餘視為現金</div></div>
 <div class="setBlock"><h4>支出類型（打勾 = 營業成本）</h4><div id="expListSet"></div><div style="display:flex;gap:5px;margin-top:5px;"><input id="newExpName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><button onclick="addNewExpTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div></div>
-<div class="setBlock"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><h4 style="margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;">資料備份</h4><span style="font-size:calc(.85px * var(--fs-num));color:#64748b;flex:1;text-align:right;">僅紀錄，不含設定</span></div><div class="backup-bar"><button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出</button><button class="backup-btn importBtn" onclick="document.getElementById('fileImport').click()">📥 匯入</button></div><div style="margin-top:8px;font-size:calc(1.3px * var(--fs-num));"><a href="https://twplot01-code.github.io/DB-JS/" target="_blank" style="color:#2563eb;text-decoration:none;font-weight:700;">(DB轉JSON)</a></div>
+<div class="setBlock"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><h4 style="margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;">資料備份</h4><span style="font-size:calc(.85px * var(--fs-num));color:#64748b;flex:1;text-align:right;">僅紀錄，不含設定</span></div><div class="backup-bar"><button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出</button><button class="backup-btn importBtn" onclick="document.getElementById('fileImport').click()">📥 匯入</button></div><div style="margin-top:8px;font-size:calc(1.3px * var(--fs-num));"><a href="db-js.html" style="color:#2563eb;text-decoration:none;font-weight:700;">(DB轉JSON)</a></div>
 </div>
 
 <!-- 頁尾連結：關於我們 / 隱私政策 / 聯絡我們 -->
@@ -1365,7 +1469,8 @@ function fitAllStatText(){
     '#expSummaryHead strong',
     '#expSummaryHead span.label',
     '#expSummaryBody strong',
-    '#expSummaryBody span'
+    '#expSummaryBody span',
+    '#daySummaryCard .stat-pair > span:last-child'
   ];
   document.querySelectorAll(sels.join(',')).forEach(function(el){ fitOne(el,8); });
 }
@@ -1816,6 +1921,11 @@ function getRawDisplay(r){
   return statMoney(r.raw);
 }
 
+function getPayColor(payName){
+  var item=config.payList.find(function(p){return p.name===payName;});
+  return item&&item.color?item.color:'#475569';
+}
+
 function renderTodayList(){
   var recs=getRecords(),today=getBizDate(new Date()),wrap=document.getElementById('listToday');
   var tr=recs.filter(function(r){return r.date===today;});
@@ -1832,6 +1942,7 @@ function renderTodayList(){
     var typeItem=config.typeList.find(function(t){return t.name===r.type;});
     var typeColor=typeItem?typeItem.color:'#2563eb';
     var pay=getPayDisplay(r);
+    var payColor=getPayColor(r.pay);
     var rawDisplay=getRawDisplay(r);
     var feeN=Math.round(r.fee||0);
     var idx=idToNo[r.id];
@@ -1839,7 +1950,7 @@ function renderTodayList(){
       +'<span class="home-detail-idx">'+idx+'</span>'
       +'<span>'+escapeHtml(r.time||'--')+'</span>'
       +'<span style="color:'+escapeHtml(typeColor)+';font-weight:700;">'+escapeHtml(r.type||'')+'</span>'
-      +'<span>'+escapeHtml(pay)+'</span>'
+      +'<span style="color:'+escapeHtml(payColor)+';font-weight:700;">'+escapeHtml(pay)+'</span>'
       +'<span class="home-detail-amt">'+rawDisplay+'</span>'
       +'<span class="home-detail-fee">'+feeN+'</span>'
       +'<span class="home-detail-net">'+statMoney(r.net)+'</span>'
@@ -2178,12 +2289,13 @@ function renderStatDayDetail(dateStr){
   list.forEach(function(r){
     var typeItem=config.typeList.find(function(t){return t.name===r.type;}),typeColor=typeItem?typeItem.color:'#2563eb';
     var pay=getPayDisplay(r);
+    var payColor=getPayColor(r.pay);
     var rawDisplay=getRawDisplay(r);
     var feeN=Math.round(r.fee||0);
     html+='<div class="stat-detail-row" onclick="openEdit('+Number(r.id)+')">'
       +'<span>'+escapeHtml(r.time||'--')+'</span>'
       +'<span style="color:'+escapeHtml(typeColor)+';font-weight:700;">'+escapeHtml(r.type||'')+'</span>'
-      +'<span>'+escapeHtml(pay)+'</span>'
+      +'<span style="color:'+escapeHtml(payColor)+';font-weight:700;">'+escapeHtml(pay)+'</span>'
       +'<span class="stat-detail-amt">'+rawDisplay+'</span>'
       +'<span class="stat-detail-fee">'+feeN+'</span>'
       +'<span class="stat-detail-net">'+statMoney(r.net)+'</span>'
@@ -2419,7 +2531,10 @@ function renderSetting(){
     var d=document.createElement('div');d.className='item';
     d.innerHTML='<span class="color-dot" style="background:'+escapeHtml(t.color||'#5577aa')+'" onclick="openColorPicker(\'type\','+i+')" title="點我改色"></span>'
       +'<input value="'+escapeHtml(t.name)+'" oninput="onTypeNameChange('+i+',this.value)" placeholder="類別名稱">'
+      +'<div style="display:flex;flex-direction:column;align-items:center;gap:0;">'
+      +'<span class="deduct-label">固定扣款</span>'
       +'<input type="number" value="'+t.deduct+'" oninput="onTypeDeductChange('+i+',this.value)" placeholder="扣除">'
+      +'</div>'
       +'<button class="delBtn" onclick="delTypeTemp('+i+')">刪除</button>';
     tw.appendChild(d);
   });
@@ -2456,6 +2571,18 @@ function openHelpModal() {
 }
 function closeHelpModal() {
   document.getElementById('helpModal').classList.remove('active');
+}
+
+/* ===== 遊戲選擇 ===== */
+function openGameModal() {
+  document.getElementById('gameModal').classList.add('active');
+}
+function closeGameModal() {
+  document.getElementById('gameModal').classList.remove('active');
+}
+function goToGame(url) {
+  closeGameModal();
+  window.location.href = url;
 }
 
 /* ===== 語音輸入 ===== */
