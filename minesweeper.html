@@ -6,53 +6,58 @@
 <title>踩地雷</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: #c0c0c0;
+  html, body {
+    height: 100%;
     font-family: "Segoe UI", "PingFang TC", "Microsoft JhengHei", Tahoma, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
     -webkit-user-select: none;
   }
+  body {
+    background: #c0c0c0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 12px;
+    overflow: hidden;
+  }
+
   .back-home {
     position: fixed;
-    top: 12px;
-    left: 12px;
+    top: 8px;
+    right: 8px;
     z-index: 100;
     background: #2563eb;
     color: #fff;
-    padding: 10px 16px;
-    border-radius: 10px;
+    padding: 6px 12px;
+    border-radius: 8px;
     text-decoration: none;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,.2);
   }
   .back-home:active { filter: brightness(.9); }
 
-  /* 難度選擇畫面 */
+  /* ===== 難度選擇畫面 ===== */
   .difficulty-screen {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
     background: #c0c0c0;
     border: 4px solid;
     border-color: #fff #808080 #808080 #fff;
-    padding: 30px 24px;
+    padding: 28px 22px;
     box-shadow: 2px 2px 0 #000;
-    max-width: 340px;
+    max-width: 320px;
     width: 100%;
   }
   .difficulty-screen h1 {
     font-size: 22px;
     font-weight: 800;
     color: #000;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
   .diff-btn {
     width: 100%;
@@ -65,10 +70,10 @@
     border-color: #fff #808080 #808080 #fff;
     cursor: pointer;
     color: #000;
+    text-align: left;
+    padding-left: 20px;
   }
-  .diff-btn:active {
-    border-color: #808080 #fff #fff #808080;
-  }
+  .diff-btn:active { border-color: #808080 #fff #fff #808080; }
   .diff-btn .diff-sub {
     display: block;
     font-size: 12px;
@@ -77,16 +82,17 @@
     margin-top: 2px;
   }
 
-  /* 遊戲畫面 */
-  .game-container {
-    background: #c0c0c0;
-    border: 4px solid;
-    border-color: #fff #808080 #808080 #fff;
-    padding: 8px;
-    box-shadow: 2px 2px 0 #000;
+  /* ===== 遊戲畫面 ===== */
+  .game-screen {
     display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
   }
-  .game-container.active { display: block; }
+  .game-screen.active { display: flex; }
 
   .header {
     display: flex;
@@ -96,40 +102,24 @@
     border: 3px solid;
     border-color: #808080 #fff #fff #808080;
     padding: 6px 10px;
-    margin-bottom: 8px;
+    width: 100%;
     gap: 8px;
   }
   .counter {
     background: #000;
     color: #f00;
     font-family: "Courier New", monospace;
-    font-size: 28px;
+    font-size: 26px;
     font-weight: bold;
     padding: 2px 8px;
     letter-spacing: 2px;
     min-width: 60px;
     text-align: center;
   }
-  .face-btn {
+  .btn-icon {
     width: 40px;
     height: 40px;
-    font-size: 24px;
-    background: #c0c0c0;
-    border: 3px solid;
-    border-color: #fff #808080 #808080 #fff;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-  .face-btn:active {
-    border-color: #808080 #fff #fff #808080;
-  }
-  .menu-btn {
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
+    font-size: 22px;
     background: #c0c0c0;
     border: 3px solid;
     border-color: #fff #808080 #808080 #fff;
@@ -140,33 +130,355 @@
     flex-shrink: 0;
     font-family: inherit;
   }
-  .menu-btn:active {
-    border-color: #808080 #fff #fff #808080;
-  }
-  .board {
-    display: grid;
+  .btn-icon:active { border-color: #808080 #fff #fff #808080; }
+
+  .board-wrap {
     background: #c0c0c0;
     border: 3px solid;
     border-color: #808080 #fff #fff #808080;
     padding: 3px;
+    max-width: 100%;
+    max-height: calc(100vh - 140px);
     overflow: auto;
   }
+  .board {
+    display: grid;
+    gap: 1px;
+  }
   .cell {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     background: #c0c0c0;
-    border: 3px solid;
+    border: 2px solid;
     border-color: #fff #808080 #808080 #fff;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 16px;
     font-family: "Courier New", monospace;
     cursor: pointer;
+    line-height: 1;
   }
   .cell.revealed {
     border: 1px solid #808080;
     background: #c0c0c0;
   }
-  .cell.m
+  .cell.mine {
+    background: #f00;
+  }
+  .cell.flagged::after {
+    content: "🚩";
+    font-size: 14px;
+  }
+  .cell[data-count="1"] { color: #0000ff; }
+  .cell[data-count="2"] { color: #008000; }
+  .cell[data-count="3"] { color: #ff0000; }
+  .cell[data-count="4"] { color: #000080; }
+  .cell[data-count="5"] { color: #800000; }
+  .cell[data-count="6"] { color: #008080; }
+  .cell[data-count="7"] { color: #000; }
+  .cell[data-count="8"] { color: #808080; }
+
+  @media (max-width: 600px) {
+    .cell { width: 26px; height: 26px; font-size: 14px; }
+    .counter { font-size: 22px; min-width: 50px; }
+    .btn-icon { width: 34px; height: 34px; font-size: 18px; }
+  }
+  @media (max-width: 400px) {
+    .cell { width: 22px; height: 22px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+  <a href="index.html" class="back-home">← 回首頁</a>
+
+  <!-- 難度選擇 -->
+  <div class="difficulty-screen" id="difficultyScreen">
+    <h1>💣 踩地雷</h1>
+    <button class="diff-btn" onclick="startGame(9, 9, 10)">
+      初級
+      <span class="diff-sub">9 × 9 · 10 顆地雷</span>
+    </button>
+    <button class="diff-btn" onclick="startGame(16, 16, 40)">
+      中級
+      <span class="diff-sub">16 × 16 · 40 顆地雷</span>
+    </button>
+    <button class="diff-btn" onclick="startGame(16, 30, 99)">
+      高級
+      <span class="diff-sub">16 × 30 · 99 顆地雷</span>
+    </button>
+  </div>
+
+  <!-- 遊戲畫面 -->
+  <div class="game-screen" id="gameScreen">
+    <div class="header">
+      <div class="counter" id="mineCount">000</div>
+      <button class="btn-icon" id="resetBtn">🙂</button>
+      <div class="counter" id="timer">000</div>
+      <button class="btn-icon" onclick="backToDifficulty()" title="選單">☰</button>
+    </div>
+    <div class="board-wrap">
+      <div class="board" id="board"></div>
+    </div>
+  </div>
+
+<script>
+(function () {
+  var ROWS = 9, COLS = 9, MINES = 10;
+  var grid = [];
+  var cells = [];
+  var gameOver = false;
+  var gameWon = false;
+  var firstClick = true;
+  var flags = 0;
+  var time = 0;
+  var timerInterval = null;
+  var revealedCount = 0;
+
+  var boardEl = document.getElementById('board');
+  var mineCountEl = document.getElementById('mineCount');
+  var timerEl = document.getElementById('timer');
+  var resetBtn = document.getElementById('resetBtn');
+  var difficultyScreen = document.getElementById('difficultyScreen');
+  var gameScreen = document.getElementById('gameScreen');
+
+  window.startGame = function (rows, cols, mines) {
+    ROWS = rows;
+    COLS = cols;
+    MINES = mines;
+    difficultyScreen.style.display = 'none';
+    gameScreen.classList.add('active');
+    init();
+  };
+
+  window.backToDifficulty = function () {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    gameScreen.classList.remove('active');
+    difficultyScreen.style.display = 'flex';
+  };
+
+  function init() {
+    gameOver = false;
+    gameWon = false;
+    firstClick = true;
+    flags = 0;
+    time = 0;
+    revealedCount = 0;
+    clearInterval(timerInterval);
+    timerInterval = null;
+    timerEl.textContent = '000';
+    mineCountEl.textContent = pad3(MINES);
+    resetBtn.textContent = '🙂';
+
+    grid = [];
+    cells = [];
+    for (var r = 0; r < ROWS; r++) {
+      grid[r] = [];
+      cells[r] = [];
+      for (var c = 0; c < COLS; c++) {
+        grid[r][c] = 0;
+      }
+    }
+
+    boardEl.innerHTML = '';
+    boardEl.style.gridTemplateColumns = 'repeat(' + COLS + ', 1fr)';
+
+    for (var r2 = 0; r2 < ROWS; r2++) {
+      for (var c2 = 0; c2 < COLS; c2++) {
+        var cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.dataset.row = r2;
+        cell.dataset.col = c2;
+
+        (function (rr, cc) {
+          cell.addEventListener('click', function () { onLeftClick(rr, cc); });
+          cell.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+            onRightClick(rr, cc);
+          });
+          // 長按 = 標記旗子（手機）
+          var touchTimer = null;
+          cell.addEventListener('touchstart', function (e) {
+            touchTimer = setTimeout(function () {
+              touchTimer = null;
+              onRightClick(rr, cc);
+              if (navigator.vibrate) navigator.vibrate(30);
+            }, 400);
+          }, { passive: true });
+          cell.addEventListener('touchend', function (e) {
+            if (touchTimer) {
+              clearTimeout(touchTimer);
+              touchTimer = null;
+            }
+          });
+          cell.addEventListener('touchmove', function (e) {
+            if (touchTimer) {
+              clearTimeout(touchTimer);
+              touchTimer = null;
+            }
+          });
+        })(r2, c2);
+
+        boardEl.appendChild(cell);
+        cells[r2][c2] = cell;
+      }
+    }
+  }
+
+  function pad3(n) {
+    var s = String(n);
+    while (s.length < 3) s = '0' + s;
+    return s;
+  }
+
+  function placeMines(safeR, safeC) {
+    var placed = 0;
+    var tries = 0;
+    while (placed < MINES && tries < 10000) {
+      tries++;
+      var r = Math.floor(Math.random() * ROWS);
+      var c = Math.floor(Math.random() * COLS);
+      if (grid[r][c] === -1) continue;
+      if (Math.abs(r - safeR) <= 1 && Math.abs(c - safeC) <= 1) continue;
+      grid[r][c] = -1;
+      placed++;
+    }
+    // 計算每格周圍的雷數
+    for (var r2 = 0; r2 < ROWS; r2++) {
+      for (var c2 = 0; c2 < COLS; c2++) {
+        if (grid[r2][c2] === -1) continue;
+        var count = 0;
+        for (var dr = -1; dr <= 1; dr++) {
+          for (var dc = -1; dc <= 1; dc++) {
+            if (dr === 0 && dc === 0) continue;
+            var nr = r2 + dr, nc = c2 + dc;
+            if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS && grid[nr][nc] === -1) count++;
+          }
+        }
+        grid[r2][c2] = count;
+      }
+    }
+  }
+
+  function startTimer() {
+    if (timerInterval) return;
+    timerInterval = setInterval(function () {
+      time++;
+      if (time > 999) time = 999;
+      timerEl.textContent = pad3(time);
+    }, 1000);
+  }
+
+  function onLeftClick(r, c) {
+    if (gameOver || gameWon) return;
+    var cell = cells[r][c];
+    if (cell.classList.contains('flagged')) return;
+    if (cell.classList.contains('revealed')) return;
+
+    if (firstClick) {
+      firstClick = false;
+      placeMines(r, c);
+      startTimer();
+    }
+
+    reveal(r, c);
+  }
+
+  function reveal(r, c) {
+    var cell = cells[r][c];
+    if (cell.classList.contains('revealed') || cell.classList.contains('flagged')) return;
+
+    cell.classList.add('revealed');
+    revealedCount++;
+
+    if (grid[r][c] === -1) {
+      cell.classList.add('mine');
+      cell.textContent = '💣';
+      endGame(false);
+      return;
+    }
+
+    var count = grid[r][c];
+    if (count > 0) {
+      cell.textContent = count;
+      cell.dataset.count = count;
+    } else {
+      // 展開周圍
+      for (var dr = -1; dr <= 1; dr++) {
+        for (var dc = -1; dc <= 1; dc++) {
+          if (dr === 0 && dc === 0) continue;
+          var nr = r + dr, nc = c + dc;
+          if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS) {
+            if (!cells[nr][nc].classList.contains('revealed')) {
+              reveal(nr, nc);
+            }
+          }
+        }
+      }
+    }
+
+    // 檢查是否勝利
+    if (revealedCount === ROWS * COLS - MINES) {
+      endGame(true);
+    }
+  }
+
+  function onRightClick(r, c) {
+    if (gameOver || gameWon) return;
+    var cell = cells[r][c];
+    if (cell.classList.contains('revealed')) return;
+
+    if (cell.classList.contains('flagged')) {
+      cell.classList.remove('flagged');
+      flags--;
+    } else {
+      if (flags >= MINES) return;
+      cell.classList.add('flagged');
+      flags++;
+    }
+    mineCountEl.textContent = pad3(MINES - flags);
+  }
+
+  function endGame(won) {
+    gameOver = !won;
+    gameWon = won;
+    clearInterval(timerInterval);
+    timerInterval = null;
+
+    if (won) {
+      resetBtn.textContent = '😎';
+      for (var r = 0; r < ROWS; r++) {
+        for (var c = 0; c < COLS; c++) {
+          if (grid[r][c] === -1 && !cells[r][c].classList.contains('flagged')) {
+            cells[r][c].classList.add('flagged');
+          }
+        }
+      }
+      mineCountEl.textContent = '000';
+      setTimeout(function () {
+        alert('🎉 恭喜過關！\n用時 ' + time + ' 秒');
+      }, 100);
+    } else {
+      resetBtn.textContent = '😵';
+      for (var r2 = 0; r2 < ROWS; r2++) {
+        for (var c2 = 0; c2 < COLS; c2++) {
+          if (grid[r2][c2] === -1) {
+            cells[r2][c2].classList.add('revealed');
+            if (!cells[r2][c2].textContent) {
+              cells[r2][c2].textContent = '💣';
+            }
+          }
+        }
+      }
+    }
+  }
+
+  resetBtn.addEventListener('click', function () {
+    init();
+  });
+})();
+</script>
+</body>
+</html>
