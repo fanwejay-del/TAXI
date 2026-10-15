@@ -15,6 +15,40 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .page{display:none;padding:0 4px;flex:1;min-height:0;flex-direction:column;overflow:hidden;}
 .page.active{display:flex;}
 
+/* ===== 強制直立：橫屏時提示 ===== */
+#orientationOverlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  background:#f1f5f9;
+  color:#0f172a;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:16px;
+  text-align:center;
+  padding:24px;
+  font-size:17px;
+  font-weight:800;
+  line-height:1.6;
+}
+#orientationOverlay .rot-icon{
+  font-size:56px;
+  animation:rotateHint 1.8s ease-in-out infinite;
+}
+@keyframes rotateHint{
+  0%,100%{transform:rotate(0deg);}
+  50%{transform:rotate(90deg);}
+}
+@media screen and (orientation:landscape){
+  #orientationOverlay{display:flex;}
+  body{overflow:hidden;}
+}
+@media screen and (orientation:portrait){
+  #orientationOverlay{display:none!important;}
+}
+
 .row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:4px;margin-bottom:4px;overflow:hidden;}
 .row2 .bigBtn{width:100%;min-width:0;}
 
@@ -995,6 +1029,13 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 </style>
 </head>
 <body>
+<!-- 橫屏提示遮罩 -->
+<div id="orientationOverlay">
+  <div class="rot-icon">📱</div>
+  <div>請將手機轉為直立模式</div>
+  <div style="font-size:13px;font-weight:500;color:#64748b;">本應用僅支援直向顯示</div>
+</div>
+
 <input type="file" id="fileImport" style="display:none" accept=".json">
 <input type="color" id="colorPicker" class="hidden-color">
 
@@ -1193,7 +1234,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 </div>
 </div>
 <!-- 首頁字型大小拉桿 -->
-<div class="fs-slider-bar">
+<div class="fs-slider-bar page-fs-bar">
   <span>小</span>
   <input type="range" id="fsSliderHome" min="11" max="20" step="1" value="13" oninput="onPageFontSizeChange(this.value)">
   <span>大</span>
@@ -1224,7 +1265,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </div>
 
   <!-- 統計頁字型大小拉桿 -->
-  <div class="fs-slider-bar">
+  <div class="fs-slider-bar page-fs-bar">
     <span>小</span>
     <input type="range" id="fsSliderStat" min="11" max="20" step="1" value="13" oninput="onPageFontSizeChange(this.value)">
     <span>大</span>
@@ -1250,7 +1291,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </div>
 
   <!-- 支出頁字型大小拉桿 -->
-  <div class="fs-slider-bar">
+  <div class="fs-slider-bar page-fs-bar">
     <span>小</span>
     <input type="range" id="fsSliderExp" min="11" max="20" step="1" value="13" oninput="onPageFontSizeChange(this.value)">
     <span>大</span>
@@ -1274,6 +1315,16 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </label>
 </div>
 <div class="setBlock"><h4>字型大小</h4><div class="fs-wrap"><span style="font-size:calc(.9px * var(--fs-num));">小</span><input type="range" id="fontSizeSlider" min="11" max="20" step="1" value="13" oninput="onFontSizeChange(this.value)"><span style="font-size:calc(1.3px * var(--fs-num));">大</span><span id="fontSizeValue" class="fs-value">13</span></div></div>
+<div class="setBlock">
+  <div class="set-title-row">
+    <h4>頁面顯示字型拉桿</h4>
+    <label class="vs-toggle">
+      <input type="checkbox" id="pageFsToggle" checked onchange="onPageFsToggleChange(this.checked)">
+      <span class="vs-slider"></span>
+    </label>
+  </div>
+  <div style="font-size:calc(.85px * var(--fs-num));color:#64748b;line-height:1.5;">開啟後，首頁、統計頁、支出頁面會顯示字型大小拉桿，可直接在頁面上調整字型大小。</div>
+</div>
 <div class="setBlock">
   <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
     <h4 style="margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;flex-shrink:0;">營業時間</h4>
@@ -1356,7 +1407,8 @@ var config=JSON.parse(localStorage.getItem('taxiConfig'))||{
   payList:[{name:"現金",rate:0,color:"#16a34a"},{name:"悠遊卡",rate:3,color:"#22aabb"},{name:"信用卡",rate:3,color:"#7c3aed"},{name:"企業簽單",rate:15,color:"#9333ea"},{name:"好孕券",rate:0,color:"#0891b2"}],
   expList:[{name:"加油",color:"#dc2626",isCost:false},{name:"維修",color:"#ea580c",isCost:false},{name:"餐費",color:"#9333ea",isCost:false},{name:"停車",color:"#0891b2",isCost:false},{name:"其他",color:"#475569",isCost:false}],
   businessHour:{start:22,end:8},fontSize:13,fontWeight:900,
-  voiceEnabled:true,voiceSeconds:5,typeBtnEnabled:true
+  voiceEnabled:true,voiceSeconds:5,typeBtnEnabled:true,
+  pageFsEnabled:true
 };
 if(!config.businessHour)config.businessHour={start:22,end:8};
 if(!config.fontSize)config.fontSize=13;
@@ -1365,6 +1417,7 @@ if(!config.expList)config.expList=[{name:"加油",color:"#dc2626",isCost:false},
 if(typeof config.voiceEnabled==='undefined')config.voiceEnabled=true;
 if(typeof config.voiceSeconds==='undefined')config.voiceSeconds=5;
 if(typeof config.typeBtnEnabled==='undefined')config.typeBtnEnabled=true;
+if(typeof config.pageFsEnabled==='undefined')config.pageFsEnabled=true;
 config.expList.forEach(function(e){if(typeof e.isCost==='undefined')e.isCost=false;});
 
 var TYPE_COLORS=[
@@ -1440,6 +1493,19 @@ function syncPageSliders(v){
   });
 }
 function onHourChange(){updateHourPreview();var s=Number(document.getElementById('setStartHour').value),e=Number(document.getElementById('setEndHour').value);if(!Number.isInteger(s)||s<0||s>23)return;if(!Number.isInteger(e)||e<0||e>23)return;config.businessHour={start:s,end:e};saveConfig();}
+
+/* 頁面字型拉桿顯示開關 */
+function onPageFsToggleChange(checked){
+  config.pageFsEnabled=!!checked;
+  saveConfig();
+  updatePageFsBars();
+}
+function updatePageFsBars(){
+  var bars=document.querySelectorAll('.page-fs-bar');
+  bars.forEach(function(bar){
+    bar.style.display=config.pageFsEnabled?'':'none';
+  });
+}
 
 function renameInRecords(oldName,newName,field){
   var recs=getRecords(),changed=false;
@@ -1802,6 +1868,7 @@ function showPage(id, skipHistory){
     document.getElementById('voiceSeconds').value=config.voiceSeconds;
     document.getElementById('voiceToggle').checked=config.voiceEnabled;
     document.getElementById('typeBtnToggle').checked=config.typeBtnEnabled;
+    document.getElementById('pageFsToggle').checked=config.pageFsEnabled;
     updateHourPreview();renderSetting();
   }
   if(id==='pageStat')showStatDefault();
@@ -3066,10 +3133,13 @@ window.onload=function(){
   var vsInput = document.getElementById('voiceSeconds');
   var vsToggle = document.getElementById('voiceToggle');
   var tbToggle = document.getElementById('typeBtnToggle');
+  var pfToggle = document.getElementById('pageFsToggle');
   if (vsInput) vsInput.value = config.voiceSeconds;
   if (vsToggle) vsToggle.checked = config.voiceEnabled;
   if (tbToggle) tbToggle.checked = config.typeBtnEnabled;
+  if (pfToggle) pfToggle.checked = config.pageFsEnabled;
   syncPageSliders(config.fontSize);
+  updatePageFsBars();
   setTimeout(fitAllStatText, 100);
 };
 </script>
