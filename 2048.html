@@ -344,7 +344,6 @@
 <script>
 (function () {
   const CELL = 100, GAP = 12, SIZE = 4;
-  const SAVE_KEY = 'taxi2048Save';
 
   const COLORS = {
     2:    { bg: '#eee4da', fg: '#776e65' },
@@ -438,66 +437,7 @@
   }
 
   function snapshot() {
-    return grid.map(row => row.map(t => t ? { value: t.value } : null));
-  }
-
-  function saveGame() {
-    try {
-      const data = {
-        grid: snapshot(),
-        score: score,
-        best: best,
-        over: over,
-        won: won,
-        savedAt: Date.now()
-      };
-      localStorage.setItem(SAVE_KEY, JSON.stringify(data));
-    } catch (e) {}
-  }
-
-  function loadGame() {
-    try {
-      const raw = localStorage.getItem(SAVE_KEY);
-      if (!raw) return false;
-      const data = JSON.parse(raw);
-      if (!data || !Array.isArray(data.grid)) return false;
-      if (data.over) return false;
-
-      grid = Array.from({ length: SIZE }, () => Array(SIZE).fill(null));
-      tileLayer.innerHTML = '';
-      score = Number(data.score) || 0;
-      best = Math.max(best, Number(data.best) || 0);
-      over = false;
-      won = !!data.won;
-
-      for (let r = 0; r < SIZE; r++) {
-        for (let c = 0; c < SIZE; c++) {
-          const cell = data.grid[r] && data.grid[r][c];
-          if (!cell || !cell.value) continue;
-          const tile = { id: ++tileId, value: cell.value, row: r, col: c };
-          grid[r][c] = tile;
-          const el = document.createElement('div');
-          el.className = 'tile';
-          el.style.transform = pos(r, c);
-          const inner = document.createElement('div');
-          inner.className = 'tile-inner';
-          inner.textContent = cell.value;
-          paint(inner, cell.value);
-          el.appendChild(inner);
-          tile.element = el;
-          tile.inner = inner;
-          tileLayer.appendChild(el);
-        }
-      }
-
-      scoreEl.textContent = score;
-      bestEl.textContent = best;
-      return true;
-    } catch (e) { return false; }
-  }
-
-  function clearSave() {
-    try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+    return grid.map(row => row.map(t => t ? { id: t.id, value: t.value } : null));
   }
 
   function move(dir) {
@@ -567,7 +507,6 @@
       spawnTile();
       moving = false;
       checkState();
-      if (!over) saveGame();
     }, 155);
   }
 
@@ -621,7 +560,6 @@
     }
     if (!canMove()) {
       over = true;
-      clearSave();
       showOverlay('遊戲結束', '沒有可以移動的方塊了，再試一次吧。', false);
     }
   }
@@ -635,7 +573,6 @@
   }
 
   function newGame() {
-    clearSave();
     grid = Array.from({ length: SIZE }, () => Array(SIZE).fill(null));
     tileLayer.innerHTML = '';
     score = 0;
@@ -647,11 +584,44 @@
     overlay.classList.remove('show');
     spawnTile();
     spawnTile();
-    saveGame();
+  }
+
+  let lastState = null;
+  function tryUndo() {
+    if (moving || !lastState) return;
+    grid = Array.from({ length: SIZE }, () => Array(SIZE).fill(null));
+    tileLayer.innerHTML = '';
+    score = lastState.score;
+    scoreEl.textContent = score;
+    over = false;
+    overlay.classList.remove('show');
+    const s = lastState.grid;
+    for (let r = 0; r < SIZE; r++) for (let c = 0; c < SIZE; c++) {
+      const cell = s[r][c];
+      if (!cell) continue;
+      const tile = { id: ++tileId, value: cell.value, row: r, col: c };
+      grid[r][c] = tile;
+      const el = document.createElement('div');
+      el.className = 'tile';
+      el.style.transform = pos(r, c);
+      const inner = document.createElement('div');
+      inner.className = 'tile-inner appear';
+      inner.textContent = cell.value;
+      paint(inner, cell.value);
+      el.appendChild(inner);
+      tile.element = el; tile.inner = inner;
+      tileLayer.appendChild(el);
+    }
+    lastState = null;
+  }
+
+  function saveState() {
+    lastState = { grid: snapshot(), score: score };
   }
 
   function handle(dir) {
     if (moving || over) return;
+    saveState();
     move(dir);
   }
 
@@ -686,20 +656,27 @@
   keepGoingBtn.addEventListener('click', () => {
     overlay.classList.remove('show');
     won = true;
-    saveGame();
   });
+  undoBtn.addEventListener('click', tryUndo);
 
   function fit() {
     const wrap = document.querySelector('.scale-wrap');
     const baseW = 500;
     const baseH = 640;
-    const scale = Math.min(1, (window.innerWidth - 16) / baseW, (window.innerHeight - 16) / baseH);
-    wrap.style.transform = 'scale(' + scale + ')';
+    const availW = window.innerWidth - 16;
+    const availH = window.innerHeight - 16;
+    const scale = Math.min(1, availW / baseW, availH / baseH);
+    const scaledH = baseH * scale;
+    // 原本是上下各半，改成上方佔 70%、下方佔 30%
+    const extraTop = Math.max(0, (availH - scaledH) * 0.7);
+    wrap.style.transform = 'translateY(' + extraTop + 'px) scale(' + scale + ')';
+    wrap.style.transformOrigin = 'center top';
   }
   window.addEventListener('resize', fit);
+  window.addEventListener('orientationchange', () => setTimeout(fit, 200));
 
   fit();
-  if (!loadGame()) newGame();
+  newGame();
 })();
 </script>
 </body>
