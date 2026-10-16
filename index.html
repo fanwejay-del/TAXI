@@ -15,40 +15,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .page{display:none;padding:0 4px;flex:1;min-height:0;flex-direction:column;overflow:hidden;}
 .page.active{display:flex;}
 
-/* ===== 強制直立：橫屏時提示 ===== */
-#orientationOverlay{
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:99999;
-  background:#f1f5f9;
-  color:#0f172a;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  gap:16px;
-  text-align:center;
-  padding:24px;
-  font-size:17px;
-  font-weight:800;
-  line-height:1.6;
-}
-#orientationOverlay .rot-icon{
-  font-size:56px;
-  animation:rotateHint 1.8s ease-in-out infinite;
-}
-@keyframes rotateHint{
-  0%,100%{transform:rotate(0deg);}
-  50%{transform:rotate(90deg);}
-}
-@media screen and (orientation:landscape){
-  #orientationOverlay{display:flex;}
-  body{overflow:hidden;}
-}
-@media screen and (orientation:portrait){
-  #orientationOverlay{display:none!important;}
-}
-
 .row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:4px;margin-bottom:4px;overflow:hidden;}
 .row2 .bigBtn{width:100%;min-width:0;}
 
@@ -294,7 +260,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-breadcrumb .stat-current{color:#475569;font-weight:500;}
 .stat-muted{color:#94a3b8;}
 
-/* ===== 日期區間選擇器 ===== */
 .date-range-bar{
   display:flex;align-items:center;gap:4px;
   background:#fff;border-radius:10px;padding:4px 6px;
@@ -486,7 +451,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 
 .exp-cost-check{width:14px;height:14px;flex-shrink:0;cursor:pointer;accent-color:#ea580c;margin:0;}
 
-/* ===== 首頁統計卡片 ===== */
 #daySummaryCard{
   display:flex;
   flex-direction:column;
@@ -936,7 +900,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 }
 #helpModal .help-close:active{filter:brightness(.9);}
 
-/* ===== 遊戲選擇 Modal ===== */
 #gameModal{
   background:rgba(0,0,0,.55);
   align-items:center;
@@ -1036,7 +999,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   max-width:72px;
 }
 
-/* ===== 字型大小拉桿（頁面用） ===== */
 .fs-slider-bar{
   display:flex;
   align-items:center;
@@ -1061,13 +1023,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 </style>
 </head>
 <body>
-<!-- 橫屏提示遮罩 -->
-<div id="orientationOverlay">
-  <div class="rot-icon">📱</div>
-  <div>請將手機轉為直立模式</div>
-  <div style="font-size:13px;font-weight:500;color:#64748b;">本應用僅支援直向顯示</div>
-</div>
-
 <input type="file" id="fileImport" style="display:none" accept=".json">
 <input type="color" id="colorPicker" class="hidden-color">
 
@@ -1225,7 +1180,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </div>
 </div>
 
-<!-- 遊戲選擇 Modal -->
 <div id="gameModal" class="modal" onclick="if(event.target===this)closeGameModal()">
   <div class="game-box">
     <div class="game-title">🎮 選擇遊戲</div>
@@ -1265,7 +1219,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </div>
 </div>
 </div>
-<!-- 首頁字型大小拉桿 -->
 <div class="fs-slider-bar page-fs-bar">
   <span>小</span>
   <input type="range" id="fsSliderHome" min="11" max="20" step="1" value="13" oninput="onPageFontSizeChange(this.value)">
@@ -1291,7 +1244,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
     <button onclick="statResetLevel()">全部年份</button>
   </div>
 
-  <!-- 統計頁日期區間 -->
   <div class="date-range-bar" id="statDateRange">
     <span class="dr-label">區間</span>
     <input type="date" id="statDateFrom">
@@ -1306,7 +1258,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
     <div class="stat-summary-grid" id="statSummaryGrid"></div>
   </div>
 
-  <!-- 統計頁字型大小拉桿 -->
   <div class="fs-slider-bar page-fs-bar">
     <span>小</span>
     <input type="range" id="fsSliderStat" min="11" max="20" step="1" value="13" oninput="onPageFontSizeChange(this.value)">
@@ -1327,7 +1278,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
     <button onclick="expResetLevel()">全部年份</button>
   </div>
 
-  <!-- 支出頁日期區間 -->
   <div class="date-range-bar" id="expDateRange">
     <span class="dr-label">區間</span>
     <input type="date" id="expDateFrom">
@@ -1342,7 +1292,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
     <div class="exp-summary-body" id="expSummaryBody"></div>
   </div>
 
-  <!-- 支出頁字型大小拉桿 -->
   <div class="fs-slider-bar page-fs-bar">
     <span>小</span>
     <input type="range" id="fsSliderExp" min="11" max="20" step="1" value="13" oninput="onPageFontSizeChange(this.value)">
@@ -1403,7 +1352,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <div class="setBlock"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><h4 style="margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;">資料備份</h4><span style="font-size:calc(.85px * var(--fs-num));color:#64748b;flex:1;text-align:right;">僅紀錄，不含設定</span></div><div class="backup-bar"><button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出</button><button class="backup-btn importBtn" onclick="document.getElementById('fileImport').click()">📥 匯入</button></div><div style="margin-top:8px;font-size:calc(1.3px * var(--fs-num));"><a href="db-js.html" style="color:#2563eb;text-decoration:none;font-weight:700;">(DB轉JSON)</a></div>
 </div>
 
-<!-- 頁尾連結：關於我們 / 隱私政策 / 聯絡我們 -->
 <div class="footer-links">
   <a href="about.html">關於我們</a>
   <a href="privacy.html">隱私政策</a>
@@ -1419,7 +1367,6 @@ var expCatFilter="";
 var statPayFilter="";
 var currentExpCat=null;
 
-/* 日期區間狀態 */
 var statDateRange={from:'',to:''};
 var expDateRange={from:'',to:''};
 
@@ -1550,7 +1497,6 @@ function syncPageSliders(v){
 }
 function onHourChange(){updateHourPreview();var s=Number(document.getElementById('setStartHour').value),e=Number(document.getElementById('setEndHour').value);if(!Number.isInteger(s)||s<0||s>23)return;if(!Number.isInteger(e)||e<0||e>23)return;config.businessHour={start:s,end:e};saveConfig();}
 
-/* 頁面字型拉桿顯示開關 */
 function onPageFsToggleChange(checked){
   config.pageFsEnabled=!!checked;
   saveConfig();
@@ -2174,7 +2120,6 @@ function getCostExpenses(prefix, rangeFrom, rangeTo){
   });
 }
 
-/* ===== 核心：calcIncomeStat 支援 prefix 或 (from,to) 區間 ===== */
 function calcIncomeStat(prefix, rangeFrom, rangeTo){
   var recs;
   if(rangeFrom && rangeTo){
@@ -2220,7 +2165,6 @@ function calcIncomeStat(prefix, rangeFrom, rangeTo){
   };
 }
 
-/* ===== calcExpStat 支援 prefix 或 (from,to) 區間 ===== */
 function calcExpStat(prefix, rangeFrom, rangeTo){
   var list;
   if(rangeFrom && rangeTo){
@@ -2325,7 +2269,6 @@ function statMoney(n){return Math.round(Number(n||0)).toLocaleString('zh-TW');}
 function statTypeTitle(){return statTypeFilter?statTypeFilter+'｜':'';}
 function statPayTitle(){return statPayFilter?statPayFilter+'｜':'';}
 
-/* ===== 統計頁合計卡片（支援日期區間） ===== */
 function updateStatSummary(title,prefix,rangeFrom,rangeTo){
   var s=calcIncomeStat(prefix||'', rangeFrom, rangeTo);
   document.getElementById('statSummaryTitle').textContent=title;
@@ -2433,7 +2376,6 @@ function statDrillToMonthList(year){statViewStack=[{type:'monthList',year:String
 function statDrillToDayList(month){statViewStack=[{type:'dayList',month:String(month)}];renderStatView();}
 function statDrillToDayDetail(date){statViewStack=[{type:'dayDetail',date:String(date)}];renderStatView();}
 
-/* ===== 日期區間查詢（統計頁） ===== */
 function applyStatDateRange(){
   var f=document.getElementById('statDateFrom').value;
   var t=document.getElementById('statDateTo').value;
@@ -2466,7 +2408,6 @@ function renderStatView(){
 
 function renderStatRange(from,to){
   var recs=getFilteredRecords().filter(function(r){return r.date>=from&&r.date<=to;});
-  /* 關鍵：把 from / to 傳給 updateStatSummary，合計卡片只算區間 */
   updateStatSummary(statTypeTitle()+statPayTitle()+from+'～'+to+' 合計','',from,to);
   var html='<div class="stat-list-head"><div>日期</div><div class="head-amount">營業收入</div><div class="head-amount">手續費</div><div class="head-amount">淨收入</div></div>';
   var dayMap={};
@@ -2580,7 +2521,6 @@ function renderStatDayDetail(dateStr){
   setTimeout(fitAllStatText,0);
 }
 
-/* ===== 支出頁合計卡片（支援日期區間） ===== */
 function updateExpSummary(title,prefix,rangeFrom,rangeTo){
   var s=calcExpStat(prefix||'', rangeFrom, rangeTo);
 
@@ -2673,7 +2613,6 @@ function refreshExpCards(){
   if(document.getElementById('pageExpStat')&&document.getElementById('pageExpStat').classList.contains('active'))renderExpView();
 }
 
-/* ===== 日期區間查詢（支出頁） ===== */
 function applyExpDateRange(){
   var f=document.getElementById('expDateFrom').value;
   var t=document.getElementById('expDateTo').value;
@@ -2707,7 +2646,6 @@ function renderExpView(){
 
 function renderExpRange(from,to){
   var list=getFilteredExpenses().filter(function(e){return e.date>=from&&e.date<=to;});
-  /* 關鍵：把 from / to 傳給 updateExpSummary，合計卡片只算區間 */
   updateExpSummary(from+'～'+to+' 支出合計','',from,to);
   var html='<div class="stat-list-head" style="grid-template-columns:72px 1fr 1fr;"><div>日期</div><div class="head-amount">支出金額</div><div class="head-amount">筆數</div></div>';
   var dayMap={};
@@ -2904,7 +2842,6 @@ function delPayTemp(i){config.payList.splice(i,1);saveConfig();renderSetting();r
 function addNewExpTemp(){var n=document.getElementById('newExpName').value.trim();if(!n){showAlert('請輸入名稱');return;}config.expList.push({name:n,color:pickUnusedColorFromList(config.expList),isCost:false});saveConfig();renderSetting();renderExpTypeBtnWrap();renderExpTypeCard();document.getElementById('newExpName').value='';}
 function delExpTemp(i){config.expList.splice(i,1);saveConfig();renderSetting();renderExpTypeBtnWrap();renderExpTypeCard();}
 
-/* ===== 使用說明 ===== */
 function openHelpModal() {
   document.getElementById('helpModal').classList.add('active');
 }
@@ -2912,7 +2849,6 @@ function closeHelpModal() {
   document.getElementById('helpModal').classList.remove('active');
 }
 
-/* ===== 遊戲選擇 ===== */
 function openGameModal() {
   document.getElementById('gameModal').classList.add('active');
 }
@@ -2924,7 +2860,6 @@ function goToGame(url) {
   window.location.href = url;
 }
 
-/* ===== 語音輸入 ===== */
 var voiceRecognition = null;
 var voiceCountdownTimer = null;
 var voiceRemaining = 0;
@@ -2952,7 +2887,6 @@ function updateVoiceBtnVisibility() {
   btn.style.display = config.voiceEnabled ? '' : 'none';
 }
 
-/* 音近字修正表 */
 var VOICE_FIX = {
   '運':'孕','韵':'孕','蕴':'孕','晕':'孕',
   '捲':'券','卷':'券','拳':'券','勸':'券','眷':'券','倦':'券',
