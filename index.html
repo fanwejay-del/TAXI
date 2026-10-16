@@ -2162,17 +2162,30 @@ function getFilteredRecords(){
   return out;
 }
 
-function getCostExpenses(prefix){
+function getCostExpenses(prefix, rangeFrom, rangeTo){
   var costCats={};
   config.expList.forEach(function(e){if(e.isCost)costCats[e.name]=1;});
   return getExpenses().filter(function(e){
     if(!costCats[e.cat])return false;
+    if(rangeFrom && rangeTo){
+      return e.date >= rangeFrom && e.date <= rangeTo;
+    }
     return String(e.date||'').indexOf(prefix||'')===0;
   });
 }
 
-function calcIncomeStat(prefix){
-  var recs=getFilteredRecords().filter(function(r){return String(r.date||'').indexOf(prefix)===0;});
+/* ===== 核心：calcIncomeStat 支援 prefix 或 (from,to) 區間 ===== */
+function calcIncomeStat(prefix, rangeFrom, rangeTo){
+  var recs;
+  if(rangeFrom && rangeTo){
+    recs = getFilteredRecords().filter(function(r){
+      return r.date >= rangeFrom && r.date <= rangeTo;
+    });
+  } else {
+    recs = getFilteredRecords().filter(function(r){
+      return String(r.date||'').indexOf(prefix)===0;
+    });
+  }
   var sum=0,fee=0,net=0,typeCount={};
   var typeFeeSum={};
   var cashSum=0, nonCashSum=0;
@@ -2198,7 +2211,7 @@ function calcIncomeStat(prefix){
       paySum[r.pay]=(paySum[r.pay]||0)+Number(r.raw||0);
     }
   });
-  var costList=getCostExpenses(prefix);
+  var costList=getCostExpenses(prefix, rangeFrom, rangeTo);
   var cost=costList.reduce(function(s,e){return s+Number(e.raw||0);},0);
   return{
     sum:sum,fee:fee,net:net,cnt:recs.length,
@@ -2207,9 +2220,20 @@ function calcIncomeStat(prefix){
   };
 }
 
-function calcExpStat(prefix){
-  var list=getFilteredExpenses().filter(function(e){return String(e.date||'').indexOf(prefix)===0;});
-  var sum=list.reduce(function(s,e){return s+Number(e.raw||0);},0),net=calcIncomeStat(prefix).net||0;
+/* ===== calcExpStat 支援 prefix 或 (from,to) 區間 ===== */
+function calcExpStat(prefix, rangeFrom, rangeTo){
+  var list;
+  if(rangeFrom && rangeTo){
+    list = getFilteredExpenses().filter(function(e){
+      return e.date >= rangeFrom && e.date <= rangeTo;
+    });
+  } else {
+    list = getFilteredExpenses().filter(function(e){
+      return String(e.date||'').indexOf(prefix)===0;
+    });
+  }
+  var sum=list.reduce(function(s,e){return s+Number(e.raw||0);},0);
+  var net=calcIncomeStat(prefix, rangeFrom, rangeTo).net||0;
   return{sum:sum,count:list.length,net:net,balance:net-sum};
 }
 
@@ -2257,7 +2281,6 @@ function renderStatPayCard(){
   setTimeout(fitAllStatText,0);
 }
 
-/* 按類別時保留當前時間層級 */
 function setStatPayFilter(name){
   statPayFilter=name;
   renderStatPayCard();
@@ -2286,7 +2309,6 @@ function renderExpTypeCard(){
   setTimeout(fitAllStatText,0);
 }
 
-/* 按支出類別時保留當前時間層級 */
 function setExpCatFilter(name){
   expCatFilter=name;
   renderExpTypeCard();
@@ -2303,28 +2325,25 @@ function statMoney(n){return Math.round(Number(n||0)).toLocaleString('zh-TW');}
 function statTypeTitle(){return statTypeFilter?statTypeFilter+'｜':'';}
 function statPayTitle(){return statPayFilter?statPayFilter+'｜':'';}
 
-/* ===== 統計頁合計卡片（新版排版） ===== */
-function updateStatSummary(title,prefix){
-  var s=calcIncomeStat(prefix||'');
+/* ===== 統計頁合計卡片（支援日期區間） ===== */
+function updateStatSummary(title,prefix,rangeFrom,rangeTo){
+  var s=calcIncomeStat(prefix||'', rangeFrom, rangeTo);
   document.getElementById('statSummaryTitle').textContent=title;
   var hasCost=config.expList.some(function(e){return e.isCost;});
   var grid=document.getElementById('statSummaryGrid');
   var netAfterCost=s.net-s.cost;
   var html='';
 
-  // 第一行：營業收入 + 淨收入
   html+='<div class="row-main">'
     +'<span class="pair"><span>營業收入</span><strong>'+statMoney(s.sum)+'</strong></span>'
     +'<span class="pair"><span>'+(hasCost?'淨收入(扣成本)':'淨收入')+'</span><strong class="net">'+statMoney(hasCost?netAfterCost:s.net)+'</strong></span>'
     +'</div>';
 
-  // 第二行：現金 + 非現金總和
   html+='<div class="row-sub">'
     +'<span class="pair"><span>現金</span><strong class="cash">'+statMoney(s.cashSum)+'</strong></span>'
     +'<span class="pair"><span>非現金</span><strong class="pay">'+statMoney(s.nonCashSum)+'</strong></span>'
     +'</div>';
 
-  // 第三行：各非現金類別金額（彈性換行）
   html+='<div class="row-paydetail">';
   config.payList.forEach(function(p){
     if(isCashPay(p.name))return;
@@ -2334,7 +2353,6 @@ function updateStatSummary(title,prefix){
   });
   html+='</div>';
 
-  // 第四行：各營業類別 次數 + 扣款 + 手續費
   html+='<div class="row-typedetail">';
   config.typeList.forEach(function(t){
     if(statTypeFilter && statTypeFilter!==t.name)return;
@@ -2382,7 +2400,6 @@ function updateStatBreadcrumb(){
   el.innerHTML=html;
 }
 
-/* 按營業類別時保留當前時間層級 */
 function setStatTypeFilter(name){
   statTypeFilter=name;
   renderStatTypeCard();
@@ -2449,7 +2466,8 @@ function renderStatView(){
 
 function renderStatRange(from,to){
   var recs=getFilteredRecords().filter(function(r){return r.date>=from&&r.date<=to;});
-  updateStatSummary(statTypeTitle()+statPayTitle()+from+'～'+to+' 合計','');
+  /* 關鍵：把 from / to 傳給 updateStatSummary，合計卡片只算區間 */
+  updateStatSummary(statTypeTitle()+statPayTitle()+from+'～'+to+' 合計','',from,to);
   var html='<div class="stat-list-head"><div>日期</div><div class="head-amount">營業收入</div><div class="head-amount">手續費</div><div class="head-amount">淨收入</div></div>';
   var dayMap={};
   recs.forEach(function(r){dayMap[r.date]=(dayMap[r.date]||0)+1;});
@@ -2562,9 +2580,9 @@ function renderStatDayDetail(dateStr){
   setTimeout(fitAllStatText,0);
 }
 
-/* ===== 支出頁合計卡片（新版排版） ===== */
-function updateExpSummary(title,prefix){
-  var s=calcExpStat(prefix||'');
+/* ===== 支出頁合計卡片（支援日期區間） ===== */
+function updateExpSummary(title,prefix,rangeFrom,rangeTo){
+  var s=calcExpStat(prefix||'', rangeFrom, rangeTo);
 
   var head=document.getElementById('expSummaryHead');
   var headHtml='';
@@ -2572,9 +2590,16 @@ function updateExpSummary(title,prefix){
   headHtml+='<span class="pair"><span class="label">支出總額</span><strong>'+statMoney(s.sum)+'</strong></span>';
   head.innerHTML=headHtml;
 
-  var list=getFilteredExpenses().filter(function(e){
-    return String(e.date||'').indexOf(prefix||'')===0;
-  });
+  var list;
+  if(rangeFrom && rangeTo){
+    list = getFilteredExpenses().filter(function(e){
+      return e.date >= rangeFrom && e.date <= rangeTo;
+    });
+  } else {
+    list = getFilteredExpenses().filter(function(e){
+      return String(e.date||'').indexOf(prefix||'') === 0;
+    });
+  }
   var catCount={},catSum={};
   config.expList.forEach(function(c){catCount[c.name]=0;catSum[c.name]=0;});
   list.forEach(function(e){
@@ -2682,7 +2707,8 @@ function renderExpView(){
 
 function renderExpRange(from,to){
   var list=getFilteredExpenses().filter(function(e){return e.date>=from&&e.date<=to;});
-  updateExpSummary(from+'～'+to+' 支出合計','');
+  /* 關鍵：把 from / to 傳給 updateExpSummary，合計卡片只算區間 */
+  updateExpSummary(from+'～'+to+' 支出合計','',from,to);
   var html='<div class="stat-list-head" style="grid-template-columns:72px 1fr 1fr;"><div>日期</div><div class="head-amount">支出金額</div><div class="head-amount">筆數</div></div>';
   var dayMap={};
   list.forEach(function(e){if(!dayMap[e.date])dayMap[e.date]=[];dayMap[e.date].push(e);});
@@ -2946,7 +2972,6 @@ function fixVoiceText(text) {
   return out;
 }
 
-/* 模糊比對 */
 function fuzzyMatch(text, keyword) {
   if (!keyword) return false;
   if (keyword.length < 2) {
