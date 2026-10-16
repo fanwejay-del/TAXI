@@ -294,57 +294,77 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-breadcrumb .stat-current{color:#475569;font-weight:500;}
 .stat-muted{color:#94a3b8;}
 
+/* ===== 日期區間選擇器 ===== */
+.date-range-bar{
+  display:flex;align-items:center;gap:4px;
+  background:#fff;border-radius:10px;padding:4px 6px;
+  margin-bottom:3px;box-shadow:0 1px 4px rgba(0,0,0,.06);
+  flex-shrink:0;flex-wrap:nowrap;overflow:hidden;
+}
+.date-range-bar .dr-label{font-size:calc(.85px * var(--fs-num));color:#64748b;flex-shrink:0;}
+.date-range-bar input[type="date"]{
+  flex:1;min-width:0;padding:4px 4px;border:1.2px solid #e2e8f0;
+  border-radius:6px;font-size:calc(.82px * var(--fs-num));
+  background:#f8fafc;font-variant-numeric:tabular-nums;
+}
+.date-range-bar .dr-sep{font-size:calc(.85px * var(--fs-num));color:#94a3b8;flex-shrink:0;}
+.date-range-bar .dr-btn{
+  padding:5px 8px;border:none;border-radius:6px;
+  background:#2563eb;color:#fff;font-size:calc(.82px * var(--fs-num));
+  font-weight:700;flex-shrink:0;
+}
+.date-range-bar .dr-clear{background:#e2e8f0;color:#475569;}
+
 .stat-summary-box{background:#fff;border-radius:10px;padding:4px 6px;margin-bottom:3px;box-shadow:0 1px 4px rgba(0,0,0,.06);flex-shrink:0;}
 .stat-summary-title{font-size:calc(.96px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:2px;}
 
 .stat-summary-grid{
   display:flex;
-  flex-wrap:wrap;
-  gap:0 8px;
-  align-items:baseline;
+  flex-direction:column;
+  gap:2px;
+  align-items:stretch;
   line-height:1.25;
+  width:100%;
 }
 .stat-summary-grid>div{
-  display:inline-flex;
-  align-items:baseline;
-  gap:3px;
-  min-width:0;
-  flex:0 1 auto;
-  white-space:nowrap;
-}
-.stat-summary-grid>div.row-main{
-  flex:1 1 100%;
-  justify-content:flex-start;
-  gap:4px 12px;
-  padding-bottom:0;
-  margin-bottom:0;
-  border-bottom:none;
-}
-.stat-summary-grid>div.row-main .pair{
-  display:inline-flex;
-  align-items:baseline;
-  gap:3px;
-  min-width:0;
-  flex:0 1 auto;
-  white-space:nowrap;
-}
-.stat-summary-grid>div.row-sub{
-  flex:1 1 100%;
   display:flex;
-  flex-wrap:wrap;
-  gap:0 8px;
   align-items:baseline;
+  gap:3px;
+  min-width:0;
+  flex-wrap:wrap;
+  width:100%;
 }
+.stat-summary-grid>div.row-main,
+.stat-summary-grid>div.row-sub{
+  flex-wrap:wrap;
+  gap:2px 10px;
+}
+.stat-summary-grid>div.row-main .pair,
 .stat-summary-grid>div.row-sub .pair{
   display:inline-flex;
   align-items:baseline;
   gap:3px;
-  min-width:0;
-  flex:0 0 auto;
   white-space:nowrap;
+  flex:0 0 auto;
+}
+.stat-summary-grid>div.row-paydetail,
+.stat-summary-grid>div.row-typedetail{
+  flex-wrap:wrap;
+  gap:2px 6px;
+  align-items:baseline;
+}
+.stat-summary-grid>div.row-paydetail .pair,
+.stat-summary-grid>div.row-typedetail .pair{
+  display:inline-flex;
+  align-items:baseline;
+  gap:2px;
+  white-space:nowrap;
+  flex:0 0 auto;
+  padding:1px 4px;
+  border-radius:6px;
+  background:#f8fafc;
 }
 .stat-summary-grid>div.row-cost{
-  flex:1 1 100%;
   display:inline-flex;
   align-items:baseline;
   gap:3px;
@@ -361,7 +381,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   font-variant-numeric:tabular-nums;
   white-space:nowrap;
   flex-shrink:1;
-  min-width:2.8em;
+  min-width:2.4em;
   text-align:right;
   overflow:hidden;
   text-overflow:ellipsis;
@@ -371,6 +391,8 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-summary-grid strong.cost{color:#ea580c;}
 .stat-summary-grid strong.cash{color:#16a34a;}
 .stat-summary-grid strong.pay{color:#0891b2;}
+.stat-summary-grid .type-pair .sub{font-size:calc(.78px * var(--fs-num));color:#94a3b8;font-weight:700;}
+.stat-summary-grid .type-pair .sub.fee{color:#dc2626;}
 
 .stat-list-box{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 
@@ -415,19 +437,24 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .exp-summary-card .exp-summary-body{
   display:flex;
   flex-wrap:wrap;
-  gap:2px 12px;
+  gap:2px 10px;
   align-items:baseline;
 }
 .exp-summary-card .exp-summary-body .pair{
   display:inline-flex;
   align-items:baseline;
-  gap:3px;
+  gap:2px;
   white-space:nowrap;
   flex:0 0 auto;
   min-width:0;
+  padding:1px 4px;
+  border-radius:6px;
+  background:#f8fafc;
 }
 .exp-summary-card .exp-summary-body .pair.total-pair{
   font-weight:800;
+  background:transparent;
+  padding:0;
 }
 .exp-summary-card .exp-summary-body .pair.total-pair span.label{
   color:#0f172a;
@@ -447,14 +474,19 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   font-size:calc(.96px * var(--fs-num));
   font-variant-numeric:tabular-nums;
   display:inline-block;
-  min-width:2.6em;
+  min-width:2em;
   text-align:right;
   flex-shrink:0;
+}
+.exp-summary-card .exp-summary-body .pair .sub{
+  font-size:calc(.78px * var(--fs-num));
+  color:#94a3b8;
+  font-weight:700;
 }
 
 .exp-cost-check{width:14px;height:14px;flex-shrink:0;cursor:pointer;accent-color:#ea580c;margin:0;}
 
-/* ===== 首頁統計卡片：加大字體與彈性收縮 ===== */
+/* ===== 首頁統計卡片 ===== */
 #daySummaryCard{
   display:flex;
   flex-direction:column;
@@ -1259,6 +1291,16 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
     <button onclick="statResetLevel()">全部年份</button>
   </div>
 
+  <!-- 統計頁日期區間 -->
+  <div class="date-range-bar" id="statDateRange">
+    <span class="dr-label">區間</span>
+    <input type="date" id="statDateFrom">
+    <span class="dr-sep">～</span>
+    <input type="date" id="statDateTo">
+    <button class="dr-btn" onclick="applyStatDateRange()">查詢</button>
+    <button class="dr-btn dr-clear" onclick="clearStatDateRange()">清除</button>
+  </div>
+
   <div class="stat-summary-box">
     <div class="stat-summary-title" id="statSummaryTitle">全部年度合計</div>
     <div class="stat-summary-grid" id="statSummaryGrid"></div>
@@ -1283,6 +1325,16 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   <div id="expBreadcrumb" class="stat-breadcrumb">
     <span class="stat-muted">目前：</span>
     <button onclick="expResetLevel()">全部年份</button>
+  </div>
+
+  <!-- 支出頁日期區間 -->
+  <div class="date-range-bar" id="expDateRange">
+    <span class="dr-label">區間</span>
+    <input type="date" id="expDateFrom">
+    <span class="dr-sep">～</span>
+    <input type="date" id="expDateTo">
+    <button class="dr-btn" onclick="applyExpDateRange()">查詢</button>
+    <button class="dr-btn dr-clear" onclick="clearExpDateRange()">清除</button>
   </div>
 
   <div class="exp-summary-card stat-summary-box">
@@ -1366,6 +1418,10 @@ var statTypeFilter="";
 var expCatFilter="";
 var statPayFilter="";
 var currentExpCat=null;
+
+/* 日期區間狀態 */
+var statDateRange={from:'',to:''};
+var expDateRange={from:'',to:''};
 
 var _confirmResolve=null;
 
@@ -2118,15 +2174,17 @@ function getCostExpenses(prefix){
 function calcIncomeStat(prefix){
   var recs=getFilteredRecords().filter(function(r){return String(r.date||'').indexOf(prefix)===0;});
   var sum=0,fee=0,net=0,typeCount={};
+  var typeFeeSum={};
   var cashSum=0, nonCashSum=0;
   var paySum={};
   config.payList.forEach(function(p){paySum[p.name]=0;});
-  config.typeList.forEach(function(t){typeCount[t.name]=0;});
+  config.typeList.forEach(function(t){typeCount[t.name]=0;typeFeeSum[t.name]=0;});
   recs.forEach(function(r){
     sum+=Number(r.raw||0);
     fee+=Number(r.fee||0);
     net+=Number(r.net||0);
     typeCount[r.type]=(typeCount[r.type]||0)+1;
+    typeFeeSum[r.type]=(typeFeeSum[r.type]||0)+Number(r.fee||0);
 
     if(r.splits&&Array.isArray(r.splits)){
       r.splits.forEach(function(s){
@@ -2144,7 +2202,7 @@ function calcIncomeStat(prefix){
   var cost=costList.reduce(function(s,e){return s+Number(e.raw||0);},0);
   return{
     sum:sum,fee:fee,net:net,cnt:recs.length,
-    typeCount:typeCount,cost:cost,
+    typeCount:typeCount,typeFeeSum:typeFeeSum,cost:cost,
     cashSum:cashSum, nonCashSum:nonCashSum, paySum:paySum
   };
 }
@@ -2199,9 +2257,9 @@ function renderStatPayCard(){
   setTimeout(fitAllStatText,0);
 }
 
+/* 按類別時保留當前時間層級 */
 function setStatPayFilter(name){
   statPayFilter=name;
-  statViewStack=[];
   renderStatPayCard();
   renderStatView();
 }
@@ -2228,9 +2286,9 @@ function renderExpTypeCard(){
   setTimeout(fitAllStatText,0);
 }
 
+/* 按支出類別時保留當前時間層級 */
 function setExpCatFilter(name){
   expCatFilter=name;
-  expViewStack=[];
   renderExpTypeCard();
   renderExpView();
 }
@@ -2245,6 +2303,7 @@ function statMoney(n){return Math.round(Number(n||0)).toLocaleString('zh-TW');}
 function statTypeTitle(){return statTypeFilter?statTypeFilter+'｜':'';}
 function statPayTitle(){return statPayFilter?statPayFilter+'｜':'';}
 
+/* ===== 統計頁合計卡片（新版排版） ===== */
 function updateStatSummary(title,prefix){
   var s=calcIncomeStat(prefix||'');
   document.getElementById('statSummaryTitle').textContent=title;
@@ -2253,23 +2312,41 @@ function updateStatSummary(title,prefix){
   var netAfterCost=s.net-s.cost;
   var html='';
 
+  // 第一行：營業收入 + 淨收入
   html+='<div class="row-main">'
     +'<span class="pair"><span>營業收入</span><strong>'+statMoney(s.sum)+'</strong></span>'
     +'<span class="pair"><span>'+(hasCost?'淨收入(扣成本)':'淨收入')+'</span><strong class="net">'+statMoney(hasCost?netAfterCost:s.net)+'</strong></span>'
     +'</div>';
 
-  html+='<div class="row-sub">';
-  html+='<span class="pair"><span>手續費</span><strong class="fee">'+statMoney(s.fee)+'</strong></span>';
-  html+='<span class="pair"><span>現金</span><strong class="cash">'+statMoney(s.cashSum)+'</strong></span>';
+  // 第二行：現金 + 非現金總和
+  html+='<div class="row-sub">'
+    +'<span class="pair"><span>現金</span><strong class="cash">'+statMoney(s.cashSum)+'</strong></span>'
+    +'<span class="pair"><span>非現金</span><strong class="pay">'+statMoney(s.nonCashSum)+'</strong></span>'
+    +'</div>';
+
+  // 第三行：各非現金類別金額（彈性換行）
+  html+='<div class="row-paydetail">';
   config.payList.forEach(function(p){
     if(isCashPay(p.name))return;
     if(statPayFilter && statPayFilter!==p.name)return;
     var amt=s.paySum[p.name]||0;
     html+='<span class="pair"><span>'+escapeHtml(p.name)+'</span><strong class="pay">'+statMoney(amt)+'</strong></span>';
   });
+  html+='</div>';
+
+  // 第四行：各營業類別 次數 + 扣款 + 手續費
+  html+='<div class="row-typedetail">';
   config.typeList.forEach(function(t){
     if(statTypeFilter && statTypeFilter!==t.name)return;
-    html+='<span class="pair"><span>'+escapeHtml(t.name)+'</span><strong>'+ (s.typeCount[t.name]||0) +'</strong></span>';
+    var cnt=s.typeCount[t.name]||0;
+    var deduct=Number(t.deduct||0);
+    var feeAmt=s.typeFeeSum&&s.typeFeeSum[t.name]?s.typeFeeSum[t.name]:0;
+    html+='<span class="pair type-pair">'
+      +'<span style="color:'+escapeHtml(t.color||'#2563eb')+';font-weight:700;">'+escapeHtml(t.name)+'</span>'
+      +'<strong>'+cnt+'次</strong>'
+      +'<span class="sub">扣'+statMoney(deduct)+'</span>'
+      +'<span class="sub fee">費'+statMoney(feeAmt)+'</span>'
+      +'</span>';
   });
   html+='</div>';
 
@@ -2287,6 +2364,9 @@ function updateStatBreadcrumb(){
   var html='<span class="stat-muted">目前：</span><button onclick="statResetLevel()">全部年份</button>';
   if(stack.length){
     var top=stack[stack.length-1];
+    if(top.type==='range'){
+      html+=' <span>/</span> <span class="stat-current">'+escapeHtml(top.from.slice(5))+'～'+escapeHtml(top.to.slice(5))+'</span>';
+    }
     if(top.type==='monthList'||top.type==='dayList'||top.type==='dayDetail'){
       var y=top.year||String((top.month||top.date).slice(0,4));
       html+=' <span>/</span> <button onclick="statBreadcrumbYear(\''+y+'\')">'+y+'年</button>';
@@ -2302,9 +2382,9 @@ function updateStatBreadcrumb(){
   el.innerHTML=html;
 }
 
+/* 按營業類別時保留當前時間層級 */
 function setStatTypeFilter(name){
   statTypeFilter=name;
-  statViewStack=[];
   renderStatTypeCard();
   renderStatView();
 }
@@ -2322,13 +2402,37 @@ function refreshStatCards(){
   if(document.getElementById('pageStat')&&document.getElementById('pageStat').classList.contains('active'))renderStatView();
 }
 
-function statResetLevel(){statViewStack=[];renderStatView();}
+function statResetLevel(){
+  statViewStack=[];
+  statDateRange={from:'',to:''};
+  var f=document.getElementById('statDateFrom');if(f)f.value='';
+  var t=document.getElementById('statDateTo');if(t)t.value='';
+  renderStatView();
+}
 function statBreadcrumbYear(year){statViewStack=[{type:'monthList',year:year}];renderStatView();}
 function statBreadcrumbMonth(month){statViewStack=[{type:'dayList',month:month}];renderStatView();}
 
 function statDrillToMonthList(year){statViewStack=[{type:'monthList',year:String(year)}];renderStatView();}
 function statDrillToDayList(month){statViewStack=[{type:'dayList',month:String(month)}];renderStatView();}
 function statDrillToDayDetail(date){statViewStack=[{type:'dayDetail',date:String(date)}];renderStatView();}
+
+/* ===== 日期區間查詢（統計頁） ===== */
+function applyStatDateRange(){
+  var f=document.getElementById('statDateFrom').value;
+  var t=document.getElementById('statDateTo').value;
+  if(!f||!t){showAlert('請選擇開始與結束日期');return;}
+  if(f>t){showAlert('開始日期不可大於結束日期');return;}
+  statDateRange={from:f,to:t};
+  statViewStack=[{type:'range',from:f,to:t}];
+  renderStatView();
+}
+function clearStatDateRange(){
+  statDateRange={from:'',to:''};
+  document.getElementById('statDateFrom').value='';
+  document.getElementById('statDateTo').value='';
+  statViewStack=[];
+  renderStatView();
+}
 
 function renderStatView(){
   var wrap=document.getElementById('statContent');
@@ -2339,7 +2443,30 @@ function renderStatView(){
   else if(top.type==='monthList')renderStatMonthList(top.year);
   else if(top.type==='dayList')renderStatDayList(top.month);
   else if(top.type==='dayDetail')renderStatDayDetail(top.date);
+  else if(top.type==='range')renderStatRange(top.from,top.to);
   updateStatBreadcrumb();
+}
+
+function renderStatRange(from,to){
+  var recs=getFilteredRecords().filter(function(r){return r.date>=from&&r.date<=to;});
+  updateStatSummary(statTypeTitle()+statPayTitle()+from+'～'+to+' 合計','');
+  var html='<div class="stat-list-head"><div>日期</div><div class="head-amount">營業收入</div><div class="head-amount">手續費</div><div class="head-amount">淨收入</div></div>';
+  var dayMap={};
+  recs.forEach(function(r){dayMap[r.date]=(dayMap[r.date]||0)+1;});
+  var days=Object.keys(dayMap).sort().reverse();
+  if(!days.length){html+='<div class="empty-tip">此區間尚無紀錄</div>';}
+  days.forEach(function(d){
+    var st=calcIncomeStat(d);
+    html+='<div class="stat-list-row" onclick="statDrillToDayDetail(\''+d+'\')">'
+      +'<div class="item-name">'+d.slice(5)+'</div>'
+      +'<div class="item-main">'+statMoney(st.sum)+'</div>'
+      +'<div class="item-fee">'+statMoney(st.fee)+'</div>'
+      +'<div class="item-net">'+statMoney(st.net)+'</div>'
+      +'</div>';
+  });
+  document.getElementById('statContent').innerHTML=html;
+  updateStatBreadcrumb();
+  setTimeout(fitAllStatText,0);
 }
 
 function renderStatYearList(){
@@ -2435,6 +2562,7 @@ function renderStatDayDetail(dateStr){
   setTimeout(fitAllStatText,0);
 }
 
+/* ===== 支出頁合計卡片（新版排版） ===== */
 function updateExpSummary(title,prefix){
   var s=calcExpStat(prefix||'');
 
@@ -2447,17 +2575,24 @@ function updateExpSummary(title,prefix){
   var list=getFilteredExpenses().filter(function(e){
     return String(e.date||'').indexOf(prefix||'')===0;
   });
-  var catCount={};
-  config.expList.forEach(function(c){catCount[c.name]=0;});
-  list.forEach(function(e){catCount[e.cat]=(catCount[e.cat]||0)+1;});
+  var catCount={},catSum={};
+  config.expList.forEach(function(c){catCount[c.name]=0;catSum[c.name]=0;});
+  list.forEach(function(e){
+    catCount[e.cat]=(catCount[e.cat]||0)+1;
+    catSum[e.cat]=(catSum[e.cat]||0)+Number(e.raw||0);
+  });
 
   var body=document.getElementById('expSummaryBody');
   var bodyHtml='';
-  bodyHtml+='<span class="pair total-pair"><span class="label">合計</span><strong>'+s.count+'筆</strong></span>';
+  bodyHtml+='<span class="pair total-pair"><span class="label">合計</span><strong>'+s.count+'筆 / '+statMoney(s.sum)+'</strong></span>';
   config.expList.forEach(function(c){
-    bodyHtml+='<span class="pair">'
-      +'<span>'+escapeHtml(c.name)+'</span>'
-      +'<strong>'+catCount[c.name]+'</strong>'
+    var cnt=catCount[c.name]||0;
+    if(cnt===0)return;
+    var amt=catSum[c.name]||0;
+    bodyHtml+='<span class="pair exp-pair">'
+      +'<span style="color:'+escapeHtml(c.color||'#dc2626')+';font-weight:700;">'+escapeHtml(c.name)+'</span>'
+      +'<strong>'+cnt+'筆</strong>'
+      +'<span class="sub">'+statMoney(amt)+'</span>'
       +'</span>';
   });
   body.innerHTML=bodyHtml;
@@ -2472,6 +2607,9 @@ function updateExpBreadcrumb(){
   var html='<span class="stat-muted">目前：</span><button onclick="expResetLevel()">全部年份</button>';
   if(stack.length){
     var top=stack[stack.length-1];
+    if(top.type==='range'){
+      html+=' <span>/</span> <span class="stat-current">'+escapeHtml(top.from.slice(5))+'～'+escapeHtml(top.to.slice(5))+'</span>';
+    }
     if(top.type==='monthList'||top.type==='dayList'||top.type==='dayDetail'){
       var y=top.year||String((top.month||top.date).slice(0,4));
       html+=' <span>/</span> <button onclick="expBreadcrumbYear(\''+y+'\')">'+y+'年</button>';
@@ -2487,7 +2625,13 @@ function updateExpBreadcrumb(){
   el.innerHTML=html;
 }
 
-function expResetLevel(){expViewStack=[];renderExpView();}
+function expResetLevel(){
+  expViewStack=[];
+  expDateRange={from:'',to:''};
+  var f=document.getElementById('expDateFrom');if(f)f.value='';
+  var t=document.getElementById('expDateTo');if(t)t.value='';
+  renderExpView();
+}
 function expBreadcrumbYear(year){expViewStack=[{type:'monthList',year:String(year)}];renderExpView();}
 function expBreadcrumbMonth(month){expViewStack=[{type:'dayList',month:String(month)}];renderExpView();}
 
@@ -2504,6 +2648,24 @@ function refreshExpCards(){
   if(document.getElementById('pageExpStat')&&document.getElementById('pageExpStat').classList.contains('active'))renderExpView();
 }
 
+/* ===== 日期區間查詢（支出頁） ===== */
+function applyExpDateRange(){
+  var f=document.getElementById('expDateFrom').value;
+  var t=document.getElementById('expDateTo').value;
+  if(!f||!t){showAlert('請選擇開始與結束日期');return;}
+  if(f>t){showAlert('開始日期不可大於結束日期');return;}
+  expDateRange={from:f,to:t};
+  expViewStack=[{type:'range',from:f,to:t}];
+  renderExpView();
+}
+function clearExpDateRange(){
+  expDateRange={from:'',to:''};
+  document.getElementById('expDateFrom').value='';
+  document.getElementById('expDateTo').value='';
+  expViewStack=[];
+  renderExpView();
+}
+
 function renderExpView(){
   var wrap=document.getElementById('expContent');
   if(!wrap)return;
@@ -2513,6 +2675,28 @@ function renderExpView(){
   else if(top.type==='monthList')renderExpMonthList(top.year);
   else if(top.type==='dayList')renderExpDayList(top.month);
   else if(top.type==='dayDetail')renderExpDayDetail(top.date);
+  else if(top.type==='range')renderExpRange(top.from,top.to);
+  updateExpBreadcrumb();
+  setTimeout(fitAllStatText,0);
+}
+
+function renderExpRange(from,to){
+  var list=getFilteredExpenses().filter(function(e){return e.date>=from&&e.date<=to;});
+  updateExpSummary(from+'～'+to+' 支出合計','');
+  var html='<div class="stat-list-head" style="grid-template-columns:72px 1fr 1fr;"><div>日期</div><div class="head-amount">支出金額</div><div class="head-amount">筆數</div></div>';
+  var dayMap={};
+  list.forEach(function(e){if(!dayMap[e.date])dayMap[e.date]=[];dayMap[e.date].push(e);});
+  var days=Object.keys(dayMap).sort().reverse();
+  if(!days.length){html+='<div class="empty-tip">此區間尚無支出</div>';}
+  days.forEach(function(d){
+    var st=calcExpStat(d),arr=dayMap[d];
+    html+='<div class="stat-list-row" style="grid-template-columns:72px 1fr 1fr;" onclick="expDrillToDayDetail(\''+d+'\')">'
+      +'<div class="item-name">'+d.slice(5)+'</div>'
+      +'<div class="item-main">'+statMoney(st.sum)+'</div>'
+      +'<div class="item-fee">'+arr.length+'筆</div>'
+      +'</div>';
+  });
+  document.getElementById('expContent').innerHTML=html;
   updateExpBreadcrumb();
   setTimeout(fitAllStatText,0);
 }
@@ -2762,9 +2946,7 @@ function fixVoiceText(text) {
   return out;
 }
 
-/* 模糊比對：
-   2 字關鍵字 → 任 1 字符合就匹配
-   3 字以上關鍵字 → 任 2 字符合就匹配 */
+/* 模糊比對 */
 function fuzzyMatch(text, keyword) {
   if (!keyword) return false;
   if (keyword.length < 2) {
