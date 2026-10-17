@@ -2955,12 +2955,12 @@ async function openVoiceModal() {
         }
       });
 
-      // 4. 啟動原生麥克風（改用 popup: true 讓系統確保收音）
+      // 4. 啟動原生麥克風（改回 popup: false，避免彈窗搶走結果）
       await window.SpeechRecognitionPlugin.start({
         language: 'zh-TW',
         maxResults: 1,
         partialResults: true,
-        popup: true 
+        popup: false 
       });
 
       // 5. 開始倒數計時
