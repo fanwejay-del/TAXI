@@ -2916,7 +2916,6 @@ function fuzzyMatch(text, keyword) {
 async function openVoiceModal() {
   if (!config.voiceEnabled) return;
 
-  // 檢查是否有 Capacitor 原生插件
   if (window.Capacitor && window.SpeechRecognitionPlugin) {
     try {
       // 1. 檢查並請求權限
@@ -2942,7 +2941,7 @@ async function openVoiceModal() {
       textEl.innerHTML = '<span style="color:#94a3b8;">（等待語音⋯）</span>';
       modal.classList.add('active');
 
-      // 3. 清除舊監聽並加入新監聽
+      // 3. 清除舊監聽並加入新監聽（解決 200200 重複問題）
       if (window.voiceListenerAdded) {
         await window.SpeechRecognitionPlugin.removeAllListeners();
       }
@@ -2950,17 +2949,18 @@ async function openVoiceModal() {
       
       window.SpeechRecognitionPlugin.addListener('partialResults', function(data) {
         if (data.matches && data.matches.length > 0) {
+          // 這裡改為「覆蓋」而不是累加
           voiceRecognizedText = data.matches[0];
           renderVoiceText(voiceRecognizedText);
         }
       });
 
-      // 4. 啟動原生麥克風
+      // 4. 啟動原生麥克風（改用 popup: true 讓系統確保收音）
       await window.SpeechRecognitionPlugin.start({
         language: 'zh-TW',
         maxResults: 1,
         partialResults: true,
-        popup: false
+        popup: true 
       });
 
       // 5. 開始倒數計時
