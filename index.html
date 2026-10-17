@@ -2282,18 +2282,16 @@ function updateStatSummary(title,prefix,rangeFrom,rangeTo){
   config.typeList.forEach(function(t){
     if(statTypeFilter && statTypeFilter!==t.name)return;
     var cnt=s.typeCount[t.name]||0;
-    var deduct=Number(t.deduct||0);
-    var feeAmt=s.typeFeeSum&&s.typeFeeSum[t.name]?s.typeFeeSum[t.name]:0;
     
-    var deductHtml = deduct > 0 ? '<span class="sub">扣'+statMoney(deduct)+'</span>' : '';
-    var feeHtml = feeAmt > 0 ? '<span class="sub fee">費'+statMoney(feeAmt)+'</span>' : '';
+   
+    
+    
 
     html+='<span class="pair">'
       +'<span style="color:'+escapeHtml(t.color||'#2563eb')+';font-weight:700;">'+escapeHtml(t.name)+'</span>'
       +'<strong>'+cnt+'次</strong>'
-      + deductHtml
-      + feeHtml
-      +'</span>';
+     
+     
   });
   html+='</div>';
 
