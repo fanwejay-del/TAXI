@@ -2269,13 +2269,19 @@ function updateStatSummary(title,prefix,rangeFrom,rangeTo){
     +'<span class="pair"><span>非現金</span><strong class="pay">'+statMoney(s.nonCashSum)+'</strong></span>'
     +'</div>';
 
-  html+='<div class="row-paydetail">';
+    html+='<div class="row-paydetail">';
   config.payList.forEach(function(p){
     if(isCashPay(p.name))return;
     if(statPayFilter && statPayFilter!==p.name)return;
     var amt=s.paySum[p.name]||0;
     html+='<span class="pair"><span>'+escapeHtml(p.name)+'</span><strong class="pay">'+statMoney(amt)+'</strong></span>';
   });
+  
+  // 這裡就是新增的「手續費總計」
+  if(s.fee > 0){
+    html+='<span class="pair"><span>手續費</span><strong class="fee">'+statMoney(s.fee)+'</strong></span>';
+  }
+  
   html+='</div>';
 
   html+='<div class="row-typedetail">';
