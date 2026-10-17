@@ -2923,20 +2923,21 @@ async function openVoiceModal() {
 
   // 檢查是否有 Capacitor 原生插件
   if (window.Capacitor && window.SpeechRecognitionPlugin) {
-    try {
-      // 檢查並請求權限
-      var perm = await window.SpeechRecognitionPlugin.checkPermissions();
-      if (perm.speechRecognition !== 'granted') {
-        perm = await window.SpeechRecognitionPlugin.requestPermissions();
+      try {
+        var perm = await window.SpeechRecognitionPlugin.checkPermissions();
+        // 只要不是 granted，就主動請求一次
         if (perm.speechRecognition !== 'granted') {
-          showToast('⚠️ 請允許麥克風權限');
-          return;
+          perm = await window.SpeechRecognitionPlugin.requestPermissions();
         }
+      } catch (err) {
+        console.log('權限檢查失敗，直接嘗試啟動', err);
       }
 
       voiceRecognizedText = '';
       voiceAutoSaveDone = false;
       voiceIsRecording = true;
+
+     
       voiceRemaining = config.voiceSeconds || 5;
 
       var modal = document.getElementById('voiceModal');
