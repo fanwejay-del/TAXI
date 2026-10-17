@@ -2269,7 +2269,7 @@ function updateStatSummary(title,prefix,rangeFrom,rangeTo){
     +'<span class="pair"><span>非現金</span><strong class="pay">'+statMoney(s.nonCashSum)+'</strong></span>'
     +'</div>';
 
-    html+='<div class="row-paydetail">';
+  html+='<div class="row-paydetail">';
   config.payList.forEach(function(p){
     if(isCashPay(p.name))return;
     if(statPayFilter && statPayFilter!==p.name)return;
@@ -2289,15 +2289,10 @@ function updateStatSummary(title,prefix,rangeFrom,rangeTo){
     if(statTypeFilter && statTypeFilter!==t.name)return;
     var cnt=s.typeCount[t.name]||0;
     
-   
-    
-    
-
     html+='<span class="pair">'
       +'<span style="color:'+escapeHtml(t.color||'#2563eb')+';font-weight:700;">'+escapeHtml(t.name)+'</span>'
       +'<strong>'+cnt+'次</strong>'
-     
-     
+      +'</span>';
   });
   html+='</div>';
 
@@ -2923,21 +2918,17 @@ async function openVoiceModal() {
 
   // 檢查是否有 Capacitor 原生插件
   if (window.Capacitor && window.SpeechRecognitionPlugin) {
-      try {
-        var perm = await window.SpeechRecognitionPlugin.checkPermissions();
-        // 只要不是 granted，就主動請求一次
-        if (perm.speechRecognition !== 'granted') {
-          perm = await window.SpeechRecognitionPlugin.requestPermissions();
-        }
-      } catch (err) {
-        console.log('權限檢查失敗，直接嘗試啟動', err);
+    try {
+      // 1. 檢查並請求權限
+      var perm = await window.SpeechRecognitionPlugin.checkPermissions();
+      if (perm.speechRecognition !== 'granted') {
+        perm = await window.SpeechRecognitionPlugin.requestPermissions();
       }
 
+      // 2. 設定畫面與變數
       voiceRecognizedText = '';
       voiceAutoSaveDone = false;
       voiceIsRecording = true;
-
-     
       voiceRemaining = config.voiceSeconds || 5;
 
       var modal = document.getElementById('voiceModal');
@@ -2951,7 +2942,12 @@ async function openVoiceModal() {
       textEl.innerHTML = '<span style="color:#94a3b8;">（等待語音⋯）</span>';
       modal.classList.add('active');
 
-      // 監聽原生語音辨識的即時結果
+      // 3. 清除舊監聽並加入新監聽
+      if (window.voiceListenerAdded) {
+        await window.SpeechRecognitionPlugin.removeAllListeners();
+      }
+      window.voiceListenerAdded = true;
+      
       window.SpeechRecognitionPlugin.addListener('partialResults', function(data) {
         if (data.matches && data.matches.length > 0) {
           voiceRecognizedText = data.matches[0];
@@ -2959,7 +2955,7 @@ async function openVoiceModal() {
         }
       });
 
-      // 啟動原生語音辨識
+      // 4. 啟動原生麥克風
       await window.SpeechRecognitionPlugin.start({
         language: 'zh-TW',
         maxResults: 1,
@@ -2967,13 +2963,13 @@ async function openVoiceModal() {
         popup: false
       });
 
-      // 倒數計時器
+      // 5. 開始倒數計時
       clearInterval(voiceCountdownTimer);
       voiceCountdownTimer = setInterval(function() {
         voiceRemaining--;
         if (voiceRemaining <= 0) {
           clearInterval(voiceCountdownTimer);
-          finishVoiceInputNative(); // 使用原生結束函數
+          finishVoiceInputNative();
           return;
         }
         countdownEl.textContent = voiceRemaining;
@@ -2982,11 +2978,13 @@ async function openVoiceModal() {
 
     } catch (e) {
       showToast('⚠️ 語音辨識失敗：' + e.message);
+      document.getElementById('voiceModal').classList.remove('active');
+      clearInterval(voiceCountdownTimer);
     }
-    return;
+    return; // 原生執行完畢後直接 return，不執行下方的網頁版
   }
 
-  // --- 以下為網頁版備用邏輯（如果沒插件時使用） ---
+  // --- 以下為網頁版備用邏輯 ---
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) {
     showToast('⚠️ 此瀏覽器不支援語音輸入\n請使用 Android Chrome');
