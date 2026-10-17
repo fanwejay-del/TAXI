@@ -20,17 +20,20 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 
 .card{background:#fff;border-radius:10px;padding:4px 4px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:3px;}
 
+/* ===== 全局導覽列優化 ===== */
 .global-nav{position:sticky;top:0;z-index:50;background:#fff;border-radius:10px;padding:4px 6px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin:0 4px 3px;display:flex;justify-content:space-between;align-items:center;gap:3px;flex-shrink:0;min-width:0;}
-.global-nav .app-brand{display:flex;align-items:center;gap:5px;min-width:0;flex:1 1 auto;padding:1px 3px 1px 0;}
-.global-nav .app-logo{width:32px;height:32px;flex:0 0 32px;display:flex;align-items:center;justify-content:center;border-radius:9px;background:transparent;overflow:hidden;}
+.global-nav .app-brand{display:flex;align-items:center;gap:4px;min-width:0;flex:1 1 auto;padding:1px 2px 1px 0;}
+.global-nav .app-logo{width:26px;height:26px;flex:0 0 26px;display:flex;align-items:center;justify-content:center;border-radius:7px;background:transparent;overflow:hidden;}
 .global-nav .app-logo img{width:100%;height:100%;object-fit:contain;display:block;}
-.global-nav .app-name{font-size:clamp(17px,calc(1.5px * var(--fs-num)),22px);font-weight:900;color:#1e293b;white-space:nowrap;letter-spacing:.3px;line-height:1.1;}
-.global-nav .nav-icon{font-size:calc(1.3px * var(--fs-num));padding:5px 6px;border-radius:9px;cursor:pointer;line-height:1;color:#475569;transition:background .15s,transform .1s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;flex:0 0 auto;min-width:40px;}
-.global-nav .nav-symbol{font-size:1.15em;line-height:1;}
+/* 標題固定大小，不被拉桿影響，且可以自動省略 */
+.global-nav .app-name{font-size:16px;font-weight:900;color:#1e293b;white-space:nowrap;letter-spacing:0;line-height:1.1;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+/* 導覽按鈕固定大小 */
+.global-nav .nav-icon{font-size:13px;padding:4px 5px;border-radius:9px;cursor:pointer;line-height:1;color:#475569;transition:background .15s,transform .1s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:0 0 auto;min-width:38px;}
+.global-nav .nav-symbol{font-size:15px;line-height:1;}
 .global-nav .nav-label{font-size:10px;line-height:1;white-space:nowrap;font-weight:700;}
 .global-nav .nav-icon:active{background:#e2e8f0;transform:scale(.95);}
 .global-nav .nav-icon.active{background:#dbeafe;color:#2563eb;}
-@media(max-width:380px){.global-nav{padding:3px 5px;gap:2px}.global-nav .app-logo{width:28px;height:28px;flex-basis:28px}.global-nav .app-brand{gap:4px}.global-nav .app-name{font-size:15px}.global-nav .nav-icon{min-width:35px;padding:5px 4px}.global-nav .nav-label{font-size:9px}}
+@media(max-width:380px){.global-nav{padding:3px 5px;gap:2px}.global-nav .app-logo{width:24px;height:24px;flex-basis:24px}.global-nav .app-brand{gap:3px}.global-nav .app-name{font-size:15px}.global-nav .nav-icon{min-width:35px;padding:4px 4px}.global-nav .nav-label{font-size:9px}}
 
 .bigBtn,.numBtn,.payBtn,.navBtn,.editBtn,.delBtn,.sortBtn,.add-btn,.backup-btn,.stat-btn,.setBlock button{box-shadow:0 2px 6px rgba(0,0,0,.14);transition:filter .12s,box-shadow .12s,transform .1s,background .12s;}
 .bigBtn:active,.numBtn:active,.payBtn:active,.navBtn:active,.editBtn:active,.delBtn:active,.sortBtn:active,.add-btn:active,.backup-btn:active,.stat-btn:active,.setBlock button:active{filter:brightness(.88);box-shadow:0 1px 3px rgba(0,0,0,.18);transform:scale(.97);}
@@ -135,11 +138,12 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .color-dot:hover::after{border-color:#94a3b8;}
 
 .pageHome-top{flex-shrink:0;}
+/* ===== 首頁明細優化：間隙縮小、字體放大 ===== */
 .home-detail-box{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-.home-detail-row{display:grid;grid-template-columns:36px 48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.9px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.25;}
+.home-detail-row{display:grid;grid-template-columns:36px 48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:2px 4px;border-top:1px solid #f1f5f9;font-size:calc(1px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.15;}
 .home-detail-row:active{background:#eff6ff;}
 .home-detail-row>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.home-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:5px 4px;position:sticky;top:0;z-index:2;font-size:calc(.9px * var(--fs-num));}
+.home-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:4px 4px;position:sticky;top:0;z-index:2;font-size:calc(.95px * var(--fs-num));}
 .home-detail-head .amount{text-align:right;}
 .home-detail-idx{text-align:center;color:#94a3b8;font-variant-numeric:tabular-nums;}
 .home-detail-amt{text-align:right;color:#2563eb;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
@@ -283,26 +287,20 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-summary-box{background:#fff;border-radius:10px;padding:4px 6px;margin-bottom:3px;box-shadow:0 1px 4px rgba(0,0,0,.06);flex-shrink:0;}
 .stat-summary-title{font-size:calc(.96px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:2px;}
 
+/* ===== 統計合計卡片優化：彈性填滿、不浪費空白、整組換行 ===== */
 .stat-summary-grid{
   display:flex;
   flex-direction:column;
-  gap:2px;
-  align-items:stretch;
+  gap:6px;
   line-height:1.25;
-  width:100%;
-}
-.stat-summary-grid>div{
-  display:flex;
-  align-items:baseline;
-  gap:3px;
-  min-width:0;
-  flex-wrap:wrap;
   width:100%;
 }
 .stat-summary-grid>div.row-main,
 .stat-summary-grid>div.row-sub{
+  display:flex;
   flex-wrap:wrap;
-  gap:2px 10px;
+  gap:4px 12px;
+  width:100%;
 }
 .stat-summary-grid>div.row-main .pair,
 .stat-summary-grid>div.row-sub .pair{
@@ -310,54 +308,36 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   align-items:baseline;
   gap:3px;
   white-space:nowrap;
-  flex:0 0 auto;
 }
-.stat-summary-grid>div.row-paydetail,
-.stat-summary-grid>div.row-typedetail{
+/* 類別明細：整組不換行，自動往旁邊排，塞不下就自動下一行 */
+.stat-summary-grid>div.row-typedetail,
+.stat-summary-grid>div.row-paydetail{
+  display:flex;
   flex-wrap:wrap;
-  gap:2px 6px;
-  align-items:baseline;
+  gap:4px 8px;
+  align-items:flex-start;
 }
-.stat-summary-grid>div.row-paydetail .pair,
-.stat-summary-grid>div.row-typedetail .pair{
-  display:inline-flex;
-  align-items:baseline;
-  gap:2px;
-  white-space:nowrap;
-  flex:0 0 auto;
-  padding:1px 4px;
-  border-radius:6px;
-  background:#f8fafc;
-}
-.stat-summary-grid>div.row-cost{
+.stat-summary-grid .group-box{
   display:inline-flex;
   align-items:baseline;
   gap:3px;
-}
-.stat-summary-grid span{
-  color:#64748b;
-  font-size:calc(.84px * var(--fs-num));
   white-space:nowrap;
-  flex-shrink:0;
+  flex:0 0 auto;
+  padding:2px 6px;
+  border-radius:6px;
+  background:#f8fafc;
+  border:1px solid #f1f5f9;
 }
-.stat-summary-grid strong{
-  color:#2563eb;
-  font-size:calc(.96px * var(--fs-num));
-  font-variant-numeric:tabular-nums;
-  white-space:nowrap;
-  flex-shrink:1;
-  min-width:2.4em;
-  text-align:right;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
+.stat-summary-grid>div.row-cost{ display:inline-flex; align-items:baseline; gap:3px; }
+.stat-summary-grid span{ color:#64748b; font-size:calc(.84px * var(--fs-num)); white-space:nowrap; }
+.stat-summary-grid strong{ font-size:calc(.96px * var(--fs-num)); font-variant-numeric:tabular-nums; white-space:nowrap; min-width:2.4em; text-align:right;}
 .stat-summary-grid strong.fee{color:#dc2626;}
 .stat-summary-grid strong.net{color:#059669;}
 .stat-summary-grid strong.cost{color:#ea580c;}
 .stat-summary-grid strong.cash{color:#16a34a;}
 .stat-summary-grid strong.pay{color:#0891b2;}
-.stat-summary-grid .type-pair .sub{font-size:calc(.78px * var(--fs-num));color:#94a3b8;font-weight:700;}
-.stat-summary-grid .type-pair .sub.fee{color:#dc2626;}
+.stat-summary-grid .group-box .sub{font-size:calc(.78px * var(--fs-num));color:#94a3b8;font-weight:700;margin-left:2px;}
+.stat-summary-grid .group-box .sub.fee{color:#dc2626;}
 
 .stat-list-box{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 
@@ -527,7 +507,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   .stat-list-head,.stat-list-row{grid-template-columns:52px minmax(0,1fr) minmax(0,0.9fr) minmax(0,1fr);gap:3px;padding-left:4px;padding-right:4px}
   .stat-detail-row{grid-template-columns:36px 36px minmax(0,1fr) minmax(0,1fr) minmax(0,0.85fr) minmax(0,0.95fr);gap:2px;padding-left:3px;padding-right:3px;font-size:calc(.9px * var(--fs-num));}
   .stat-detail-row-exp{grid-template-columns:40px 40px 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
-  .home-detail-row{grid-template-columns:28px 36px 36px minmax(0,1.1fr) minmax(0,1fr) minmax(0,0.85fr) minmax(0,0.95fr);gap:2px;padding-left:3px;padding-right:3px;font-size:calc(.86px * var(--fs-num));}
+  .home-detail-row{grid-template-columns:28px 36px 36px minmax(0,1.1fr) minmax(0,1fr) minmax(0,0.85fr) minmax(0,0.95fr);gap:2px;padding-left:3px;padding-right:3px;font-size:calc(.96px * var(--fs-num));}
 }
 
 @media(max-width:600px){body{padding:4px 0;}.page{padding:0 4px;}}
@@ -2292,7 +2272,7 @@ function updateStatSummary(title,prefix,rangeFrom,rangeTo){
     if(isCashPay(p.name))return;
     if(statPayFilter && statPayFilter!==p.name)return;
     var amt=s.paySum[p.name]||0;
-    html+='<span class="pair"><span>'+escapeHtml(p.name)+'</span><strong class="pay">'+statMoney(amt)+'</strong></span>';
+    html+='<span class="group-box"><span>'+escapeHtml(p.name)+'</span><strong class="pay">'+statMoney(amt)+'</strong></span>';
   });
   html+='</div>';
 
@@ -2302,11 +2282,15 @@ function updateStatSummary(title,prefix,rangeFrom,rangeTo){
     var cnt=s.typeCount[t.name]||0;
     var deduct=Number(t.deduct||0);
     var feeAmt=s.typeFeeSum&&s.typeFeeSum[t.name]?s.typeFeeSum[t.name]:0;
-    html+='<span class="pair type-pair">'
+    
+    var deductHtml = deduct > 0 ? '<span class="sub">扣'+statMoney(deduct)+'</span>' : '';
+    var feeHtml = feeAmt > 0 ? '<span class="sub fee">費'+statMoney(feeAmt)+'</span>' : '';
+
+    html+='<span class="group-box">'
       +'<span style="color:'+escapeHtml(t.color||'#2563eb')+';font-weight:700;">'+escapeHtml(t.name)+'</span>'
       +'<strong>'+cnt+'次</strong>'
-      +'<span class="sub">扣'+statMoney(deduct)+'</span>'
-      +'<span class="sub fee">費'+statMoney(feeAmt)+'</span>'
+      + deductHtml
+      + feeHtml
       +'</span>';
   });
   html+='</div>';
@@ -2959,19 +2943,13 @@ function openVoiceModal() {
   voiceRecognition.maxAlternatives = 1;
 
   voiceRecognition.onresult = function(event) {
-    var interim = '';
-    var final = '';
-    for (var i = event.resultIndex; i < event.results.length; i++) {
-      var t = event.results[i][0].transcript;
-      if (event.results[i].isFinal) {
-        final += t;
-      } else {
-        interim += t;
-      }
+    var currentText = '';
+    // 直接获取当前所有识别到的文字，不要去累加
+    for (var i = 0; i < event.results.length; i++) {
+      currentText += event.results[i][0].transcript;
     }
-    if (final) voiceRecognizedText += final;
-    var display = voiceRecognizedText + (interim ? interim : '');
-    renderVoiceText(display);
+    voiceRecognizedText = currentText;
+    renderVoiceText(voiceRecognizedText);
   };
 
   voiceRecognition.onerror = function(e) {
