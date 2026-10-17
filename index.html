@@ -6,6 +6,10 @@
 <title>計程車記帳</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2563eb">
+<script type="module">
+  import { SpeechRecognition } from '@capacitor-community/speech-recognition';
+  window.SpeechRecognitionPlugin = SpeechRecognition;
+</script>
 <style>
 button[data-nf],[data-netlify],#netlify,div[class*="netlify"]{display:none!important;}
 :root{--fs-num:13;--fw-num:900;}
@@ -287,7 +291,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-summary-box{background:#fff;border-radius:10px;padding:4px 6px;margin-bottom:3px;box-shadow:0 1px 4px rgba(0,0,0,.06);flex-shrink:0;}
 .stat-summary-title{font-size:calc(.96px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:2px;}
 
-/* ===== 統計合計卡片優化：彈性填滿、不浪費空白、整組換行 ===== */
+/* ===== 統計合計卡片優化：自然文字排列、自動往上擠 ===== */
 .stat-summary-grid{
   display:flex;
   flex-direction:column;
@@ -314,19 +318,17 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-summary-grid>div.row-paydetail{
   display:flex;
   flex-wrap:wrap;
-  gap:4px 8px;
-  align-items:flex-start;
+  gap:4px 12px; /* 橫向間距稍微拉大一點，區隔各個類別 */
+  align-items:baseline;
 }
-.stat-summary-grid .group-box{
+/* 設定每個類別的內部排列 */
+.stat-summary-grid .row-paydetail .pair,
+.stat-summary-grid .row-typedetail .pair {
   display:inline-flex;
   align-items:baseline;
   gap:3px;
   white-space:nowrap;
   flex:0 0 auto;
-  padding:2px 6px;
-  border-radius:6px;
-  background:#f8fafc;
-  border:1px solid #f1f5f9;
 }
 .stat-summary-grid>div.row-cost{ display:inline-flex; align-items:baseline; gap:3px; }
 .stat-summary-grid span{ color:#64748b; font-size:calc(.84px * var(--fs-num)); white-space:nowrap; }
@@ -336,8 +338,8 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-summary-grid strong.cost{color:#ea580c;}
 .stat-summary-grid strong.cash{color:#16a34a;}
 .stat-summary-grid strong.pay{color:#0891b2;}
-.stat-summary-grid .group-box .sub{font-size:calc(.78px * var(--fs-num));color:#94a3b8;font-weight:700;margin-left:2px;}
-.stat-summary-grid .group-box .sub.fee{color:#dc2626;}
+.stat-summary-grid .row-typedetail .sub{font-size:calc(.78px * var(--fs-num));color:#94a3b8;font-weight:700;margin-left:2px;}
+.stat-summary-grid .row-typedetail .sub.fee{color:#dc2626;}
 
 .stat-list-box{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 
@@ -2272,7 +2274,7 @@ function updateStatSummary(title,prefix,rangeFrom,rangeTo){
     if(isCashPay(p.name))return;
     if(statPayFilter && statPayFilter!==p.name)return;
     var amt=s.paySum[p.name]||0;
-    html+='<span class="group-box"><span>'+escapeHtml(p.name)+'</span><strong class="pay">'+statMoney(amt)+'</strong></span>';
+    html+='<span class="pair"><span>'+escapeHtml(p.name)+'</span><strong class="pay">'+statMoney(amt)+'</strong></span>';
   });
   html+='</div>';
 
@@ -2286,7 +2288,7 @@ function updateStatSummary(title,prefix,rangeFrom,rangeTo){
     var deductHtml = deduct > 0 ? '<span class="sub">扣'+statMoney(deduct)+'</span>' : '';
     var feeHtml = feeAmt > 0 ? '<span class="sub fee">費'+statMoney(feeAmt)+'</span>' : '';
 
-    html+='<span class="group-box">'
+    html+='<span class="pair">'
       +'<span style="color:'+escapeHtml(t.color||'#2563eb')+';font-weight:700;">'+escapeHtml(t.name)+'</span>'
       +'<strong>'+cnt+'次</strong>'
       + deductHtml
@@ -2912,8 +2914,74 @@ function fuzzyMatch(text, keyword) {
   return matchCount >= 2;
 }
 
-function openVoiceModal() {
+async function openVoiceModal() {
   if (!config.voiceEnabled) return;
+
+  // 檢查是否有 Capacitor 原生插件
+  if (window.Capacitor && window.SpeechRecognitionPlugin) {
+    try {
+      // 檢查並請求權限
+      var perm = await window.SpeechRecognitionPlugin.checkPermissions();
+      if (perm.speechRecognition !== 'granted') {
+        perm = await window.SpeechRecognitionPlugin.requestPermissions();
+        if (perm.speechRecognition !== 'granted') {
+          showToast('⚠️ 請允許麥克風權限');
+          return;
+        }
+      }
+
+      voiceRecognizedText = '';
+      voiceAutoSaveDone = false;
+      voiceIsRecording = true;
+      voiceRemaining = config.voiceSeconds || 5;
+
+      var modal = document.getElementById('voiceModal');
+      var countdownEl = document.getElementById('voiceCountdown');
+      var statusEl = document.getElementById('voiceStatus');
+      var textEl = document.getElementById('voiceText');
+
+      countdownEl.textContent = voiceRemaining;
+      countdownEl.classList.remove('urgent');
+      statusEl.textContent = '請開始說話⋯';
+      textEl.innerHTML = '<span style="color:#94a3b8;">（等待語音⋯）</span>';
+      modal.classList.add('active');
+
+      // 監聽原生語音辨識的即時結果
+      window.SpeechRecognitionPlugin.addListener('partialResults', function(data) {
+        if (data.matches && data.matches.length > 0) {
+          voiceRecognizedText = data.matches[0];
+          renderVoiceText(voiceRecognizedText);
+        }
+      });
+
+      // 啟動原生語音辨識
+      await window.SpeechRecognitionPlugin.start({
+        language: 'zh-TW',
+        maxResults: 1,
+        partialResults: true,
+        popup: false
+      });
+
+      // 倒數計時器
+      clearInterval(voiceCountdownTimer);
+      voiceCountdownTimer = setInterval(function() {
+        voiceRemaining--;
+        if (voiceRemaining <= 0) {
+          clearInterval(voiceCountdownTimer);
+          finishVoiceInputNative(); // 使用原生結束函數
+          return;
+        }
+        countdownEl.textContent = voiceRemaining;
+        if (voiceRemaining <= 2) countdownEl.classList.add('urgent');
+      }, 1000);
+
+    } catch (e) {
+      showToast('⚠️ 語音辨識失敗：' + e.message);
+    }
+    return;
+  }
+
+  // --- 以下為網頁版備用邏輯（如果沒插件時使用） ---
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) {
     showToast('⚠️ 此瀏覽器不支援語音輸入\n請使用 Android Chrome');
@@ -2925,16 +2993,16 @@ function openVoiceModal() {
   voiceIsRecording = true;
   voiceRemaining = config.voiceSeconds || 5;
 
-  var modal = document.getElementById('voiceModal');
-  var countdownEl = document.getElementById('voiceCountdown');
-  var statusEl = document.getElementById('voiceStatus');
-  var textEl = document.getElementById('voiceText');
+  var modal2 = document.getElementById('voiceModal');
+  var countdownEl2 = document.getElementById('voiceCountdown');
+  var statusEl2 = document.getElementById('voiceStatus');
+  var textEl2 = document.getElementById('voiceText');
 
-  countdownEl.textContent = voiceRemaining;
-  countdownEl.classList.remove('urgent');
-  statusEl.textContent = '請開始說話⋯';
-  textEl.innerHTML = '<span style="color:#94a3b8;">（等待語音⋯）</span>';
-  modal.classList.add('active');
+  countdownEl2.textContent = voiceRemaining;
+  countdownEl2.classList.remove('urgent');
+  statusEl2.textContent = '請開始說話⋯';
+  textEl2.innerHTML = '<span style="color:#94a3b8;">（等待語音⋯）</span>';
+  modal2.classList.add('active');
 
   voiceRecognition = new SR();
   voiceRecognition.lang = 'zh-TW';
@@ -2944,7 +3012,7 @@ function openVoiceModal() {
 
   voiceRecognition.onresult = function(event) {
     var currentText = '';
-    // 直接获取当前所有识别到的文字，不要去累加
+    // 解決重複顯示 200200 的問題（每次覆蓋）
     for (var i = 0; i < event.results.length; i++) {
       currentText += event.results[i][0].transcript;
     }
@@ -2955,16 +3023,16 @@ function openVoiceModal() {
   voiceRecognition.onerror = function(e) {
     if (e.error === 'aborted') return;
     if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
-      statusEl.textContent = '⚠️ 請允許麥克風權限';
+      statusEl2.textContent = '⚠️ 請允許麥克風權限';
     } else if (e.error === 'network') {
-      statusEl.textContent = '⚠️ 網路連線異常';
+      statusEl2.textContent = '⚠️ 網路連線異常';
     }
   };
 
   try {
     voiceRecognition.start();
   } catch (e) {
-    statusEl.textContent = '⚠️ 無法啟動語音辨識';
+    statusEl2.textContent = '⚠️ 無法啟動語音辨識';
   }
 
   clearInterval(voiceCountdownTimer);
@@ -2975,9 +3043,30 @@ function openVoiceModal() {
       finishVoiceInput();
       return;
     }
-    countdownEl.textContent = voiceRemaining;
-    if (voiceRemaining <= 2) countdownEl.classList.add('urgent');
+    countdownEl2.textContent = voiceRemaining;
+    if (voiceRemaining <= 2) countdownEl2.classList.add('urgent');
   }, 1000);
+}
+
+async function finishVoiceInputNative() {
+  if (!voiceIsRecording) return;
+  voiceIsRecording = false;
+
+  try {
+    if (window.SpeechRecognitionPlugin) {
+      await window.SpeechRecognitionPlugin.stop();
+      await window.SpeechRecognitionPlugin.removeAllListeners();
+    }
+  } catch (e) {}
+
+  document.getElementById('voiceModal').classList.remove('active');
+
+  if (!voiceAutoSaveDone) {
+    voiceAutoSaveDone = true;
+    setTimeout(function() {
+      processVoiceCommand(voiceRecognizedText);
+    }, 150);
+  }
 }
 
 function renderVoiceText(text) {
