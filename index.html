@@ -6,10 +6,6 @@
 <title>計程車記帳</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2563eb">
-<script type="module">
-  import { SpeechRecognition } from '@capacitor-community/speech-recognition';
-  window.SpeechRecognitionPlugin = SpeechRecognition;
-</script>
 <style>
 button[data-nf],[data-netlify],#netlify,div[class*="netlify"]{display:none!important;}
 :root{--fs-num:13;--fw-num:900;}
@@ -24,78 +20,39 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 
 .card{background:#fff;border-radius:10px;padding:4px 4px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:3px;}
 
-/* ===== 全局導覽列優化 ===== */
-.global-nav{position:sticky;top:0;z-index:50;background:#fff;border-radius:10px;padding:4px 6px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin:0 4px 3px;display:flex;justify-content:space-between;align-items:center;gap:3px;flex-shrink:0;min-width:0;}
-.global-nav .app-brand{display:flex;align-items:center;gap:4px;min-width:0;flex:1 1 auto;padding:1px 2px 1px 0;}
-.global-nav .app-logo{width:26px;height:26px;flex:0 0 26px;display:flex;align-items:center;justify-content:center;border-radius:7px;background:transparent;overflow:hidden;}
+/* ===== 全局導覽列 ===== */
+.global-nav{position:relative;z-index:50;background:#fff;border-radius:10px;padding:6px 6px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin:0 4px 3px;display:flex;justify-content:space-between;align-items:center;gap:2px;flex-shrink:0;min-width:0;}
+.global-nav .app-brand{display:flex;align-items:center;gap:4px;min-width:0;flex:1 1 auto;overflow:hidden;}
+.global-nav .app-logo{width:28px;height:28px;flex:0 0 28px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:transparent;overflow:hidden;}
 .global-nav .app-logo img{width:100%;height:100%;object-fit:contain;display:block;}
-/* 標題固定大小，不被拉桿影響，且可以自動省略 */
-.global-nav .app-name{font-size:16px;font-weight:900;color:#1e293b;white-space:nowrap;letter-spacing:0;line-height:1.1;overflow:hidden;text-overflow:ellipsis;min-width:0;}
-/* 導覽按鈕固定大小 */
-.global-nav .nav-icon{font-size:13px;padding:4px 5px;border-radius:9px;cursor:pointer;line-height:1;color:#475569;transition:background .15s,transform .1s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:0 0 auto;min-width:38px;}
-.global-nav .nav-symbol{font-size:15px;line-height:1;}
+.global-nav .app-name{font-size:18px;font-weight:900;color:#1e293b;white-space:nowrap;letter-spacing:0;line-height:1.1;overflow:hidden;text-overflow:ellipsis;}
+.global-nav .nav-icon{font-size:16px;padding:5px 6px;border-radius:10px;cursor:pointer;line-height:1;color:#475569;transition:background .15s,transform .1s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:0 0 auto;min-width:42px;}
+.global-nav .nav-symbol{font-size:22px;line-height:1;}
 .global-nav .nav-label{font-size:10px;line-height:1;white-space:nowrap;font-weight:700;}
 .global-nav .nav-icon:active{background:#e2e8f0;transform:scale(.95);}
 .global-nav .nav-icon.active{background:#dbeafe;color:#2563eb;}
-@media(max-width:380px){.global-nav{padding:3px 5px;gap:2px}.global-nav .app-logo{width:24px;height:24px;flex-basis:24px}.global-nav .app-brand{gap:3px}.global-nav .app-name{font-size:15px}.global-nav .nav-icon{min-width:35px;padding:4px 4px}.global-nav .nav-label{font-size:9px}}
+@media(max-width:380px){
+  .global-nav{padding:5px 5px;gap:1px}
+  .global-nav .app-logo{width:24px;height:24px;flex-basis:24px}
+  .global-nav .app-name{font-size:15px}
+  .global-nav .nav-icon{min-width:38px;padding:4px 4px}
+  .global-nav .nav-symbol{font-size:20px}
+  .global-nav .nav-label{font-size:9px}
+}
 
 .bigBtn,.numBtn,.payBtn,.navBtn,.editBtn,.delBtn,.sortBtn,.add-btn,.backup-btn,.stat-btn,.setBlock button{box-shadow:0 2px 6px rgba(0,0,0,.14);transition:filter .12s,box-shadow .12s,transform .1s,background .12s;}
 .bigBtn:active,.numBtn:active,.payBtn:active,.navBtn:active,.editBtn:active,.delBtn:active,.sortBtn:active,.add-btn:active,.backup-btn:active,.stat-btn:active,.setBlock button:active{filter:brightness(.88);box-shadow:0 1px 3px rgba(0,0,0,.18);transform:scale(.97);}
 .bigBtn{padding:0 3px;border:none;border-radius:10px;font-size:clamp(16px,calc(0.85px * var(--fs-num)),18px);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;height:calc(2.4px * var(--fs-num) + 10px);display:flex;align-items:center;justify-content:center;line-height:1;}
 
-.inputBox{
-  width:100%;
-  padding:8px 16px;
-  font-size:28px;
-  text-align:center;
-  border:2px solid #e2e8f0;
-  border-radius:12px;
-  margin:4px 0 8px;
-  background:#f8fafc;
-  color:#0f172a;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  font-variant-numeric:tabular-nums;
-  line-height:1.2;
-}
+.inputBox{width:100%;padding:8px 16px;font-size:28px;text-align:center;border:2px solid #e2e8f0;border-radius:12px;margin:4px 0 8px;background:#f8fafc;color:#0f172a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-variant-numeric:tabular-nums;line-height:1.2;}
 
 .numKey{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(5px,2vw,10px);width:100%;min-width:0;flex:0 0 auto;}
 
-.numBtn{
-  width:100%;
-  min-width:0;
-  padding:clamp(10px,3.8vw,18px) 4px;
-  font-size:clamp(17px,5.5vw,22px);
-  border-radius:12px;
-  border:none;
-  background:#fff;
-  color:#1e293b;
-  overflow:hidden;
-}
+.numBtn{width:100%;min-width:0;padding:clamp(10px,3.8vw,18px) 4px;font-size:clamp(17px,5.5vw,22px);border-radius:12px;border:none;background:#fff;color:#1e293b;overflow:hidden;}
 .numBtn:active{background:#e2e8f0;}
 
-.payKey{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:clamp(5px,2vw,10px);
-  margin-top:8px;
-  width:100%;
-  min-width:0;
-  overflow:hidden;
-}
-.payBtn{
-  width:100%;
-  min-width:0;
-  padding:clamp(10px,3.5vw,16px) 4px;
-  border:none;
-  border-radius:12px;
-  color:#fff;
-  font-size:clamp(12px,calc(1.05px * var(--fs-num)),15px);
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
+.payKey{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(5px,2vw,10px);margin-top:8px;width:100%;min-width:0;overflow:hidden;}
+.payBtn{width:100%;min-width:0;padding:clamp(10px,3.5vw,16px) 4px;border:none;border-radius:12px;color:#fff;font-size:clamp(12px,calc(1.05px * var(--fs-num)),15px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .noteInput{width:100%;padding:10px 12px;margin-top:10px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:calc(1.05px * var(--fs-num));background:#f8fafc;}
 .noteInput:focus{outline:none;border-color:#2563eb;background:#fff;}
 .delBtn{color:#dc2626;border:none;background:#fef2f2;font-size:calc(.85px * var(--fs-num));padding:4px 8px;border-radius:6px;}
@@ -108,17 +65,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .modal.active{display:flex;}
 .modal-card{width:100%;height:100%;padding:4px;display:flex;flex-direction:column;overflow:hidden;background:#fff;}
 
-.modal-card .input-area {
-  flex: 0 1 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-height: 0;
-  min-width: 0;
-  width: 100%;
-  overflow: hidden;
-  transform: none !important;
-}
+.modal-card .input-area {flex: 0 1 auto;display: flex;flex-direction: column;gap: 4px;min-height: 0;min-width: 0;width: 100%;overflow: hidden;transform: none !important;}
 #inputModal .numKey, #expInputModal .numKey { flex: 0 0 auto; }
 #inputModal .payKey, #expInputModal .payKey { flex: 0 0 auto; min-height: 0; margin-top: 4px; }
 
@@ -142,7 +89,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .color-dot:hover::after{border-color:#94a3b8;}
 
 .pageHome-top{flex-shrink:0;}
-/* ===== 首頁明細優化：間隙縮小、字體放大 ===== */
 .home-detail-box{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .home-detail-row{display:grid;grid-template-columns:36px 48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:2px 4px;border-top:1px solid #f1f5f9;font-size:calc(1px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.15;}
 .home-detail-row:active{background:#eff6ff;}
@@ -181,155 +127,41 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-detail-row-exp.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:4px 6px;position:sticky;top:0;z-index:2;font-size:calc(.96px * var(--fs-num));}
 .stat-detail-row-exp.stat-detail-head .amount{text-align:right;}
 
-.stat-type-card{
-  background:#fff !important;
-  border-radius:10px !important;
-  padding:4px !important;
-  box-shadow:0 1px 4px rgba(0,0,0,.06) !important;
-  margin-bottom:3px !important;
-  display:grid !important;
-  grid-template-columns:repeat(5, minmax(0,1fr)) !important;
-  gap:4px !important;
-  flex-shrink:0;
-}
-.stat-type-btn{
-  width:100% !important;
-  min-width:0 !important;
-  padding:6px 3px !important;
-  border:none !important;
-  border-radius:8px !important;
-  background:#e2e8f0 !important;
-  color:#475569 !important;
-  font-size:clamp(10px, calc(.92px * var(--fs-num)), 15px) !important;
-  font-weight:inherit !important;
-  cursor:pointer !important;
-  white-space:nowrap !important;
-  overflow:hidden !important;
-  text-overflow:ellipsis !important;
-  transition:filter .12s,transform .1s,box-shadow .12s !important;
-  box-shadow:0 1px 3px rgba(0,0,0,.12) !important;
-  font-family:inherit !important;
-}
+.stat-type-card{background:#fff !important;border-radius:10px !important;padding:4px !important;box-shadow:0 1px 4px rgba(0,0,0,.06) !important;margin-bottom:3px !important;display:grid !important;grid-template-columns:repeat(5, minmax(0,1fr)) !important;gap:4px !important;flex-shrink:0;}
+.stat-type-btn{width:100% !important;min-width:0 !important;padding:6px 3px !important;border:none !important;border-radius:8px !important;background:#e2e8f0 !important;color:#475569 !important;font-size:clamp(10px, calc(.92px * var(--fs-num)), 15px) !important;font-weight:inherit !important;cursor:pointer !important;white-space:nowrap !important;overflow:hidden !important;text-overflow:ellipsis !important;transition:filter .12s,transform .1s,box-shadow .12s !important;box-shadow:0 1px 3px rgba(0,0,0,.12) !important;font-family:inherit !important;}
 .stat-type-btn:active{filter:brightness(.88) !important;transform:scale(.96) !important;}
 .stat-type-btn.active{color:#fff !important;box-shadow:0 2px 8px rgba(0,0,0,.25) !important;}
 .stat-type-btn.all-btn.active{background:#0f172a !important;}
 
-.stat-pay-card{
-  background:#fff !important;
-  border-radius:10px !important;
-  padding:4px !important;
-  box-shadow:0 1px 4px rgba(0,0,0,.06) !important;
-  margin-bottom:3px !important;
-  display:grid !important;
-  grid-template-columns:repeat(6, minmax(0,1fr)) !important;
-  gap:4px !important;
-  flex-shrink:0;
-}
-.stat-pay-btn{
-  width:100% !important;
-  min-width:0 !important;
-  padding:6px 3px !important;
-  border:none !important;
-  border-radius:8px !important;
-  background:#e2e8f0 !important;
-  color:#475569 !important;
-  font-size:clamp(10px, calc(.92px * var(--fs-num)), 15px) !important;
-  font-weight:inherit !important;
-  cursor:pointer !important;
-  white-space:nowrap !important;
-  overflow:hidden !important;
-  text-overflow:ellipsis !important;
-  transition:filter .12s,transform .1s,box-shadow .12s !important;
-  box-shadow:0 1px 3px rgba(0,0,0,.12) !important;
-  font-family:inherit !important;
-}
+.stat-pay-card{background:#fff !important;border-radius:10px !important;padding:4px !important;box-shadow:0 1px 4px rgba(0,0,0,.06) !important;margin-bottom:3px !important;display:grid !important;grid-template-columns:repeat(6, minmax(0,1fr)) !important;gap:4px !important;flex-shrink:0;}
+.stat-pay-btn{width:100% !important;min-width:0 !important;padding:6px 3px !important;border:none !important;border-radius:8px !important;background:#e2e8f0 !important;color:#475569 !important;font-size:clamp(10px, calc(.92px * var(--fs-num)), 15px) !important;font-weight:inherit !important;cursor:pointer !important;white-space:nowrap !important;overflow:hidden !important;text-overflow:ellipsis !important;transition:filter .12s,transform .1s,box-shadow .12s !important;box-shadow:0 1px 3px rgba(0,0,0,.12) !important;font-family:inherit !important;}
 .stat-pay-btn:active{filter:brightness(.88) !important;transform:scale(.96) !important;}
 .stat-pay-btn.active{color:#fff !important;box-shadow:0 2px 8px rgba(0,0,0,.25) !important;}
 .stat-pay-btn.all-btn.active{background:#0f172a !important;}
 
-.exp-type-btn-card{
-  background:#fff !important;
-  border-radius:10px !important;
-  padding:4px !important;
-  box-shadow:0 1px 4px rgba(0,0,0,.06) !important;
-  margin-bottom:3px !important;
-  display:grid !important;
-  grid-template-columns:repeat(5, minmax(0,1fr)) !important;
-  gap:4px !important;
-  flex-shrink:0;
-}
-.exp-type-btn-card .bigBtn{
-  height:calc((2.4px * var(--fs-num) + 10px) * 0.75) !important;
-  font-size:clamp(13px, calc(0.68px * var(--fs-num)), 15px) !important;
-}
+.exp-type-btn-card{background:#fff !important;border-radius:10px !important;padding:4px !important;box-shadow:0 1px 4px rgba(0,0,0,.06) !important;margin-bottom:3px !important;display:grid !important;grid-template-columns:repeat(5, minmax(0,1fr)) !important;gap:4px !important;flex-shrink:0;}
+.exp-type-btn-card .bigBtn{height:calc((2.4px * var(--fs-num) + 10px) * 0.75) !important;font-size:clamp(13px, calc(0.68px * var(--fs-num)), 15px) !important;}
 
 .stat-breadcrumb{position:sticky;top:0;z-index:20;background:#fff;padding:3px 8px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:3px;font-size:calc(.92px * var(--fs-num));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;}
 .stat-breadcrumb button{border:0;background:none;color:#2563eb;font:inherit;font-weight:700;padding:0 3px;cursor:pointer;}
 .stat-breadcrumb .stat-current{color:#475569;font-weight:500;}
 .stat-muted{color:#94a3b8;}
 
-.date-range-bar{
-  display:flex;align-items:center;gap:4px;
-  background:#fff;border-radius:10px;padding:4px 6px;
-  margin-bottom:3px;box-shadow:0 1px 4px rgba(0,0,0,.06);
-  flex-shrink:0;flex-wrap:nowrap;overflow:hidden;
-}
+.date-range-bar{display:flex;align-items:center;gap:4px;background:#fff;border-radius:10px;padding:4px 6px;margin-bottom:3px;box-shadow:0 1px 4px rgba(0,0,0,.06);flex-shrink:0;flex-wrap:nowrap;overflow:hidden;}
 .date-range-bar .dr-label{font-size:calc(.85px * var(--fs-num));color:#64748b;flex-shrink:0;}
-.date-range-bar input[type="date"]{
-  flex:1;min-width:0;padding:4px 4px;border:1.2px solid #e2e8f0;
-  border-radius:6px;font-size:calc(.82px * var(--fs-num));
-  background:#f8fafc;font-variant-numeric:tabular-nums;
-}
+.date-range-bar input[type="date"]{flex:1;min-width:0;padding:4px 4px;border:1.2px solid #e2e8f0;border-radius:6px;font-size:calc(.82px * var(--fs-num));background:#f8fafc;font-variant-numeric:tabular-nums;}
 .date-range-bar .dr-sep{font-size:calc(.85px * var(--fs-num));color:#94a3b8;flex-shrink:0;}
-.date-range-bar .dr-btn{
-  padding:5px 8px;border:none;border-radius:6px;
-  background:#2563eb;color:#fff;font-size:calc(.82px * var(--fs-num));
-  font-weight:700;flex-shrink:0;
-}
+.date-range-bar .dr-btn{padding:5px 8px;border:none;border-radius:6px;background:#2563eb;color:#fff;font-size:calc(.82px * var(--fs-num));font-weight:700;flex-shrink:0;}
 .date-range-bar .dr-clear{background:#e2e8f0;color:#475569;}
 
 .stat-summary-box{background:#fff;border-radius:10px;padding:4px 6px;margin-bottom:3px;box-shadow:0 1px 4px rgba(0,0,0,.06);flex-shrink:0;}
 .stat-summary-title{font-size:calc(.96px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:2px;}
 
-/* ===== 統計合計卡片優化：自然文字排列、自動往上擠 ===== */
-.stat-summary-grid{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  line-height:1.25;
-  width:100%;
-}
-.stat-summary-grid>div.row-main,
-.stat-summary-grid>div.row-sub{
-  display:flex;
-  flex-wrap:wrap;
-  gap:4px 12px;
-  width:100%;
-}
-.stat-summary-grid>div.row-main .pair,
-.stat-summary-grid>div.row-sub .pair{
-  display:inline-flex;
-  align-items:baseline;
-  gap:3px;
-  white-space:nowrap;
-}
-/* 類別明細：整組不換行，自動往旁邊排，塞不下就自動下一行 */
-.stat-summary-grid>div.row-typedetail,
-.stat-summary-grid>div.row-paydetail{
-  display:flex;
-  flex-wrap:wrap;
-  gap:4px 12px; /* 橫向間距稍微拉大一點，區隔各個類別 */
-  align-items:baseline;
-}
-/* 設定每個類別的內部排列 */
-.stat-summary-grid .row-paydetail .pair,
-.stat-summary-grid .row-typedetail .pair {
-  display:inline-flex;
-  align-items:baseline;
-  gap:3px;
-  white-space:nowrap;
-  flex:0 0 auto;
-}
+.stat-summary-grid{display:flex;flex-direction:column;gap:6px;line-height:1.25;width:100%;}
+.stat-summary-grid>div.row-main,.stat-summary-grid>div.row-sub{display:flex;flex-wrap:wrap;gap:4px 12px;width:100%;}
+.stat-summary-grid>div.row-main .pair,.stat-summary-grid>div.row-sub .pair{display:inline-flex;align-items:baseline;gap:3px;white-space:nowrap;}
+.stat-summary-grid>div.row-typedetail,.stat-summary-grid>div.row-paydetail{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;}
+.stat-summary-grid .row-paydetail .pair,.stat-summary-grid .row-typedetail .pair {display:inline-flex;align-items:baseline;gap:3px;white-space:nowrap;flex:0 0 auto;}
 .stat-summary-grid>div.row-cost{ display:inline-flex; align-items:baseline; gap:3px; }
 .stat-summary-grid span{ color:#64748b; font-size:calc(.84px * var(--fs-num)); white-space:nowrap; }
 .stat-summary-grid strong{ font-size:calc(.96px * var(--fs-num)); font-variant-numeric:tabular-nums; white-space:nowrap; min-width:2.4em; text-align:right;}
@@ -344,161 +176,32 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .stat-list-box{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 
 #pageSetting{overflow-y:auto;}
-
 #pageExpStat{overflow:hidden;}
 #expContent{overflow-y:auto;-webkit-overflow-scrolling:touch;}
-
 .hidden-color{display:none !important;position:absolute !important;width:1px !important;height:1px !important;opacity:0 !important;pointer-events:none !important;}
 
 .exp-summary-card{background:#fff;border-radius:10px;padding:4px 6px;margin-bottom:3px;box-shadow:0 1px 4px rgba(0,0,0,.06);flex-shrink:0;}
-
-.exp-summary-card .exp-summary-head{
-  display:flex;
-  flex-wrap:wrap;
-  gap:2px 12px;
-  align-items:baseline;
-  margin-bottom:2px;
-}
-.exp-summary-card .exp-summary-head .title{
-  font-size:calc(.96px * var(--fs-num));
-  font-weight:800;
-  color:#0f172a;
-  white-space:nowrap;
-}
-.exp-summary-card .exp-summary-head .pair{
-  display:inline-flex;
-  align-items:baseline;
-  gap:3px;
-  white-space:nowrap;
-}
-.exp-summary-card .exp-summary-head span.label{
-  color:#64748b;
-  font-size:calc(.84px * var(--fs-num));
-}
-.exp-summary-card .exp-summary-head strong{
-  color:#dc2626;
-  font-size:calc(.96px * var(--fs-num));
-  font-variant-numeric:tabular-nums;
-}
-
-.exp-summary-card .exp-summary-body{
-  display:flex;
-  flex-wrap:wrap;
-  gap:2px 10px;
-  align-items:baseline;
-}
-.exp-summary-card .exp-summary-body .pair{
-  display:inline-flex;
-  align-items:baseline;
-  gap:2px;
-  white-space:nowrap;
-  flex:0 0 auto;
-  min-width:0;
-  padding:1px 4px;
-  border-radius:6px;
-  background:#f8fafc;
-}
-.exp-summary-card .exp-summary-body .pair.total-pair{
-  font-weight:800;
-  background:transparent;
-  padding:0;
-}
-.exp-summary-card .exp-summary-body .pair.total-pair span.label{
-  color:#0f172a;
-}
-.exp-summary-card .exp-summary-body .pair.total-pair strong{
-  color:#dc2626;
-}
-.exp-summary-card .exp-summary-body .pair span{
-  color:#64748b;
-  font-size:calc(.84px * var(--fs-num));
-  overflow:hidden;
-  text-overflow:ellipsis;
-  min-width:0;
-}
-.exp-summary-card .exp-summary-body .pair strong{
-  color:#dc2626;
-  font-size:calc(.96px * var(--fs-num));
-  font-variant-numeric:tabular-nums;
-  display:inline-block;
-  min-width:2em;
-  text-align:right;
-  flex-shrink:0;
-}
-.exp-summary-card .exp-summary-body .pair .sub{
-  font-size:calc(.78px * var(--fs-num));
-  color:#94a3b8;
-  font-weight:700;
-}
-
+.exp-summary-card .exp-summary-head{display:flex;flex-wrap:wrap;gap:2px 12px;align-items:baseline;margin-bottom:2px;}
+.exp-summary-card .exp-summary-head .title{font-size:calc(.96px * var(--fs-num));font-weight:800;color:#0f172a;white-space:nowrap;}
+.exp-summary-card .exp-summary-head .pair{display:inline-flex;align-items:baseline;gap:3px;white-space:nowrap;}
+.exp-summary-card .exp-summary-head span.label{color:#64748b;font-size:calc(.84px * var(--fs-num));}
+.exp-summary-card .exp-summary-head strong{color:#dc2626;font-size:calc(.96px * var(--fs-num));font-variant-numeric:tabular-nums;}
+.exp-summary-card .exp-summary-body{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline;}
+.exp-summary-card .exp-summary-body .pair{display:inline-flex;align-items:baseline;gap:2px;white-space:nowrap;flex:0 0 auto;min-width:0;padding:1px 4px;border-radius:6px;background:#f8fafc;}
+.exp-summary-card .exp-summary-body .pair.total-pair{font-weight:800;background:transparent;padding:0;}
+.exp-summary-card .exp-summary-body .pair.total-pair span.label{color:#0f172a;}
+.exp-summary-card .exp-summary-body .pair.total-pair strong{color:#dc2626;}
+.exp-summary-card .exp-summary-body .pair span{color:#64748b;font-size:calc(.84px * var(--fs-num));overflow:hidden;text-overflow:ellipsis;min-width:0;}
+.exp-summary-card .exp-summary-body .pair strong{color:#dc2626;font-size:calc(.96px * var(--fs-num));font-variant-numeric:tabular-nums;display:inline-block;min-width:2em;text-align:right;flex-shrink:0;}
+.exp-summary-card .exp-summary-body .pair .sub{font-size:calc(.78px * var(--fs-num));color:#94a3b8;font-weight:700;}
 .exp-cost-check{width:14px;height:14px;flex-shrink:0;cursor:pointer;accent-color:#ea580c;margin:0;}
 
-#daySummaryCard{
-  display:flex;
-  flex-direction:column;
-  gap:2px;
-  width:100%;
-  font-size:calc(1.1px * var(--fs-num));
-  line-height:1.3;
-}
-
-#daySummaryCard .summary-line1{
-  display:flex;
-  flex-wrap:nowrap;
-  align-items:baseline;
-  gap:0;
-  width:100%;
-}
-#daySummaryCard .summary-line1 .stat-pair{
-  display:inline-flex;
-  align-items:baseline;
-  justify-content:center;
-  gap:3px;
-  white-space:nowrap;
-  flex:1 1 0;
-  min-width:0;
-  padding:0 3px;
-  box-sizing:border-box;
-}
-
-#daySummaryCard .summary-line2{
-  display:flex;
-  flex-wrap:wrap;
-  align-items:baseline;
-  gap:3px 10px;
-  width:100%;
-}
-#daySummaryCard .summary-line2 .stat-pair{
-  display:inline-flex;
-  align-items:baseline;
-  justify-content:center;
-  gap:3px;
-  white-space:nowrap;
-  flex:0 0 auto;
-  min-width:0;
-  padding:0 3px;
-  box-sizing:border-box;
-}
-
-#daySummaryCard .stat-pair > span:first-child{
-  color:#64748b;
-  font-size:calc(.95px * var(--fs-num));
-  white-space:nowrap;
-  flex-shrink:0;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  min-width:0;
-}
-#daySummaryCard .stat-pair > span:last-child{
-  font-size:calc(.95px * var(--fs-num)) !important;
-  font-variant-numeric:tabular-nums;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  flex-shrink:1;
-  min-width:0;
-}
-
+#daySummaryCard{display:flex;flex-direction:column;gap:4px;width:100%;font-size:calc(1.1px * var(--fs-num));line-height:1.3;}
+#daySummaryCard .summary-line1{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;width:100%;}
+#daySummaryCard .summary-line2{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;width:100%;}
+#daySummaryCard .stat-pair{display:inline-flex;align-items:baseline;gap:3px;white-space:nowrap;flex:0 1 auto;}
+#daySummaryCard .stat-pair > span:first-child{color:#64748b;font-size:calc(.95px * var(--fs-num));white-space:nowrap;flex-shrink:0;}
+#daySummaryCard .stat-pair > span:last-child{font-size:calc(.95px * var(--fs-num)) !important;font-variant-numeric:tabular-nums;white-space:nowrap;flex-shrink:0;}
 #daySummaryCard #dayTotal{color:#0f172a;font-weight:800;}
 #daySummaryCard #cashTotal{color:#2563eb;font-weight:800;}
 #daySummaryCard #nonCashTotal{color:#ea580c;font-weight:800;}
@@ -511,508 +214,125 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   .stat-detail-row-exp{grid-template-columns:40px 40px 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
   .home-detail-row{grid-template-columns:28px 36px 36px minmax(0,1.1fr) minmax(0,1fr) minmax(0,0.85fr) minmax(0,0.95fr);gap:2px;padding-left:3px;padding-right:3px;font-size:calc(.96px * var(--fs-num));}
 }
-
 @media(max-width:600px){body{padding:4px 0;}.page{padding:0 4px;}}
 @media(max-width:400px){
   .stat-type-btn{font-size:clamp(9px, calc(.8px * var(--fs-num)), 13px) !important;padding:5px 3px !important;}
   .stat-pay-btn{font-size:clamp(9px, calc(.8px * var(--fs-num)), 13px) !important;padding:5px 3px !important;}
 }
 
-.numBtn, .payBtn {
-  font-weight: 800 !important;
-  letter-spacing: 0.03em;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-}
-.numBtn {
-  background: #f8fafc;
-  border: 1.5px solid #cbd5e1;
-  box-shadow: 0 4px 0 #94a3b8, 0 6px 12px rgba(0,0,0,0.12) !important;
-  font-size: clamp(20px, 6vw, 26px) !important;
-  padding: clamp(12px, 4.5vw, 22px) 4px !important;
-  color: #0f172a;
-  transition: all 0.06s ease;
-}
-.numBtn:active {
-  transform: translateY(2px) scale(0.98) !important;
-  box-shadow: 0 2px 0 #64748b, 0 3px 8px rgba(0,0,0,0.2) !important;
-  background: #e2e8f0;
-}
-.payBtn {
-  font-size: clamp(14px, 4vw, 18px) !important;
-  padding: clamp(12px, 4vw, 18px) 4px !important;
-  border: 1.5px solid rgba(0,0,0,0.1);
-  box-shadow: 0 4px 0 rgba(0,0,0,0.25), 0 6px 14px rgba(0,0,0,0.18) !important;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-  transition: all 0.06s ease;
-}
-.payBtn:active {
-  transform: translateY(3px) scale(0.97) !important;
-  box-shadow: 0 1px 0 rgba(0,0,0,0.3), 0 3px 8px rgba(0,0,0,0.2) !important;
-  filter: brightness(0.92);
-}
-#expCatWrap .payBtn {
-  font-size: clamp(14px, 4vw, 18px) !important;
-}
-.modal-card > button[onclick*="close"] {
-  font-weight: 700;
-  box-shadow: 0 3px 0 #64748b, 0 5px 10px rgba(0,0,0,0.15);
-  transition: all 0.06s ease;
-}
-.modal-card > button[onclick*="close"]:active {
-  transform: translateY(2px);
-  box-shadow: 0 1px 0 #475569, 0 3px 8px rgba(0,0,0,0.15);
-}
-
+.numBtn, .payBtn {font-weight: 800 !important;letter-spacing: 0.03em;text-shadow: 0 1px 2px rgba(0,0,0,0.1);}
+.numBtn {background: #f8fafc;border: 1.5px solid #cbd5e1;box-shadow: 0 4px 0 #94a3b8, 0 6px 12px rgba(0,0,0,0.12) !important;font-size: clamp(20px, 6vw, 26px) !important;padding: clamp(12px, 4.5vw, 22px) 4px !important;color: #0f172a;transition: all 0.06s ease;}
+.numBtn:active {transform: translateY(2px) scale(0.98) !important;box-shadow: 0 2px 0 #64748b, 0 3px 8px rgba(0,0,0,0.2) !important;background: #e2e8f0;}
+.payBtn {font-size: clamp(14px, 4vw, 18px) !important;padding: clamp(12px, 4vw, 18px) 4px !important;border: 1.5px solid rgba(0,0,0,0.1);box-shadow: 0 4px 0 rgba(0,0,0,0.25), 0 6px 14px rgba(0,0,0,0.18) !important;text-shadow: 0 1px 3px rgba(0,0,0,0.3);transition: all 0.06s ease;}
+.payBtn:active {transform: translateY(3px) scale(0.97) !important;box-shadow: 0 1px 0 rgba(0,0,0,0.3), 0 3px 8px rgba(0,0,0,0.2) !important;filter: brightness(0.92);}
+#expCatWrap .payBtn {font-size: clamp(14px, 4vw, 18px) !important;}
+.modal-card > button[onclick*="close"] {font-weight: 700;box-shadow: 0 3px 0 #64748b, 0 5px 10px rgba(0,0,0,0.15);transition: all 0.06s ease;}
+.modal-card > button[onclick*="close"]:active {transform: translateY(2px);box-shadow: 0 1px 0 #475569, 0 3px 8px rgba(0,0,0,0.15);}
 #expInputModal .noteInput { margin-top: 4px; }
 #expInputModal .modal-card > button[onclick*="close"] { margin-top: 3px; }
 
-#confirmModal{
-  background:rgba(0,0,0,.45);
-  align-items:center;
-  justify-content:center;
-  z-index:200;
-}
+#confirmModal{background:rgba(0,0,0,.45);align-items:center;justify-content:center;z-index:200;}
 #confirmModal.active{display:flex;}
-#confirmModal .confirm-box{
-  background:#fff;
-  border-radius:16px;
-  padding:24px 20px;
-  box-shadow:0 8px 30px rgba(0,0,0,.25);
-  max-width:340px;
-  width:100%;
-  text-align:center;
-}
-#confirmModal .confirm-msg{
-  font-size:16px;
-  font-weight:700;
-  color:#0f172a;
-  margin-bottom:20px;
-  line-height:1.6;
-  white-space:pre-line;
-  text-align:left;
-}
-#confirmModal .confirm-btns{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-#confirmModal .confirm-btns.single{
-  grid-template-columns:1fr;
-}
-#confirmModal .confirm-btns button{
-  padding:12px;
-  border:none;
-  border-radius:10px;
-  font-size:15px;
-  font-weight:700;
-  box-shadow:none;
-}
-#confirmModal .confirm-cancel{
-  background:#e2e8f0;
-  color:#475569;
-}
-#confirmModal .confirm-ok{
-  background:#dc2626;
-  color:#fff;
-}
-#confirmModal .confirm-ok-blue{
-  background:#2563eb;
-  color:#fff;
-}
+#confirmModal .confirm-box{background:#fff;border-radius:16px;padding:24px 20px;box-shadow:0 8px 30px rgba(0,0,0,.25);max-width:340px;width:100%;text-align:center;}
+#confirmModal .confirm-msg{font-size:16px;font-weight:700;color:#0f172a;margin-bottom:20px;line-height:1.6;white-space:pre-line;text-align:left;}
+#confirmModal .confirm-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+#confirmModal .confirm-btns.single{grid-template-columns:1fr;}
+#confirmModal .confirm-btns button{padding:12px;border:none;border-radius:10px;font-size:15px;font-weight:700;box-shadow:none;}
+#confirmModal .confirm-cancel{background:#e2e8f0;color:#475569;}
+#confirmModal .confirm-ok{background:#dc2626;color:#fff;}
+#confirmModal .confirm-ok-blue{background:#2563eb;color:#fff;}
 
 .pageHome-top .card{margin-bottom:8px;}
 .pageHome-top .section-title{margin:8px 0 6px;}
 #typeBtnWrap{margin-bottom:6px;}
 
-.voice-input-btn{
-  width:100%;
-  height:calc(2.4px * var(--fs-num) + 10px);
-  padding:0 3px;
-  border:none;
-  border-radius:10px;
-  background:linear-gradient(135deg,#7c3aed,#2563eb);
-  color:#fff;
-  font-size:clamp(15px, calc(0.85px * var(--fs-num)), 18px);
-  font-weight:700;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  cursor:pointer;
-  margin-bottom:6px;
-  box-shadow:0 2px 6px rgba(0,0,0,.14);
-  transition:filter .12s, transform .1s;
-  white-space:nowrap;
-  overflow:hidden;
-}
-.voice-input-btn:active{
-  filter:brightness(.88);
-  transform:scale(.97);
-}
-.voice-input-btn .voice-icon{
-  font-size:1.3em;
-  line-height:1;
-}
+.voice-input-btn{width:100%;height:calc(2.4px * var(--fs-num) + 10px);padding:0 3px;border:none;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;font-size:clamp(15px, calc(0.85px * var(--fs-num)), 18px);font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;margin-bottom:6px;box-shadow:0 2px 6px rgba(0,0,0,.14);transition:filter .12s, transform .1s;white-space:nowrap;overflow:hidden;}
+.voice-input-btn:active{filter:brightness(.88);transform:scale(.97);}
+.voice-input-btn .voice-icon{font-size:1.3em;line-height:1;}
 
-#voiceModal{
-  background:rgba(0,0,0,.6);
-  align-items:center;
-  justify-content:center;
-  z-index:300;
-}
+#voiceModal{background:rgba(0,0,0,.6);align-items:center;justify-content:center;z-index:300;}
 #voiceModal.active{display:flex;}
-#voiceModal .voice-box{
-  background:#fff;
-  border-radius:16px;
-  padding:20px;
-  box-shadow:0 8px 30px rgba(0,0,0,.3);
-  max-width:340px;
-  width:calc(100% - 32px);
-  text-align:center;
-}
-#voiceModal .voice-countdown{
-  font-size:48px;
-  font-weight:900;
-  color:#2563eb;
-  font-variant-numeric:tabular-nums;
-  margin-bottom:8px;
-  line-height:1;
-}
+#voiceModal .voice-box{background:#fff;border-radius:16px;padding:20px;box-shadow:0 8px 30px rgba(0,0,0,.3);max-width:340px;width:calc(100% - 32px);text-align:center;}
+#voiceModal .voice-countdown{font-size:48px;font-weight:900;color:#2563eb;font-variant-numeric:tabular-nums;margin-bottom:8px;line-height:1;}
 #voiceModal .voice-countdown.urgent{color:#dc2626;}
-#voiceModal .voice-status{
-  font-size:13px;
-  color:#64748b;
-  margin-bottom:12px;
-}
-#voiceModal .voice-text{
-  background:#f8fafc;
-  border:1.5px solid #e2e8f0;
-  border-radius:10px;
-  padding:14px;
-  font-size:16px;
-  color:#1e293b;
-  min-height:60px;
-  line-height:1.5;
-  text-align:left;
-  word-break:break-all;
-}
+#voiceModal .voice-status{font-size:13px;color:#64748b;margin-bottom:12px;}
+#voiceModal .voice-text{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;font-size:16px;color:#1e293b;min-height:60px;line-height:1.5;text-align:left;word-break:break-all;}
 #voiceModal .voice-text .kw-type{color:#2563eb;font-weight:800;background:#dbeafe;padding:0 3px;border-radius:3px;}
 #voiceModal .voice-text .kw-pay{color:#0891b2;font-weight:800;background:#cffafe;padding:0 3px;border-radius:3px;}
 #voiceModal .voice-text .kw-exp{color:#dc2626;font-weight:800;background:#fee2e2;padding:0 3px;border-radius:3px;}
 #voiceModal .voice-text .kw-amount{color:#16a34a;font-weight:800;background:#dcfce7;padding:0 3px;border-radius:3px;}
-#voiceModal .voice-hint{
-  font-size:11px;
-  color:#94a3b8;
-  margin-top:10px;
-}
+#voiceModal .voice-hint{font-size:11px;color:#94a3b8;margin-top:10px;}
 
-.voice-settings-bar{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  padding:8px 10px;
-  background:#fff;
-  border-radius:10px;
-  box-shadow:0 1px 4px rgba(0,0,0,.05);
-  margin:4px 0;
-}
+.voice-settings-bar{display:flex;align-items:center;gap:6px;padding:8px 10px;background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.05);margin:4px 0;}
 .voice-settings-bar .vs-icon{font-size:18px;flex-shrink:0;}
 .voice-settings-bar .vs-label{font-size:calc(.95px * var(--fs-num));font-weight:700;color:#0f172a;flex-shrink:0;}
-.voice-settings-bar input[type="number"]{
-  width:42px;
-  padding:5px 4px;
-  border:1.5px solid #e2e8f0;
-  border-radius:8px;
-  font-size:calc(.95px * var(--fs-num));
-  text-align:center;
-  background:#f8fafc;
-  font-variant-numeric:tabular-nums;
-  flex-shrink:0;
-}
-.voice-settings-bar .vs-unit{font-size:calc(.85px * var(--fs-num));color:#64748b;flex-shrink:0;}
-.voice-settings-bar .vs-help-btn{
-  font-size:calc(.85px * var(--fs-num));
-  padding:5px 8px;
-  border:none;
-  border-radius:8px;
-  background:#dbeafe;
-  color:#2563eb;
-  font-weight:700;
-  cursor:pointer;
-  flex-shrink:0;
-  white-space:nowrap;
-}
+.voice-settings-bar .vs-help-btn{font-size:calc(.85px * var(--fs-num));padding:5px 8px;border:none;border-radius:8px;background:#dbeafe;color:#2563eb;font-weight:700;cursor:pointer;flex-shrink:0;white-space:nowrap;}
 .voice-settings-bar .vs-help-btn:active{filter:brightness(.9);}
-.voice-settings-bar .vs-toggle{
-  margin-left:auto;
-  position:relative;
-  width:48px;
-  height:26px;
-  flex-shrink:0;
-  cursor:pointer;
-}
+.voice-settings-bar .vs-toggle{margin-left:auto;position:relative;width:48px;height:26px;flex-shrink:0;cursor:pointer;}
 .voice-settings-bar .vs-toggle input{opacity:0;width:0;height:0;}
-.voice-settings-bar .vs-slider{
-  position:absolute;
-  inset:0;
-  background:#cbd5e1;
-  border-radius:26px;
-  transition:background .2s;
-}
-.voice-settings-bar .vs-slider::before{
-  content:'';
-  position:absolute;
-  width:20px;
-  height:20px;
-  left:3px;
-  top:3px;
-  background:#fff;
-  border-radius:50%;
-  transition:transform .2s;
-  box-shadow:0 1px 3px rgba(0,0,0,.2);
-}
+.voice-settings-bar .vs-slider{position:absolute;inset:0;background:#cbd5e1;border-radius:26px;transition:background .2s;}
+.voice-settings-bar .vs-slider::before{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
 .voice-settings-bar .vs-toggle input:checked + .vs-slider{background:#2563eb;}
 .voice-settings-bar .vs-toggle input:checked + .vs-slider::before{transform:translateX(22px);}
 
-.setBlock .set-title-row{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  margin-bottom:4px;
-}
-.setBlock .set-title-row h4{
-  margin:0;
-  font-size:calc(1px * var(--fs-num));
-  color:#0f172a;
-  flex-shrink:0;
-}
-.setBlock .set-title-row .vs-toggle{
-  margin-left:auto;
-  position:relative;
-  width:48px;
-  height:26px;
-  flex-shrink:0;
-  cursor:pointer;
-}
+.setBlock .set-title-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+.setBlock .set-title-row h4{margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;flex-shrink:0;}
+.setBlock .set-title-row .vs-toggle{margin-left:auto;position:relative;width:48px;height:26px;flex-shrink:0;cursor:pointer;}
 .setBlock .set-title-row .vs-toggle input{opacity:0;width:0;height:0;}
-.setBlock .set-title-row .vs-slider{
-  position:absolute;
-  inset:0;
-  background:#cbd5e1;
-  border-radius:26px;
-  transition:background .2s;
-}
-.setBlock .set-title-row .vs-slider::before{
-  content:'';
-  position:absolute;
-  width:20px;
-  height:20px;
-  left:3px;
-  top:3px;
-  background:#fff;
-  border-radius:50%;
-  transition:transform .2s;
-  box-shadow:0 1px 3px rgba(0,0,0,.2);
-}
+.setBlock .set-title-row .vs-slider{position:absolute;inset:0;background:#cbd5e1;border-radius:26px;transition:background .2s;}
+.setBlock .set-title-row .vs-slider::before{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
 .setBlock .set-title-row .vs-toggle input:checked + .vs-slider{background:#2563eb;}
 .setBlock .set-title-row .vs-toggle input:checked + .vs-slider::before{transform:translateX(22px);}
 
-#helpModal{
-  background:rgba(0,0,0,.5);
-  align-items:center;
-  justify-content:center;
-  z-index:400;
-}
+#helpModal{background:rgba(0,0,0,.5);align-items:center;justify-content:center;z-index:400;}
 #helpModal.active{display:flex;}
-#helpModal .help-box{
-  background:#fff;
-  border-radius:16px;
-  padding:20px;
-  box-shadow:0 8px 30px rgba(0,0,0,.3);
-  max-width:400px;
-  width:calc(100% - 32px);
-  max-height:80vh;
-  display:flex;
-  flex-direction:column;
-}
-#helpModal .help-title{
-  font-size:17px;
-  font-weight:800;
-  color:#0f172a;
-  margin-bottom:10px;
-  text-align:center;
-  flex-shrink:0;
-}
-#helpModal .help-body{
-  overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
-  flex:1;
-  min-height:0;
-  font-size:13px;
-  line-height:1.7;
-  color:#1e293b;
-  padding-right:4px;
-}
-#helpModal .help-body h4{
-  font-size:13px;
-  font-weight:800;
-  color:#2563eb;
-  margin:10px 0 4px;
-}
+#helpModal .help-box{background:#fff;border-radius:16px;padding:20px;box-shadow:0 8px 30px rgba(0,0,0,.3);max-width:400px;width:calc(100% - 32px);max-height:80vh;display:flex;flex-direction:column;}
+#helpModal .help-title{font-size:17px;font-weight:800;color:#0f172a;margin-bottom:10px;text-align:center;flex-shrink:0;}
+#helpModal .help-body{overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1;min-height:0;font-size:13px;line-height:1.7;color:#1e293b;padding-right:4px;}
+#helpModal .help-body h4{font-size:13px;font-weight:800;color:#2563eb;margin:10px 0 4px;}
 #helpModal .help-body h4:first-child{margin-top:0;}
 #helpModal .help-body p{margin:0 0 6px;}
-#helpModal .help-body ul{
-  margin:0 0 6px 18px;
-  padding:0;
-}
+#helpModal .help-body ul{margin:0 0 6px 18px;padding:0;}
 #helpModal .help-body li{margin-bottom:2px;}
 #helpModal .help-body .hl{color:#dc2626;font-weight:700;}
-#helpModal .help-close{
-  width:100%;
-  padding:12px;
-  margin-top:12px;
-  border:none;
-  border-radius:10px;
-  background:#2563eb;
-  color:#fff;
-  font-size:14px;
-  font-weight:700;
-  cursor:pointer;
-  flex-shrink:0;
-}
+#helpModal .help-close{width:100%;padding:12px;margin-top:12px;border:none;border-radius:10px;background:#2563eb;color:#fff;font-size:14px;font-weight:700;cursor:pointer;flex-shrink:0;}
 #helpModal .help-close:active{filter:brightness(.9);}
 
-#gameModal{
-  background:rgba(0,0,0,.55);
-  align-items:center;
-  justify-content:center;
-  z-index:500;
-}
+#gameModal{background:rgba(0,0,0,.55);align-items:center;justify-content:center;z-index:500;}
 #gameModal.active{display:flex;}
-#gameModal .game-box{
-  background:#fff;
-  border-radius:16px;
-  padding:20px;
-  box-shadow:0 8px 30px rgba(0,0,0,.3);
-  max-width:340px;
-  width:calc(100% - 32px);
-  text-align:center;
-}
-#gameModal .game-title{
-  font-size:18px;
-  font-weight:800;
-  color:#0f172a;
-  margin-bottom:6px;
-}
-#gameModal .game-sub{
-  font-size:12px;
-  color:#64748b;
-  margin-bottom:16px;
-}
-#gameModal .game-options{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-bottom:14px;
-}
-#gameModal .game-opt{
-  padding:20px 8px;
-  border:none;
-  border-radius:12px;
-  background:linear-gradient(135deg,#dbeafe,#bfdbfe);
-  color:#1e40af;
-  cursor:pointer;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-  font-weight:700;
-  font-size:14px;
-  transition:filter .12s, transform .1s;
-  box-shadow:0 2px 8px rgba(37,99,235,.15);
-}
-#gameModal .game-opt:active{
-  filter:brightness(.92);
-  transform:scale(.97);
-}
-#gameModal .game-opt .game-opt-icon{
-  font-size:34px;
-  line-height:1;
-}
-#gameModal .game-close{
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:10px;
-  background:#e2e8f0;
-  color:#475569;
-  font-size:14px;
-  font-weight:700;
-  cursor:pointer;
-}
+#gameModal .game-box{background:#fff;border-radius:16px;padding:20px;box-shadow:0 8px 30px rgba(0,0,0,.3);max-width:340px;width:calc(100% - 32px);text-align:center;}
+#gameModal .game-title{font-size:18px;font-weight:800;color:#0f172a;margin-bottom:6px;}
+#gameModal .game-sub{font-size:12px;color:#64748b;margin-bottom:16px;}
+#gameModal .game-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+#gameModal .game-opt{padding:20px 8px;border:none;border-radius:12px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1e40af;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-weight:700;font-size:14px;transition:filter .12s, transform .1s;box-shadow:0 2px 8px rgba(37,99,235,.15);}
+#gameModal .game-opt:active{filter:brightness(.92);transform:scale(.97);}
+#gameModal .game-opt .game-opt-icon{font-size:34px;line-height:1;}
+#gameModal .game-close{width:100%;padding:12px;border:none;border-radius:10px;background:#e2e8f0;color:#475569;font-size:14px;font-weight:700;cursor:pointer;}
 #gameModal .game-close:active{filter:brightness(.9);}
 
-.footer-links{
-  text-align:center;
-  margin:8px 0 4px;
-  padding:10px;
-  background:#fff;
-  border-radius:10px;
-  box-shadow:0 1px 4px rgba(0,0,0,.05);
-}
-.footer-links a{
-  display:inline-block;
-  margin:0 8px;
-  color:#2563eb;
-  text-decoration:none;
-  font-weight:700;
-  font-size:calc(1px * var(--fs-num));
-}
+.footer-links{text-align:center;margin:8px 0 4px;padding:10px;background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.05);}
+.footer-links a{display:inline-block;margin:0 8px;color:#2563eb;text-decoration:none;font-weight:700;font-size:calc(1px * var(--fs-num));}
 .footer-links a:hover{text-decoration:underline;}
 
-.deduct-label{
-  font-size:calc(.75px * var(--fs-num));
-  color:#94a3b8;
-  margin:0 0 1px 0;
-  line-height:1.1;
-  text-align:center;
-  width:4.5em;
-  max-width:72px;
-}
+.deduct-label{font-size:calc(.75px * var(--fs-num));color:#94a3b8;margin:0 0 1px 0;line-height:1.1;text-align:center;width:4.5em;max-width:72px;}
 
-.fs-slider-bar{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:6px 10px;
-  background:#fff;
-  border-radius:10px;
-  box-shadow:0 1px 4px rgba(0,0,0,.06);
-  margin:4px 0;
-  flex-shrink:0;
-}
-.fs-slider-bar span{
-  font-size:calc(.9px * var(--fs-num));
-  color:#64748b;
-  flex-shrink:0;
-}
-.fs-slider-bar input[type="range"]{
-  flex:1;
-  min-width:0;
-  accent-color:#2563eb;
-}
+.fs-slider-bar{display:flex;align-items:center;gap:8px;padding:6px 10px;background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin:4px 0;flex-shrink:0;}
+.fs-slider-bar span{font-size:calc(.9px * var(--fs-num));color:#64748b;flex-shrink:0;}
+.fs-slider-bar input[type="range"]{flex:1;min-width:0;accent-color:#2563eb;}
+
+#pwaUpgradeBanner {display: none;background-color: #ef4444;color: white;text-align: center;padding: 10px;font-size: 14px;font-weight: 700;position: sticky;top: 0;z-index: 999;box-shadow: 0 2px 4px rgba(0,0,0,0.2);cursor: pointer;line-height: 1.4;}
+#pwaUpgradeBanner:active {background-color: #dc2626;}
 </style>
 </head>
 <body>
+<div id="pwaUpgradeBanner" onclick="showUpgradeModal()">⚠️ 系統已升級！請點擊此處下載新版 App 並備份資料。</div>
+
 <input type="file" id="fileImport" style="display:none" accept=".json">
 <input type="color" id="colorPicker" class="hidden-color">
 
 <div class="global-nav">
   <div class="app-brand" aria-label="計程車記帳">
-    <span class="app-logo" aria-hidden="true">
-      <img src="icon-192.png" alt="計程車圖標">
-    </span>
+    <span class="app-logo" aria-hidden="true"><img src="icon-192.png" alt="計程車圖標"></span>
     <span class="app-name">計程車記帳</span>
   </div>
   <span class="nav-icon active" data-page="pageHome" onclick="showPage('pageHome')" aria-label="首頁"><span class="nav-symbol">🏠</span><span class="nav-label">首頁</span></span>
@@ -1025,7 +345,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <div id="inputModal" class="modal"><div class="modal-card">
 <h3 id="modalTitle" style="text-align:center;margin-bottom:6px;font-size:22px;">路招</h3>
 <div id="amountShow" class="inputBox">0</div>
-
 <div class="input-area">
   <div class="numKey">
   <button class="numBtn" onclick="pressNum('1')">1</button><button class="numBtn" onclick="pressNum('2')">2</button><button class="numBtn" onclick="pressNum('3')">3</button>
@@ -1035,14 +354,12 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </div>
   <div id="payBtnWrap" class="payKey"></div>
 </div>
-
 <button style="width:100%;padding:14px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:17px;flex-shrink:0;" onclick="closeInputModal()">取消</button>
 </div></div>
 
 <div id="expInputModal" class="modal"><div class="modal-card">
 <h3 id="expModalTitle" style="text-align:center;margin-bottom:6px;font-size:22px;">支出</h3>
 <div id="expAmountShow" class="inputBox">0</div>
-
 <div class="input-area">
   <div class="numKey">
   <button class="numBtn" onclick="pressExpNum('1')">1</button><button class="numBtn" onclick="pressExpNum('2')">2</button><button class="numBtn" onclick="pressExpNum('3')">3</button>
@@ -1051,7 +368,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   <button class="numBtn" onclick="clearExpNum()">清除</button><button class="numBtn" onclick="pressExpNum('0')">0</button><button class="numBtn" onclick="pressExpNum('00')">00</button>
   </div>
 </div>
-
 <input id="expNoteInput" class="noteInput" placeholder="備註（選填）" style="flex-shrink:0;">
 <button style="width:100%;padding:14px;background:#2563eb;color:#fff;border:none;border-radius:12px;font-size:17px;flex-shrink:0;margin-top:4px;font-weight:700;" onclick="saveExpense()">確定</button>
 <button style="width:100%;padding:14px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:17px;flex-shrink:0;margin-top:4px;" onclick="closeExpInputModal()">取消</button>
@@ -1112,7 +428,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
     <div class="help-body">
       <h4>【基本用法】</h4>
       <p>按下首頁最上方的「語音 🎤 輸入」按鈕，跳出視窗後直接說話，倒數結束會<span class="hl">自動儲存</span>，完全不用再按任何按鈕。</p>
-
       <h4>【怎麼說】</h4>
       <p>說出「<b>類別 + 金額 + 付款方式</b>」，<b>順序不拘</b>，只要關鍵字有出現就好。</p>
       <p>例如：</p>
@@ -1122,7 +437,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
         <li>路招 200</li>
         <li>加油 500</li>
       </ul>
-
       <h4>【關鍵字規則】</h4>
       <ul>
         <li>有類別 + 金額 + 付款 → 照你說的記錄</li>
@@ -1131,11 +445,9 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
         <li>有支出類別（例如「加油」）→ 記成<b>支出</b></li>
         <li>只說類別，沒說金額 → 會提示「找不到金額」</li>
       </ul>
-
       <h4>【聽錯字也沒關係】</h4>
       <p>語音辨識偶爾會出錯，例如「好孕券」聽成「好運卷」、「企業簽單」聽成「企業千單」。</p>
       <p>系統會自動修正常見的錯字 或設定發音容易辨別的名稱例如派遣改成任務，只要關鍵字有<span class="hl">兩個字符合</span>就會自動判斷。</p>
-
       <h4>【注意事項】</h4>
       <ul>
         <li><b>Android Chrome</b> 才能正常使用，iOS 的 PWA 幾乎無法運作</li>
@@ -1143,18 +455,16 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
         <li>需要<b>網路連線</b>（語音辨識會送到 Google 伺服器處理）</li>
         <li>語速放慢一點，辨識率會更高</li>
       </ul>
-
       <h4>【可以調整的地方】</h4>
       <p>在設定頁可以調整：</p>
       <ul>
         <li>倒數秒數：預設 5 秒，可改成 1～30 秒</li>
         <li>開關：關閉後首頁不會顯示語音按鈕</li>
       </ul>
-
       <h4>【儲存後】</h4>
       <ul>
         <li>畫面中央會出現「✅ 已記錄⋯」提示，2.5 秒後自動消失</li>
-        <li>手機也會<b>語音唸出</b>「已記錄 類別 付款方式 金額 元」</li>
+        <li>手機會發出「叮」聲提示</li>
         <li>首頁列表馬上出現這筆記錄</li>
       </ul>
     </div>
@@ -1167,14 +477,8 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
     <div class="game-title">🎮 選擇遊戲</div>
     <div class="game-sub">排班等待時打發時間</div>
     <div class="game-options">
-      <button class="game-opt" onclick="goToGame('2048.html')">
-        <span class="game-opt-icon">🔢</span>
-        <span>2048</span>
-      </button>
-      <button class="game-opt" onclick="goToGame('minesweeper.html')">
-        <span class="game-opt-icon">💣</span>
-        <span>踩地雷</span>
-      </button>
+      <button class="game-opt" onclick="goToGame('2048.html')"><span class="game-opt-icon">🔢</span><span>2048</span></button>
+      <button class="game-opt" onclick="goToGame('minesweeper.html')"><span class="game-opt-icon">💣</span><span>踩地雷</span></button>
     </div>
     <button class="game-close" onclick="closeGameModal()">關閉</button>
   </div>
@@ -1183,9 +487,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <div id="pageHome" class="page active">
 <div class="pageHome-top">
 <button id="voiceInputBtn" class="voice-input-btn" onclick="openVoiceModal()">
-  <span>語音</span>
-  <span class="voice-icon">🎤</span>
-  <span>輸入</span>
+  <span>語音</span><span class="voice-icon">🎤</span><span>輸入</span>
 </button>
 <div id="typeBtnWrap" class="row2"></div>
 <div class="card">
@@ -1202,9 +504,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 </div>
 </div>
 <div class="fs-slider-bar page-fs-bar">
-  <span>小</span>
-  <input type="range" id="fsSliderHome" min="11" max="20" step="1" value="13" oninput="onPageFontSizeChange(this.value)">
-  <span>大</span>
+  <span>小</span><input type="range" id="fsSliderHome" min="11" max="20" step="1" value="13" oninput="onPageFontSizeChange(this.value)"><span>大</span>
 </div>
 <div class="section-title">
   <h3>今日明細</h3>
@@ -1213,84 +513,58 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   <button class="sortBtn" id="sortBtn" onclick="toggleSort()">排序</button>
 </div>
 </div>
-<div class="home-detail-box">
-  <div id="listToday"></div>
-</div>
+<div class="home-detail-box"><div id="listToday"></div></div>
 </div>
 
 <div id="pageStat" class="page">
   <div class="stat-type-card" id="statTypeCard"></div>
   <div class="stat-pay-card" id="statPayCard"></div>
   <div id="statBreadcrumb" class="stat-breadcrumb">
-    <span class="stat-muted">目前：</span>
-    <button onclick="statResetLevel()">全部年份</button>
+    <span class="stat-muted">目前：</span><button onclick="statResetLevel()">全部年份</button>
   </div>
-
   <div class="date-range-bar" id="statDateRange">
     <span class="dr-label">區間</span>
-    <input type="date" id="statDateFrom">
-    <span class="dr-sep">～</span>
+    <input type="date" id="statDateFrom"><span class="dr-sep">～</span>
     <input type="date" id="statDateTo">
     <button class="dr-btn" onclick="applyStatDateRange()">查詢</button>
     <button class="dr-btn dr-clear" onclick="clearStatDateRange()">清除</button>
   </div>
-
   <div class="stat-summary-box">
     <div class="stat-summary-title" id="statSummaryTitle">全部年度合計</div>
     <div class="stat-summary-grid" id="statSummaryGrid"></div>
   </div>
-
   <div class="fs-slider-bar page-fs-bar">
-    <span>小</span>
-    <input type="range" id="fsSliderStat" min="11" max="20" step="1" value="13" oninput="onPageFontSizeChange(this.value)">
-    <span>大</span>
+    <span>小</span><input type="range" id="fsSliderStat" min="11" max="20" step="1" value="13" oninput="onPageFontSizeChange(this.value)"><span>大</span>
   </div>
-
-  <div class="stat-list-box">
-    <div id="statContent"><div class="empty-tip">尚無營業紀錄</div></div>
-  </div>
+  <div class="stat-list-box"><div id="statContent"><div class="empty-tip">尚無營業紀錄</div></div></div>
 </div>
 
 <div id="pageExpStat" class="page">
   <div class="exp-type-btn-card" id="expTypeBtnWrap"></div>
   <div class="stat-type-card" id="expTypeCard"></div>
-
   <div id="expBreadcrumb" class="stat-breadcrumb">
-    <span class="stat-muted">目前：</span>
-    <button onclick="expResetLevel()">全部年份</button>
+    <span class="stat-muted">目前：</span><button onclick="expResetLevel()">全部年份</button>
   </div>
-
   <div class="date-range-bar" id="expDateRange">
     <span class="dr-label">區間</span>
-    <input type="date" id="expDateFrom">
-    <span class="dr-sep">～</span>
+    <input type="date" id="expDateFrom"><span class="dr-sep">～</span>
     <input type="date" id="expDateTo">
     <button class="dr-btn" onclick="applyExpDateRange()">查詢</button>
     <button class="dr-btn dr-clear" onclick="clearExpDateRange()">清除</button>
   </div>
-
   <div class="exp-summary-card stat-summary-box">
     <div class="exp-summary-head" id="expSummaryHead"></div>
     <div class="exp-summary-body" id="expSummaryBody"></div>
   </div>
-
   <div class="fs-slider-bar page-fs-bar">
-    <span>小</span>
-    <input type="range" id="fsSliderExp" min="11" max="20" step="1" value="13" oninput="onPageFontSizeChange(this.value)">
-    <span>大</span>
+    <span>小</span><input type="range" id="fsSliderExp" min="11" max="20" step="1" value="13" oninput="onPageFontSizeChange(this.value)"><span>大</span>
   </div>
-
-  <div class="stat-list-box">
-    <div id="expContent"><div class="empty-tip">尚無支出紀錄</div></div>
-  </div>
+  <div class="stat-list-box"><div id="expContent"><div class="empty-tip">尚無支出紀錄</div></div></div>
 </div>
 
 <div id="pageSetting" class="page">
 <div class="voice-settings-bar">
-  <span class="vs-icon">🎤</span>
-  <span class="vs-label">語音輸入</span>
-  <input type="number" id="voiceSeconds" min="1" max="30" value="5" oninput="onVoiceSecondsChange(this.value)">
-  <span class="vs-unit">秒</span>
+  <span class="vs-icon">🎤</span><span class="vs-label">語音輸入</span>
   <button class="vs-help-btn" onclick="openHelpModal()">📖 說明</button>
   <label class="vs-toggle">
     <input type="checkbox" id="voiceToggle" checked onchange="onVoiceToggleChange(this.checked)">
@@ -1302,8 +576,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   <div class="set-title-row">
     <h4>頁面顯示字型拉桿</h4>
     <label class="vs-toggle">
-      <input type="checkbox" id="pageFsToggle" checked onchange="onPageFsToggleChange(this.checked)">
-      <span class="vs-slider"></span>
+      <input type="checkbox" id="pageFsToggle" checked onchange="onPageFsToggleChange(this.checked)"><span class="vs-slider"></span>
     </label>
   </div>
   <div style="font-size:calc(.85px * var(--fs-num));color:#64748b;line-height:1.5;">開啟後，首頁、統計頁、支出頁面會顯示字型大小拉桿，可直接在頁面上調整字型大小。</div>
@@ -1322,8 +595,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   <div class="set-title-row">
     <h4>營業類別</h4>
     <label class="vs-toggle">
-      <input type="checkbox" id="typeBtnToggle" checked onchange="onTypeBtnToggleChange(this.checked)">
-      <span class="vs-slider"></span>
+      <input type="checkbox" id="typeBtnToggle" checked onchange="onTypeBtnToggleChange(this.checked)"><span class="vs-slider"></span>
     </label>
   </div>
   <div id="typeListSet"></div>
@@ -1333,14 +605,27 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <div class="setBlock"><h4>支出類型（打勾 = 營業成本）</h4><div id="expListSet"></div><div style="display:flex;gap:5px;margin-top:5px;"><input id="newExpName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><button onclick="addNewExpTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div></div>
 <div class="setBlock"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><h4 style="margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;">資料備份</h4><span style="font-size:calc(.85px * var(--fs-num));color:#64748b;flex:1;text-align:right;">僅紀錄，不含設定</span></div><div class="backup-bar"><button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出</button><button class="backup-btn importBtn" onclick="document.getElementById('fileImport').click()">📥 匯入</button></div><div style="margin-top:8px;font-size:calc(1.3px * var(--fs-num));"><a href="db-js.html" style="color:#2563eb;text-decoration:none;font-weight:700;">(DB轉JSON)</a></div>
 </div>
-
 <div class="footer-links">
-  <a href="about.html">關於我們</a>
-  <a href="privacy.html">隱私政策</a>
-  <a href="contact.html">聯絡我們</a>
+  <a href="about.html">關於我們</a><a href="privacy.html">隱私政策</a><a href="contact.html">聯絡我們</a>
 </div>
 
 <script>
+// 檢查是否為 PWA 網頁版，如果是就顯示升級橫幅
+if (!window.Capacitor && window.location.protocol !== 'file:') {
+  document.addEventListener("DOMContentLoaded", function() {
+    var banner = document.getElementById('pwaUpgradeBanner');
+    if (banner) banner.style.display = 'block';
+  });
+}
+
+function showUpgradeModal() {
+  var playStoreUrl = "https://play.google.com/store/apps/details?id=com.fanwejay.taxi";
+  var msg = "🚀 全新 App 上線！\n\n為了確保您的記帳資料不遺失，請先點擊「設定」頁面的「📤 匯出」備份資料。\n\n備份完成後，請前往 Google Play 下載全新版本，並使用「📥 匯入」恢復資料！";
+  showConfirm(msg, function(ok) {
+    if (ok) window.location.href = playStoreUrl;
+  }, {single: true, okText: '前往 Google Play', okClass: 'confirm-ok-blue'});
+}
+
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){});}
 
 var currentType="",editId=null,editExpId=null,historyStack=[],modalAmount="",expModalAmount="",sortNewFirst=true,statViewStack=[],expViewStack=[];
@@ -1486,9 +771,7 @@ function onPageFsToggleChange(checked){
 }
 function updatePageFsBars(){
   var bars=document.querySelectorAll('.page-fs-bar');
-  bars.forEach(function(bar){
-    bar.style.display=config.pageFsEnabled?'':'none';
-  });
+  bars.forEach(function(bar){bar.style.display=config.pageFsEnabled?'':'none';});
 }
 
 function renameInRecords(oldName,newName,field){
@@ -1564,27 +847,10 @@ function fitOne(el, minSize){
 }
 function fitAllStatText(){
   var sels=[
-    '.fc-stat span',
-    '.sc-stat span',
-    '.stat-type-btn',
-    '.stat-pay-btn',
-    '.exp-type-btn-card .bigBtn',
-    '.stat-summary-grid strong',
-    '.stat-list-row .item-main',
-    '.stat-list-row .item-fee',
-    '.stat-list-row .item-net',
-    '.home-detail-amt',
-    '.home-detail-fee',
-    '.home-detail-net',
-    '.stat-detail-amt',
-    '.stat-detail-fee',
-    '.stat-detail-net',
-    '#todayNetTotal',
-    '#expSummaryHead strong',
-    '#expSummaryHead span.label',
-    '#expSummaryBody strong',
-    '#expSummaryBody span',
-    '#daySummaryCard .stat-pair > span:last-child'
+    '.fc-stat span','.sc-stat span','.stat-type-btn','.stat-pay-btn','.exp-type-btn-card .bigBtn',
+    '.stat-summary-grid strong','.stat-list-row .item-main','.stat-list-row .item-fee','.stat-list-row .item-net',
+    '.home-detail-amt','.home-detail-fee','.home-detail-net','.stat-detail-amt','.stat-detail-fee','.stat-detail-net',
+    '#todayNetTotal','#expSummaryHead strong','#expSummaryHead span.label','#expSummaryBody strong','#expSummaryBody span','#daySummaryCard .stat-pair > span:last-child'
   ];
   document.querySelectorAll(sels.join(',')).forEach(function(el){ fitOne(el,8); });
 }
@@ -1617,9 +883,7 @@ function fitModalContent(modalId){
     inputArea.style.height='auto';
     inputArea.style.flex='0 1 auto';
   }
-  modal.querySelectorAll('.numBtn, .payBtn').forEach(function(btn){
-    fitOne(btn, 11);
-  });
+  modal.querySelectorAll('.numBtn, .payBtn').forEach(function(btn){fitOne(btn, 11);});
   var amountEl=modal.querySelector('.inputBox');
   if(amountEl) fitOne(amountEl, 16);
 }
@@ -1649,9 +913,7 @@ document.getElementById('colorPicker').addEventListener('input', function(e){
   renderExpTypeBtnWrap();
   calcTotal();
 });
-document.getElementById('colorPicker').addEventListener('change', function(){
-  colorPickTarget=null;
-});
+document.getElementById('colorPicker').addEventListener('change', function(){colorPickTarget=null;});
 
 function saveConfig(){localStorage.setItem('taxiConfig',JSON.stringify(config));}
 function getRecords(){return JSON.parse(localStorage.getItem('taxiRec'))||[];}
@@ -1689,12 +951,8 @@ function exportBackup(){
 function isValidRecord(r){return r&&typeof r==='object'&&typeof r.id!=='undefined'&&typeof r.type==='string'&&typeof r.pay==='string'&&Number.isFinite(Number(r.raw))&&Number.isFinite(Number(r.net))&&typeof r.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(r.date);}
 function isValidExpense(e){return e&&typeof e==='object'&&typeof e.id!=='undefined'&&typeof e.cat==='string'&&Number.isFinite(Number(e.raw))&&typeof e.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(e.date);}
 
-function recFingerprint(r){
-  return [r.date, r.time||'', r.type||'', Number(r.raw||0), r.pay||'', Number(r.net||0)].join('|');
-}
-function expFingerprint(e){
-  return [e.date, e.time||'', e.cat||'', Number(e.raw||0), e.note||''].join('|');
-}
+function recFingerprint(r){return [r.date, r.time||'', r.type||'', Number(r.raw||0), r.pay||'', Number(r.net||0)].join('|');}
+function expFingerprint(e){return [e.date, e.time||'', e.cat||'', Number(e.raw||0), e.note||''].join('|');}
 
 document.getElementById('fileImport').onchange=function(e){
   var f=e.target.files[0];if(!f)return;
@@ -1709,7 +967,6 @@ document.getElementById('fileImport').onchange=function(e){
 
       showConfirm('📥 匯入將逐筆比對：\n· id 本機沒有 → 補上\n· id 本機已有且內容相同 → 跳過\n· id 撞到但內容不同 → 補上（自動配新 id）\n不會刪除任何紀錄，也不會改設定。\n確定繼續？', function(ok){
         if(!ok)return;
-
         var backupNow = {saveTime:new Date().toISOString(),config:config,records:getRecords(),expenses:getExpenses()};
         var blob = new Blob([JSON.stringify(backupNow,null,2)],{type:'application/json'});
         var url = URL.createObjectURL(blob);
@@ -1720,13 +977,8 @@ document.getElementById('fileImport').onchange=function(e){
         URL.revokeObjectURL(url);
 
         var curRecs = getRecords();
-        var curRecById = {};
-        var curRecFp = {};
-        curRecs.forEach(function(x){
-          curRecById[x.id] = x;
-          curRecFp[recFingerprint(x)] = 1;
-        });
-
+        var curRecById = {}, curRecFp = {};
+        curRecs.forEach(function(x){curRecById[x.id] = x;curRecFp[recFingerprint(x)] = 1;});
         var addRecs = [], skipRecs = 0;
         d.records.forEach(function(r){
           var nr = JSON.parse(JSON.stringify(r));
@@ -1737,20 +989,13 @@ document.getElementById('fileImport').onchange=function(e){
             nr.id = nextId();
           }
           if(curRecFp[fp]){ skipRecs++; return; }
-          curRecFp[fp] = 1;
-          curRecById[nr.id] = nr;
-          addRecs.push(nr);
+          curRecFp[fp] = 1;curRecById[nr.id] = nr;addRecs.push(nr);
         });
         saveRecords(curRecs.concat(addRecs));
 
         var curExps = getExpenses();
-        var curExpById = {};
-        var curExpFp = {};
-        curExps.forEach(function(x){
-          curExpById[x.id] = x;
-          curExpFp[expFingerprint(x)] = 1;
-        });
-
+        var curExpById = {}, curExpFp = {};
+        curExps.forEach(function(x){curExpById[x.id] = x;curExpFp[expFingerprint(x)] = 1;});
         var addExps = [], skipExps = 0;
         (Array.isArray(d.expenses)?d.expenses:[]).forEach(function(x){
           var nx = JSON.parse(JSON.stringify(x));
@@ -1761,9 +1006,7 @@ document.getElementById('fileImport').onchange=function(e){
             nx.id = nextId();
           }
           if(curExpFp[fp]){ skipExps++; return; }
-          curExpFp[fp] = 1;
-          curExpById[nx.id] = nx;
-          addExps.push(nx);
+          curExpFp[fp] = 1;curExpById[nx.id] = nx;addExps.push(nx);
         });
         saveExpenses(curExps.concat(addExps));
 
@@ -1773,7 +1016,6 @@ document.getElementById('fileImport').onchange=function(e){
           + '設定維持不變。\n'
           + '匯入前資料已自動備份到「下載」資料夾。';
         showAlert(msg);
-
         renderHomeTypeBtn();calcTotal();renderTodayList();refreshStatCards();refreshExpCards();renderStatTypeCard();renderExpTypeCard();renderStatPayCard();renderExpTypeBtnWrap();
       });
     }catch(err){showAlert('❌ 檔案讀取失敗');}
@@ -1785,10 +1027,7 @@ function renderHomeTypeBtn(){
   var wrap=document.getElementById('typeBtnWrap');
   if(!wrap)return;
   wrap.innerHTML='';
-  if(!config.typeBtnEnabled){
-    wrap.style.display='none';
-    return;
-  }
+  if(!config.typeBtnEnabled){wrap.style.display='none';return;}
   wrap.style.display='';
   config.typeList.forEach(function(t){
     var btn=document.createElement('button');
@@ -1849,7 +1088,6 @@ function showPage(id, skipHistory){
     document.getElementById('setEndHour').value=config.businessHour.end;
     document.getElementById('fontSizeSlider').value=config.fontSize;
     document.getElementById('fontSizeValue').textContent=config.fontSize;
-    document.getElementById('voiceSeconds').value=config.voiceSeconds;
     document.getElementById('voiceToggle').checked=config.voiceEnabled;
     document.getElementById('typeBtnToggle').checked=config.typeBtnEnabled;
     document.getElementById('pageFsToggle').checked=config.pageFsEnabled;
@@ -1861,25 +1099,19 @@ function showPage(id, skipHistory){
 
   if(!skipHistory){
     _pageHistory.push(id);
-    try{
-      history.pushState({page:id, ts:Date.now()}, '', location.href);
-    }catch(e){}
+    try{history.pushState({page:id, ts:Date.now()}, '', location.href);}catch(e){}
   }
 }
 
 window.addEventListener('popstate', function(e){
   if(_isPopping) return;
-
   if(_pageHistory.length > 1){
     _isPopping = true;
     _pageHistory.pop();
     var prev = _pageHistory[_pageHistory.length-1] || 'pageHome';
     showPage(prev, true);
     _isPopping = false;
-
-    try{
-      history.pushState({page:prev, ts:Date.now()}, '', location.href);
-    }catch(e){}
+    try{history.pushState({page:prev, ts:Date.now()}, '', location.href);}catch(e){}
   }
 });
 
@@ -1961,13 +1193,11 @@ function calcDayStats(recs,targetDate){
     daySum+=Number(r.raw||0);
     feeSum+=Number(r.fee||0);
     typeCount[r.type]=(typeCount[r.type]||0)+1;
-
     if(Number.isFinite(Number(r.deduct))) deductSum+=Number(r.deduct||0);
     else{
       var ti=config.typeList.find(function(t){return t.name===r.type;});
       if(ti)deductSum+=Number(ti.deduct||0);
     }
-
     if(r.splits&&Array.isArray(r.splits)){
       r.splits.forEach(function(s){
         if(isCashPay(s.pay))cashSum+=Number(s.amount||0);
@@ -2022,14 +1252,10 @@ function getPayDisplay(r){
 }
 
 function getRawDisplay(r){
-  if(r.pay==='好孕券'&&Number(r.raw)>250){
-    return '250+'+(Number(r.raw)-250);
-  }
+  if(r.pay==='好孕券'&&Number(r.raw)>250){return '250+'+(Number(r.raw)-250);}
   if(r.splits&&Array.isArray(r.splits)&&r.splits.length){
     var hasGood=r.splits.some(function(s){return s.pay==='好孕券';});
-    if(hasGood&&Number(r.raw)>250){
-      return '250+'+(Number(r.raw)-250);
-    }
+    if(hasGood&&Number(r.raw)>250){return '250+'+(Number(r.raw)-250);}
   }
   return statMoney(r.raw);
 }
@@ -2076,14 +1302,10 @@ function renderTodayList(){
 function getFilteredRecords(){
   var recs=getRecords();
   var out=recs;
-  if(statTypeFilter){
-    out=out.filter(function(r){return r.type===statTypeFilter;});
-  }
+  if(statTypeFilter) out=out.filter(function(r){return r.type===statTypeFilter;});
   if(statPayFilter){
     out=out.filter(function(r){
-      if(r.splits&&Array.isArray(r.splits)&&r.splits.length){
-        return r.splits.some(function(s){return s.pay===statPayFilter;});
-      }
+      if(r.splits&&Array.isArray(r.splits)&&r.splits.length){return r.splits.some(function(s){return s.pay===statPayFilter;});}
       return r.pay===statPayFilter;
     });
   }
@@ -2095,24 +1317,15 @@ function getCostExpenses(prefix, rangeFrom, rangeTo){
   config.expList.forEach(function(e){if(e.isCost)costCats[e.name]=1;});
   return getExpenses().filter(function(e){
     if(!costCats[e.cat])return false;
-    if(rangeFrom && rangeTo){
-      return e.date >= rangeFrom && e.date <= rangeTo;
-    }
+    if(rangeFrom && rangeTo){return e.date >= rangeFrom && e.date <= rangeTo;}
     return String(e.date||'').indexOf(prefix||'')===0;
   });
 }
 
 function calcIncomeStat(prefix, rangeFrom, rangeTo){
   var recs;
-  if(rangeFrom && rangeTo){
-    recs = getFilteredRecords().filter(function(r){
-      return r.date >= rangeFrom && r.date <= rangeTo;
-    });
-  } else {
-    recs = getFilteredRecords().filter(function(r){
-      return String(r.date||'').indexOf(prefix)===0;
-    });
-  }
+  if(rangeFrom && rangeTo){recs = getFilteredRecords().filter(function(r){return r.date >= rangeFrom && r.date <= rangeTo;});}
+  else {recs = getFilteredRecords().filter(function(r){return String(r.date||'').indexOf(prefix)===0;});}
   var sum=0,fee=0,net=0,typeCount={};
   var typeFeeSum={};
   var cashSum=0, nonCashSum=0;
@@ -2120,12 +1333,9 @@ function calcIncomeStat(prefix, rangeFrom, rangeTo){
   config.payList.forEach(function(p){paySum[p.name]=0;});
   config.typeList.forEach(function(t){typeCount[t.name]=0;typeFeeSum[t.name]=0;});
   recs.forEach(function(r){
-    sum+=Number(r.raw||0);
-    fee+=Number(r.fee||0);
-    net+=Number(r.net||0);
+    sum+=Number(r.raw||0);fee+=Number(r.fee||0);net+=Number(r.net||0);
     typeCount[r.type]=(typeCount[r.type]||0)+1;
     typeFeeSum[r.type]=(typeFeeSum[r.type]||0)+Number(r.fee||0);
-
     if(r.splits&&Array.isArray(r.splits)){
       r.splits.forEach(function(s){
         if(isCashPay(s.pay))cashSum+=Number(s.amount||0);
@@ -2149,15 +1359,8 @@ function calcIncomeStat(prefix, rangeFrom, rangeTo){
 
 function calcExpStat(prefix, rangeFrom, rangeTo){
   var list;
-  if(rangeFrom && rangeTo){
-    list = getFilteredExpenses().filter(function(e){
-      return e.date >= rangeFrom && e.date <= rangeTo;
-    });
-  } else {
-    list = getFilteredExpenses().filter(function(e){
-      return String(e.date||'').indexOf(prefix)===0;
-    });
-  }
+  if(rangeFrom && rangeTo){list = getFilteredExpenses().filter(function(e){return e.date >= rangeFrom && e.date <= rangeTo;});}
+  else {list = getFilteredExpenses().filter(function(e){return String(e.date||'').indexOf(prefix)===0;});}
   var sum=list.reduce(function(s,e){return s+Number(e.raw||0);},0);
   var net=calcIncomeStat(prefix, rangeFrom, rangeTo).net||0;
   return{sum:sum,count:list.length,net:net,balance:net-sum};
@@ -2277,7 +1480,6 @@ function updateStatSummary(title,prefix,rangeFrom,rangeTo){
     html+='<span class="pair"><span>'+escapeHtml(p.name)+'</span><strong class="pay">'+statMoney(amt)+'</strong></span>';
   });
   
-  // 這裡就是新增的「手續費總計」
   if(s.fee > 0){
     html+='<span class="pair"><span>手續費</span><strong class="fee">'+statMoney(s.fee)+'</strong></span>';
   }
@@ -2288,7 +1490,6 @@ function updateStatSummary(title,prefix,rangeFrom,rangeTo){
   config.typeList.forEach(function(t){
     if(statTypeFilter && statTypeFilter!==t.name)return;
     var cnt=s.typeCount[t.name]||0;
-    
     html+='<span class="pair">'
       +'<span style="color:'+escapeHtml(t.color||'#2563eb')+';font-weight:700;">'+escapeHtml(t.name)+'</span>'
       +'<strong>'+cnt+'次</strong>'
@@ -2508,7 +1709,6 @@ function renderStatDayDetail(dateStr){
 
 function updateExpSummary(title,prefix,rangeFrom,rangeTo){
   var s=calcExpStat(prefix||'', rangeFrom, rangeTo);
-
   var head=document.getElementById('expSummaryHead');
   var headHtml='';
   headHtml+='<span class="title">'+escapeHtml(title)+'</span>';
@@ -2516,15 +1716,9 @@ function updateExpSummary(title,prefix,rangeFrom,rangeTo){
   head.innerHTML=headHtml;
 
   var list;
-  if(rangeFrom && rangeTo){
-    list = getFilteredExpenses().filter(function(e){
-      return e.date >= rangeFrom && e.date <= rangeTo;
-    });
-  } else {
-    list = getFilteredExpenses().filter(function(e){
-      return String(e.date||'').indexOf(prefix||'') === 0;
-    });
-  }
+  if(rangeFrom && rangeTo){list = getFilteredExpenses().filter(function(e){return e.date >= rangeFrom && e.date <= rangeTo;});}
+  else {list = getFilteredExpenses().filter(function(e){return String(e.date||'').indexOf(prefix||'') === 0;});}
+  
   var catCount={},catSum={};
   config.expList.forEach(function(c){catCount[c.name]=0;catSum[c.name]=0;});
   list.forEach(function(e){
@@ -2546,7 +1740,6 @@ function updateExpSummary(title,prefix,rangeFrom,rangeTo){
       +'</span>';
   });
   body.innerHTML=bodyHtml;
-
   setTimeout(fitAllStatText,0);
 }
 
@@ -2827,38 +2020,16 @@ function delPayTemp(i){config.payList.splice(i,1);saveConfig();renderSetting();r
 function addNewExpTemp(){var n=document.getElementById('newExpName').value.trim();if(!n){showAlert('請輸入名稱');return;}config.expList.push({name:n,color:pickUnusedColorFromList(config.expList),isCost:false});saveConfig();renderSetting();renderExpTypeBtnWrap();renderExpTypeCard();document.getElementById('newExpName').value='';}
 function delExpTemp(i){config.expList.splice(i,1);saveConfig();renderSetting();renderExpTypeBtnWrap();renderExpTypeCard();}
 
-function openHelpModal() {
-  document.getElementById('helpModal').classList.add('active');
-}
-function closeHelpModal() {
-  document.getElementById('helpModal').classList.remove('active');
-}
+function openHelpModal() {document.getElementById('helpModal').classList.add('active');}
+function closeHelpModal() {document.getElementById('helpModal').classList.remove('active');}
+function openGameModal() {document.getElementById('gameModal').classList.add('active');}
+function closeGameModal() {document.getElementById('gameModal').classList.remove('active');}
+function goToGame(url) {closeGameModal();window.location.href = url;}
 
-function openGameModal() {
-  document.getElementById('gameModal').classList.add('active');
-}
-function closeGameModal() {
-  document.getElementById('gameModal').classList.remove('active');
-}
-function goToGame(url) {
-  closeGameModal();
-  window.location.href = url;
-}
-
-var voiceRecognition = null;
 var voiceCountdownTimer = null;
 var voiceRemaining = 0;
 var voiceRecognizedText = '';
-var voiceIsRecording = false;
 var voiceAutoSaveDone = false;
-
-function onVoiceSecondsChange(v) {
-  var n = Number(v);
-  if (!Number.isInteger(n) || n < 1) n = 1;
-  if (n > 30) n = 30;
-  config.voiceSeconds = n;
-  saveConfig();
-}
 
 function onVoiceToggleChange(checked) {
   config.voiceEnabled = !!checked;
@@ -2883,7 +2054,23 @@ var VOICE_FIX = {
   '家':'加','佳':'加'
 };
 
+var VOICE_WORD_FIX = {
+  '太淺':'派遣', '太遣':'派遣', '台淺':'派遣', '派淺':'派遣',
+  '太前':'派遣', '台前':'派遣', '派前':'派遣', '太籤':'派遣',
+  '路昭':'路招', '路找':'路招', '路召':'路招', '路招':'路招',
+  '好運卷':'好孕券', '好運券':'好孕券', '好孕卷':'好孕券', '好運眷':'好孕券',
+  '企業千單':'企業簽單', '企業牽單':'企業簽單', '企業籤單':'企業簽單',
+  '優遊卡':'悠遊卡', '幽遊卡':'悠遊卡', '悠游卡':'悠遊卡',
+  '信用卡':'信用卡', '信用咔':'信用卡'
+};
+
 function fixVoiceText(text) {
+  var words = Object.keys(VOICE_WORD_FIX).sort(function(a,b){return b.length-a.length;});
+  words.forEach(function(w){
+    if (text.indexOf(w) >= 0) {
+      text = text.split(w).join(VOICE_WORD_FIX[w]);
+    }
+  });
   var out = '';
   for (var i = 0; i < text.length; i++) {
     out += VOICE_FIX[text[i]] || text[i];
@@ -2893,9 +2080,7 @@ function fixVoiceText(text) {
 
 function fuzzyMatch(text, keyword) {
   if (!keyword) return false;
-  if (keyword.length < 2) {
-    return text.indexOf(keyword) >= 0;
-  }
+  if (keyword.length < 2) return text.indexOf(keyword) >= 0;
   if (keyword.length === 2) {
     for (var i = 0; i < 2; i++) {
       if (text.indexOf(keyword[i]) >= 0) return true;
@@ -2913,87 +2098,70 @@ function fuzzyMatch(text, keyword) {
   return matchCount >= 2;
 }
 
-async function openVoiceModal() {
-  if (!config.voiceEnabled) return;
+/* ===== 保留叮聲解鎖 ===== */
+var _audioCtx = null;
 
-  if (window.Capacitor && window.SpeechRecognitionPlugin) {
-    try {
-      // 1. 檢查並請求權限
-      var perm = await window.SpeechRecognitionPlugin.checkPermissions();
-      if (perm.speechRecognition !== 'granted') {
-        perm = await window.SpeechRecognitionPlugin.requestPermissions();
-      }
-
-      // 2. 設定畫面與變數
-      voiceRecognizedText = '';
-      voiceAutoSaveDone = false;
-      voiceIsRecording = true;
-      voiceRemaining = config.voiceSeconds || 5;
-
-      var modal = document.getElementById('voiceModal');
-      var countdownEl = document.getElementById('voiceCountdown');
-      var statusEl = document.getElementById('voiceStatus');
-      var textEl = document.getElementById('voiceText');
-
-      countdownEl.textContent = voiceRemaining;
-      countdownEl.classList.remove('urgent');
-      statusEl.textContent = '請開始說話⋯';
-      textEl.innerHTML = '<span style="color:#94a3b8;">（等待語音⋯）</span>';
-      modal.classList.add('active');
-
-      // 3. 清除舊監聽並加入新監聽（解決 200200 重複問題）
-      if (window.voiceListenerAdded) {
-        await window.SpeechRecognitionPlugin.removeAllListeners();
-      }
-      window.voiceListenerAdded = true;
-      
-      window.SpeechRecognitionPlugin.addListener('partialResults', function(data) {
-        if (data.matches && data.matches.length > 0) {
-          // 這裡改為「覆蓋」而不是累加
-          voiceRecognizedText = data.matches[0];
-          renderVoiceText(voiceRecognizedText);
-        }
-      });
-
-      // 4. 啟動原生麥克風（改回 popup: false，避免彈窗搶走結果）
-      await window.SpeechRecognitionPlugin.start({
-        language: 'zh-TW',
-        maxResults: 1,
-        partialResults: true,
-        popup: false 
-      });
-
-      // 5. 開始倒數計時
-      clearInterval(voiceCountdownTimer);
-      voiceCountdownTimer = setInterval(function() {
-        voiceRemaining--;
-        if (voiceRemaining <= 0) {
-          clearInterval(voiceCountdownTimer);
-          finishVoiceInputNative();
-          return;
-        }
-        countdownEl.textContent = voiceRemaining;
-        if (voiceRemaining <= 2) countdownEl.classList.add('urgent');
-      }, 1000);
-
-    } catch (e) {
-      showToast('⚠️ 語音辨識失敗：' + e.message);
-      document.getElementById('voiceModal').classList.remove('active');
-      clearInterval(voiceCountdownTimer);
+function _unlockSpeech() {
+  try {
+    if (!_audioCtx) {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (AC) _audioCtx = new AC();
     }
-    return; // 原生執行完畢後直接 return，不執行下方的網頁版
+    if (_audioCtx && _audioCtx.state === 'suspended') _audioCtx.resume();
+  } catch (e) {}
+}
+
+function _playDing() {
+  try {
+    if (!_audioCtx) {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      _audioCtx = new AC();
+    }
+    if (_audioCtx.state === 'suspended') _audioCtx.resume();
+    var now = _audioCtx.currentTime;
+    var osc = _audioCtx.createOscillator();
+    var gain = _audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, now);
+    osc.frequency.exponentialRampToValueAtTime(1320, now + 0.12);
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.5, now + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
+    osc.connect(gain);
+    gain.connect(_audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + 0.3);
+  } catch (e) {}
+}
+
+function openVoiceModal() {
+  if (!config.voiceEnabled) return;
+  _unlockSpeech(); // 解鎖音訊
+
+  if (window.AndroidSpeech) {
+    voiceRecognizedText = '';
+    voiceAutoSaveDone = false;
+    var modal = document.getElementById('voiceModal');
+    var countdownEl = document.getElementById('voiceCountdown');
+    var statusEl = document.getElementById('voiceStatus');
+    var textEl = document.getElementById('voiceText');
+    countdownEl.textContent = '...';
+    statusEl.textContent = '正在啟動麥克風...';
+    textEl.innerHTML = '<span style="color:#94a3b8;">（請在系統視窗說話）</span>';
+    modal.classList.add('active');
+    window.AndroidSpeech.startListening();
+    return;
   }
 
-  // --- 以下為網頁版備用邏輯 ---
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) {
-    showToast('⚠️ 此瀏覽器不支援語音輸入\n請使用 Android Chrome');
+    showToast('⚠️ 此瀏覽器不支援語音輸入\n請使用 Android Chrome 或安裝 App');
     return;
   }
 
   voiceRecognizedText = '';
   voiceAutoSaveDone = false;
-  voiceIsRecording = true;
   voiceRemaining = config.voiceSeconds || 5;
 
   var modal2 = document.getElementById('voiceModal');
@@ -3007,7 +2175,7 @@ async function openVoiceModal() {
   textEl2.innerHTML = '<span style="color:#94a3b8;">（等待語音⋯）</span>';
   modal2.classList.add('active');
 
-  voiceRecognition = new SR();
+  var voiceRecognition = new SR();
   voiceRecognition.lang = 'zh-TW';
   voiceRecognition.interimResults = true;
   voiceRecognition.continuous = true;
@@ -3015,7 +2183,6 @@ async function openVoiceModal() {
 
   voiceRecognition.onresult = function(event) {
     var currentText = '';
-    // 解決重複顯示 200200 的問題（每次覆蓋）
     for (var i = 0; i < event.results.length; i++) {
       currentText += event.results[i][0].transcript;
     }
@@ -3051,25 +2218,22 @@ async function openVoiceModal() {
   }, 1000);
 }
 
-async function finishVoiceInputNative() {
-  if (!voiceIsRecording) return;
-  voiceIsRecording = false;
-
-  try {
-    if (window.SpeechRecognitionPlugin) {
-      await window.SpeechRecognitionPlugin.stop();
-      await window.SpeechRecognitionPlugin.removeAllListeners();
-    }
-  } catch (e) {}
-
-  document.getElementById('voiceModal').classList.remove('active');
-
-  if (!voiceAutoSaveDone) {
-    voiceAutoSaveDone = true;
-    setTimeout(function() {
-      processVoiceCommand(voiceRecognizedText);
-    }, 150);
+function receiveNativeSpeech(text) {
+  if (!text) {
+    document.getElementById('voiceModal').classList.remove('active');
+    showToast('⚠️ 沒有收到語音內容');
+    return;
   }
+  document.getElementById('voiceStatus').textContent = '辨識完成！';
+  document.getElementById('voiceCountdown').textContent = '✅';
+  document.getElementById('voiceCountdown').classList.remove('urgent');
+  document.getElementById('voiceCountdown').style.color = '#16a34a';
+  voiceRecognizedText = text;
+  renderVoiceText(voiceRecognizedText);
+  setTimeout(function() {
+    document.getElementById('voiceModal').classList.remove('active');
+    processVoiceCommand(voiceRecognizedText);
+  }, 500);
 }
 
 function renderVoiceText(text) {
@@ -3077,43 +2241,29 @@ function renderVoiceText(text) {
     document.getElementById('voiceText').innerHTML = '<span style="color:#94a3b8;">（等待語音⋯）</span>';
     return;
   }
-
   var html = escapeHtml(text);
-
   var keywords = [];
   config.typeList.forEach(function(t) { keywords.push({ name: t.name, cls: 'kw-type' }); });
   config.payList.forEach(function(p) { keywords.push({ name: p.name, cls: 'kw-pay' }); });
   config.expList.forEach(function(e) { keywords.push({ name: e.name, cls: 'kw-exp' }); });
-
   keywords.sort(function(a, b) { return b.name.length - a.name.length; });
-
   keywords.forEach(function(k) {
     if (!k.name) return;
     var escaped = escapeHtml(k.name);
     var regex = new RegExp(escaped, 'g');
     html = html.replace(regex, '<span class="' + k.cls + '">' + escaped + '</span>');
   });
-
   html = html.replace(/(\d+)/g, function(m) {
     return '<span class="kw-amount">' + m + '</span>';
   });
-
   document.getElementById('voiceText').innerHTML = html;
 }
 
 function finishVoiceInput() {
-  if (!voiceIsRecording) return;
-  voiceIsRecording = false;
-
-  try { if (voiceRecognition) voiceRecognition.abort(); } catch (e) {}
-
   document.getElementById('voiceModal').classList.remove('active');
-
   if (!voiceAutoSaveDone) {
     voiceAutoSaveDone = true;
-    setTimeout(function() {
-      processVoiceCommand(voiceRecognizedText);
-    }, 150);
+    processVoiceCommand(voiceRecognizedText);
   }
 }
 
@@ -3123,6 +2273,12 @@ function processVoiceCommand(text) {
 
   if (!text) {
     showToast('⚠️ 沒有聽到聲音，請再試一次');
+    return;
+  }
+
+  var amount = extractAmount(text);
+  if (!amount || amount <= 0) {
+    showToast('⚠️ 找不到金額\n辨識：「' + text + '」');
     return;
   }
 
@@ -3147,13 +2303,6 @@ function processVoiceCommand(text) {
     }
   });
 
-  var amount = extractAmount(text);
-
-  if (!amount || amount <= 0) {
-    showToast('⚠️ 找不到金額\n辨識：「' + text + '」');
-    return;
-  }
-
   var isExpense = false;
   if (matchedExp && !matchedType) {
     isExpense = true;
@@ -3164,22 +2313,30 @@ function processVoiceCommand(text) {
   }
 
   if (isExpense) {
-    saveVoiceExpense(matchedExp, amount, text);
+    let noteText = text;
+    noteText = noteText.replace(/[0-9零一二兩三四五六七八九十百千萬]+/g, '');
+    if (matchedExp && matchedExp.name) noteText = noteText.replace(matchedExp.name, '');
+    noteText = noteText.replace(/備註|备注|說|说/g, '').trim();
+
+    saveVoiceExpense(matchedExp, amount, text, noteText);
+    _playDing();
+    
+    let toastMsg = '✅ 已記錄支出\n' + matchedExp.name + ' / ' + amount + ' 元';
+    if (noteText) toastMsg += '\n備註：' + noteText;
+    showToast(toastMsg, 3000);
     return;
   }
 
-  if (!matchedType) {
-    matchedType = config.typeList[0];
-  }
-  if (!matchedPay) {
-    matchedPay = config.payList[0];
-  }
+  if (!matchedType) matchedType = config.typeList[0];
+  if (!matchedPay) matchedPay = config.payList[0];
   if (!matchedType || !matchedPay) {
     showToast('⚠️ 設定缺少類別或付款方式');
     return;
   }
 
   saveVoiceIncome(matchedType, matchedPay, amount, text);
+  _playDing();
+  showToast('✅ 已記錄\n' + matchedType.name + ' / ' + matchedPay.name + ' / ' + amount + ' 元', 3000);
 }
 
 function saveVoiceIncome(typeItem, payItem, amount, originalText) {
@@ -3189,15 +2346,8 @@ function saveVoiceIncome(typeItem, payItem, amount, originalText) {
   if (net < 0) net = 0;
 
   var record = {
-    id: nextId(),
-    type: typeItem.name,
-    pay: payItem.name,
-    raw: amount,
-    fee: fee,
-    net: Math.round(net),
-    deduct: Number(typeItem.deduct || 0),
-    date: getBizDate(now),
-    time: fmtTime()
+    id: nextId(), type: typeItem.name, pay: payItem.name, raw: amount, fee: fee, net: Math.round(net),
+    deduct: Number(typeItem.deduct || 0), date: getBizDate(now), time: fmtTime()
   };
 
   if (payItem.name === '好孕券' && amount > 250) {
@@ -3213,35 +2363,23 @@ function saveVoiceIncome(typeItem, payItem, amount, originalText) {
   var list = getRecords();
   list.unshift(record);
   saveRecords(list);
-
   calcTotal(); renderTodayList(); refreshStatCards(); refreshExpCards();
-  speakText('已記錄 ' + typeItem.name + ' ' + payItem.name + ' ' + amount + ' 元');
-  showToast('✅ 已記錄 ' + typeItem.name + ' / ' + payItem.name + ' / ' + amount + ' 元');
 }
 
-function saveVoiceExpense(expItem, amount, originalText) {
+function saveVoiceExpense(expItem, amount, originalText, noteText) {
   var now = new Date();
   var list = getExpenses();
   list.unshift({
-    id: nextId(),
-    cat: expItem.name,
-    color: expItem.color,
-    raw: amount,
-    note: '語音輸入',
-    date: getBizDate(now),
-    time: fmtTime()
+    id: nextId(), cat: expItem.name, color: expItem.color, raw: amount, note: noteText || '語音輸入',
+    date: getBizDate(now), time: fmtTime()
   });
   saveExpenses(list);
-
   renderExpView(); refreshExpCards(); refreshStatCards();
-  speakText('已記錄支出 ' + expItem.name + ' ' + amount + ' 元');
-  showToast('✅ 已記錄支出 ' + expItem.name + ' ' + amount + ' 元');
 }
 
 function extractAmount(text) {
   var m = text.match(/\d+/);
   if (m) return Number(m[0]);
-
   var cnPattern = /[零一二兩三四五六七八九十百千萬]+/g;
   var matches = text.match(cnPattern);
   if (matches) {
@@ -3257,9 +2395,7 @@ function cnToNumber(str) {
   if (!str) return 0;
   var cnMap = {'零':0,'一':1,'二':2,'兩':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9};
   var unitMap = {'十':10,'百':100,'千':1000,'萬':10000};
-
   var result = 0, current = 0, lastUnit = 0, hasZero = false;
-
   for (var i = 0; i < str.length; i++) {
     var ch = str[i];
     if (ch === '零') { hasZero = true; continue; }
@@ -3268,36 +2404,18 @@ function cnToNumber(str) {
     } else if (unitMap[ch] !== undefined) {
       var unit = unitMap[ch];
       if (current === 0) current = 1;
-      if (unit === 10000) {
-        result = (result + current) * unit;
-      } else {
-        result += current * unit;
-      }
+      if (unit === 10000) result = (result + current) * unit;
+      else result += current * unit;
       lastUnit = unit;
       current = 0;
       hasZero = false;
     }
   }
-
   if (current > 0) {
-    if (!hasZero && lastUnit >= 100) {
-      result += current * (lastUnit / 10);
-    } else {
-      result += current;
-    }
+    if (!hasZero && lastUnit >= 100) result += current * (lastUnit / 10);
+    else result += current;
   }
   return result;
-}
-
-function speakText(text) {
-  if ('speechSynthesis' in window) {
-    try {
-      var u = new SpeechSynthesisUtterance(text);
-      u.lang = 'zh-TW';
-      u.rate = 1.1;
-      speechSynthesis.speak(u);
-    } catch (e) {}
-  }
 }
 
 function showToast(msg, duration) {
@@ -3306,16 +2424,16 @@ function showToast(msg, duration) {
   if (!toast) {
     toast = document.createElement('div');
     toast.id = 'voiceToast';
-    toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(15,23,42,0.95);color:#fff;padding:16px 22px;border-radius:12px;font-size:14px;line-height:1.6;z-index:9999;white-space:pre-line;text-align:center;max-width:85%;box-shadow:0 10px 40px rgba(0,0,0,0.4);transition:opacity .25s;pointer-events:none;';
+    toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(15,23,42,0.95);color:#fff;padding:16px 22px;border-radius:12px;font-size:14px;line-height:1.6;z-index:99999;white-space:pre-line;text-align:center;max-width:85%;box-shadow:0 10px 40px rgba(0,0,0,0.4);transition:opacity .25s;pointer-events:none;opacity:0;visibility:hidden;';
     document.body.appendChild(toast);
   }
   toast.textContent = msg;
-  toast.style.display = 'block';
+  toast.style.visibility = 'visible';
   toast.style.opacity = '1';
   clearTimeout(toast._timer);
   toast._timer = setTimeout(function() {
     toast.style.opacity = '0';
-    setTimeout(function() { toast.style.display = 'none'; }, 250);
+    setTimeout(function() { toast.style.visibility = 'hidden'; }, 250);
   }, duration);
 }
 
@@ -3341,11 +2459,9 @@ window.onload=function(){
   updateNavActive('pageHome');
   updateTodayDateText();
   updateVoiceBtnVisibility();
-  var vsInput = document.getElementById('voiceSeconds');
   var vsToggle = document.getElementById('voiceToggle');
   var tbToggle = document.getElementById('typeBtnToggle');
   var pfToggle = document.getElementById('pageFsToggle');
-  if (vsInput) vsInput.value = config.voiceSeconds;
   if (vsToggle) vsToggle.checked = config.voiceEnabled;
   if (tbToggle) tbToggle.checked = config.typeBtnEnabled;
   if (pfToggle) pfToggle.checked = config.pageFsEnabled;
