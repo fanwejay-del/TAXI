@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TTS 語音測試</title>
+<style>
+  body { font-family: system-ui, sans-serif; padding: 20px; background: #f1f5f9; color: #1e293b; }
+  .box { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 400px; margin: 0 auto; }
+  h2 { text-align: center; color: #2563eb; margin-bottom: 20px; }
+  button { width: 100%; padding: 15px; font-size: 18px; font-weight: bold; color: white; background: #10b981; border: none; border-radius: 8px; cursor: pointer; margin-bottom: 15px; box-shadow: 0 4px 0 #059669; transition: 0.1s; }
+  button:active { transform: translateY(4px); box-shadow: 0 0 0 #059669; }
+  .info { background: #e0f2fe; padding: 10px; border-radius: 8px; font-size: 14px; margin-top: 10px; word-break: break-all; }
+</style>
+</head>
+<body>
+<div class="box">
+  <h2>🎤 TTS 語音測試</h2>
+  <button onclick="testTTS()">點我播放「測試一二三」</button>
+  <div class="info" id="status">狀態：等待測試...</div>
+  <div class="info" id="voices">已載入語音數：0</div>
+</div>
+
+<script>
+  let voicesList = [];
+
+  // 載入語音清單
+  function loadVoices() {
+    voicesList = speechSynthesis.getVoices();
+    document.getElementById('voices').textContent = '已載入語音數：' + voicesList.length + ' 個';
+  }
+
+  // 有些手機需要非同步載入
+  speechSynthesis.onvoiceschanged = loadVoices;
+  loadVoices();
+
+  function testTTS() {
+    const statusEl = document.getElementById('status');
+    
+    if (!('speechSynthesis' in window)) {
+      alert('❌ 你的手機瀏覽器不支援語音合成！');
+      return;
+    }
+
+    // 解除暫停狀態
+    speechSynthesis.cancel();
+    
+    // 建立語音物件
+    const msg = new SpeechSynthesisUtterance('測試一二三');
+    msg.lang = 'zh-TW';
+    msg.volume = 1;
+    msg.rate = 1;
+
+    // 找中文語音
+    const zhVoice = voicesList.find(v => v.lang.includes('zh') || v.lang.includes('ZH'));
+    let voiceName = '系統預設';
+    if (zhVoice) {
+      msg.voice = zhVoice;
+      voiceName = zhVoice.name + ' (' + zhVoice.lang + ')';
+    }
+
+    // 顯示狀態
+    statusEl.innerHTML = '狀態：正在播放...<br>使用語音：' + voiceName;
+
+    // 監聽錯誤
+    msg.onerror = function(e) {
+      statusEl.innerHTML += '<br><span style="color:red;">❌ 發生錯誤：' + e.error + '</span>';
+    };
+
+    // 播放
+    speechSynthesis.speak(msg);
+  }
+</script>
+</body>
+</html>
