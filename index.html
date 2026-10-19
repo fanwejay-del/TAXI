@@ -6,6 +6,10 @@
 <title>計程車記帳</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2563eb">
+<script type="module">
+  import { SpeechRecognition } from '@capacitor-community/speech-recognition';
+  window.SpeechRecognitionPlugin = SpeechRecognition;
+</script>
 <style>
 button[data-nf],[data-netlify],#netlify,div[class*="netlify"]{display:none!important;}
 :root{--fs-num:13;--fw-num:900;}
@@ -20,50 +24,20 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 
 .card{background:#fff;border-radius:10px;padding:4px 4px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:3px;}
 
-/* ===== 全局導覽列優化：圖示加大、間隙縮小、不擋文字 ===== */
-.global-nav{
-  position:sticky;top:0;z-index:50;background:#fff;border-radius:10px;
-  padding:6px 6px;box-shadow:0 1px 4px rgba(0,0,0,.06);
-  margin:0 4px 3px;display:flex;justify-content:space-between;align-items:center;
-  gap:2px;flex-shrink:0;min-width:0;
-}
-.global-nav .app-brand{display:flex;align-items:center;gap:5px;min-width:0;flex:1 1 auto;overflow:hidden;}
-.global-nav .app-logo{width:30px;height:30px;flex:0 0 30px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:transparent;overflow:hidden;}
+/* ===== 全局導覽列優化 ===== */
+.global-nav{position:sticky;top:0;z-index:50;background:#fff;border-radius:10px;padding:4px 6px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin:0 4px 3px;display:flex;justify-content:space-between;align-items:center;gap:3px;flex-shrink:0;min-width:0;}
+.global-nav .app-brand{display:flex;align-items:center;gap:4px;min-width:0;flex:1 1 auto;padding:1px 2px 1px 0;}
+.global-nav .app-logo{width:26px;height:26px;flex:0 0 26px;display:flex;align-items:center;justify-content:center;border-radius:7px;background:transparent;overflow:hidden;}
 .global-nav .app-logo img{width:100%;height:100%;object-fit:contain;display:block;}
-.global-nav .app-name{font-size:18px;font-weight:900;color:#1e293b;white-space:nowrap;letter-spacing:0;line-height:1.1;overflow:hidden;text-overflow:ellipsis;}
-
-/* 單個導覽按鈕：縮小左右 padding，加大上下空間，圖示更大 */
-.global-nav .nav-icon{
-  font-size:14px;
-  padding:5px 5px;                 /* 左右縮小 → 間隙變小 */
-  border-radius:9px;cursor:pointer;line-height:1;
-  color:#475569;transition:background .15s,transform .1s;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:2px;                          /* 圖示與文字間距縮小 */
-  flex:0 0 auto;min-width:40px;     /* 稍微縮小最小寬度，減少總佔位 */
-}
-.global-nav .nav-symbol{
-  font-size:22px;                   /* 圖示放大：18px → 22px */
-  line-height:1;
-}
-.global-nav .nav-label{
-  font-size:11px;
-  line-height:1;
-  white-space:nowrap;
-  font-weight:700;
-}
+/* 標題固定大小，不被拉桿影響，且可以自動省略 */
+.global-nav .app-name{font-size:16px;font-weight:900;color:#1e293b;white-space:nowrap;letter-spacing:0;line-height:1.1;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+/* 導覽按鈕固定大小 */
+.global-nav .nav-icon{font-size:13px;padding:4px 5px;border-radius:9px;cursor:pointer;line-height:1;color:#475569;transition:background .15s,transform .1s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:0 0 auto;min-width:38px;}
+.global-nav .nav-symbol{font-size:15px;line-height:1;}
+.global-nav .nav-label{font-size:10px;line-height:1;white-space:nowrap;font-weight:700;}
 .global-nav .nav-icon:active{background:#e2e8f0;transform:scale(.95);}
 .global-nav .nav-icon.active{background:#dbeafe;color:#2563eb;}
-
-/* 小螢幕微調：圖示仍保持較大、間隙更緊湊 */
-@media(max-width:380px){
-  .global-nav{padding:5px 4px;gap:1px;}
-  .global-nav .app-logo{width:26px;height:26px;flex-basis:26px;}
-  .global-nav .app-name{font-size:16px;}
-  .global-nav .nav-icon{min-width:36px;padding:4px 3px;}
-  .global-nav .nav-symbol{font-size:20px;}   /* 小螢幕也放大圖示 */
-  .global-nav .nav-label{font-size:10px;}
-}
+@media(max-width:380px){.global-nav{padding:3px 5px;gap:2px}.global-nav .app-logo{width:24px;height:24px;flex-basis:24px}.global-nav .app-brand{gap:3px}.global-nav .app-name{font-size:15px}.global-nav .nav-icon{min-width:35px;padding:4px 4px}.global-nav .nav-label{font-size:9px}}
 
 .bigBtn,.numBtn,.payBtn,.navBtn,.editBtn,.delBtn,.sortBtn,.add-btn,.backup-btn,.stat-btn,.setBlock button{box-shadow:0 2px 6px rgba(0,0,0,.14);transition:filter .12s,box-shadow .12s,transform .1s,background .12s;}
 .bigBtn:active,.numBtn:active,.payBtn:active,.navBtn:active,.editBtn:active,.delBtn:active,.sortBtn:active,.add-btn:active,.backup-btn:active,.stat-btn:active,.setBlock button:active{filter:brightness(.88);box-shadow:0 1px 3px rgba(0,0,0,.18);transform:scale(.97);}
@@ -459,11 +433,10 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 
 .exp-cost-check{width:14px;height:14px;flex-shrink:0;cursor:pointer;accent-color:#ea580c;margin:0;}
 
-/* ===== 首頁統計卡片：自動換行，不切字 ===== */
 #daySummaryCard{
   display:flex;
   flex-direction:column;
-  gap:4px;
+  gap:2px;
   width:100%;
   font-size:calc(1.1px * var(--fs-num));
   line-height:1.3;
@@ -471,26 +444,40 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 
 #daySummaryCard .summary-line1{
   display:flex;
-  flex-wrap:wrap;
+  flex-wrap:nowrap;
   align-items:baseline;
-  gap:2px 10px;
+  gap:0;
   width:100%;
+}
+#daySummaryCard .summary-line1 .stat-pair{
+  display:inline-flex;
+  align-items:baseline;
+  justify-content:center;
+  gap:3px;
+  white-space:nowrap;
+  flex:1 1 0;
+  min-width:0;
+  padding:0 3px;
+  box-sizing:border-box;
 }
 
 #daySummaryCard .summary-line2{
   display:flex;
   flex-wrap:wrap;
   align-items:baseline;
-  gap:2px 10px;
+  gap:3px 10px;
   width:100%;
 }
-
-#daySummaryCard .stat-pair{
+#daySummaryCard .summary-line2 .stat-pair{
   display:inline-flex;
   align-items:baseline;
+  justify-content:center;
   gap:3px;
   white-space:nowrap;
-  flex:0 1 auto;
+  flex:0 0 auto;
+  min-width:0;
+  padding:0 3px;
+  box-sizing:border-box;
 }
 
 #daySummaryCard .stat-pair > span:first-child{
@@ -498,13 +485,18 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   font-size:calc(.95px * var(--fs-num));
   white-space:nowrap;
   flex-shrink:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  min-width:0;
 }
-
 #daySummaryCard .stat-pair > span:last-child{
   font-size:calc(.95px * var(--fs-num)) !important;
   font-variant-numeric:tabular-nums;
+  overflow:hidden;
+  text-overflow:ellipsis;
   white-space:nowrap;
-  flex-shrink:0;
+  flex-shrink:1;
+  min-width:0;
 }
 
 #daySummaryCard #dayTotal{color:#0f172a;font-weight:800;}
@@ -726,6 +718,18 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 }
 .voice-settings-bar .vs-icon{font-size:18px;flex-shrink:0;}
 .voice-settings-bar .vs-label{font-size:calc(.95px * var(--fs-num));font-weight:700;color:#0f172a;flex-shrink:0;}
+.voice-settings-bar input[type="number"]{
+  width:42px;
+  padding:5px 4px;
+  border:1.5px solid #e2e8f0;
+  border-radius:8px;
+  font-size:calc(.95px * var(--fs-num));
+  text-align:center;
+  background:#f8fafc;
+  font-variant-numeric:tabular-nums;
+  flex-shrink:0;
+}
+.voice-settings-bar .vs-unit{font-size:calc(.85px * var(--fs-num));color:#64748b;flex-shrink:0;}
 .voice-settings-bar .vs-help-btn{
   font-size:calc(.85px * var(--fs-num));
   padding:5px 8px;
@@ -998,34 +1002,9 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   min-width:0;
   accent-color:#2563eb;
 }
-
-/* PWA 升級提示橫幅 (預設隱藏，由 JS 控制) */
-#pwaUpgradeBanner {
-  display: none;
-  background-color: #ef4444;
-  color: white;
-  text-align: center;
-  padding: 10px;
-  font-size: 14px;
-  font-weight: 700;
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  cursor: pointer;
-  line-height: 1.4;
-}
-#pwaUpgradeBanner:active {
-  background-color: #dc2626;
-}
 </style>
 </head>
 <body>
-<!-- 👇 PWA 升級提示橫幅 👇 -->
-<div id="pwaUpgradeBanner" onclick="showUpgradeModal()">
-  ⚠️ 系統已升級！請點擊此處下載新版 App 並備份資料。
-</div>
-
 <input type="file" id="fileImport" style="display:none" accept=".json">
 <input type="color" id="colorPicker" class="hidden-color">
 
@@ -1310,6 +1289,8 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <div class="voice-settings-bar">
   <span class="vs-icon">🎤</span>
   <span class="vs-label">語音輸入</span>
+  <input type="number" id="voiceSeconds" min="1" max="30" value="5" oninput="onVoiceSecondsChange(this.value)">
+  <span class="vs-unit">秒</span>
   <button class="vs-help-btn" onclick="openHelpModal()">📖 說明</button>
   <label class="vs-toggle">
     <input type="checkbox" id="voiceToggle" checked onchange="onVoiceToggleChange(this.checked)">
@@ -1360,32 +1341,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 </div>
 
 <script>
-// 檢查是否為 PWA 網頁版，如果是就顯示升級橫幅
-if (!window.Capacitor && window.location.protocol !== 'file:') {
-  document.addEventListener("DOMContentLoaded", function() {
-    var banner = document.getElementById('pwaUpgradeBanner');
-    if (banner) {
-      banner.style.display = 'block';
-    }
-  });
-}
-
-function showUpgradeModal() {
-  // 這裡請填入你正式上架的 Google Play 網址
-  var playStoreUrl = "https://play.google.com/store/apps/details?id=com.fanwejay.taxi";
-  var msg = "🚀 全新 App 上線！\n\n為了確保您的記帳資料不遺失，請先點擊「設定」頁面的「📤 匯出」備份資料。\n\n備份完成後，請前往 Google Play 下載全新版本，並使用「📥 匯入」恢復資料！";
-  
-  showConfirm(msg, function(ok) {
-    if (ok) {
-      window.location.href = playStoreUrl;
-    }
-  }, {
-    single: true, 
-    okText: '前往 Google Play', 
-    okClass: 'confirm-ok-blue'
-  });
-}
-
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){});}
 
 var currentType="",editId=null,editExpId=null,historyStack=[],modalAmount="",expModalAmount="",sortNewFirst=true,statViewStack=[],expViewStack=[];
@@ -1894,6 +1849,7 @@ function showPage(id, skipHistory){
     document.getElementById('setEndHour').value=config.businessHour.end;
     document.getElementById('fontSizeSlider').value=config.fontSize;
     document.getElementById('fontSizeValue').textContent=config.fontSize;
+    document.getElementById('voiceSeconds').value=config.voiceSeconds;
     document.getElementById('voiceToggle').checked=config.voiceEnabled;
     document.getElementById('typeBtnToggle').checked=config.typeBtnEnabled;
     document.getElementById('pageFsToggle').checked=config.pageFsEnabled;
@@ -2889,10 +2845,20 @@ function goToGame(url) {
   window.location.href = url;
 }
 
+var voiceRecognition = null;
 var voiceCountdownTimer = null;
 var voiceRemaining = 0;
 var voiceRecognizedText = '';
+var voiceIsRecording = false;
 var voiceAutoSaveDone = false;
+
+function onVoiceSecondsChange(v) {
+  var n = Number(v);
+  if (!Number.isInteger(n) || n < 1) n = 1;
+  if (n > 30) n = 30;
+  config.voiceSeconds = n;
+  saveConfig();
+}
 
 function onVoiceToggleChange(checked) {
   config.voiceEnabled = !!checked;
@@ -2947,38 +2913,87 @@ function fuzzyMatch(text, keyword) {
   return matchCount >= 2;
 }
 
-function openVoiceModal() {
+async function openVoiceModal() {
   if (!config.voiceEnabled) return;
 
-  // 判斷是否在 App 環境內
-  if (window.AndroidSpeech) {
-    voiceRecognizedText = '';
-    voiceAutoSaveDone = false;
-    
-    var modal = document.getElementById('voiceModal');
-    var countdownEl = document.getElementById('voiceCountdown');
-    var statusEl = document.getElementById('voiceStatus');
-    var textEl = document.getElementById('voiceText');
-    
-    countdownEl.textContent = '...';
-    statusEl.textContent = '正在啟動麥克風...';
-    textEl.innerHTML = '<span style="color:#94a3b8;">（請在系統視窗說話）</span>';
-    modal.classList.add('active');
-    
-    // 呼叫 Android 原生語音
-    window.AndroidSpeech.startListening();
-    return;
+  if (window.Capacitor && window.SpeechRecognitionPlugin) {
+    try {
+      // 1. 檢查並請求權限
+      var perm = await window.SpeechRecognitionPlugin.checkPermissions();
+      if (perm.speechRecognition !== 'granted') {
+        perm = await window.SpeechRecognitionPlugin.requestPermissions();
+      }
+
+      // 2. 設定畫面與變數
+      voiceRecognizedText = '';
+      voiceAutoSaveDone = false;
+      voiceIsRecording = true;
+      voiceRemaining = config.voiceSeconds || 5;
+
+      var modal = document.getElementById('voiceModal');
+      var countdownEl = document.getElementById('voiceCountdown');
+      var statusEl = document.getElementById('voiceStatus');
+      var textEl = document.getElementById('voiceText');
+
+      countdownEl.textContent = voiceRemaining;
+      countdownEl.classList.remove('urgent');
+      statusEl.textContent = '請開始說話⋯';
+      textEl.innerHTML = '<span style="color:#94a3b8;">（等待語音⋯）</span>';
+      modal.classList.add('active');
+
+      // 3. 清除舊監聽並加入新監聽（解決 200200 重複問題）
+      if (window.voiceListenerAdded) {
+        await window.SpeechRecognitionPlugin.removeAllListeners();
+      }
+      window.voiceListenerAdded = true;
+      
+      window.SpeechRecognitionPlugin.addListener('partialResults', function(data) {
+        if (data.matches && data.matches.length > 0) {
+          // 這裡改為「覆蓋」而不是累加
+          voiceRecognizedText = data.matches[0];
+          renderVoiceText(voiceRecognizedText);
+        }
+      });
+
+      // 4. 啟動原生麥克風（改回 popup: false，避免彈窗搶走結果）
+      await window.SpeechRecognitionPlugin.start({
+        language: 'zh-TW',
+        maxResults: 1,
+        partialResults: true,
+        popup: false 
+      });
+
+      // 5. 開始倒數計時
+      clearInterval(voiceCountdownTimer);
+      voiceCountdownTimer = setInterval(function() {
+        voiceRemaining--;
+        if (voiceRemaining <= 0) {
+          clearInterval(voiceCountdownTimer);
+          finishVoiceInputNative();
+          return;
+        }
+        countdownEl.textContent = voiceRemaining;
+        if (voiceRemaining <= 2) countdownEl.classList.add('urgent');
+      }, 1000);
+
+    } catch (e) {
+      showToast('⚠️ 語音辨識失敗：' + e.message);
+      document.getElementById('voiceModal').classList.remove('active');
+      clearInterval(voiceCountdownTimer);
+    }
+    return; // 原生執行完畢後直接 return，不執行下方的網頁版
   }
 
-  // 網頁版備用邏輯（如果不在 App 裡）
+  // --- 以下為網頁版備用邏輯 ---
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) {
-    showToast('⚠️ 此瀏覽器不支援語音輸入\n請使用 Android Chrome 或安裝 App');
+    showToast('⚠️ 此瀏覽器不支援語音輸入\n請使用 Android Chrome');
     return;
   }
 
   voiceRecognizedText = '';
   voiceAutoSaveDone = false;
+  voiceIsRecording = true;
   voiceRemaining = config.voiceSeconds || 5;
 
   var modal2 = document.getElementById('voiceModal');
@@ -2992,7 +3007,7 @@ function openVoiceModal() {
   textEl2.innerHTML = '<span style="color:#94a3b8;">（等待語音⋯）</span>';
   modal2.classList.add('active');
 
-  var voiceRecognition = new SR();
+  voiceRecognition = new SR();
   voiceRecognition.lang = 'zh-TW';
   voiceRecognition.interimResults = true;
   voiceRecognition.continuous = true;
@@ -3000,6 +3015,7 @@ function openVoiceModal() {
 
   voiceRecognition.onresult = function(event) {
     var currentText = '';
+    // 解決重複顯示 200200 的問題（每次覆蓋）
     for (var i = 0; i < event.results.length; i++) {
       currentText += event.results[i][0].transcript;
     }
@@ -3035,28 +3051,25 @@ function openVoiceModal() {
   }, 1000);
 }
 
-// 接收 Android 原生語音傳來的結果
-function receiveNativeSpeech(text) {
-  if (!text) {
-    document.getElementById('voiceModal').classList.remove('active');
-    showToast('⚠️ 沒有收到語音內容');
-    return;
+async function finishVoiceInputNative() {
+  if (!voiceIsRecording) return;
+  voiceIsRecording = false;
+
+  try {
+    if (window.SpeechRecognitionPlugin) {
+      await window.SpeechRecognitionPlugin.stop();
+      await window.SpeechRecognitionPlugin.removeAllListeners();
+    }
+  } catch (e) {}
+
+  document.getElementById('voiceModal').classList.remove('active');
+
+  if (!voiceAutoSaveDone) {
+    voiceAutoSaveDone = true;
+    setTimeout(function() {
+      processVoiceCommand(voiceRecognizedText);
+    }, 150);
   }
-  
-  // 更新畫面
-  document.getElementById('voiceStatus').textContent = '辨識完成！';
-  document.getElementById('voiceCountdown').textContent = '✅';
-  document.getElementById('voiceCountdown').classList.remove('urgent');
-  document.getElementById('voiceCountdown').style.color = '#16a34a';
-  
-  voiceRecognizedText = text;
-  renderVoiceText(voiceRecognizedText);
-  
-  // 延遲 500ms 後處理語音指令
-  setTimeout(function() {
-    document.getElementById('voiceModal').classList.remove('active');
-    processVoiceCommand(voiceRecognizedText);
-  }, 500);
 }
 
 function renderVoiceText(text) {
@@ -3089,10 +3102,18 @@ function renderVoiceText(text) {
 }
 
 function finishVoiceInput() {
+  if (!voiceIsRecording) return;
+  voiceIsRecording = false;
+
+  try { if (voiceRecognition) voiceRecognition.abort(); } catch (e) {}
+
   document.getElementById('voiceModal').classList.remove('active');
+
   if (!voiceAutoSaveDone) {
     voiceAutoSaveDone = true;
-    processVoiceCommand(voiceRecognizedText);
+    setTimeout(function() {
+      processVoiceCommand(voiceRecognizedText);
+    }, 150);
   }
 }
 
@@ -3102,13 +3123,6 @@ function processVoiceCommand(text) {
 
   if (!text) {
     showToast('⚠️ 沒有聽到聲音，請再試一次');
-    return;
-  }
-
-  var amount = extractAmount(text);
-
-  if (!amount || amount <= 0) {
-    showToast('⚠️ 找不到金額\n辨識：「' + text + '」');
     return;
   }
 
@@ -3133,6 +3147,13 @@ function processVoiceCommand(text) {
     }
   });
 
+  var amount = extractAmount(text);
+
+  if (!amount || amount <= 0) {
+    showToast('⚠️ 找不到金額\n辨識：「' + text + '」');
+    return;
+  }
+
   var isExpense = false;
   if (matchedExp && !matchedType) {
     isExpense = true;
@@ -3143,25 +3164,7 @@ function processVoiceCommand(text) {
   }
 
   if (isExpense) {
-    // 👇 開始提取備註 👇
-    let noteText = text;
-    // 1. 移除所有的金額（包含阿拉伯數字與中文數字）
-    noteText = noteText.replace(/[0-9零一二兩三四五六七八九十百千萬]+/g, '');
-    // 2. 移除支出類別名稱
-    if (matchedExp && matchedExp.name) {
-        noteText = noteText.replace(matchedExp.name, '');
-    }
-    // 3. 移除「備註」、「备注」、「說」、「说」等無意義的引導詞
-    noteText = noteText.replace(/備註|备注|說|说/g, '').trim();
-    // 👆 提取結束 👆
-
-    saveVoiceExpense(matchedExp, amount, text, noteText);
-    
-    // 加回語音唸讀
-    speakText('已記錄支出 ' + matchedExp.name + ' ' + amount + ' 元');
-    let toastMsg = '✅ 已記錄支出\n' + matchedExp.name + ' / ' + amount + ' 元';
-    if (noteText) toastMsg += '\n備註：' + noteText;
-    showToast(toastMsg, 3000);
+    saveVoiceExpense(matchedExp, amount, text);
     return;
   }
 
@@ -3177,10 +3180,6 @@ function processVoiceCommand(text) {
   }
 
   saveVoiceIncome(matchedType, matchedPay, amount, text);
-  
-  // 加回語音唸讀
-  speakText('已記錄 ' + matchedType.name + ' ' + matchedPay.name + ' ' + amount + ' 元');
-  showToast('✅ 已記錄\n' + matchedType.name + ' / ' + matchedPay.name + ' / ' + amount + ' 元', 3000);
 }
 
 function saveVoiceIncome(typeItem, payItem, amount, originalText) {
@@ -3216,9 +3215,11 @@ function saveVoiceIncome(typeItem, payItem, amount, originalText) {
   saveRecords(list);
 
   calcTotal(); renderTodayList(); refreshStatCards(); refreshExpCards();
+  speakText('已記錄 ' + typeItem.name + ' ' + payItem.name + ' ' + amount + ' 元');
+  showToast('✅ 已記錄 ' + typeItem.name + ' / ' + payItem.name + ' / ' + amount + ' 元');
 }
 
-function saveVoiceExpense(expItem, amount, originalText, noteText) {
+function saveVoiceExpense(expItem, amount, originalText) {
   var now = new Date();
   var list = getExpenses();
   list.unshift({
@@ -3226,13 +3227,15 @@ function saveVoiceExpense(expItem, amount, originalText, noteText) {
     cat: expItem.name,
     color: expItem.color,
     raw: amount,
-    note: noteText || '語音輸入', // 👈 這裡接收備註
+    note: '語音輸入',
     date: getBizDate(now),
     time: fmtTime()
   });
   saveExpenses(list);
 
   renderExpView(); refreshExpCards(); refreshStatCards();
+  speakText('已記錄支出 ' + expItem.name + ' ' + amount + ' 元');
+  showToast('✅ 已記錄支出 ' + expItem.name + ' ' + amount + ' 元');
 }
 
 function extractAmount(text) {
@@ -3338,9 +3341,11 @@ window.onload=function(){
   updateNavActive('pageHome');
   updateTodayDateText();
   updateVoiceBtnVisibility();
+  var vsInput = document.getElementById('voiceSeconds');
   var vsToggle = document.getElementById('voiceToggle');
   var tbToggle = document.getElementById('typeBtnToggle');
   var pfToggle = document.getElementById('pageFsToggle');
+  if (vsInput) vsInput.value = config.voiceSeconds;
   if (vsToggle) vsToggle.checked = config.voiceEnabled;
   if (tbToggle) tbToggle.checked = config.typeBtnEnabled;
   if (pfToggle) pfToggle.checked = config.pageFsEnabled;
