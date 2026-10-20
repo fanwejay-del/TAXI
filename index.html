@@ -90,26 +90,36 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .section-title .today-date{font-size:calc(.9px * var(--fs-num));color:#64748b;white-space:nowrap;flex-shrink:0;}
 .section-title .today-net{flex:1 1 auto;text-align:center;color:#059669;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:calc(1px * var(--fs-num));min-width:0;max-width:42%;}
 .sortBtn{border:none;background:#e0f2fe;color:#0369a1;font-size:calc(.85px * var(--fs-num));padding:4px 8px;border-radius:20px;flex-shrink:0;}
-#typeListSet input,#payListSet input,#expListSet input,.setBlock .item input{font-size:calc(.9px * var(--fs-num));padding:3px 6px;height:24px;border-radius:6px;border:1.2px solid #e2e8f0;background:#f8fafc;margin:0;}
+
+/* ★ 重點：只對文字/數字輸入框套樣式，不要影響 checkbox */
+#typeListSet input[type="text"],#typeListSet input[type="number"],
+#payListSet input[type="text"],#payListSet input[type="number"],
+#expListSet input[type="text"],#expListSet input[type="number"],
+.setBlock .item input[type="text"],.setBlock .item input[type="number"]{font-size:calc(.9px * var(--fs-num));padding:3px 6px;height:24px;border-radius:6px;border:1.2px solid #e2e8f0;background:#f8fafc;margin:0;}
 #typeListSet input[type="number"],#payListSet input[type="number"],#expListSet input[type="number"],.setBlock .item input[type="number"]{width:4.5em;max-width:72px;text-align:center;flex-shrink:0;}
-#typeListSet input:not([type="number"]),#payListSet input:not([type="number"]),#expListSet input:not([type="number"]),.setBlock .item input:not([type="number"]){flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;}
+#typeListSet input[type="text"],#payListSet input[type="text"],#expListSet input[type="text"],.setBlock .item input[type="text"]{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;}
+
 .item{background:#fff;padding:2px;margin:2px 0;border-radius:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.05);gap:6px;}
 .color-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.15);cursor:pointer;position:relative;transition:transform .1s;}
 .color-dot:active{transform:scale(.88);}
 .color-dot::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px dashed transparent;}
 .color-dot:hover::after{border-color:#94a3b8;}
 
-/* ===== 支出類型列表內的滑動開關（關鍵修正） ===== */
-#expListSet .vs-toggle{position:relative;width:48px;height:26px;flex-shrink:0;cursor:pointer;display:inline-block;margin:0;}
-#expListSet .vs-toggle input{position:absolute;opacity:0;width:0;height:0;margin:0;padding:0;border:none;background:none;}
-#expListSet .vs-slider{position:absolute;inset:0;background:#cbd5e1;border-radius:26px;transition:background .2s;}
-#expListSet .vs-slider::before{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
-#expListSet .vs-toggle input:checked + .vs-slider{background:#2563eb;}
-#expListSet .vs-toggle input:checked + .vs-slider::before{transform:translateX(22px);}
+/* ===== 滑動開關（通用） ===== */
+.vs-toggle{position:relative;width:48px;height:26px;flex-shrink:0;cursor:pointer;display:inline-block;}
+.vs-toggle input[type="checkbox"]{position:absolute;opacity:0;width:0;height:0;margin:0;padding:0;border:none;background:none;appearance:none;-webkit-appearance:none;pointer-events:none;}
+.vs-toggle .vs-slider{position:absolute;inset:0;background:#cbd5e1;border-radius:26px;transition:background .2s;display:block;}
+.vs-toggle .vs-slider::before{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.vs-toggle input[type="checkbox"]:checked + .vs-slider{background:#2563eb;}
+.vs-toggle input[type="checkbox"]:checked + .vs-slider::before{transform:translateX(22px);}
+
+/* 設定頁裡的特殊位置（沿用通用即可，這裡保留給舊結構） */
+.voice-settings-bar .vs-toggle{margin-left:auto;}
+.setBlock .set-title-row .vs-toggle{margin-left:auto;}
 
 .pageHome-top{flex-shrink:0;}
 
-/* ===== 明細列表優化：間隙縮小 ===== */
+/* ===== 明細列表優化 ===== */
 .home-detail-box{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .home-detail-row{display:grid;grid-template-columns:36px 48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:1px 4px;border-top:1px solid #f1f5f9;font-size:calc(1px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.1;}
 .home-detail-row:active{background:#eff6ff;}
@@ -244,7 +254,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .numBtn:active {transform: translateY(2px) scale(0.98) !important;box-shadow: 0 2px 0 #64748b, 0 3px 8px rgba(0,0,0,0.2) !important;background: #e2e8f0;}
 .payBtn {font-size: clamp(14px, 4vw, 18px) !important;padding: clamp(12px, 4vw, 18px) 4px !important;border: 1.5px solid rgba(0,0,0,0.1);box-shadow: 0 4px 0 rgba(0,0,0,0.25), 0 6px 14px rgba(0,0,0,0.18) !important;text-shadow: 0 1px 3px rgba(0,0,0,0.3);transition: all 0.06s ease;}
 .payBtn:active {transform: translateY(3px) scale(0.97) !important;box-shadow: 0 1px 0 rgba(0,0,0,0.3), 0 3px 8px rgba(0,0,0,0.2) !important;filter: brightness(0.92);}
-#expCatWrap .payBtn {font-size: clamp(14px, 4vw, 18px) !important;}
 .modal-card > button[onclick*="close"] {font-weight: 700;box-shadow: 0 3px 0 #64748b, 0 5px 10px rgba(0,0,0,0.15);transition: all 0.06s ease;}
 .modal-card > button[onclick*="close"]:active {transform: translateY(2px);box-shadow: 0 1px 0 #475569, 0 3px 8px rgba(0,0,0,0.15);}
 #expInputModal .noteInput { margin-top: 4px; }
@@ -287,21 +296,9 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .voice-settings-bar .vs-label{font-size:calc(.95px * var(--fs-num));font-weight:700;color:#0f172a;flex-shrink:0;}
 .voice-settings-bar .vs-help-btn{font-size:calc(.85px * var(--fs-num));padding:5px 8px;border:none;border-radius:8px;background:#dbeafe;color:#2563eb;font-weight:700;cursor:pointer;flex-shrink:0;white-space:nowrap;}
 .voice-settings-bar .vs-help-btn:active{filter:brightness(.9);}
-.voice-settings-bar .vs-toggle{margin-left:auto;position:relative;width:48px;height:26px;flex-shrink:0;cursor:pointer;}
-.voice-settings-bar .vs-toggle input{opacity:0;width:0;height:0;}
-.voice-settings-bar .vs-slider{position:absolute;inset:0;background:#cbd5e1;border-radius:26px;transition:background .2s;}
-.voice-settings-bar .vs-slider::before{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
-.voice-settings-bar .vs-toggle input:checked + .vs-slider{background:#2563eb;}
-.voice-settings-bar .vs-toggle input:checked + .vs-slider::before{transform:translateX(22px);}
 
 .setBlock .set-title-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
 .setBlock .set-title-row h4{margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;flex-shrink:0;}
-.setBlock .set-title-row .vs-toggle{margin-left:auto;position:relative;width:48px;height:26px;flex-shrink:0;cursor:pointer;}
-.setBlock .set-title-row .vs-toggle input{opacity:0;width:0;height:0;}
-.setBlock .set-title-row .vs-slider{position:absolute;inset:0;background:#cbd5e1;border-radius:26px;transition:background .2s;}
-.setBlock .set-title-row .vs-slider::before{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
-.setBlock .set-title-row .vs-toggle input:checked + .vs-slider{background:#2563eb;}
-.setBlock .set-title-row .vs-toggle input:checked + .vs-slider::before{transform:translateX(22px);}
 
 #helpModal{background:rgba(0,0,0,.5);align-items:center;justify-content:center;z-index:400;}
 #helpModal.active{display:flex;}
@@ -2045,7 +2042,7 @@ function renderSetting(){
   config.typeList.forEach(function(t,i){
     var d=document.createElement('div');d.className='item';
     d.innerHTML='<span class="color-dot" style="background:'+escapeHtml(t.color||'#5577aa')+'" onclick="openColorPicker(\'type\','+i+')" title="點我改色"></span>'
-      +'<input value="'+escapeHtml(t.name)+'" oninput="onTypeNameChange('+i+',this.value)" placeholder="類別名稱">'
+      +'<input type="text" value="'+escapeHtml(t.name)+'" oninput="onTypeNameChange('+i+',this.value)" placeholder="類別名稱">'
       +'<div style="display:flex;flex-direction:column;align-items:center;gap:0;">'
       +'<span class="deduct-label">固定扣款</span>'
       +'<input type="number" value="'+t.deduct+'" oninput="onTypeDeductChange('+i+',this.value)" placeholder="扣除">'
@@ -2057,7 +2054,7 @@ function renderSetting(){
   config.payList.forEach(function(p,i){
     var d=document.createElement('div');d.className='item';
     d.innerHTML='<span class="color-dot" style="background:'+escapeHtml(p.color||'#557799')+'" onclick="openColorPicker(\'pay\','+i+')" title="點我改色"></span>'
-      +'<input value="'+escapeHtml(p.name)+'" oninput="onPayNameChange('+i+',this.value)" placeholder="付款名稱">'
+      +'<input type="text" value="'+escapeHtml(p.name)+'" oninput="onPayNameChange('+i+',this.value)" placeholder="付款名稱">'
       +'<input type="number" value="'+p.rate+'" oninput="onPayRateChange('+i+',this.value)" placeholder="趴數">'
       +'<button class="delBtn" onclick="delPayTemp('+i+')">刪除</button>';
     pw.appendChild(d);
@@ -2066,7 +2063,7 @@ function renderSetting(){
   config.expList.forEach(function(e,i){
     var d=document.createElement('div');d.className='item';
     d.innerHTML='<span class="color-dot" style="background:'+escapeHtml(e.color||'#dc2626')+'" onclick="openColorPicker(\'exp\','+i+')" title="點我改色"></span>'
-      +'<input value="'+escapeHtml(e.name)+'" oninput="onExpNameChange('+i+',this.value)" placeholder="支出名稱">'
+      +'<input type="text" value="'+escapeHtml(e.name)+'" oninput="onExpNameChange('+i+',this.value)" placeholder="支出名稱">'
       +'<label class="vs-toggle" style="flex-shrink:0;">'
       +'<input type="checkbox" '+(e.isCost?'checked':'')+' onchange="onExpIsCostChange('+i+',this.checked)">'
       +'<span class="vs-slider"></span>'
@@ -2161,25 +2158,15 @@ function fuzzyMatch(text, keyword) {
   return matchCount >= 2;
 }
 
-/* ===== 新增：TTS 語音回報（同時支援網頁與原生） ===== */
+/* ===== TTS 語音回報（同時支援網頁與原生） ===== */
 function speakText(text) {
-  // 1. 先播放「叮」聲
   _playDing();
-
-  // 2. 延遲 1 秒後開始唸出語音
   setTimeout(function() {
     if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.TextToSpeech) {
       window.Capacitor.Plugins.TextToSpeech.speak({
-        text: text,
-        lang: 'zh-TW',
-        rate: 1.0,
-        pitch: 1.0,
-        volume: 1.0
-      }).catch(function(err) {
-        console.log('原生 TTS 失敗:', err);
-      });
+        text: text, lang: 'zh-TW', rate: 1.0, pitch: 1.0, volume: 1.0
+      }).catch(function(err) { console.log('原生 TTS 失敗:', err); });
     } else {
-      // 網頁版備用方案
       if (!('speechSynthesis' in window)) return;
       try {
         speechSynthesis.cancel();
@@ -2192,12 +2179,10 @@ function speakText(text) {
         speechSynthesis.speak(msg);
       } catch(e) {}
     }
-  }, 1000); // 延遲 1 秒
+  }, 1000);
 }
 
-/* ===== 保留叮聲解鎖 ===== */
 var _audioCtx = null;
-
 function _unlockSpeech() {
   try {
     if (!_audioCtx) {
@@ -2207,7 +2192,6 @@ function _unlockSpeech() {
     if (_audioCtx && _audioCtx.state === 'suspended') _audioCtx.resume();
   } catch (e) {}
 }
-
 function _playDing() {
   try {
     if (!_audioCtx) {
@@ -2234,50 +2218,40 @@ function _playDing() {
 
 function openVoiceModal() {
   if (!config.voiceEnabled) return;
-  _unlockSpeech(); // 解鎖音訊
-
+  _unlockSpeech();
   if (window.AndroidSpeech) {
     voiceRecognizedText = '';
     voiceAutoSaveDone = false;
     var modal = document.getElementById('voiceModal');
-    var countdownEl = document.getElementById('voiceCountdown');
-    var statusEl = document.getElementById('voiceStatus');
-    var textEl = document.getElementById('voiceText');
-    countdownEl.textContent = '...';
-    statusEl.textContent = '正在啟動麥克風...';
-    textEl.innerHTML = '<span style="color:#94a3b8;">（請在系統視窗說話）</span>';
+    document.getElementById('voiceCountdown').textContent = '...';
+    document.getElementById('voiceStatus').textContent = '正在啟動麥克風...';
+    document.getElementById('voiceText').innerHTML = '<span style="color:#94a3b8;">（請在系統視窗說話）</span>';
     modal.classList.add('active');
     window.AndroidSpeech.startListening();
     return;
   }
-
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) {
     showToast('⚠️ 此瀏覽器不支援語音輸入\n請使用 Android Chrome 或安裝 App');
     return;
   }
-
   voiceRecognizedText = '';
   voiceAutoSaveDone = false;
   voiceRemaining = config.voiceSeconds || 5;
-
   var modal2 = document.getElementById('voiceModal');
   var countdownEl2 = document.getElementById('voiceCountdown');
   var statusEl2 = document.getElementById('voiceStatus');
   var textEl2 = document.getElementById('voiceText');
-
   countdownEl2.textContent = voiceRemaining;
   countdownEl2.classList.remove('urgent');
   statusEl2.textContent = '請開始說話⋯';
   textEl2.innerHTML = '<span style="color:#94a3b8;">（等待語音⋯）</span>';
   modal2.classList.add('active');
-
   var voiceRecognition = new SR();
   voiceRecognition.lang = 'zh-TW';
   voiceRecognition.interimResults = true;
   voiceRecognition.continuous = true;
   voiceRecognition.maxAlternatives = 1;
-
   voiceRecognition.onresult = function(event) {
     var currentText = '';
     for (var i = 0; i < event.results.length; i++) {
@@ -2286,7 +2260,6 @@ function openVoiceModal() {
     voiceRecognizedText = currentText;
     renderVoiceText(voiceRecognizedText);
   };
-
   voiceRecognition.onerror = function(e) {
     if (e.error === 'aborted') return;
     if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
@@ -2295,13 +2268,7 @@ function openVoiceModal() {
       statusEl2.textContent = '⚠️ 網路連線異常';
     }
   };
-
-  try {
-    voiceRecognition.start();
-  } catch (e) {
-    statusEl2.textContent = '⚠️ 無法啟動語音辨識';
-  }
-
+  try { voiceRecognition.start(); } catch (e) { statusEl2.textContent = '⚠️ 無法啟動語音辨識'; }
   clearInterval(voiceCountdownTimer);
   voiceCountdownTimer = setInterval(function() {
     voiceRemaining--;
@@ -2367,79 +2334,47 @@ function finishVoiceInput() {
 function processVoiceCommand(text) {
   text = (text || '').replace(/[\s，,。、！!？?]/g, '');
   text = fixVoiceText(text);
-
-  if (!text) {
-    showToast('⚠️ 沒有聽到聲音，請再試一次');
-    return;
-  }
-
+  if (!text) { showToast('⚠️ 沒有聽到聲音，請再試一次'); return; }
   var amount = extractAmount(text);
-  if (!amount || amount <= 0) {
-    showToast('⚠️ 找不到金額\n辨識：「' + text + '」');
-    return;
-  }
-
+  if (!amount || amount <= 0) { showToast('⚠️ 找不到金額\n辨識：「' + text + '」'); return; }
   var matchedType = null, typeLen = 0;
   config.typeList.forEach(function(t) {
-    if (fuzzyMatch(text, t.name) && t.name.length > typeLen) {
-      matchedType = t; typeLen = t.name.length;
-    }
+    if (fuzzyMatch(text, t.name) && t.name.length > typeLen) { matchedType = t; typeLen = t.name.length; }
   });
-
   var matchedExp = null, expLen = 0;
   config.expList.forEach(function(e) {
-    if (fuzzyMatch(text, e.name) && e.name.length > expLen) {
-      matchedExp = e; expLen = e.name.length;
-    }
+    if (fuzzyMatch(text, e.name) && e.name.length > expLen) { matchedExp = e; expLen = e.name.length; }
   });
-
   var matchedPay = null, payLen = 0;
   config.payList.forEach(function(p) {
-    if (fuzzyMatch(text, p.name) && p.name.length > payLen) {
-      matchedPay = p; payLen = p.name.length;
-    }
+    if (fuzzyMatch(text, p.name) && p.name.length > payLen) { matchedPay = p; payLen = p.name.length; }
   });
-
   var isExpense = false;
-  if (matchedExp && !matchedType) {
-    isExpense = true;
-  } else if (matchedExp && matchedType) {
+  if (matchedExp && !matchedType) { isExpense = true; }
+  else if (matchedExp && matchedType) {
     var expPos = text.indexOf(matchedExp.name.slice(0, 2));
     var typePos = text.indexOf(matchedType.name.slice(0, 2));
     isExpense = expPos >= 0 && (typePos < 0 || expPos < typePos);
   }
-
   if (isExpense) {
     let noteText = text;
     noteText = noteText.replace(/[0-9零一二兩三四五六七八九十百千萬]+/g, '');
     if (matchedExp && matchedExp.name) noteText = noteText.replace(matchedExp.name, '');
     noteText = noteText.replace(/備註|备注|說|说/g, '').trim();
-
     saveVoiceExpense(matchedExp, amount, text, noteText);
-    
-    // 呼叫 TTS 語音回報（完整版）
     var speakStrExp = '已記錄支出 ' + matchedExp.name + ' ' + amount + ' 元';
     speakText(speakStrExp);
-    
     let toastMsg = '✅ 已記錄支出\n' + matchedExp.name + ' / ' + amount + ' 元';
     if (noteText) toastMsg += '\n備註：' + noteText;
     showToast(toastMsg, 3000);
     return;
   }
-
   if (!matchedType) matchedType = config.typeList[0];
   if (!matchedPay) matchedPay = config.payList[0];
-  if (!matchedType || !matchedPay) {
-    showToast('⚠️ 設定缺少類別或付款方式');
-    return;
-  }
-
+  if (!matchedType || !matchedPay) { showToast('⚠️ 設定缺少類別或付款方式'); return; }
   saveVoiceIncome(matchedType, matchedPay, amount, text);
-  
-  // 呼叫 TTS 語音回報（完整版）
   var speakStr = '已記錄 ' + matchedType.name + ' ' + matchedPay.name + ' ' + amount + ' 元';
   speakText(speakStr);
-  
   showToast('✅ 已記錄\n' + matchedType.name + ' / ' + matchedPay.name + ' / ' + amount + ' 元', 3000);
 }
 
@@ -2448,12 +2383,10 @@ function saveVoiceIncome(typeItem, payItem, amount, originalText) {
   var fee = amount * Number(payItem.rate || 0) / 100;
   var net = amount - fee - Number(typeItem.deduct || 0);
   if (net < 0) net = 0;
-
   var record = {
     id: nextId(), type: typeItem.name, pay: payItem.name, raw: amount, fee: fee, net: Math.round(net),
     deduct: Number(typeItem.deduct || 0), date: getBizDate(now), time: fmtTime()
   };
-
   if (payItem.name === '好孕券' && amount > 250) {
     record.fee = 0;
     record.net = amount - Number(typeItem.deduct || 0);
@@ -2463,7 +2396,6 @@ function saveVoiceIncome(typeItem, payItem, amount, originalText) {
       { pay: (config.payList[0] && config.payList[0].name) || '現金', amount: amount - 250 }
     ];
   }
-
   var list = getRecords();
   list.unshift(record);
   saveRecords(list);
@@ -2503,9 +2435,8 @@ function cnToNumber(str) {
   for (var i = 0; i < str.length; i++) {
     var ch = str[i];
     if (ch === '零') { hasZero = true; continue; }
-    if (cnMap[ch] !== undefined) {
-      current = cnMap[ch];
-    } else if (unitMap[ch] !== undefined) {
+    if (cnMap[ch] !== undefined) { current = cnMap[ch]; }
+    else if (unitMap[ch] !== undefined) {
       var unit = unitMap[ch];
       if (current === 0) current = 1;
       if (unit === 10000) result = (result + current) * unit;
@@ -2574,7 +2505,6 @@ window.onload=function(){
   setTimeout(fitAllStatText, 100);
 };
 
-// 折疊功能
 function toggleSettingCollapse(id) {
   var content = document.getElementById(id);
   var arrow = document.getElementById(id + 'Arrow');
