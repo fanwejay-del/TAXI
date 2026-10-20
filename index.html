@@ -592,13 +592,14 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
     <div style="display:flex; align-items:center; gap:6px; flex:1;">
       <span style="font-size:calc(.9px * var(--fs-num)); color:#64748b;">小</span>
-      <input type="range" id="fontSizeSlider" min="11" max="20" step="1" value="13" oninput="onFontSizeChange(this.value)" style="flex:1; min-width:0; accent-color:#2563eb;">
+      <input type="range" id="fontSizeSlider" min="11" max="20" step="1" value="13" oninput="onFontSizeChange(this.value)" style="width:110px; flex-shrink:0; accent-color:#2563eb;">
       <span style="font-size:calc(1.3px * var(--fs-num)); color:#64748b;">大</span>
       <span id="fontSizeValue" class="fs-value" style="font-size:13px; color:#64748b; width:20px; text-align:right;">13</span>
     </div>
-    <div style="flex-shrink:0;">
+    <div style="flex-shrink:0; display:flex; align-items:center;">
       <label class="vs-toggle" style="margin:0;">
-        <input type="checkbox" id="pageFsToggle" checked onchange="onPageFsToggleChange(this.checked)"><span class="vs-slider"></span>
+        <input type="checkbox" id="pageFsToggle" checked onchange="onPageFsToggleChange(this.checked)">
+        <span class="vs-slider"></span>
       </label>
     </div>
   </div>
