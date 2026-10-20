@@ -2252,14 +2252,34 @@ function openVoiceModal() {
   voiceRecognition.interimResults = true;
   voiceRecognition.continuous = true;
   voiceRecognition.maxAlternatives = 1;
+  
+  // ★ 修正：避免重複累加與重複字串
   voiceRecognition.onresult = function(event) {
-    var currentText = '';
-    for (var i = 0; i < event.results.length; i++) {
-      currentText += event.results[i][0].transcript;
+    // 1. 先取得「最後一次」的完整辨識結果（避免 interim 累加）
+    var finalTranscript = '';
+    for (var i = event.resultIndex; i < event.results.length; i++) {
+      finalTranscript += event.results[i][0].transcript;
     }
-    voiceRecognizedText = currentText;
+    
+    // 2. 如果這次結果為空，直接跳過
+    if (!finalTranscript) return;
+
+    // 3. 去重複邏輯：如果新結果和上一次「完全一樣」，就不更新
+    if (voiceRecognizedText && finalTranscript === voiceRecognizedText) {
+      return;
+    }
+    
+    // 針對 "500500" 這種重複字串做特別處理：如果後半段等於前半段，只取前半段
+    var halfLen = Math.floor(finalTranscript.length / 2);
+    if (halfLen > 0 && finalTranscript.slice(0, halfLen) === finalTranscript.slice(halfLen)) {
+      finalTranscript = finalTranscript.slice(0, halfLen);
+    }
+
+    // 4. 更新辨識文字（只保留最新一次，不累加）
+    voiceRecognizedText = finalTranscript;
     renderVoiceText(voiceRecognizedText);
   };
+  
   voiceRecognition.onerror = function(e) {
     if (e.error === 'aborted') return;
     if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
@@ -2331,7 +2351,13 @@ function finishVoiceInput() {
   }
 }
 
+// ★ 防連點鎖：避免語音辨識在結尾時連續觸發兩次，導致重複存檔
+var _voiceProcessing = false;
 function processVoiceCommand(text) {
+  if (_voiceProcessing) return;
+  _voiceProcessing = true;
+  setTimeout(function(){ _voiceProcessing = false; }, 1500);
+
   text = (text || '').replace(/[\s，,。、！!？?]/g, '');
   text = fixVoiceText(text);
   if (!text) { showToast('⚠️ 沒有聽到聲音，請再試一次'); return; }
