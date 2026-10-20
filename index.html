@@ -56,11 +56,22 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .noteInput{width:100%;padding:10px 12px;margin-top:10px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:calc(1.05px * var(--fs-num));background:#f8fafc;}
 .noteInput:focus{outline:none;border-color:#2563eb;background:#fff;}
 .delBtn{color:#dc2626;border:none;background:#fef2f2;font-size:calc(.85px * var(--fs-num));padding:4px 8px;border-radius:6px;}
+
+/* ===== 設定頁面折疊優化 ===== */
 .setBlock{margin:4px 0;padding:6px 8px;background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.05);}
 .setBlock h4{margin-bottom:4px;font-size:calc(1px * var(--fs-num));color:#0f172a;}
 .setBlock input[type="number"],.setBlock input[type="text"]{width:100%;padding:6px 8px;margin:2px 0 4px;border-radius:8px;border:1.5px solid #e2e8f0;font-size:calc(1px * var(--fs-num));background:#f8fafc;}
 .setBlock button{padding:6px 10px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-size:calc(1px * var(--fs-num));margin-top:4px;}
 .hour-preview{margin-top:4px;padding:6px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;font-size:calc(.9px * var(--fs-num));color:#0c4a6e;line-height:1.3;}
+
+/* 新增折疊樣式 */
+.collapsible-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:4px 0;}
+.collapsible-header h4{margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;}
+.collapsible-header .arrow{transition:transform 0.2s;font-size:12px;color:#64748b;}
+.collapsible-header.active .arrow{transform:rotate(180deg);}
+.collapsible-content{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed #e2e8f0;}
+.collapsible-content.active{display:block;}
+
 .modal{position:fixed;top:0;left:0;width:100%;height:100%;height:100dvh;background:#fff;display:none;align-items:stretch;justify-content:center;padding:4px;z-index:100;overflow:hidden;}
 .modal.active{display:flex;}
 .modal-card{width:100%;height:100%;padding:4px;display:flex;flex-direction:column;overflow:hidden;background:#fff;}
@@ -320,6 +331,9 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .fs-slider-bar{display:flex;align-items:center;gap:8px;padding:6px 10px;background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin:4px 0;flex-shrink:0;}
 .fs-slider-bar span{font-size:calc(.9px * var(--fs-num));color:#64748b;flex-shrink:0;}
 .fs-slider-bar input[type="range"]{flex:1;min-width:0;accent-color:#2563eb;}
+
+#pwaUpgradeBanner {display: none;background-color: #ef4444;color: white;text-align: center;padding: 10px;font-size: 14px;font-weight: 700;position: sticky;top: 0;z-index: 999;box-shadow: 0 2px 4px rgba(0,0,0,0.2);cursor: pointer;line-height: 1.4;}
+#pwaUpgradeBanner:active {background-color: #dc2626;}
 </style>
 </head>
 <body>
@@ -569,6 +583,16 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </label>
 </div>
 <div class="setBlock"><h4>字型大小</h4><div class="fs-wrap"><span style="font-size:calc(.9px * var(--fs-num));">小</span><input type="range" id="fontSizeSlider" min="11" max="20" step="1" value="13" oninput="onFontSizeChange(this.value)"><span style="font-size:calc(1.3px * var(--fs-num));">大</span><span id="fontSizeValue" class="fs-value">13</span></div></div>
+
+<!-- 語音秒數設定 -->
+<div class="setBlock">
+  <h4>語音輸入秒數</h4>
+  <div style="display:flex;gap:8px;align-items:center;font-size:calc(1px * var(--fs-num));">
+    <input id="setVoiceSeconds" type="number" min="1" max="30" oninput="onVoiceSecondsChange()" style="width:72px;padding:5px;text-align:center;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;">
+    <span>秒 (1~30)</span>
+  </div>
+</div>
+
 <div class="setBlock">
   <div class="set-title-row">
     <h4>頁面顯示字型拉桿</h4>
@@ -588,18 +612,49 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
     <span>結束</span><input id="setEndHour" type="number" min="0" max="23" oninput="onHourChange()" style="width:52px;padding:5px;text-align:center;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;">
   </div>
 </div>
+
+<!-- 營業類別 (折疊) -->
 <div class="setBlock">
-  <div class="set-title-row">
+  <div class="collapsible-header" onclick="toggleSettingCollapse('typeSection')">
     <h4>營業類別</h4>
-    <label class="vs-toggle">
-      <input type="checkbox" id="typeBtnToggle" checked onchange="onTypeBtnToggleChange(this.checked)"><span class="vs-slider"></span>
-    </label>
+    <span class="arrow" id="typeSectionArrow">▼</span>
   </div>
-  <div id="typeListSet"></div>
-  <div style="display:flex;gap:5px;margin-top:5px;"><input id="newTypeName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newTypeDeduct" type="number" placeholder="扣除" style="width:52px;padding:5px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewTypeTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div>
+  <div id="typeSection" class="collapsible-content">
+    <div class="set-title-row">
+      <span style="font-size:12px;color:#64748b;">開啟首頁顯示</span>
+      <label class="vs-toggle">
+        <input type="checkbox" id="typeBtnToggle" checked onchange="onTypeBtnToggleChange(this.checked)"><span class="vs-slider"></span>
+      </label>
+    </div>
+    <div id="typeListSet"></div>
+    <div style="display:flex;gap:5px;margin-top:5px;"><input id="newTypeName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newTypeDeduct" type="number" placeholder="扣除" style="width:52px;padding:5px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewTypeTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div>
+  </div>
 </div>
-<div class="setBlock"><h4>付款方式</h4><div id="payListSet"></div><div style="display:flex;gap:5px;margin-top:5px;"><input id="newPayName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newPayRate" type="number" placeholder="%" style="width:52px;padding:5px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewPayTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div><div style="font-size:11px;color:#94a3b8;margin-top:4px;">※ 好孕卷自動扣除補助250輸入全額即可其餘視為現金</div></div>
-<div class="setBlock"><h4>支出類型（打勾 = 營業成本）</h4><div id="expListSet"></div><div style="display:flex;gap:5px;margin-top:5px;"><input id="newExpName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><button onclick="addNewExpTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div></div>
+
+<!-- 付款方式 (折疊) -->
+<div class="setBlock">
+  <div class="collapsible-header" onclick="toggleSettingCollapse('paySection')">
+    <h4>付款方式</h4>
+    <span class="arrow" id="paySectionArrow">▼</span>
+  </div>
+  <div id="paySection" class="collapsible-content">
+    <div id="payListSet"></div>
+    <div style="display:flex;gap:5px;margin-top:5px;"><input id="newPayName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newPayRate" type="number" placeholder="%" style="width:52px;padding:5px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewPayTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div><div style="font-size:11px;color:#94a3b8;margin-top:4px;">※ 好孕卷自動扣除補助250輸入全額即可其餘視為現金</div>
+  </div>
+</div>
+
+<!-- 支出類型 (折疊) -->
+<div class="setBlock">
+  <div class="collapsible-header" onclick="toggleSettingCollapse('expSection')">
+    <h4>支出類型（打勾 = 營業成本）</h4>
+    <span class="arrow" id="expSectionArrow">▼</span>
+  </div>
+  <div id="expSection" class="collapsible-content">
+    <div id="expListSet"></div>
+    <div style="display:flex;gap:5px;margin-top:5px;"><input id="newExpName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><button onclick="addNewExpTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div>
+  </div>
+</div>
+
 <div class="setBlock"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><h4 style="margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;">資料備份</h4><span style="font-size:calc(.85px * var(--fs-num));color:#64748b;flex:1;text-align:right;">僅紀錄，不含設定</span></div><div class="backup-bar"><button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出</button><button class="backup-btn importBtn" onclick="document.getElementById('fileImport').click()">📥 匯入</button></div><div style="margin-top:8px;font-size:calc(1.3px * var(--fs-num));"><a href="db-js.html" style="color:#2563eb;text-decoration:none;font-weight:700;">(DB轉JSON)</a></div>
 </div>
 <div class="footer-links">
@@ -607,7 +662,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 </div>
 
 <script>
-// 註冊 Service Worker (PWA)
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){});}
 
 var currentType="",editId=null,editExpId=null,historyStack=[],modalAmount="",expModalAmount="",sortNewFirst=true,statViewStack=[],expViewStack=[];
@@ -745,6 +799,13 @@ function syncPageSliders(v){
   });
 }
 function onHourChange(){updateHourPreview();var s=Number(document.getElementById('setStartHour').value),e=Number(document.getElementById('setEndHour').value);if(!Number.isInteger(s)||s<0||s>23)return;if(!Number.isInteger(e)||e<0||e>23)return;config.businessHour={start:s,end:e};saveConfig();}
+
+function onVoiceSecondsChange(){
+  var v = Number(document.getElementById('setVoiceSeconds').value);
+  if(!Number.isInteger(v) || v < 1 || v > 30) return;
+  config.voiceSeconds = v;
+  saveConfig();
+}
 
 function onPageFsToggleChange(checked){
   config.pageFsEnabled=!!checked;
@@ -1073,6 +1134,7 @@ function showPage(id, skipHistory){
     document.getElementById('voiceToggle').checked=config.voiceEnabled;
     document.getElementById('typeBtnToggle').checked=config.typeBtnEnabled;
     document.getElementById('pageFsToggle').checked=config.pageFsEnabled;
+    document.getElementById('setVoiceSeconds').value=config.voiceSeconds;
     updateHourPreview();renderSetting();
   }
   if(id==='pageStat')showStatDefault();
@@ -2085,31 +2147,33 @@ function speakText(text) {
   // 1. 先播放「叮」聲
   _playDing();
 
-  // 2. 判斷是否在 Capacitor App 環境中
-  if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.TextToSpeech) {
-    window.Capacitor.Plugins.TextToSpeech.speak({
-      text: text,
-      lang: 'zh-TW',
-      rate: 1.0,
-      pitch: 1.0,
-      volume: 1.0
-    }).catch(function(err) {
-      console.log('原生 TTS 失敗:', err);
-    });
-  } else {
-    // 網頁版備用方案
-    if (!('speechSynthesis' in window)) return;
-    try {
-      speechSynthesis.cancel();
-      var msg = new SpeechSynthesisUtterance(text);
-      msg.lang = 'zh-TW';
-      msg.rate = 1.0;
-      var voices = speechSynthesis.getVoices();
-      var zhVoice = voices.find(function(v) { return v.lang.indexOf('zh') === 0; });
-      if (zhVoice) msg.voice = zhVoice;
-      speechSynthesis.speak(msg);
-    } catch(e) {}
-  }
+  // 2. 延遲 1 秒後開始唸出語音
+  setTimeout(function() {
+    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.TextToSpeech) {
+      window.Capacitor.Plugins.TextToSpeech.speak({
+        text: text,
+        lang: 'zh-TW',
+        rate: 1.0,
+        pitch: 1.0,
+        volume: 1.0
+      }).catch(function(err) {
+        console.log('原生 TTS 失敗:', err);
+      });
+    } else {
+      // 網頁版備用方案
+      if (!('speechSynthesis' in window)) return;
+      try {
+        speechSynthesis.cancel();
+        var msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'zh-TW';
+        msg.rate = 1.0;
+        var voices = speechSynthesis.getVoices();
+        var zhVoice = voices.find(function(v) { return v.lang.indexOf('zh') === 0; });
+        if (zhVoice) msg.voice = zhVoice;
+        speechSynthesis.speak(msg);
+      } catch(e) {}
+    }
+  }, 1000); // 延遲 1 秒
 }
 
 /* ===== 保留叮聲解鎖 ===== */
@@ -2334,8 +2398,9 @@ function processVoiceCommand(text) {
 
     saveVoiceExpense(matchedExp, amount, text, noteText);
     
-    // 呼叫 TTS 語音回報（短版）
-    speakText('已記錄支出 ' + amount + ' 元');
+    // 呼叫 TTS 語音回報（完整版）
+    var speakStrExp = '已記錄支出 ' + matchedExp.name + ' ' + amount + ' 元';
+    speakText(speakStrExp);
     
     let toastMsg = '✅ 已記錄支出\n' + matchedExp.name + ' / ' + amount + ' 元';
     if (noteText) toastMsg += '\n備註：' + noteText;
@@ -2352,8 +2417,9 @@ function processVoiceCommand(text) {
 
   saveVoiceIncome(matchedType, matchedPay, amount, text);
   
-  // 呼叫 TTS 語音回報（短版）
-  speakText('已記錄 ' + amount + ' 元');
+  // 呼叫 TTS 語音回報（完整版）
+  var speakStr = '已記錄 ' + matchedType.name + ' ' + matchedPay.name + ' ' + amount + ' 元';
+  speakText(speakStr);
   
   showToast('✅ 已記錄\n' + matchedType.name + ' / ' + matchedPay.name + ' / ' + amount + ' 元', 3000);
 }
@@ -2488,6 +2554,19 @@ window.onload=function(){
   updatePageFsBars();
   setTimeout(fitAllStatText, 100);
 };
+
+// 折疊功能
+function toggleSettingCollapse(id) {
+  var content = document.getElementById(id);
+  var arrow = document.getElementById(id + 'Arrow');
+  if (content.classList.contains('active')) {
+    content.classList.remove('active');
+    arrow.classList.remove('active');
+  } else {
+    content.classList.add('active');
+    arrow.classList.add('active');
+  }
+}
 </script>
 </body>
 </html>
