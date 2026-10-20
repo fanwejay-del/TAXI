@@ -207,7 +207,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .exp-summary-card .exp-summary-body .pair span{color:#64748b;font-size:calc(.84px * var(--fs-num));overflow:hidden;text-overflow:ellipsis;min-width:0;}
 .exp-summary-card .exp-summary-body .pair strong{color:#dc2626;font-size:calc(.96px * var(--fs-num));font-variant-numeric:tabular-nums;display:inline-block;min-width:2em;text-align:right;flex-shrink:0;}
 .exp-summary-card .exp-summary-body .pair .sub{font-size:calc(.78px * var(--fs-num));color:#94a3b8;font-weight:700;}
-.exp-cost-check{width:14px;height:14px;flex-shrink:0;cursor:pointer;accent-color:#ea580c;margin:0;}
 
 #daySummaryCard{display:flex;flex-direction:column;gap:2px;width:100%;font-size:calc(1.1px * var(--fs-num));line-height:1.15;}
 #daySummaryCard .summary-line1,#daySummaryCard .summary-line2{display:flex;flex-wrap:wrap;align-items:baseline;gap:1px 8px;width:100%;}
@@ -652,7 +651,10 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <!-- 支出類型 (折疊) -->
 <div class="setBlock">
   <div class="collapsible-header" onclick="toggleSettingCollapse('expSection')">
-    <h4>支出類型（打勾 = 營業成本）</h4>
+    <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:0;">
+      <h4 style="margin:0;">支出類型</h4>
+      <span style="font-size:calc(.8px * var(--fs-num)); color:#64748b; white-space:nowrap;">開啟為營業成本</span>
+    </div>
     <span class="arrow" id="expSectionArrow">▼</span>
   </div>
   <div id="expSection" class="collapsible-content">
@@ -817,19 +819,6 @@ function onPageFsToggleChange(checked){
   config.pageFsEnabled=!!checked;
   saveConfig();
   updatePageFsBars();
-  
-  // 更新開關滑動視覺效果
-  var dot = document.getElementById('pageFsDot');
-  var slider = document.querySelector('#pageFsToggle + .vs-slider');
-  if (dot && slider) {
-    if (checked) {
-      dot.style.transform = 'translateX(0)';
-      slider.style.background = '#2563eb';
-    } else {
-      dot.style.transform = 'translateX(-22px)';
-      slider.style.background = '#cbd5e1';
-    }
-  }
 }
 function updatePageFsBars(){
   var bars=document.querySelectorAll('.page-fs-bar');
@@ -2070,7 +2059,10 @@ function renderSetting(){
     var d=document.createElement('div');d.className='item';
     d.innerHTML='<span class="color-dot" style="background:'+escapeHtml(e.color||'#dc2626')+'" onclick="openColorPicker(\'exp\','+i+')" title="點我改色"></span>'
       +'<input value="'+escapeHtml(e.name)+'" oninput="onExpNameChange('+i+',this.value)" placeholder="支出名稱">'
-      +'<input type="checkbox" class="exp-cost-check" '+(e.isCost?'checked':'')+' onchange="onExpIsCostChange('+i+',this.checked)" title="打勾 = 營業成本">'
+      +'<label class="vs-toggle" style="flex-shrink:0;">'
+      +'<input type="checkbox" '+(e.isCost?'checked':'')+' onchange="onExpIsCostChange('+i+',this.checked)">'
+      +'<span class="vs-slider"></span>'
+      +'</label>'
       +'<button class="delBtn" onclick="delExpTemp('+i+')">刪除</button>';
     ew.appendChild(d);
   });
@@ -2583,7 +2575,7 @@ function toggleSettingCollapse(id) {
     arrow.classList.remove('active');
   } else {
     content.classList.add('active');
-    arrow.classList.add('active');
+    arrow.classList.active;
   }
 }
 </script>
