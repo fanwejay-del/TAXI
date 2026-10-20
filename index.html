@@ -585,18 +585,19 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 </div>
 
 <div class="setBlock">
-  <h4>字型大小</h4>
-  <div class="fs-wrap"><span style="font-size:calc(.9px * var(--fs-num));">小</span><input type="range" id="fontSizeSlider" min="11" max="20" step="1" value="13" oninput="onFontSizeChange(this.value)"><span style="font-size:calc(1.3px * var(--fs-num));">大</span><span id="fontSizeValue" class="fs-value">13</span></div>
-</div>
-
-<div class="setBlock">
-  <div class="set-title-row">
-    <h4>全頁拉桿</h4>
+  <div class="set-title-row" style="margin-bottom:8px;">
+    <h4 style="margin:0;">字型大小</h4>
+    <span style="font-size:calc(.85px * var(--fs-num));color:#64748b;margin-left:auto;margin-right:6px;">全頁拉桿</span>
     <label class="vs-toggle">
       <input type="checkbox" id="pageFsToggle" checked onchange="onPageFsToggleChange(this.checked)"><span class="vs-slider"></span>
     </label>
   </div>
-  <div style="font-size:calc(.85px * var(--fs-num));color:#64748b;line-height:1.5;">開啟後，首頁、統計頁、支出頁面會顯示字型大小拉桿，可直接在頁面上調整字型大小。</div>
+  <div class="fs-wrap" style="display:flex;align-items:center;gap:8px;">
+    <span style="font-size:calc(.9px * var(--fs-num));color:#64748b;">小</span>
+    <input type="range" id="fontSizeSlider" min="11" max="20" step="1" value="13" oninput="onFontSizeChange(this.value)" style="flex:1;min-width:0;accent-color:#2563eb;">
+    <span style="font-size:calc(1.3px * var(--fs-num));color:#64748b;">大</span>
+    <span id="fontSizeValue" class="fs-value" style="font-size:13px;color:#64748b;width:20px;text-align:right;">13</span>
+  </div>
 </div>
 
 <div class="setBlock">
