@@ -817,6 +817,19 @@ function onPageFsToggleChange(checked){
   config.pageFsEnabled=!!checked;
   saveConfig();
   updatePageFsBars();
+  
+  // 更新開關滑動視覺效果
+  var dot = document.getElementById('pageFsDot');
+  var slider = document.querySelector('#pageFsToggle + .vs-slider');
+  if (dot && slider) {
+    if (checked) {
+      dot.style.transform = 'translateX(0)';
+      slider.style.background = '#2563eb';
+    } else {
+      dot.style.transform = 'translateX(-22px)';
+      slider.style.background = '#cbd5e1';
+    }
+  }
 }
 function updatePageFsBars(){
   var bars=document.querySelectorAll('.page-fs-bar');
