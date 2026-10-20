@@ -464,7 +464,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
       <h4>【儲存後】</h4>
       <ul>
         <li>畫面中央會出現「✅ 已記錄⋯」提示，2.5 秒後自動消失</li>
-        <li>手機會發出「叮」聲提示</li>
+        <li>手機會發出「叮」聲並<b>語音唸出</b>「已記錄 500 元」</li>
         <li>首頁列表馬上出現這筆記錄</li>
       </ul>
     </div>
@@ -2098,6 +2098,38 @@ function fuzzyMatch(text, keyword) {
   return matchCount >= 2;
 }
 
+/* ===== 新增：TTS 語音回報（同時支援網頁與原生） ===== */
+function speakText(text) {
+  // 1. 先播放「叮」聲
+  _playDing();
+
+  // 2. 判斷是否在 Capacitor App 環境中
+  if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.TextToSpeech) {
+    window.Capacitor.Plugins.TextToSpeech.speak({
+      text: text,
+      lang: 'zh-TW',
+      rate: 1.0,
+      pitch: 1.0,
+      volume: 1.0
+    }).catch(function(err) {
+      console.log('原生 TTS 失敗:', err);
+    });
+  } else {
+    // 網頁版備用方案
+    if (!('speechSynthesis' in window)) return;
+    try {
+      speechSynthesis.cancel();
+      var msg = new SpeechSynthesisUtterance(text);
+      msg.lang = 'zh-TW';
+      msg.rate = 1.0;
+      var voices = speechSynthesis.getVoices();
+      var zhVoice = voices.find(function(v) { return v.lang.indexOf('zh') === 0; });
+      if (zhVoice) msg.voice = zhVoice;
+      speechSynthesis.speak(msg);
+    } catch(e) {}
+  }
+}
+
 /* ===== 保留叮聲解鎖 ===== */
 var _audioCtx = null;
 
@@ -2319,7 +2351,9 @@ function processVoiceCommand(text) {
     noteText = noteText.replace(/備註|备注|說|说/g, '').trim();
 
     saveVoiceExpense(matchedExp, amount, text, noteText);
-    _playDing();
+    
+    // 呼叫 TTS 語音回報（短版）
+    speakText('已記錄支出 ' + amount + ' 元');
     
     let toastMsg = '✅ 已記錄支出\n' + matchedExp.name + ' / ' + amount + ' 元';
     if (noteText) toastMsg += '\n備註：' + noteText;
@@ -2335,7 +2369,10 @@ function processVoiceCommand(text) {
   }
 
   saveVoiceIncome(matchedType, matchedPay, amount, text);
-  _playDing();
+  
+  // 呼叫 TTS 語音回報（短版）
+  speakText('已記錄 ' + amount + ' 元');
+  
   showToast('✅ 已記錄\n' + matchedType.name + ' / ' + matchedPay.name + ' / ' + amount + ' 元', 3000);
 }
 
