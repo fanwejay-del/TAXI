@@ -331,9 +331,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .fs-slider-bar{display:flex;align-items:center;gap:8px;padding:6px 10px;background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin:4px 0;flex-shrink:0;}
 .fs-slider-bar span{font-size:calc(.9px * var(--fs-num));color:#64748b;flex-shrink:0;}
 .fs-slider-bar input[type="range"]{flex:1;min-width:0;accent-color:#2563eb;}
-
-#pwaUpgradeBanner {display: none;background-color: #ef4444;color: white;text-align: center;padding: 10px;font-size: 14px;font-weight: 700;position: sticky;top: 0;z-index: 999;box-shadow: 0 2px 4px rgba(0,0,0,0.2);cursor: pointer;line-height: 1.4;}
-#pwaUpgradeBanner:active {background-color: #dc2626;}
 </style>
 </head>
 <body>
@@ -577,31 +574,31 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <div class="voice-settings-bar">
   <span class="vs-icon">🎤</span><span class="vs-label">語音輸入</span>
   <button class="vs-help-btn" onclick="openHelpModal()">📖 說明</button>
-  <label class="vs-toggle">
-    <input type="checkbox" id="voiceToggle" checked onchange="onVoiceToggleChange(this.checked)">
-    <span class="vs-slider"></span>
-  </label>
-</div>
-<div class="setBlock"><h4>字型大小</h4><div class="fs-wrap"><span style="font-size:calc(.9px * var(--fs-num));">小</span><input type="range" id="fontSizeSlider" min="11" max="20" step="1" value="13" oninput="onFontSizeChange(this.value)"><span style="font-size:calc(1.3px * var(--fs-num));">大</span><span id="fontSizeValue" class="fs-value">13</span></div></div>
-
-<!-- 語音秒數設定 -->
-<div class="setBlock">
-  <h4>語音輸入秒數</h4>
-  <div style="display:flex;gap:8px;align-items:center;font-size:calc(1px * var(--fs-num));">
-    <input id="setVoiceSeconds" type="number" min="1" max="30" oninput="onVoiceSecondsChange()" style="width:72px;padding:5px;text-align:center;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;">
-    <span>秒 (1~30)</span>
+  <div style="display:flex;align-items:center;gap:4px;margin-left:auto;">
+    <input id="setVoiceSeconds" type="number" min="1" max="30" oninput="onVoiceSecondsChange()" style="width:50px;padding:4px;text-align:center;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;">
+    <span style="font-size:11px;color:#64748b;">秒</span>
+    <label class="vs-toggle">
+      <input type="checkbox" id="voiceToggle" checked onchange="onVoiceToggleChange(this.checked)">
+      <span class="vs-slider"></span>
+    </label>
   </div>
 </div>
 
 <div class="setBlock">
+  <h4>字型大小</h4>
+  <div class="fs-wrap"><span style="font-size:calc(.9px * var(--fs-num));">小</span><input type="range" id="fontSizeSlider" min="11" max="20" step="1" value="13" oninput="onFontSizeChange(this.value)"><span style="font-size:calc(1.3px * var(--fs-num));">大</span><span id="fontSizeValue" class="fs-value">13</span></div>
+</div>
+
+<div class="setBlock">
   <div class="set-title-row">
-    <h4>頁面顯示字型拉桿</h4>
+    <h4>全頁拉桿</h4>
     <label class="vs-toggle">
       <input type="checkbox" id="pageFsToggle" checked onchange="onPageFsToggleChange(this.checked)"><span class="vs-slider"></span>
     </label>
   </div>
   <div style="font-size:calc(.85px * var(--fs-num));color:#64748b;line-height:1.5;">開啟後，首頁、統計頁、支出頁面會顯示字型大小拉桿，可直接在頁面上調整字型大小。</div>
 </div>
+
 <div class="setBlock">
   <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
     <h4 style="margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;flex-shrink:0;">營業時間</h4>
