@@ -2139,26 +2139,24 @@ function fixVoiceText(text) {
 }
 
 function fuzzyMatch(text, keyword) {
-  if (!keyword) return false;
-  if (keyword.length < 2) return text.indexOf(keyword) >= 0;
+  if (!text || !keyword) return false;
+
+  if (text.indexOf(keyword) !== -1) return true;
+
+  if (keyword.length <= 1) return false;
+
   if (keyword.length === 2) {
-    for (var i = 0; i < 2; i++) {
-      if (text.indexOf(keyword[i]) >= 0) return true;
-    }
-    return false;
+    return text.indexOf(keyword) !== -1;
   }
+
   for (var i = 0; i <= keyword.length - 2; i++) {
-    var twoChars = keyword.slice(i, i + 2);
-    if (text.indexOf(twoChars) >= 0) return true;
+    var pair = keyword.slice(i, i + 2);
+    if (text.indexOf(pair) !== -1) return true;
   }
-  var matchCount = 0;
-  for (var j = 0; j < keyword.length; j++) {
-    if (text.indexOf(keyword[j]) >= 0) matchCount++;
-  }
-  return matchCount >= 2;
+
+  return false;
 }
 
-/* ===== TTS 語音回報（同時支援網頁與原生） ===== */
 function speakText(text) {
   _playDing();
   setTimeout(function() {
@@ -2219,17 +2217,60 @@ function _playDing() {
 function openVoiceModal() {
   if (!config.voiceEnabled) return;
   _unlockSpeech();
+
+  if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SpeechRecognition) {
+    var SR_Native = window.Capacitor.Plugins.SpeechRecognition;
+
+    if (window._srNativeListener && window._srNativeListener.remove) {
+      try { window._srNativeListener.remove(); } catch (e) {}
+      window._srNativeListener = null;
+    }
+
+    voiceRecognizedText = '';
+    voiceAutoSaveDone = false;
+
+    var modalN = document.getElementById('voiceModal');
+    document.getElementById('voiceCountdown').textContent = '...';
+    document.getElementById('voiceCountdown').classList.remove('urgent');
+    document.getElementById('voiceCountdown').style.color = '#2563eb';
+    document.getElementById('voiceStatus').textContent = '正在啟動原生麥克風...';
+    document.getElementById('voiceText').innerHTML = '<span style="color:#94a3b8;">（請開始說話⋯）</span>';
+    modalN.classList.add('active');
+
+    window._srNativeListener = SR_Native.addListener('partialResults', function (data) {
+      if (data && data.matches && data.matches.length > 0) {
+        var text = data.matches[0];
+        if (text && text !== voiceRecognizedText) {
+          receiveNativeSpeech(text);
+        }
+      }
+    });
+
+    SR_Native.stop().catch(function(){}).finally(function() {
+      SR_Native.start({
+        language: 'zh-TW',
+        maxResults: 1,
+        prompt: '請說出類別與金額',
+        partialResults: true
+      }).catch(function (err) {
+        document.getElementById('voiceStatus').textContent = '⚠️ 無法啟動原生語音：' + err;
+      });
+    });
+    return;
+  }
+
   if (window.AndroidSpeech) {
     voiceRecognizedText = '';
     voiceAutoSaveDone = false;
-    var modal = document.getElementById('voiceModal');
+    var modalA = document.getElementById('voiceModal');
     document.getElementById('voiceCountdown').textContent = '...';
     document.getElementById('voiceStatus').textContent = '正在啟動麥克風...';
     document.getElementById('voiceText').innerHTML = '<span style="color:#94a3b8;">（請在系統視窗說話）</span>';
-    modal.classList.add('active');
+    modalA.classList.add('active');
     window.AndroidSpeech.startListening();
     return;
   }
+
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) {
     showToast('⚠️ 此瀏覽器不支援語音輸入\n請使用 Android Chrome 或安裝 App');
@@ -2244,6 +2285,7 @@ function openVoiceModal() {
   var textEl2 = document.getElementById('voiceText');
   countdownEl2.textContent = voiceRemaining;
   countdownEl2.classList.remove('urgent');
+  countdownEl2.style.color = '#2563eb';
   statusEl2.textContent = '請開始說話⋯';
   textEl2.innerHTML = '<span style="color:#94a3b8;">（等待語音⋯）</span>';
   modal2.classList.add('active');
@@ -2253,29 +2295,19 @@ function openVoiceModal() {
   voiceRecognition.continuous = true;
   voiceRecognition.maxAlternatives = 1;
   
-  // ★ 修正：避免重複累加與重複字串
   voiceRecognition.onresult = function(event) {
-    // 1. 先取得「最後一次」的完整辨識結果（避免 interim 累加）
     var finalTranscript = '';
     for (var i = event.resultIndex; i < event.results.length; i++) {
       finalTranscript += event.results[i][0].transcript;
     }
-    
-    // 2. 如果這次結果為空，直接跳過
     if (!finalTranscript) return;
-
-    // 3. 去重複邏輯：如果新結果和上一次「完全一樣」，就不更新
     if (voiceRecognizedText && finalTranscript === voiceRecognizedText) {
       return;
     }
-    
-    // 針對 "500500" 這種重複字串做特別處理：如果後半段等於前半段，只取前半段
     var halfLen = Math.floor(finalTranscript.length / 2);
     if (halfLen > 0 && finalTranscript.slice(0, halfLen) === finalTranscript.slice(halfLen)) {
       finalTranscript = finalTranscript.slice(0, halfLen);
     }
-
-    // 4. 更新辨識文字（只保留最新一次，不累加）
     voiceRecognizedText = finalTranscript;
     renderVoiceText(voiceRecognizedText);
   };
@@ -2303,6 +2335,10 @@ function openVoiceModal() {
 }
 
 function receiveNativeSpeech(text) {
+  if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SpeechRecognition) {
+    try { window.Capacitor.Plugins.SpeechRecognition.stop(); } catch (e) {}
+  }
+
   if (!text) {
     document.getElementById('voiceModal').classList.remove('active');
     showToast('⚠️ 沒有收到語音內容');
@@ -2314,6 +2350,7 @@ function receiveNativeSpeech(text) {
   document.getElementById('voiceCountdown').style.color = '#16a34a';
   voiceRecognizedText = text;
   renderVoiceText(voiceRecognizedText);
+  
   setTimeout(function() {
     document.getElementById('voiceModal').classList.remove('active');
     processVoiceCommand(voiceRecognizedText);
@@ -2351,18 +2388,25 @@ function finishVoiceInput() {
   }
 }
 
-// ★ 防連點鎖：避免語音辨識在結尾時連續觸發兩次，導致重複存檔
 var _voiceProcessing = false;
 function processVoiceCommand(text) {
-  if (_voiceProcessing) return;
+  if (_voiceProcessing) return false;
+
   _voiceProcessing = true;
-  setTimeout(function(){ _voiceProcessing = false; }, 1500);
+  try {
+    setTimeout(function() {
+      _voiceProcessing = false;
+    }, 2000);
+  } catch (e) {
+    _voiceProcessing = false;
+  }
 
   text = (text || '').replace(/[\s，,。、！!？?]/g, '');
   text = fixVoiceText(text);
   if (!text) { showToast('⚠️ 沒有聽到聲音，請再試一次'); return; }
   var amount = extractAmount(text);
   if (!amount || amount <= 0) { showToast('⚠️ 找不到金額\n辨識：「' + text + '」'); return; }
+  
   var matchedType = null, typeLen = 0;
   config.typeList.forEach(function(t) {
     if (fuzzyMatch(text, t.name) && t.name.length > typeLen) { matchedType = t; typeLen = t.name.length; }
@@ -2375,6 +2419,7 @@ function processVoiceCommand(text) {
   config.payList.forEach(function(p) {
     if (fuzzyMatch(text, p.name) && p.name.length > payLen) { matchedPay = p; payLen = p.name.length; }
   });
+  
   var isExpense = false;
   if (matchedExp && !matchedType) { isExpense = true; }
   else if (matchedExp && matchedType) {
@@ -2382,11 +2427,13 @@ function processVoiceCommand(text) {
     var typePos = text.indexOf(matchedType.name.slice(0, 2));
     isExpense = expPos >= 0 && (typePos < 0 || expPos < typePos);
   }
+  
   if (isExpense) {
     let noteText = text;
-    noteText = noteText.replace(/[0-9零一二兩三四五六七八九十百千萬]+/g, '');
+    noteText = noteText.replace(/[0-9零〇一二兩三四五六七八九十百千萬]+/g, '');
     if (matchedExp && matchedExp.name) noteText = noteText.replace(matchedExp.name, '');
     noteText = noteText.replace(/備註|备注|說|说/g, '').trim();
+    
     saveVoiceExpense(matchedExp, amount, text, noteText);
     var speakStrExp = '已記錄支出 ' + matchedExp.name + ' ' + amount + ' 元';
     speakText(speakStrExp);
@@ -2395,9 +2442,11 @@ function processVoiceCommand(text) {
     showToast(toastMsg, 3000);
     return;
   }
+  
   if (!matchedType) matchedType = config.typeList[0];
   if (!matchedPay) matchedPay = config.payList[0];
   if (!matchedType || !matchedPay) { showToast('⚠️ 設定缺少類別或付款方式'); return; }
+  
   saveVoiceIncome(matchedType, matchedPay, amount, text);
   var speakStr = '已記錄 ' + matchedType.name + ' ' + matchedPay.name + ' ' + amount + ' 元';
   speakText(speakStr);
@@ -2440,43 +2489,63 @@ function saveVoiceExpense(expItem, amount, originalText, noteText) {
 }
 
 function extractAmount(text) {
-  var m = text.match(/\d+/);
-  if (m) return Number(m[0]);
-  var cnPattern = /[零一二兩三四五六七八九十百千萬]+/g;
-  var matches = text.match(cnPattern);
-  if (matches) {
-    for (var i = 0; i < matches.length; i++) {
-      var n = cnToNumber(matches[i]);
-      if (n > 0) return n;
-    }
+  if (!text) return null;
+
+  var match = text.match(/\d+/);
+  if (match) {
+    var amount = Number(match[0]);
+    return Number.isFinite(amount) && amount > 0 ? amount : null;
   }
+
+  var cnPattern = /[零〇一二兩三四五六七八九十百千萬]+/g;
+  var matches = text.match(cnPattern);
+
+  if (!matches) return null;
+
+  for (var i = 0; i < matches.length; i++) {
+    var number = cnToNumber(matches[i]);
+    if (number > 0) return number;
+  }
+
   return null;
 }
 
 function cnToNumber(str) {
   if (!str) return 0;
-  var cnMap = {'零':0,'一':1,'二':2,'兩':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9};
-  var unitMap = {'十':10,'百':100,'千':1000,'萬':10000};
-  var result = 0, current = 0, lastUnit = 0, hasZero = false;
+
+  var digitMap = {
+    '零': 0, '〇': 0,
+    '一': 1, '二': 2, '兩': 2,
+    '三': 3, '四': 4, '五': 5,
+    '六': 6, '七': 7, '八': 8, '九': 9
+  };
+
+  var unitMap = {
+    '十': 10, '百': 100, '千': 1000
+  };
+
+  var total = 0;
+  var section = 0;
+  var number = 0;
+
   for (var i = 0; i < str.length; i++) {
     var ch = str[i];
-    if (ch === '零') { hasZero = true; continue; }
-    if (cnMap[ch] !== undefined) { current = cnMap[ch]; }
-    else if (unitMap[ch] !== undefined) {
+
+    if (digitMap[ch] !== undefined) {
+      number = digitMap[ch];
+    } else if (unitMap[ch]) {
       var unit = unitMap[ch];
-      if (current === 0) current = 1;
-      if (unit === 10000) result = (result + current) * unit;
-      else result += current * unit;
-      lastUnit = unit;
-      current = 0;
-      hasZero = false;
+      section += (number || 1) * unit;
+      number = 0;
+    } else if (ch === '萬') {
+      section += number;
+      total += (section || 1) * 10000;
+      section = 0;
+      number = 0;
     }
   }
-  if (current > 0) {
-    if (!hasZero && lastUnit >= 100) result += current * (lastUnit / 10);
-    else result += current;
-  }
-  return result;
+
+  return total + section + number;
 }
 
 function showToast(msg, duration) {
