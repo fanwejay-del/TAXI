@@ -56,7 +56,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .noteInput{width:100%;padding:10px 12px;margin-top:10px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:calc(1.05px * var(--fs-num));background:#f8fafc;}
 .noteInput:focus{outline:none;border-color:#2563eb;background:#fff;}
 .delBtn{color:#dc2626;border:none;background:#fef2f2;font-size:calc(.85px * var(--fs-num));padding:4px 8px;border-radius:6px;}
-.kwBtn{color:#2563eb;border:none;background:#dbeafe;font-size:calc(.85px * var(--fs-num));padding:4px 8px;border-radius:6px;}
+.kwBtn{color:#2563eb;border:none;background:#dbeafe;font-size:calc(.9px * var(--fs-num));padding:3px 6px;border-radius:6px;height:24px;line-height:1;flex-shrink:0;white-space:nowrap;}
 
 /* ===== 設定頁面折疊優化 ===== */
 .setBlock{margin:4px 0;padding:6px 8px;background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.05);}
@@ -339,6 +339,26 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 
 #pwaUpgradeBanner {display: none;background-color: #ef4444;color: white;text-align: center;padding: 10px;font-size: 14px;font-weight: 700;position: sticky;top: 0;z-index: 999;box-shadow: 0 2px 4px rgba(0,0,0,0.2);cursor: pointer;line-height: 1.4;}
 #pwaUpgradeBanner:active {background-color: #dc2626;}
+
+/* ===== 關鍵字編輯 Modal ===== */
+#kwModal{background:rgba(0,0,0,.5);align-items:center;justify-content:center;z-index:600;}
+#kwModal.active{display:flex;}
+#kwModal .kw-box{background:#fff;border-radius:16px;padding:18px 16px;box-shadow:0 8px 30px rgba(0,0,0,.3);max-width:380px;width:calc(100% - 24px);max-height:80vh;display:flex;flex-direction:column;}
+#kwModal .kw-title{font-size:16px;font-weight:800;color:#0f172a;margin-bottom:4px;text-align:center;flex-shrink:0;}
+#kwModal .kw-sub{font-size:12px;color:#64748b;margin-bottom:10px;text-align:center;flex-shrink:0;}
+#kwModal .kw-list{overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1;min-height:40px;max-height:40vh;margin-bottom:10px;display:flex;flex-direction:column;gap:4px;}
+#kwModal .kw-empty{text-align:center;color:#94a3b8;font-size:13px;padding:16px 8px;}
+#kwModal .kw-item{display:flex;justify-content:space-between;align-items:center;gap:6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:6px 10px;font-size:14px;color:#1e293b;word-break:break-all;}
+#kwModal .kw-item .kw-text{flex:1;min-width:0;}
+#kwModal .kw-item .kw-del{flex-shrink:0;border:none;background:#fef2f2;color:#dc2626;font-size:12px;font-weight:700;padding:4px 8px;border-radius:6px;cursor:pointer;}
+#kwModal .kw-item .kw-del:active{filter:brightness(.9);}
+#kwModal .kw-add-row{display:flex;gap:6px;flex-shrink:0;}
+#kwModal .kw-add-row input{flex:1;min-width:0;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:15px;background:#f8fafc;}
+#kwModal .kw-add-row input:focus{outline:none;border-color:#2563eb;background:#fff;}
+#kwModal .kw-add-row button{padding:10px 14px;border:none;border-radius:10px;background:#2563eb;color:#fff;font-size:14px;font-weight:700;cursor:pointer;flex-shrink:0;}
+#kwModal .kw-add-row button:active{filter:brightness(.9);}
+#kwModal .kw-close{width:100%;padding:12px;margin-top:10px;border:none;border-radius:10px;background:#e2e8f0;color:#475569;font-size:14px;font-weight:700;cursor:pointer;flex-shrink:0;}
+#kwModal .kw-close:active{filter:brightness(.9);}
 </style>
 </head>
 <body>
@@ -429,6 +449,20 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </div>
 </div>
 
+<!-- 關鍵字編輯 Modal -->
+<div id="kwModal" class="modal">
+  <div class="kw-box">
+    <div class="kw-title" id="kwTitle">語音辨識關鍵字</div>
+    <div class="kw-sub">這些詞也會被辨識成此類別（可用逗號一次新增多個）</div>
+    <div class="kw-list" id="kwList"></div>
+    <div class="kw-add-row">
+      <input id="kwInput" type="text" placeholder="輸入關鍵字，如：太淺,台淺" onkeydown="if(event.key==='Enter')addKeywordFromInput()">
+      <button onclick="addKeywordFromInput()">新增</button>
+    </div>
+    <button class="kw-close" onclick="closeKwModal()">關閉</button>
+  </div>
+</div>
+
 <div id="voiceModal" class="modal">
   <div class="voice-box">
     <div id="voiceCountdown" class="voice-countdown">5</div>
@@ -464,6 +498,8 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
       <h4>【聽錯字也沒關係】</h4>
       <p>語音辨識偶爾會出錯，例如「好孕券」聽成「好運卷」、「企業簽單」聽成「企業千單」。</p>
       <p>系統會自動修正常見的錯字 或設定發音容易辨別的名稱例如派遣改成任務，只要關鍵字有<span class="hl">兩個字符合</span>就會自動判斷。</p>
+      <h4>【自訂關鍵字】</h4>
+      <p>在設定頁的營業類別、付款方式、支出類型中，點擊「關鍵字」按鈕，可以新增該項目專屬的語音辨識替代詞（例如把「派遣」加上「太淺、台淺」），語音辨識時也會一併比對這些詞。</p>
       <h4>【注意事項】</h4>
       <ul>
         <li><b>Android Chrome</b> 才能正常使用，iOS 的 PWA 幾乎無法運作</li>
@@ -476,7 +512,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
       <ul>
         <li>倒數秒數：預設 5 秒，可改成 1～30 秒</li>
         <li>開關：關閉後首頁不會顯示語音按鈕</li>
-        <li>營業類別 / 付款方式 / 支出類型：點擊「關鍵字」按鈕可設定額外的語音辨識詞彙（用逗號分隔）</li>
+        <li>營業類別 / 付款方式 / 支出類型：點擊「關鍵字」按鈕可設定額外的語音辨識詞彙</li>
       </ul>
       <h4>【儲存後】</h4>
       <ul>
@@ -675,6 +711,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <div class="footer-links">
   <a href="about.html">關於我們</a><a href="privacy.html">隱私政策</a><a href="contact.html">聯絡我們</a>
 </div>
+</div>
 
 <script>
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){});}
@@ -741,7 +778,7 @@ if(typeof config.typeBtnEnabled==='undefined')config.typeBtnEnabled=true;
 if(typeof config.pageFsEnabled==='undefined')config.pageFsEnabled=true;
 config.expList.forEach(function(e){if(typeof e.isCost==='undefined')e.isCost=false;});
 
-// 確保每個項目都有 keywords 欄位（儲存自訂語音關鍵字）
+// 確保每個項目都有 keywords 欄位（儲存自訂語音關鍵字，以逗號分隔字串保存）
 config.typeList.forEach(function(t){if(!t.keywords)t.keywords='';});
 config.payList.forEach(function(p){if(!p.keywords)p.keywords='';});
 config.expList.forEach(function(e){if(!e.keywords)e.keywords='';});
@@ -2044,19 +2081,109 @@ function deleteExp(){
   });
 }
 
-/* ===== 自訂語音關鍵字編輯 ===== */
-function editKeywords(kind, i) {
-  var list = kind==='type' ? config.typeList : kind==='pay' ? config.payList : config.expList;
-  var item = list[i];
+/* ===== 自訂語音關鍵字編輯（Modal 介面） ===== */
+var _kwTarget = null; // { kind, idx }
+
+function getKeywordArray(item){
+  if(!item) return [];
+  if(!item.keywords) return [];
+  return item.keywords.split(/[,，]/).map(function(k){return k.trim();}).filter(function(k){return k;});
+}
+function setKeywordArray(item, arr){
   if(!item) return;
-  var current = item.keywords || '';
-  var val = prompt('請輸入「' + item.name + '」的語音辨識替代關鍵字，\n多個請用逗號分隔（半形 , 或全形 ，）：', current);
-  if(val === null) return; // 取消
-  item.keywords = val.trim();
+  item.keywords = arr.join(',');
+}
+
+function editKeywords(kind, idx) {
+  var list = kind==='type' ? config.typeList : kind==='pay' ? config.payList : config.expList;
+  var item = list[idx];
+  if(!item) return;
+  _kwTarget = { kind: kind, idx: idx };
+  document.getElementById('kwTitle').textContent = '「' + item.name + '」的語音關鍵字';
+  document.getElementById('kwInput').value = '';
+  renderKeywordList();
+  document.getElementById('kwModal').classList.add('active');
+  setTimeout(function(){ document.getElementById('kwInput').focus(); }, 100);
+}
+
+function renderKeywordList(){
+  var box = document.getElementById('kwList');
+  if(!box) return;
+  var list = _kwTarget.kind==='type' ? config.typeList : _kwTarget.kind==='pay' ? config.payList : config.expList;
+  var item = list[_kwTarget.idx];
+  var arr = item ? getKeywordArray(item) : [];
+  box.innerHTML = '';
+  if(!arr.length){
+    box.innerHTML = '<div class="kw-empty">尚無自訂關鍵字<br>（語音仍會用名稱本身做模糊比對）</div>';
+    return;
+  }
+  arr.forEach(function(kw, i){
+    var row = document.createElement('div');
+    row.className = 'kw-item';
+    var text = document.createElement('span');
+    text.className = 'kw-text';
+    text.textContent = kw;
+    var btn = document.createElement('button');
+    btn.className = 'kw-del';
+    btn.textContent = '移除';
+    btn.onclick = function(){ removeKeyword(i); };
+    row.appendChild(text);
+    row.appendChild(btn);
+    box.appendChild(row);
+  });
+}
+
+function removeKeyword(i){
+  if(!_kwTarget) return;
+  var list = _kwTarget.kind==='type' ? config.typeList : _kwTarget.kind==='pay' ? config.payList : config.expList;
+  var item = list[_kwTarget.idx];
+  if(!item) return;
+  var arr = getKeywordArray(item);
+  if(i < 0 || i >= arr.length) return;
+  arr.splice(i, 1);
+  setKeywordArray(item, arr);
   saveConfig();
+  renderKeywordList();
   renderSetting();
 }
 
+function addKeywordFromInput(){
+  if(!_kwTarget) return;
+  var input = document.getElementById('kwInput');
+  if(!input) return;
+  var raw = input.value.trim();
+  if(!raw) return;
+  var list = _kwTarget.kind==='type' ? config.typeList : _kwTarget.kind==='pay' ? config.payList : config.expList;
+  var item = list[_kwTarget.idx];
+  if(!item) return;
+  var arr = getKeywordArray(item);
+  var parts = raw.split(/[,，]/).map(function(k){return k.trim();}).filter(function(k){return k;});
+  if(!parts.length) return;
+  var added = 0;
+  parts.forEach(function(k){
+    // 去重（不區分大小寫）
+    if(arr.map(function(x){return x.toLowerCase();}).indexOf(k.toLowerCase()) < 0){
+      arr.push(k);
+      added++;
+    }
+  });
+  if(!added){
+    showToast('⚠️ 這些關鍵字已經存在了', 1800);
+    return;
+  }
+  setKeywordArray(item, arr);
+  saveConfig();
+  input.value = '';
+  renderKeywordList();
+  renderSetting();
+}
+
+function closeKwModal(){
+  document.getElementById('kwModal').classList.remove('active');
+  _kwTarget = null;
+}
+
+/* ===== 設定頁渲染 ===== */
 function renderSetting(){
   var tw=document.getElementById('typeListSet');tw.innerHTML='';
   config.typeList.forEach(function(t,i){
@@ -2158,7 +2285,7 @@ function fixVoiceText(text) {
   return out;
 }
 
-/* ===== 改良的 fuzzyMatch：支援自訂關鍵字 ===== */
+/* ===== fuzzyMatch：支援自訂關鍵字 ===== */
 function fuzzyMatch(text, keyword) {
   if (!keyword) return false;
   if (keyword.length < 2) return text.indexOf(keyword) >= 0;
@@ -2179,17 +2306,12 @@ function fuzzyMatch(text, keyword) {
   return matchCount >= 2;
 }
 
-/* 檢查項目是否匹配，同時考慮名稱與自訂關鍵字 */
 function itemMatches(text, item) {
   if (!item) return false;
-  // 先比對名稱
   if (fuzzyMatch(text, item.name)) return true;
-  // 再比對自訂關鍵字（逗號分隔）
-  if (item.keywords) {
-    var kws = item.keywords.split(/[,，]/).map(function(k){return k.trim();}).filter(function(k){return k;});
-    for (var i = 0; i < kws.length; i++) {
-      if (fuzzyMatch(text, kws[i])) return true;
-    }
+  var kws = getKeywordArray(item);
+  for (var i = 0; i < kws.length; i++) {
+    if (fuzzyMatch(text, kws[i])) return true;
   }
   return false;
 }
@@ -2289,7 +2411,6 @@ function openVoiceModal() {
   voiceRecognition.continuous = true;
   voiceRecognition.maxAlternatives = 1;
   
-  // ★ 修正：避免重複累加與重複字串
   voiceRecognition.onresult = function(event) {
     var finalTranscript = '';
     for (var i = event.resultIndex; i < event.results.length; i++) {
@@ -2358,9 +2479,9 @@ function renderVoiceText(text) {
   }
   var html = escapeHtml(text);
   var keywords = [];
-  config.typeList.forEach(function(t) { keywords.push({ name: t.name, cls: 'kw-type' }); if(t.keywords) { t.keywords.split(/[,，]/).forEach(function(k){ k=k.trim(); if(k) keywords.push({name:k, cls:'kw-type'}); }); } });
-  config.payList.forEach(function(p) { keywords.push({ name: p.name, cls: 'kw-pay' }); if(p.keywords) { p.keywords.split(/[,，]/).forEach(function(k){ k=k.trim(); if(k) keywords.push({name:k, cls:'kw-pay'}); }); } });
-  config.expList.forEach(function(e) { keywords.push({ name: e.name, cls: 'kw-exp' }); if(e.keywords) { e.keywords.split(/[,，]/).forEach(function(k){ k=k.trim(); if(k) keywords.push({name:k, cls:'kw-exp'}); }); } });
+  config.typeList.forEach(function(t) { keywords.push({ name: t.name, cls: 'kw-type' }); getKeywordArray(t).forEach(function(k){ keywords.push({name:k, cls:'kw-type'}); }); });
+  config.payList.forEach(function(p) { keywords.push({ name: p.name, cls: 'kw-pay' }); getKeywordArray(p).forEach(function(k){ keywords.push({name:k, cls:'kw-pay'}); }); });
+  config.expList.forEach(function(e) { keywords.push({ name: e.name, cls: 'kw-exp' }); getKeywordArray(e).forEach(function(k){ keywords.push({name:k, cls:'kw-exp'}); }); });
   keywords.sort(function(a, b) { return b.name.length - a.name.length; });
   keywords.forEach(function(k) {
     if (!k.name) return;
@@ -2382,7 +2503,6 @@ function finishVoiceInput() {
   }
 }
 
-// ★ 防連點鎖：避免語音辨識在結尾時連續觸發兩次，導致重複存檔
 var _voiceProcessing = false;
 function processVoiceCommand(text) {
   if (_voiceProcessing) return;
