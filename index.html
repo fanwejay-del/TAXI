@@ -276,6 +276,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 #voiceModal .voice-box{background:#fff;border-radius:16px;padding:20px;box-shadow:0 8px 30px rgba(0,0,0,.3);max-width:340px;width:calc(100% - 32px);text-align:center;}
 #voiceModal .voice-countdown{font-size:48px;font-weight:900;color:#2563eb;font-variant-numeric:tabular-nums;margin-bottom:8px;line-height:1;}
 #voiceModal .voice-countdown.urgent{color:#dc2626;}
+#voiceModal .voice-countdown.done{color:#16a34a;font-size:36px;}
 #voiceModal .voice-status{font-size:13px;color:#64748b;margin-bottom:12px;}
 #voiceModal .voice-text{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;font-size:16px;color:#1e293b;min-height:60px;line-height:1.5;text-align:left;word-break:break-all;}
 #voiceModal .voice-text .kw-type{color:#2563eb;font-weight:800;background:#dbeafe;padding:0 3px;border-radius:3px;}
@@ -425,7 +426,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
     <div id="voiceCountdown" class="voice-countdown">5</div>
     <div id="voiceStatus" class="voice-status">請開始說話，講完會自動記錄</div>
     <div id="voiceText" class="voice-text">（等待語音⋯）</div>
-    <div class="voice-hint">說「類別 + 金額 + 付款方式」，順序不拘，講完停頓一下即自動記錄</div>
+    <div class="voice-hint">說「類別 + 金額 + 付款方式」，三項都到齊會立刻記錄</div>
   </div>
 </div>
 
@@ -434,26 +435,26 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
     <div class="help-title">🎤 語音輸入使用說明</div>
     <div class="help-body">
       <h4>【基本用法】</h4>
-      <p>按下首頁最上方的「語音 🎤 輸入」按鈕，跳出視窗後直接說話，<span class="hl">講完後停頓一下會自動記錄並關閉</span>；若完全沒說話，倒數結束會自動關閉。</p>
+      <p>按下首頁最上方的「語音 🎤 輸入」按鈕，跳出視窗後直接說話。</p>
+      <p><span class="hl">類別 + 金額 + 付款方式都講到就會「立刻記錄」</span>，不用等停頓；三項還沒齊時才依秒數停頓收單。</p>
       <h4>【怎麼說】</h4>
       <p>說出「<b>類別 + 金額 + 付款方式</b>」，<b>順序不拘</b>，只要關鍵字有出現就好。</p>
-      <p>例如：</p>
       <ul>
-        <li>派遣 100 信用卡</li>
-        <li>信用卡 150</li>
-        <li>路招 200</li>
-        <li>加油 500</li>
+        <li>派遣 100 信用卡 → 三項齊全，<b>立刻記錄</b></li>
+        <li>信用卡 150 路招 → 三項齊全，<b>立刻記錄</b></li>
+        <li>路招 200 → 只有類別+金額，停頓後用第一項付款記錄</li>
+        <li>加油 500 → 支出類別+金額，<b>立刻記錄</b>（不用付款）</li>
       </ul>
       <h4>【秒數代表什麼？】</h4>
-      <p>「秒數」不是「總講話時間上限」，而是「<b>講完後停頓多久</b>才自動記錄」。講話多久都不會被斷。</p>
-      <p>系統另外會在「每一段話被判定講完」後給 <b>8 秒續講寬限</b>，讓你有時間繼續說下一段（例如先說「派遣 兩百」，再接著說「信用卡」）。</p>
-      <p>建議設定頁秒數設 <b>8～10 秒</b>。若覺得還是常被切斷，設到 <b>15 秒</b> 也可以。</p>
+      <p>「秒數」是「<b>三要素還沒齊時，講完停頓多久</b>才自動記錄」。三要素一齊就立刻記錄，不受秒數影響。</p>
+      <p>系統另外會在「每一段話被判定講完」後給 <b>8 秒續講寬限</b>，讓你有時間繼續說下一段。</p>
+      <p>建議設定頁秒數設 <b>8～10 秒</b>。</p>
       <h4>【關鍵字規則】</h4>
       <ul>
-        <li>有類別 + 金額 + 付款 → 照你說的記錄</li>
+        <li>三項齊全 → 照你說的記錄</li>
         <li>只有金額（例如「150」）→ 類別用第一項、付款用第一項</li>
-        <li>有類別 + 金額，沒說付款 → 付款用第一項</li>
-        <li>有支出類別（例如「加油」）→ 記成<b>支出</b></li>
+        <li>有類別 + 金額，沒說付款 → 停頓後付款用第一項</li>
+        <li>有支出類別（例如「加油」）+ 金額 → 記成<b>支出</b>，立刻記錄</li>
         <li>只說類別，沒說金額 → 會提示「找不到金額」</li>
       </ul>
       <h4>【聽錯字也沒關係】</h4>
@@ -2162,7 +2163,7 @@ function openGameModal() {document.getElementById('gameModal').classList.add('ac
 function closeGameModal() {document.getElementById('gameModal').classList.remove('active');}
 function goToGame(url) {closeGameModal();window.location.href = url;}
 
-/* ================= 語音輸入 v4（isFinal 續講寬限） ================= */
+/* ================= 語音輸入 v5（三要素齊全立刻記錄） ================= */
 var voiceIdleTimer = null;
 var voiceDisplayTimer = null;
 var voiceTotalTimer = null;
@@ -2223,6 +2224,36 @@ function fuzzyMatch(text, keyword) {
     var pair = keyword.slice(i, i + 2);
     if (text.indexOf(pair) !== -1) return true;
   }
+  return false;
+}
+
+/* 三要素齊全檢查：
+   收入 → 類別 + 金額 + 付款
+   支出 → 支出類別 + 金額（且不能同時有收入類別） */
+function isVoiceCommandComplete(text) {
+  if (!text) return false;
+  var cleaned = text.replace(/[\s，,。、！!？?]/g, '');
+  cleaned = fixVoiceText(cleaned);
+
+  var amount = extractAmount(cleaned);
+  if (!amount || amount <= 0) return false;
+
+  var hasIncomeType = config.typeList.some(function(t) {
+    return fuzzyMatch(cleaned, t.name);
+  });
+  var hasExpType = config.expList.some(function(e) {
+    return fuzzyMatch(cleaned, e.name);
+  });
+
+  if (hasExpType && !hasIncomeType) return true;
+
+  if (hasIncomeType) {
+    var hasPay = config.payList.some(function(p) {
+      return fuzzyMatch(cleaned, p.name);
+    });
+    return hasPay;
+  }
+
   return false;
 }
 
@@ -2313,20 +2344,12 @@ function onVoiceSecondsChange() {
   saveConfig();
 }
 
-/* 靜音倒數：
-   - 剛收到 isFinal → 用 8 秒續講寬限
-   - 其他情況 → 用設定秒數（下限 4 秒） */
 function resetVoiceIdleTimer(isFromFinal) {
   voiceGotAnyResult = true;
   if (voiceIdleTimer) clearTimeout(voiceIdleTimer);
 
   var configured = Math.max(Number(config.voiceSeconds) || 5, 4);
-  var idleMs;
-  if (isFromFinal) {
-    idleMs = voiceGraceMs;
-  } else {
-    idleMs = configured * 1000;
-  }
+  var idleMs = isFromFinal ? voiceGraceMs : (configured * 1000);
 
   voiceIdleDeadline = Date.now() + idleMs;
 
@@ -2338,13 +2361,13 @@ function resetVoiceIdleTimer(isFromFinal) {
   }, idleMs);
 }
 
-/* 畫面倒數：依 voiceIdleDeadline 即時計算，不每次重置 */
 function startVoiceDisplayCountdown() {
   if (voiceDisplayTimer) clearInterval(voiceDisplayTimer);
   var el = document.getElementById('voiceCountdown');
   if (el) {
     el.textContent = '...';
     el.classList.remove('urgent');
+    el.classList.remove('done');
     el.style.color = '#2563eb';
   }
   voiceDisplayTimer = setInterval(function () {
@@ -2403,6 +2426,21 @@ function restartRecognition() {
   }, 200);
 }
 
+/* 三要素齊全時立刻收單 */
+function triggerImmediateFinish(statusEl, countdownEl) {
+  if (statusEl) statusEl.textContent = '✅ 已辨識完整，記錄中⋯';
+  if (countdownEl) {
+    countdownEl.textContent = '✅';
+    countdownEl.classList.add('done');
+    countdownEl.style.color = '#16a34a';
+    countdownEl.classList.remove('urgent');
+  }
+  if (voiceIdleTimer) { clearTimeout(voiceIdleTimer); voiceIdleTimer = null; }
+  voiceIdleDeadline = 0;
+  try { if (voiceRecognition) voiceRecognition.stop(); } catch(e) {}
+  setTimeout(function(){ finishVoiceInput(); }, 250);
+}
+
 function openVoiceModal() {
   if (!config.voiceEnabled) return;
   if (voiceModalActive) return;
@@ -2429,6 +2467,7 @@ function openVoiceModal() {
 
   countdownEl.textContent = '...';
   countdownEl.classList.remove('urgent');
+  countdownEl.classList.remove('done');
   countdownEl.style.color = '#2563eb';
   statusEl.textContent = '請開始說話，講完會自動記錄';
   textEl.innerHTML = '<span style="color:#94a3b8;">（請開始說話⋯）</span>';
@@ -2454,6 +2493,10 @@ function openVoiceModal() {
           voiceNativeHasResult = true;
           renderVoiceText(voiceRecognizedText);
           statusEl.textContent = '辨識中⋯（講完會自動記錄）';
+          if (isVoiceCommandComplete(voiceRecognizedText)) {
+            triggerImmediateFinish(statusEl, countdownEl);
+            return;
+          }
           resetVoiceIdleTimer(false);
         }
       }
@@ -2471,6 +2514,7 @@ function openVoiceModal() {
         setTimeout(function(){ finishVoiceInput(); }, 1500);
       });
     });
+    startVoiceDisplayCountdown();
     return;
   }
 
@@ -2483,6 +2527,7 @@ function openVoiceModal() {
       statusEl.textContent = '⚠️ 無法啟動語音';
       setTimeout(function(){ finishVoiceInput(); }, 1000);
     }
+    startVoiceDisplayCountdown();
     return;
   }
 
@@ -2502,7 +2547,7 @@ function openVoiceModal() {
   voiceRecognition.maxAlternatives = 1;
 
   voiceRecognition.onresult = function(event) {
-    if (!voiceModalActive) return;
+    if (!voiceModalActive || voiceAutoSaveDone) return;
 
     var finalChunk = '';
     var interimChunk = '';
@@ -2514,21 +2559,31 @@ function openVoiceModal() {
       }
     }
 
+    var candidate = '';
     if (finalChunk) {
       voiceAllText = mergeVoiceText(voiceAllText, finalChunk);
       voiceLastInterim = '';
       voiceRecognizedText = voiceAllText;
       voiceHasFinal = true;
-      renderVoiceText(voiceRecognizedText);
-      statusEl.textContent = '辨識中⋯（講完會自動記錄）';
-      resetVoiceIdleTimer(true);
+      candidate = voiceRecognizedText;
     } else if (interimChunk) {
       voiceLastInterim = interimChunk;
       voiceRecognizedText = mergeVoiceText(voiceAllText, interimChunk);
-      renderVoiceText(voiceRecognizedText);
-      statusEl.textContent = '辨識中⋯（講完會自動記錄）';
-      resetVoiceIdleTimer(false);
+      candidate = voiceRecognizedText;
     }
+
+    if (!candidate) return;
+
+    renderVoiceText(candidate);
+    statusEl.textContent = '辨識中⋯（講完會自動記錄）';
+
+    /* ★ 三要素齊全 → 立刻記錄，不等停頓 */
+    if (isVoiceCommandComplete(candidate)) {
+      triggerImmediateFinish(statusEl, countdownEl);
+      return;
+    }
+
+    resetVoiceIdleTimer(!!finalChunk);
   };
 
   voiceRecognition.onerror = function(e) {
