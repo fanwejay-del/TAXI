@@ -20,7 +20,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 
 .card{background:#fff;border-radius:10px;padding:4px 4px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:3px;}
 
-/* ===== 全局導覽列 ===== */
 .global-nav{position:relative;z-index:50;background:#fff;border-radius:10px;padding:6px 6px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin:0 4px 3px;display:flex;justify-content:space-between;align-items:center;gap:2px;flex-shrink:0;min-width:0;}
 .global-nav .app-brand{display:flex;align-items:center;gap:4px;min-width:0;flex:1 1 auto;overflow:hidden;}
 .global-nav .app-logo{width:28px;height:28px;flex:0 0 28px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:transparent;overflow:hidden;}
@@ -57,7 +56,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .noteInput:focus{outline:none;border-color:#2563eb;background:#fff;}
 .delBtn{color:#dc2626;border:none;background:#fef2f2;font-size:calc(.85px * var(--fs-num));padding:4px 8px;border-radius:6px;}
 
-/* ===== 設定頁面折疊優化 ===== */
 .setBlock{margin:4px 0;padding:6px 8px;background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.05);}
 .setBlock h4{margin-bottom:4px;font-size:calc(1px * var(--fs-num));color:#0f172a;}
 .setBlock input[type="number"],.setBlock input[type="text"]{width:100%;padding:6px 8px;margin:2px 0 4px;border-radius:8px;border:1.5px solid #e2e8f0;font-size:calc(1px * var(--fs-num));background:#f8fafc;}
@@ -447,8 +445,9 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
         <li>加油 500</li>
       </ul>
       <h4>【秒數代表什麼？】</h4>
-      <p>「秒數」不是「總講話時間上限」，而是「<b>講完後停頓多久</b>才自動記錄」。講話多久都不會被斷，只有停頓超過秒數才會收單。</p>
-      <p>建議設 <b>8～10 秒</b>，留給自己換氣、思考的空間。若覺得還是常被切斷，設到 <b>15 秒</b> 也可以。</p>
+      <p>「秒數」不是「總講話時間上限」，而是「<b>講完後停頓多久</b>才自動記錄」。講話多久都不會被斷。</p>
+      <p>系統另外會在「每一段話被判定講完」後給 <b>8 秒續講寬限</b>，讓你有時間繼續說下一段（例如先說「派遣 兩百」，再接著說「信用卡」）。</p>
+      <p>建議設定頁秒數設 <b>8～10 秒</b>。若覺得還是常被切斷，設到 <b>15 秒</b> 也可以。</p>
       <h4>【關鍵字規則】</h4>
       <ul>
         <li>有類別 + 金額 + 付款 → 照你說的記錄</li>
@@ -713,7 +712,7 @@ var config=JSON.parse(localStorage.getItem('taxiConfig'))||{
   payList:[{name:"現金",rate:0,color:"#16a34a"},{name:"悠遊卡",rate:3,color:"#22aabb"},{name:"信用卡",rate:3,color:"#7c3aed"},{name:"企業簽單",rate:15,color:"#9333ea"},{name:"好孕券",rate:0,color:"#0891b2"}],
   expList:[{name:"加油",color:"#dc2626",isCost:false},{name:"維修",color:"#ea580c",isCost:false},{name:"餐費",color:"#9333ea",isCost:false},{name:"停車",color:"#0891b2",isCost:false},{name:"其他",color:"#475569",isCost:false}],
   businessHour:{start:22,end:8},fontSize:13,fontWeight:900,
-  voiceEnabled:true,voiceSeconds:5,typeBtnEnabled:true,
+  voiceEnabled:true,voiceSeconds:10,typeBtnEnabled:true,
   pageFsEnabled:true
 };
 if(!config.businessHour)config.businessHour={start:22,end:8};
@@ -721,7 +720,7 @@ if(!config.fontSize)config.fontSize=13;
 config.fontWeight=900;
 if(!config.expList)config.expList=[{name:"加油",color:"#dc2626",isCost:false},{name:"其他",color:"#475569",isCost:false}];
 if(typeof config.voiceEnabled==='undefined')config.voiceEnabled=true;
-if(typeof config.voiceSeconds==='undefined')config.voiceSeconds=5;
+if(typeof config.voiceSeconds==='undefined')config.voiceSeconds=10;
 if(typeof config.typeBtnEnabled==='undefined')config.typeBtnEnabled=true;
 if(typeof config.pageFsEnabled==='undefined')config.pageFsEnabled=true;
 config.expList.forEach(function(e){if(typeof e.isCost==='undefined')e.isCost=false;});
@@ -799,14 +798,6 @@ function syncPageSliders(v){
   });
 }
 function onHourChange(){updateHourPreview();var s=Number(document.getElementById('setStartHour').value),e=Number(document.getElementById('setEndHour').value);if(!Number.isInteger(s)||s<0||s>23)return;if(!Number.isInteger(e)||e<0||e>23)return;config.businessHour={start:s,end:e};saveConfig();}
-
-function onVoiceSecondsChange(){
-  var el = document.getElementById('setVoiceSeconds');
-  var v = Number(el.value);
-  if(!Number.isInteger(v) || v < 1 || v > 30) return;
-  config.voiceSeconds = v;
-  saveConfig();
-}
 
 function onPageFsToggleChange(checked){
   config.pageFsEnabled=!!checked;
@@ -2171,13 +2162,13 @@ function openGameModal() {document.getElementById('gameModal').classList.add('ac
 function closeGameModal() {document.getElementById('gameModal').classList.remove('active');}
 function goToGame(url) {closeGameModal();window.location.href = url;}
 
-/* ================= 語音輸入（講完才記錄 v3） ================= */
-var voiceIdleTimer = null;         // 靜音倒數計時器
-var voiceDisplayTimer = null;      // 畫面倒數顯示
-var voiceTotalTimer = null;        // 總超時保險
+/* ================= 語音輸入 v4（isFinal 續講寬限） ================= */
+var voiceIdleTimer = null;
+var voiceDisplayTimer = null;
+var voiceTotalTimer = null;
 var voiceRecognizedText = '';
-var voiceAllText = '';             // 累積的最終文字
-var voiceLastInterim = '';         // 最後一次 interim
+var voiceAllText = '';
+var voiceLastInterim = '';
 var voiceAutoSaveDone = false;
 var voiceRecognition = null;
 var voiceModalActive = false;
@@ -2186,8 +2177,12 @@ var voiceNativeHasResult = false;
 var voiceGotAnyResult = false;
 var voiceRestartCount = 0;
 var voiceRestarting = false;
-var voiceMaxRestarts = 60;         // 最多重啟次數
-var voiceTotalMaxMs = 90000;       // 總監聽上限（90 秒）
+var voiceMaxRestarts = 60;
+var voiceTotalMaxMs = 90000;
+
+var voiceHasFinal = false;
+var voiceGraceMs = 8000;
+var voiceIdleDeadline = 0;
 
 var VOICE_FIX = {
   '運':'孕','韵':'孕','蕴':'孕','晕':'孕',
@@ -2231,13 +2226,11 @@ function fuzzyMatch(text, keyword) {
   return false;
 }
 
-/* 合併語音片段，避免重複 */
 function mergeVoiceText(existing, newText) {
   if (!existing) return newText || '';
   if (!newText) return existing;
   if (existing.indexOf(newText) >= 0) return existing;
   if (newText.indexOf(existing) >= 0) return newText;
-  // 找重疊尾巴
   for (var len = Math.min(existing.length, newText.length); len > 0; len--) {
     if (existing.slice(-len) === newText.slice(0, len)) {
       return existing + newText.slice(len);
@@ -2250,9 +2243,12 @@ function speakText(text) {
   _playDing();
   setTimeout(function() {
     if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.TextToSpeech) {
-      window.Capacitor.Plugins.TextToSpeech.speak({
+      var ttsResult = window.Capacitor.Plugins.TextToSpeech.speak({
         text: text, lang: 'zh-TW', rate: 1.0, pitch: 1.0, volume: 1.0
-      }).catch(function(err) { console.log('原生 TTS 失敗:', err); });
+      });
+      if (ttsResult && typeof ttsResult.catch === 'function') {
+        ttsResult.catch(function(err) { console.log('原生 TTS 失敗:', err); });
+      }
     } else {
       if (!('speechSynthesis' in window)) return;
       try {
@@ -2309,47 +2305,64 @@ function onVoiceToggleChange(checked) {
   updateVoiceBtnVisibility();
 }
 
-function updateVoiceBtnVisibility() {
-  var btn = document.getElementById('voiceInputBtn');
-  if (!btn) return;
-  btn.style.display = config.voiceEnabled ? '' : 'none';
+function onVoiceSecondsChange() {
+  var el = document.getElementById('setVoiceSeconds');
+  var v = Number(el.value);
+  if (!Number.isInteger(v) || v < 1 || v > 30) return;
+  config.voiceSeconds = v;
+  saveConfig();
 }
 
-/* 靜音倒數：只有「有新語音結果」才重置；過期 → 視為講完 */
-function resetVoiceIdleTimer() {
+/* 靜音倒數：
+   - 剛收到 isFinal → 用 8 秒續講寬限
+   - 其他情況 → 用設定秒數（下限 4 秒） */
+function resetVoiceIdleTimer(isFromFinal) {
   voiceGotAnyResult = true;
   if (voiceIdleTimer) clearTimeout(voiceIdleTimer);
-  var idleMs = (Number(config.voiceSeconds) || 5) * 1000;
+
+  var configured = Math.max(Number(config.voiceSeconds) || 5, 4);
+  var idleMs;
+  if (isFromFinal) {
+    idleMs = voiceGraceMs;
+  } else {
+    idleMs = configured * 1000;
+  }
+
+  voiceIdleDeadline = Date.now() + idleMs;
+
   voiceIdleTimer = setTimeout(function () {
     voiceIdleTimer = null;
+    voiceIdleDeadline = 0;
+    if (!voiceRecognizedText && !voiceAllText) return;
     finishVoiceInput();
   }, idleMs);
 }
 
-/* 畫面倒數（純顯示） */
+/* 畫面倒數：依 voiceIdleDeadline 即時計算，不每次重置 */
 function startVoiceDisplayCountdown() {
   if (voiceDisplayTimer) clearInterval(voiceDisplayTimer);
-  var remain = Number(config.voiceSeconds) || 5;
   var el = document.getElementById('voiceCountdown');
   if (el) {
-    el.textContent = remain;
+    el.textContent = '...';
     el.classList.remove('urgent');
     el.style.color = '#2563eb';
   }
   voiceDisplayTimer = setInterval(function () {
-    remain--;
-    if (remain < 0) remain = 0;
+    if (!voiceIdleDeadline) return;
+    var remain = Math.max(0, Math.ceil((voiceIdleDeadline - Date.now()) / 1000));
     if (el) {
       el.textContent = remain;
       if (remain <= 2) el.classList.add('urgent');
+      else el.classList.remove('urgent');
     }
-  }, 1000);
+  }, 200);
 }
 
 function cleanupVoice() {
   if (voiceIdleTimer) { clearTimeout(voiceIdleTimer); voiceIdleTimer = null; }
   if (voiceDisplayTimer) { clearInterval(voiceDisplayTimer); voiceDisplayTimer = null; }
   if (voiceTotalTimer) { clearTimeout(voiceTotalTimer); voiceTotalTimer = null; }
+  voiceIdleDeadline = 0;
   voiceModalActive = false;
   if (voiceNativeListener && voiceNativeListener.remove) {
     try { voiceNativeListener.remove(); } catch(e) {}
@@ -2364,7 +2377,6 @@ function cleanupVoice() {
   }
 }
 
-/* 重啟識別（onend 時自動呼叫，避免被引擎切斷） */
 function restartRecognition() {
   if (!voiceModalActive || voiceAutoSaveDone) return;
   if (voiceRestarting) return;
@@ -2381,7 +2393,6 @@ function restartRecognition() {
     try {
       voiceRecognition.start();
     } catch (e) {
-      // 第一次失敗，再延遲重試
       setTimeout(function() {
         if (!voiceModalActive || voiceAutoSaveDone) return;
         try { voiceRecognition.start(); } catch (e2) {
@@ -2407,6 +2418,8 @@ function openVoiceModal() {
   voiceGotAnyResult = false;
   voiceRestartCount = 0;
   voiceRestarting = false;
+  voiceHasFinal = false;
+  voiceIdleDeadline = 0;
   voiceModalActive = true;
 
   var modal = document.getElementById('voiceModal');
@@ -2421,7 +2434,6 @@ function openVoiceModal() {
   textEl.innerHTML = '<span style="color:#94a3b8;">（請開始說話⋯）</span>';
   modal.classList.add('active');
 
-  // 總超時保險
   if (voiceTotalTimer) clearTimeout(voiceTotalTimer);
   voiceTotalTimer = setTimeout(function () {
     if (voiceModalActive && !voiceAutoSaveDone) {
@@ -2429,7 +2441,7 @@ function openVoiceModal() {
     }
   }, voiceTotalMaxMs);
 
-  // ===== A：Capacitor 原生 =====
+  /* ===== A：Capacitor 原生 ===== */
   if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SpeechRecognition) {
     var SR_Native = window.Capacitor.Plugins.SpeechRecognition;
 
@@ -2442,13 +2454,10 @@ function openVoiceModal() {
           voiceNativeHasResult = true;
           renderVoiceText(voiceRecognizedText);
           statusEl.textContent = '辨識中⋯（講完會自動記錄）';
-          resetVoiceIdleTimer();
+          resetVoiceIdleTimer(false);
         }
       }
     });
-
-    resetVoiceIdleTimer();
-    startVoiceDisplayCountdown();
 
     SR_Native.stop().catch(function(){}).finally(function() {
       SR_Native.start({
@@ -2465,11 +2474,9 @@ function openVoiceModal() {
     return;
   }
 
-  // ===== B：AndroidSpeech 原生 =====
+  /* ===== B：AndroidSpeech 原生 ===== */
   if (window.AndroidSpeech) {
     statusEl.textContent = '請在系統視窗說話...';
-    resetVoiceIdleTimer();
-    startVoiceDisplayCountdown();
     try {
       window.AndroidSpeech.startListening();
     } catch(e) {
@@ -2479,7 +2486,7 @@ function openVoiceModal() {
     return;
   }
 
-  // ===== C：Web Speech API =====
+  /* ===== C：Web Speech API ===== */
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) {
     modal.classList.remove('active');
@@ -2496,6 +2503,7 @@ function openVoiceModal() {
 
   voiceRecognition.onresult = function(event) {
     if (!voiceModalActive) return;
+
     var finalChunk = '';
     var interimChunk = '';
     for (var i = event.resultIndex; i < event.results.length; i++) {
@@ -2505,23 +2513,22 @@ function openVoiceModal() {
         interimChunk += event.results[i][0].transcript;
       }
     }
+
     if (finalChunk) {
       voiceAllText = mergeVoiceText(voiceAllText, finalChunk);
-    }
-    voiceLastInterim = interimChunk;
-
-    var display = voiceLastInterim
-      ? mergeVoiceText(voiceAllText, voiceLastInterim)
-      : voiceAllText;
-
-    if (display) {
-      voiceRecognizedText = display;
-      voiceGotAnyResult = true;
-      renderVoiceText(display);
+      voiceLastInterim = '';
+      voiceRecognizedText = voiceAllText;
+      voiceHasFinal = true;
+      renderVoiceText(voiceRecognizedText);
       statusEl.textContent = '辨識中⋯（講完會自動記錄）';
-      resetVoiceIdleTimer();
+      resetVoiceIdleTimer(true);
+    } else if (interimChunk) {
+      voiceLastInterim = interimChunk;
+      voiceRecognizedText = mergeVoiceText(voiceAllText, interimChunk);
+      renderVoiceText(voiceRecognizedText);
+      statusEl.textContent = '辨識中⋯（講完會自動記錄）';
+      resetVoiceIdleTimer(false);
     }
-    // 注意：任何情況都不在這裡 stop() 或 finish()
   };
 
   voiceRecognition.onerror = function(e) {
@@ -2534,12 +2541,10 @@ function openVoiceModal() {
     } else if (e.error === 'no-speech') {
       statusEl.textContent = '⚠️ 沒有聽到聲音';
     }
-    // 不 finish，交給靜音倒數 / 重啟
   };
 
   voiceRecognition.onend = function() {
     if (!voiceModalActive || voiceAutoSaveDone) return;
-    // 絕不在此 finish，一律重啟讓使用者可以繼續說
     restartRecognition();
   };
 
@@ -2551,7 +2556,6 @@ function openVoiceModal() {
     return;
   }
 
-  resetVoiceIdleTimer();
   startVoiceDisplayCountdown();
 }
 
@@ -2586,6 +2590,7 @@ function finishVoiceInput() {
   if (voiceIdleTimer) { clearTimeout(voiceIdleTimer); voiceIdleTimer = null; }
   if (voiceDisplayTimer) { clearInterval(voiceDisplayTimer); voiceDisplayTimer = null; }
   if (voiceTotalTimer) { clearTimeout(voiceTotalTimer); voiceTotalTimer = null; }
+  voiceIdleDeadline = 0;
 
   if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SpeechRecognition) {
     try { window.Capacitor.Plugins.SpeechRecognition.stop().catch(function(){}); } catch(e) {}
@@ -2763,6 +2768,14 @@ function showToast(msg, duration) {
   }, duration);
 }
 
+function initVoiceModule() {
+  var vsToggle = document.getElementById('voiceToggle');
+  if (vsToggle) vsToggle.checked = config.voiceEnabled;
+  var secEl = document.getElementById('setVoiceSeconds');
+  if (secEl) secEl.value = config.voiceSeconds;
+  updateVoiceBtnVisibility();
+}
+
 window.addEventListener('resize', function(){
   setTimeout(fitAllStatText, 50);
   setTimeout(fitHomeButtons, 50);
@@ -2793,6 +2806,7 @@ window.onload=function(){
   if (pfToggle) pfToggle.checked = config.pageFsEnabled;
   syncPageSliders(config.fontSize);
   updatePageFsBars();
+  initVoiceModule();
   setTimeout(fitAllStatText, 100);
 };
 
