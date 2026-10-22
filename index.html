@@ -429,9 +429,9 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <div id="voiceModal" class="modal">
   <div class="voice-box">
     <div id="voiceCountdown" class="voice-countdown">5</div>
-    <div id="voiceStatus" class="voice-status">請開始說話⋯</div>
+    <div id="voiceStatus" class="voice-status">請開始說話，講完會自動記錄</div>
     <div id="voiceText" class="voice-text">（等待語音⋯）</div>
-    <div class="voice-hint">說「類別 + 金額 + 付款方式」，順序不拘</div>
+    <div class="voice-hint">說「類別 + 金額 + 付款方式」，順序不拘，講完停頓一下即自動記錄</div>
   </div>
 </div>
 
@@ -440,7 +440,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
     <div class="help-title">🎤 語音輸入使用說明</div>
     <div class="help-body">
       <h4>【基本用法】</h4>
-      <p>按下首頁最上方的「語音 🎤 輸入」按鈕，跳出視窗後直接說話，<span class="hl">說完會自動關閉並記錄</span>；若完全沒說話，倒數結束會自動關閉。</p>
+      <p>按下首頁最上方的「語音 🎤 輸入」按鈕，跳出視窗後直接說話，<span class="hl">講完後停頓一下會自動記錄並關閉</span>；若完全沒說話，倒數結束會自動關閉。</p>
       <h4>【怎麼說】</h4>
       <p>說出「<b>類別 + 金額 + 付款方式</b>」，<b>順序不拘</b>，只要關鍵字有出現就好。</p>
       <p>例如：</p>
@@ -471,7 +471,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
       <h4>【可以調整的地方】</h4>
       <p>在設定頁可以調整：</p>
       <ul>
-        <li>倒數秒數：預設 5 秒，可改成 1～30 秒（完全沒說話時的等待時間）</li>
+        <li>停頓秒數：預設 5 秒，可改成 1～30 秒（講完後停頓多久才自動記錄）</li>
         <li>開關：關閉後首頁不會顯示語音按鈕</li>
       </ul>
       <h4>【儲存後】</h4>
@@ -2184,27 +2184,16 @@ function openGameModal() {document.getElementById('gameModal').classList.add('ac
 function closeGameModal() {document.getElementById('gameModal').classList.remove('active');}
 function goToGame(url) {closeGameModal();window.location.href = url;}
 
-/* ================= 語音輸入 ================= */
-var voiceCountdownTimer = null;
-var voiceRemaining = 0;
+/* ================= 語音輸入（講完才記錄版） ================= */
+var voiceIdleTimer = null;         // 靜音倒數計時器
+var voiceDisplayTimer = null;      // 畫面倒數顯示用
 var voiceRecognizedText = '';
 var voiceAutoSaveDone = false;
 var voiceRecognition = null;
 var voiceModalActive = false;
 var voiceNativeListener = null;
 var voiceNativeHasResult = false;
-
-function onVoiceToggleChange(checked) {
-  config.voiceEnabled = !!checked;
-  saveConfig();
-  updateVoiceBtnVisibility();
-}
-
-function updateVoiceBtnVisibility() {
-  var btn = document.getElementById('voiceInputBtn');
-  if (!btn) return;
-  btn.style.display = config.voiceEnabled ? '' : 'none';
-}
+var voiceGotAnyResult = false;     // 這次有沒有收到任何語音內容
 
 var VOICE_FIX = {
   '運':'孕','韵':'孕','蕴':'孕','晕':'孕',
@@ -2305,8 +2294,53 @@ function _playDing() {
   } catch (e) {}
 }
 
+function onVoiceToggleChange(checked) {
+  config.voiceEnabled = !!checked;
+  saveConfig();
+  updateVoiceBtnVisibility();
+}
+
+function updateVoiceBtnVisibility() {
+  var btn = document.getElementById('voiceInputBtn');
+  if (!btn) return;
+  btn.style.display = config.voiceEnabled ? '' : 'none';
+}
+
+/* ---- 靜音倒數：每次有新語音就重置 ---- */
+function resetVoiceIdleTimer() {
+  voiceGotAnyResult = true;
+  if (voiceIdleTimer) clearTimeout(voiceIdleTimer);
+  var idleMs = (Number(config.voiceSeconds) || 5) * 1000;
+  voiceIdleTimer = setTimeout(function () {
+    voiceIdleTimer = null;
+    // 連續 N 秒沒有任何新語音 → 視為講完
+    finishVoiceInput();
+  }, idleMs);
+}
+
+/* ---- 畫面倒數（只顯示，不負責收單）---- */
+function startVoiceDisplayCountdown() {
+  if (voiceDisplayTimer) clearInterval(voiceDisplayTimer);
+  var remain = Number(config.voiceSeconds) || 5;
+  var el = document.getElementById('voiceCountdown');
+  if (el) {
+    el.textContent = remain;
+    el.classList.remove('urgent');
+    el.style.color = '#2563eb';
+  }
+  voiceDisplayTimer = setInterval(function () {
+    remain--;
+    if (remain < 0) remain = 0;
+    if (el) {
+      el.textContent = remain;
+      if (remain <= 2) el.classList.add('urgent');
+    }
+  }, 1000);
+}
+
 function cleanupVoice() {
-  if (voiceCountdownTimer) { clearInterval(voiceCountdownTimer); voiceCountdownTimer = null; }
+  if (voiceIdleTimer) { clearTimeout(voiceIdleTimer); voiceIdleTimer = null; }
+  if (voiceDisplayTimer) { clearInterval(voiceDisplayTimer); voiceDisplayTimer = null; }
   voiceModalActive = false;
   if (voiceNativeListener && voiceNativeListener.remove) {
     try { voiceNativeListener.remove(); } catch(e) {}
@@ -2321,35 +2355,6 @@ function cleanupVoice() {
   }
 }
 
-function startVoiceCountdown(onTimeout) {
-  var total = Number(config.voiceSeconds) || 5;
-  if (total < 1) total = 1;
-  if (total > 30) total = 30;
-  voiceRemaining = total;
-
-  var countdownEl = document.getElementById('voiceCountdown');
-  if (countdownEl) {
-    countdownEl.textContent = voiceRemaining;
-    countdownEl.classList.remove('urgent');
-    countdownEl.style.color = '#2563eb';
-  }
-
-  if (voiceCountdownTimer) clearInterval(voiceCountdownTimer);
-  voiceCountdownTimer = setInterval(function() {
-    voiceRemaining--;
-    if (voiceRemaining <= 0) {
-      clearInterval(voiceCountdownTimer);
-      voiceCountdownTimer = null;
-      try { onTimeout(); } catch(e) {}
-      return;
-    }
-    if (countdownEl) {
-      countdownEl.textContent = voiceRemaining;
-      if (voiceRemaining <= 2) countdownEl.classList.add('urgent');
-    }
-  }, 1000);
-}
-
 function openVoiceModal() {
   if (!config.voiceEnabled) return;
   if (voiceModalActive) return;
@@ -2360,6 +2365,7 @@ function openVoiceModal() {
   voiceRecognizedText = '';
   voiceAutoSaveDone = false;
   voiceNativeHasResult = false;
+  voiceGotAnyResult = false;
   voiceModalActive = true;
 
   var modal = document.getElementById('voiceModal');
@@ -2370,11 +2376,11 @@ function openVoiceModal() {
   countdownEl.textContent = '...';
   countdownEl.classList.remove('urgent');
   countdownEl.style.color = '#2563eb';
-  statusEl.textContent = '正在啟動麥克風...';
+  statusEl.textContent = '請開始說話，講完會自動記錄';
   textEl.innerHTML = '<span style="color:#94a3b8;">（請開始說話⋯）</span>';
   modal.classList.add('active');
 
-  // A：Capacitor 原生 SpeechRecognition
+  // ===== A：Capacitor 原生 SpeechRecognition =====
   if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SpeechRecognition) {
     var SR_Native = window.Capacitor.Plugins.SpeechRecognition;
 
@@ -2386,21 +2392,16 @@ function openVoiceModal() {
           voiceRecognizedText = text;
           voiceNativeHasResult = true;
           renderVoiceText(voiceRecognizedText);
-          statusEl.textContent = '辨識完成！';
-          countdownEl.textContent = '✅';
-          countdownEl.style.color = '#16a34a';
-          countdownEl.classList.remove('urgent');
-
-          try { SR_Native.stop().catch(function(){}); } catch(e) {}
-          setTimeout(function() { finishVoiceInput(); }, 300);
+          statusEl.textContent = '辨識中⋯（講完會自動記錄）';
+          // 原生每次回傳 partial 就重置靜音倒數，不立刻 stop
+          resetVoiceIdleTimer();
         }
       }
     });
 
-    startVoiceCountdown(function() {
-      try { SR_Native.stop().catch(function(){}); } catch(e) {}
-      finishVoiceInput();
-    });
+    // 先啟動靜音倒數（若使用者完全不出聲，N 秒後關閉）
+    resetVoiceIdleTimer();
+    startVoiceDisplayCountdown();
 
     SR_Native.stop().catch(function(){}).finally(function() {
       SR_Native.start({
@@ -2417,10 +2418,11 @@ function openVoiceModal() {
     return;
   }
 
-  // B：AndroidSpeech 原生介面
+  // ===== B：AndroidSpeech 原生介面 =====
   if (window.AndroidSpeech) {
     statusEl.textContent = '請在系統視窗說話...';
-    startVoiceCountdown(function() { finishVoiceInput(); });
+    resetVoiceIdleTimer();
+    startVoiceDisplayCountdown();
     try {
       window.AndroidSpeech.startListening();
     } catch(e) {
@@ -2430,7 +2432,7 @@ function openVoiceModal() {
     return;
   }
 
-  // C：Web Speech API
+  // ===== C：Web Speech API =====
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) {
     modal.classList.remove('active');
@@ -2441,31 +2443,43 @@ function openVoiceModal() {
 
   voiceRecognition = new SR();
   voiceRecognition.lang = 'zh-TW';
-  voiceRecognition.interimResults = true;
-  voiceRecognition.continuous = false;
+  voiceRecognition.interimResults = true;   // 保留中間結果，畫面即時更新
+  voiceRecognition.continuous = true;       // 連續模式，避免換氣就結束
   voiceRecognition.maxAlternatives = 1;
+
+  var finalTextAccum = '';                  // 累積最終結果
 
   voiceRecognition.onresult = function(event) {
     if (!voiceModalActive) return;
-    var finalTranscript = '';
-    for (var i = event.resultIndex; i < event.results.length; i++) {
-      finalTranscript += event.results[i][0].transcript;
-    }
-    if (!finalTranscript) return;
-    if (voiceRecognizedText && finalTranscript === voiceRecognizedText) return;
-    var halfLen = Math.floor(finalTranscript.length / 2);
-    if (halfLen > 0 && finalTranscript.slice(0, halfLen) === finalTranscript.slice(halfLen)) {
-      finalTranscript = finalTranscript.slice(0, halfLen);
-    }
-    voiceRecognizedText = finalTranscript;
-    renderVoiceText(voiceRecognizedText);
-    statusEl.textContent = '辨識完成！';
-    countdownEl.textContent = '✅';
-    countdownEl.style.color = '#16a34a';
-    countdownEl.classList.remove('urgent');
 
-    try { voiceRecognition.stop(); } catch(e) {}
-    setTimeout(function() { finishVoiceInput(); }, 300);
+    var interim = '';
+    var finalChunk = '';
+    for (var i = event.resultIndex; i < event.results.length; i++) {
+      if (event.results[i].isFinal) {
+        finalChunk += event.results[i][0].transcript;
+      } else {
+        interim += event.results[i][0].transcript;
+      }
+    }
+
+    if (finalChunk) finalTextAccum += finalChunk;
+
+    var displayText = (finalTextAccum + interim).trim();
+
+    if (displayText) {
+      voiceRecognizedText = displayText;
+      voiceGotAnyResult = true;
+      renderVoiceText(displayText);
+      statusEl.textContent = '辨識中⋯（講完會自動記錄）';
+      // 有語音就重置靜音倒數
+      resetVoiceIdleTimer();
+    }
+
+    // 只有「最終結果」出現時才收單；interim 絕不收單
+    if (finalChunk) {
+      try { voiceRecognition.stop(); } catch(e) {}
+      setTimeout(function(){ finishVoiceInput(); }, 500);
+    }
   };
 
   voiceRecognition.onerror = function(e) {
@@ -2478,23 +2492,34 @@ function openVoiceModal() {
     } else if (e.error === 'no-speech') {
       statusEl.textContent = '⚠️ 沒有聽到聲音';
     }
+    // 不直接 finish，交給靜音倒數處理
   };
 
   voiceRecognition.onend = function() {
-    if (voiceModalActive && !voiceAutoSaveDone) {
+    if (!voiceModalActive) return;
+    if (voiceAutoSaveDone) return;
+
+    // continuous=true 下，onend 通常代表「暫時停止」；
+    // 若已經有辨識到內容，直接收單；否則重置靜音倒數讓使用者還有機會再講
+    if (voiceGotAnyResult && voiceRecognizedText) {
       finishVoiceInput();
+    } else {
+      resetVoiceIdleTimer();
+      try { voiceRecognition.start(); } catch(e) {}
     }
   };
 
-  try { voiceRecognition.start(); } catch (e) {
+  try {
+    voiceRecognition.start();
+  } catch (e) {
     statusEl.textContent = '⚠️ 無法啟動語音辨識';
     setTimeout(function(){ finishVoiceInput(); }, 1000);
     return;
   }
 
-  startVoiceCountdown(function() {
-    finishVoiceInput();
-  });
+  // 啟動靜音倒數與畫面倒數
+  resetVoiceIdleTimer();
+  startVoiceDisplayCountdown();
 }
 
 function receiveNativeSpeech(text) {
@@ -2506,7 +2531,7 @@ function receiveNativeSpeech(text) {
   document.getElementById('voiceStatus').textContent = '辨識完成！';
   document.getElementById('voiceCountdown').textContent = '✅';
   document.getElementById('voiceCountdown').style.color = '#16a34a';
-  setTimeout(function() { finishVoiceInput(); }, 300);
+  setTimeout(function() { finishVoiceInput(); }, 400);
 }
 
 function renderVoiceText(text) {
@@ -2537,7 +2562,8 @@ function finishVoiceInput() {
   voiceAutoSaveDone = true;
   voiceModalActive = false;
 
-  if (voiceCountdownTimer) { clearInterval(voiceCountdownTimer); voiceCountdownTimer = null; }
+  if (voiceIdleTimer) { clearTimeout(voiceIdleTimer); voiceIdleTimer = null; }
+  if (voiceDisplayTimer) { clearInterval(voiceDisplayTimer); voiceDisplayTimer = null; }
 
   if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SpeechRecognition) {
     try { window.Capacitor.Plugins.SpeechRecognition.stop().catch(function(){}); } catch(e) {}
