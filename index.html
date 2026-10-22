@@ -64,7 +64,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .setBlock button{padding:6px 10px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-size:calc(1px * var(--fs-num));margin-top:4px;}
 .hour-preview{margin-top:4px;padding:6px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;font-size:calc(.9px * var(--fs-num));color:#0c4a6e;line-height:1.3;}
 
-/* 新增折疊樣式 */
 .collapsible-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:4px 0;}
 .collapsible-header h4{margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;}
 .collapsible-header .arrow{transition:transform 0.2s;font-size:12px;color:#64748b;}
@@ -91,7 +90,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .section-title .today-net{flex:1 1 auto;text-align:center;color:#059669;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:calc(1px * var(--fs-num));min-width:0;max-width:42%;}
 .sortBtn{border:none;background:#e0f2fe;color:#0369a1;font-size:calc(.85px * var(--fs-num));padding:4px 8px;border-radius:20px;flex-shrink:0;}
 
-/* ★ 重點：只對文字/數字輸入框套樣式，不要影響 checkbox */
 #typeListSet input[type="text"],#typeListSet input[type="number"],
 #payListSet input[type="text"],#payListSet input[type="number"],
 #expListSet input[type="text"],#expListSet input[type="number"],
@@ -105,7 +103,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .color-dot::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px dashed transparent;}
 .color-dot:hover::after{border-color:#94a3b8;}
 
-/* ===== 滑動開關（通用） ===== */
 .vs-toggle{position:relative;width:48px;height:26px;flex-shrink:0;cursor:pointer;display:inline-block;}
 .vs-toggle input[type="checkbox"]{position:absolute;opacity:0;width:0;height:0;margin:0;padding:0;border:none;background:none;appearance:none;-webkit-appearance:none;pointer-events:none;}
 .vs-toggle .vs-slider{position:absolute;inset:0;background:#cbd5e1;border-radius:26px;transition:background .2s;display:block;}
@@ -118,7 +115,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 
 .pageHome-top{flex-shrink:0;}
 
-/* ===== 明細列表優化 ===== */
 .home-detail-box{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .home-detail-row{display:grid;grid-template-columns:36px 48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:1px 4px;border-top:1px solid #f1f5f9;font-size:calc(1px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.1;}
 .home-detail-row:active{background:#eff6ff;}
@@ -450,6 +446,9 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
         <li>路招 200</li>
         <li>加油 500</li>
       </ul>
+      <h4>【秒數代表什麼？】</h4>
+      <p>「秒數」不是「總講話時間上限」，而是「<b>講完後停頓多久</b>才自動記錄」。講話多久都不會被斷，只有停頓超過秒數才會收單。</p>
+      <p>建議設 <b>8～10 秒</b>，留給自己換氣、思考的空間。若覺得還是常被切斷，設到 <b>15 秒</b> 也可以。</p>
       <h4>【關鍵字規則】</h4>
       <ul>
         <li>有類別 + 金額 + 付款 → 照你說的記錄</li>
@@ -459,24 +458,17 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
         <li>只說類別，沒說金額 → 會提示「找不到金額」</li>
       </ul>
       <h4>【聽錯字也沒關係】</h4>
-      <p>語音辨識偶爾會出錯，例如「好孕券」聽成「好運卷」、「企業簽單」聽成「企業千單」。</p>
-      <p>系統會自動修正常見的錯字，只要關鍵字有<span class="hl">兩個字符合</span>就會自動判斷。</p>
+      <p>語音辨識偶爾會出錯，例如「好孕券」聽成「好運卷」、「企業簽單」聽成「企業千單」。系統會自動修正常見的錯字。</p>
       <h4>【注意事項】</h4>
       <ul>
         <li><b>Android Chrome</b> 才能正常使用，iOS 的 PWA 幾乎無法運作</li>
         <li>第一次使用要<b>允許麥克風權限</b></li>
         <li>需要<b>網路連線</b>（語音辨識會送到 Google 伺服器處理）</li>
-        <li>語速放慢一點，辨識率會更高</li>
-      </ul>
-      <h4>【可以調整的地方】</h4>
-      <p>在設定頁可以調整：</p>
-      <ul>
-        <li>停頓秒數：預設 5 秒，可改成 1～30 秒（講完後停頓多久才自動記錄）</li>
-        <li>開關：關閉後首頁不會顯示語音按鈕</li>
+        <li>語速放慢一點、停頓清楚一點，辨識率會更高</li>
       </ul>
       <h4>【儲存後】</h4>
       <ul>
-        <li>畫面中央會出現「✅ 已記錄⋯」提示，2.5 秒後自動消失</li>
+        <li>畫面中央會出現「✅ 已記錄⋯」提示，約 3 秒後自動消失</li>
         <li>手機會發出「叮」聲並<b>語音唸出</b>「已記錄 500 元」</li>
         <li>首頁列表馬上出現這筆記錄</li>
       </ul>
@@ -621,7 +613,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </div>
 </div>
 
-<!-- 營業類別 (折疊) -->
 <div class="setBlock">
   <div class="collapsible-header" onclick="toggleSettingCollapse('typeSection')">
     <h4>營業類別</h4>
@@ -639,7 +630,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </div>
 </div>
 
-<!-- 付款方式 (折疊) -->
 <div class="setBlock">
   <div class="collapsible-header" onclick="toggleSettingCollapse('paySection')">
     <h4>付款方式</h4>
@@ -651,7 +641,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </div>
 </div>
 
-<!-- 支出類型 (折疊) -->
 <div class="setBlock">
   <div class="collapsible-header" onclick="toggleSettingCollapse('expSection')">
     <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:0;">
@@ -991,7 +980,6 @@ function getTodayWeekdayText(){
   return (d.getMonth()+1)+'/'+String(d.getDate()).padStart(2,'0')+' 週'+wd;
 }
 
-// ===== 匯出備份（優先分享，失敗才存 Documents） =====
 async function exportBackup(){
   var data = {
     saveTime: new Date().toISOString(),
@@ -1088,7 +1076,6 @@ function isValidExpense(e){return e&&typeof e==='object'&&typeof e.id!=='undefin
 function recFingerprint(r){return [r.date, r.time||'', r.type||'', Number(r.raw||0), r.pay||'', Number(r.net||0)].join('|');}
 function expFingerprint(e){return [e.date, e.time||'', e.cat||'', Number(e.raw||0), e.note||''].join('|');}
 
-// ===== 匯入：叫出檔案選擇器 =====
 function pickImportFile(){
   var input = document.getElementById('fileImport');
   if (!input) {
@@ -2184,16 +2171,23 @@ function openGameModal() {document.getElementById('gameModal').classList.add('ac
 function closeGameModal() {document.getElementById('gameModal').classList.remove('active');}
 function goToGame(url) {closeGameModal();window.location.href = url;}
 
-/* ================= 語音輸入（講完才記錄版） ================= */
+/* ================= 語音輸入（講完才記錄 v3） ================= */
 var voiceIdleTimer = null;         // 靜音倒數計時器
-var voiceDisplayTimer = null;      // 畫面倒數顯示用
+var voiceDisplayTimer = null;      // 畫面倒數顯示
+var voiceTotalTimer = null;        // 總超時保險
 var voiceRecognizedText = '';
+var voiceAllText = '';             // 累積的最終文字
+var voiceLastInterim = '';         // 最後一次 interim
 var voiceAutoSaveDone = false;
 var voiceRecognition = null;
 var voiceModalActive = false;
 var voiceNativeListener = null;
 var voiceNativeHasResult = false;
-var voiceGotAnyResult = false;     // 這次有沒有收到任何語音內容
+var voiceGotAnyResult = false;
+var voiceRestartCount = 0;
+var voiceRestarting = false;
+var voiceMaxRestarts = 60;         // 最多重啟次數
+var voiceTotalMaxMs = 90000;       // 總監聽上限（90 秒）
 
 var VOICE_FIX = {
   '運':'孕','韵':'孕','蕴':'孕','晕':'孕',
@@ -2235,6 +2229,21 @@ function fuzzyMatch(text, keyword) {
     if (text.indexOf(pair) !== -1) return true;
   }
   return false;
+}
+
+/* 合併語音片段，避免重複 */
+function mergeVoiceText(existing, newText) {
+  if (!existing) return newText || '';
+  if (!newText) return existing;
+  if (existing.indexOf(newText) >= 0) return existing;
+  if (newText.indexOf(existing) >= 0) return newText;
+  // 找重疊尾巴
+  for (var len = Math.min(existing.length, newText.length); len > 0; len--) {
+    if (existing.slice(-len) === newText.slice(0, len)) {
+      return existing + newText.slice(len);
+    }
+  }
+  return existing + newText;
 }
 
 function speakText(text) {
@@ -2306,19 +2315,18 @@ function updateVoiceBtnVisibility() {
   btn.style.display = config.voiceEnabled ? '' : 'none';
 }
 
-/* ---- 靜音倒數：每次有新語音就重置 ---- */
+/* 靜音倒數：只有「有新語音結果」才重置；過期 → 視為講完 */
 function resetVoiceIdleTimer() {
   voiceGotAnyResult = true;
   if (voiceIdleTimer) clearTimeout(voiceIdleTimer);
   var idleMs = (Number(config.voiceSeconds) || 5) * 1000;
   voiceIdleTimer = setTimeout(function () {
     voiceIdleTimer = null;
-    // 連續 N 秒沒有任何新語音 → 視為講完
     finishVoiceInput();
   }, idleMs);
 }
 
-/* ---- 畫面倒數（只顯示，不負責收單）---- */
+/* 畫面倒數（純顯示） */
 function startVoiceDisplayCountdown() {
   if (voiceDisplayTimer) clearInterval(voiceDisplayTimer);
   var remain = Number(config.voiceSeconds) || 5;
@@ -2341,6 +2349,7 @@ function startVoiceDisplayCountdown() {
 function cleanupVoice() {
   if (voiceIdleTimer) { clearTimeout(voiceIdleTimer); voiceIdleTimer = null; }
   if (voiceDisplayTimer) { clearInterval(voiceDisplayTimer); voiceDisplayTimer = null; }
+  if (voiceTotalTimer) { clearTimeout(voiceTotalTimer); voiceTotalTimer = null; }
   voiceModalActive = false;
   if (voiceNativeListener && voiceNativeListener.remove) {
     try { voiceNativeListener.remove(); } catch(e) {}
@@ -2355,6 +2364,34 @@ function cleanupVoice() {
   }
 }
 
+/* 重啟識別（onend 時自動呼叫，避免被引擎切斷） */
+function restartRecognition() {
+  if (!voiceModalActive || voiceAutoSaveDone) return;
+  if (voiceRestarting) return;
+  if (voiceRestartCount >= voiceMaxRestarts) {
+    finishVoiceInput();
+    return;
+  }
+  voiceRestartCount++;
+  voiceRestarting = true;
+  setTimeout(function() {
+    voiceRestarting = false;
+    if (!voiceModalActive || voiceAutoSaveDone) return;
+    if (!voiceRecognition) return;
+    try {
+      voiceRecognition.start();
+    } catch (e) {
+      // 第一次失敗，再延遲重試
+      setTimeout(function() {
+        if (!voiceModalActive || voiceAutoSaveDone) return;
+        try { voiceRecognition.start(); } catch (e2) {
+          finishVoiceInput();
+        }
+      }, 400);
+    }
+  }, 200);
+}
+
 function openVoiceModal() {
   if (!config.voiceEnabled) return;
   if (voiceModalActive) return;
@@ -2363,9 +2400,13 @@ function openVoiceModal() {
   cleanupVoice();
 
   voiceRecognizedText = '';
+  voiceAllText = '';
+  voiceLastInterim = '';
   voiceAutoSaveDone = false;
   voiceNativeHasResult = false;
   voiceGotAnyResult = false;
+  voiceRestartCount = 0;
+  voiceRestarting = false;
   voiceModalActive = true;
 
   var modal = document.getElementById('voiceModal');
@@ -2380,7 +2421,15 @@ function openVoiceModal() {
   textEl.innerHTML = '<span style="color:#94a3b8;">（請開始說話⋯）</span>';
   modal.classList.add('active');
 
-  // ===== A：Capacitor 原生 SpeechRecognition =====
+  // 總超時保險
+  if (voiceTotalTimer) clearTimeout(voiceTotalTimer);
+  voiceTotalTimer = setTimeout(function () {
+    if (voiceModalActive && !voiceAutoSaveDone) {
+      finishVoiceInput();
+    }
+  }, voiceTotalMaxMs);
+
+  // ===== A：Capacitor 原生 =====
   if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SpeechRecognition) {
     var SR_Native = window.Capacitor.Plugins.SpeechRecognition;
 
@@ -2393,13 +2442,11 @@ function openVoiceModal() {
           voiceNativeHasResult = true;
           renderVoiceText(voiceRecognizedText);
           statusEl.textContent = '辨識中⋯（講完會自動記錄）';
-          // 原生每次回傳 partial 就重置靜音倒數，不立刻 stop
           resetVoiceIdleTimer();
         }
       }
     });
 
-    // 先啟動靜音倒數（若使用者完全不出聲，N 秒後關閉）
     resetVoiceIdleTimer();
     startVoiceDisplayCountdown();
 
@@ -2418,7 +2465,7 @@ function openVoiceModal() {
     return;
   }
 
-  // ===== B：AndroidSpeech 原生介面 =====
+  // ===== B：AndroidSpeech 原生 =====
   if (window.AndroidSpeech) {
     statusEl.textContent = '請在系統視窗說話...';
     resetVoiceIdleTimer();
@@ -2443,47 +2490,42 @@ function openVoiceModal() {
 
   voiceRecognition = new SR();
   voiceRecognition.lang = 'zh-TW';
-  voiceRecognition.interimResults = true;   // 保留中間結果，畫面即時更新
-  voiceRecognition.continuous = true;       // 連續模式，避免換氣就結束
+  voiceRecognition.interimResults = true;
+  voiceRecognition.continuous = true;
   voiceRecognition.maxAlternatives = 1;
-
-  var finalTextAccum = '';                  // 累積最終結果
 
   voiceRecognition.onresult = function(event) {
     if (!voiceModalActive) return;
-
-    var interim = '';
     var finalChunk = '';
+    var interimChunk = '';
     for (var i = event.resultIndex; i < event.results.length; i++) {
       if (event.results[i].isFinal) {
         finalChunk += event.results[i][0].transcript;
       } else {
-        interim += event.results[i][0].transcript;
+        interimChunk += event.results[i][0].transcript;
       }
     }
+    if (finalChunk) {
+      voiceAllText = mergeVoiceText(voiceAllText, finalChunk);
+    }
+    voiceLastInterim = interimChunk;
 
-    if (finalChunk) finalTextAccum += finalChunk;
+    var display = voiceLastInterim
+      ? mergeVoiceText(voiceAllText, voiceLastInterim)
+      : voiceAllText;
 
-    var displayText = (finalTextAccum + interim).trim();
-
-    if (displayText) {
-      voiceRecognizedText = displayText;
+    if (display) {
+      voiceRecognizedText = display;
       voiceGotAnyResult = true;
-      renderVoiceText(displayText);
+      renderVoiceText(display);
       statusEl.textContent = '辨識中⋯（講完會自動記錄）';
-      // 有語音就重置靜音倒數
       resetVoiceIdleTimer();
     }
-
-    // 只有「最終結果」出現時才收單；interim 絕不收單
-    if (finalChunk) {
-      try { voiceRecognition.stop(); } catch(e) {}
-      setTimeout(function(){ finishVoiceInput(); }, 500);
-    }
+    // 注意：任何情況都不在這裡 stop() 或 finish()
   };
 
   voiceRecognition.onerror = function(e) {
-    if (!voiceModalActive) return;
+    if (!voiceModalActive || voiceAutoSaveDone) return;
     if (e.error === 'aborted') return;
     if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
       statusEl.textContent = '⚠️ 請允許麥克風權限';
@@ -2492,21 +2534,13 @@ function openVoiceModal() {
     } else if (e.error === 'no-speech') {
       statusEl.textContent = '⚠️ 沒有聽到聲音';
     }
-    // 不直接 finish，交給靜音倒數處理
+    // 不 finish，交給靜音倒數 / 重啟
   };
 
   voiceRecognition.onend = function() {
-    if (!voiceModalActive) return;
-    if (voiceAutoSaveDone) return;
-
-    // continuous=true 下，onend 通常代表「暫時停止」；
-    // 若已經有辨識到內容，直接收單；否則重置靜音倒數讓使用者還有機會再講
-    if (voiceGotAnyResult && voiceRecognizedText) {
-      finishVoiceInput();
-    } else {
-      resetVoiceIdleTimer();
-      try { voiceRecognition.start(); } catch(e) {}
-    }
+    if (!voiceModalActive || voiceAutoSaveDone) return;
+    // 絕不在此 finish，一律重啟讓使用者可以繼續說
+    restartRecognition();
   };
 
   try {
@@ -2517,21 +2551,8 @@ function openVoiceModal() {
     return;
   }
 
-  // 啟動靜音倒數與畫面倒數
   resetVoiceIdleTimer();
   startVoiceDisplayCountdown();
-}
-
-function receiveNativeSpeech(text) {
-  if (!voiceModalActive) return;
-  if (!text) { finishVoiceInput(); return; }
-  voiceRecognizedText = text;
-  voiceNativeHasResult = true;
-  renderVoiceText(voiceRecognizedText);
-  document.getElementById('voiceStatus').textContent = '辨識完成！';
-  document.getElementById('voiceCountdown').textContent = '✅';
-  document.getElementById('voiceCountdown').style.color = '#16a34a';
-  setTimeout(function() { finishVoiceInput(); }, 400);
 }
 
 function renderVoiceText(text) {
@@ -2564,6 +2585,7 @@ function finishVoiceInput() {
 
   if (voiceIdleTimer) { clearTimeout(voiceIdleTimer); voiceIdleTimer = null; }
   if (voiceDisplayTimer) { clearInterval(voiceDisplayTimer); voiceDisplayTimer = null; }
+  if (voiceTotalTimer) { clearTimeout(voiceTotalTimer); voiceTotalTimer = null; }
 
   if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SpeechRecognition) {
     try { window.Capacitor.Plugins.SpeechRecognition.stop().catch(function(){}); } catch(e) {}
@@ -2579,7 +2601,7 @@ function finishVoiceInput() {
 
   document.getElementById('voiceModal').classList.remove('active');
 
-  var text = voiceRecognizedText;
+  var text = voiceRecognizedText || voiceAllText || '';
   if (!text) {
     showToast('⚠️ 沒有聽到聲音\n請再試一次');
     return;
