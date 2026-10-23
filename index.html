@@ -271,7 +271,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .voice-input-btn:active{filter:brightness(.88);transform:scale(.97);}
 .voice-input-btn .voice-icon{font-size:1.3em;line-height:1;}
 
-#voiceModal{background:rgba(0,0,0,.6);align-items:center;justify-content:center;z-index:300;}
+#voiceModal{background:transparent;align-items:center;justify-content:center;z-index:300;width:100%;height:100%;height:100dvh;padding:4px;}
 #voiceModal.active{display:flex;}
 #voiceModal .voice-box{background:#fff;border-radius:16px;padding:20px;box-shadow:0 8px 30px rgba(0,0,0,.3);max-width:340px;width:calc(100% - 32px);text-align:center;}
 #voiceModal .voice-countdown{font-size:48px;font-weight:900;color:#2563eb;font-variant-numeric:tabular-nums;margin-bottom:8px;line-height:1;}
@@ -284,6 +284,8 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 #voiceModal .voice-text .kw-exp{color:#dc2626;font-weight:800;background:#fee2e2;padding:0 3px;border-radius:3px;}
 #voiceModal .voice-text .kw-amount{color:#16a34a;font-weight:800;background:#dcfce7;padding:0 3px;border-radius:3px;}
 #voiceModal .voice-hint{font-size:11px;color:#94a3b8;margin-top:10px;}
+#voiceModal .voice-cancel-btn {width: 100%; padding: 12px; margin-top: 14px; border: none; border-radius: 10px; background: #e2e8f0; color: #475569; font-size: 15px; font-weight: 700; cursor: pointer;}
+#voiceModal .voice-cancel-btn:active {filter: brightness(0.9);}
 
 .voice-settings-bar{display:flex;align-items:center;gap:6px;padding:8px 10px;background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.05);margin:4px 0;}
 .voice-settings-bar .vs-icon{font-size:18px;flex-shrink:0;}
@@ -427,6 +429,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
     <div id="voiceStatus" class="voice-status">請開始說話，講完會自動記錄</div>
     <div id="voiceText" class="voice-text">（等待語音⋯）</div>
     <div class="voice-hint">說「類別 + 金額 + 付款方式」，三項都到齊會立刻記錄</div>
+    <button class="voice-cancel-btn" onclick="cancelVoiceInput()">取消</button>
   </div>
 </div>
 
@@ -572,8 +575,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   <span class="vs-icon">🎤</span><span class="vs-label">語音輸入</span>
   <button class="vs-help-btn" onclick="openHelpModal()">📖 說明</button>
   <div style="display:flex;align-items:center;gap:4px;margin-left:auto;">
-    <input id="setVoiceSeconds" type="number" min="1" max="30" oninput="onVoiceSecondsChange()" style="width:50px;padding:4px;text-align:center;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;">
-    <span style="font-size:11px;color:#64748b;">秒</span>
     <label class="vs-toggle">
       <input type="checkbox" id="voiceToggle" checked onchange="onVoiceToggleChange(this.checked)">
       <span class="vs-slider"></span>
@@ -1224,7 +1225,6 @@ function showPage(id, skipHistory){
     document.getElementById('voiceToggle').checked=config.voiceEnabled;
     document.getElementById('typeBtnToggle').checked=config.typeBtnEnabled;
     document.getElementById('pageFsToggle').checked=config.pageFsEnabled;
-    document.getElementById('setVoiceSeconds').value=config.voiceSeconds;
     updateHourPreview();renderSetting();
   }
   if(id==='pageStat')showStatDefault();
@@ -2338,6 +2338,7 @@ function onVoiceToggleChange(checked) {
 
 function onVoiceSecondsChange() {
   var el = document.getElementById('setVoiceSeconds');
+  if (!el) return;
   var v = Number(el.value);
   if (!Number.isInteger(v) || v < 1 || v > 30) return;
   config.voiceSeconds = v;
@@ -2348,7 +2349,8 @@ function resetVoiceIdleTimer(isFromFinal) {
   voiceGotAnyResult = true;
   if (voiceIdleTimer) clearTimeout(voiceIdleTimer);
 
-  var configured = Math.max(Number(config.voiceSeconds) || 5, 4);
+  // 強制設定為 3 秒，無視之前的設定值
+  var configured = 3;
   var idleMs = isFromFinal ? voiceGraceMs : (configured * 1000);
 
   voiceIdleDeadline = Date.now() + idleMs;
@@ -2669,6 +2671,30 @@ function finishVoiceInput() {
   processVoiceCommand(text);
 }
 
+function cancelVoiceInput() {
+  if (!voiceModalActive && !voiceAutoSaveDone) return;
+  voiceAutoSaveDone = true;
+  voiceModalActive = false;
+
+  if (voiceIdleTimer) { clearTimeout(voiceIdleTimer); voiceIdleTimer = null; }
+  if (voiceDisplayTimer) { clearInterval(voiceDisplayTimer); voiceDisplayTimer = null; }
+  if (voiceTotalTimer) { clearTimeout(voiceTotalTimer); voiceTotalTimer = null; }
+
+  if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SpeechRecognition) {
+    try { window.Capacitor.Plugins.SpeechRecognition.stop().catch(function(){}); } catch(e) {}
+  }
+  if (voiceRecognition) {
+    try { voiceRecognition.abort(); } catch(e) {}
+    voiceRecognition = null;
+  }
+  if (voiceNativeListener && voiceNativeListener.remove) {
+    try { voiceNativeListener.remove(); } catch(e) {}
+  }
+  voiceNativeListener = null;
+
+  document.getElementById('voiceModal').classList.remove('active');
+}
+
 var _voiceProcessing = false;
 function processVoiceCommand(text) {
   if (_voiceProcessing) return false;
@@ -2826,8 +2852,6 @@ function showToast(msg, duration) {
 function initVoiceModule() {
   var vsToggle = document.getElementById('voiceToggle');
   if (vsToggle) vsToggle.checked = config.voiceEnabled;
-  var secEl = document.getElementById('setVoiceSeconds');
-  if (secEl) secEl.value = config.voiceSeconds;
   updateVoiceBtnVisibility();
 }
 
