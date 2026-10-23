@@ -988,63 +988,34 @@ async function exportBackup(){
   var Share = Plugins.Share;
 
   if (Filesystem && typeof Filesystem.writeFile === 'function') {
-    var Directory = Filesystem.Directory || (Plugins.Filesystem && Plugins.Filesystem.Directory) || null;
-    var Encoding = Filesystem.Encoding || { UTF8: 'utf8' };
-    var cacheDir = Directory && Directory.Cache ? Directory.Cache : 'CACHE';
-
     try {
+      var cacheDir = (Filesystem.Directory && Filesystem.Directory.Cache) ? Filesystem.Directory.Cache : 'CACHE';
+      var encoding = (Filesystem.Encoding && Filesystem.Encoding.UTF8) ? Filesystem.Encoding.UTF8 : 'utf8';
+      
       var writeRes = await Filesystem.writeFile({
         path: fileName,
         data: jsonStr,
         directory: cacheDir,
-        encoding: Encoding.UTF8 || 'utf8'
+        encoding: encoding
       });
 
       var fileUri = writeRes && writeRes.uri ? writeRes.uri : null;
-      if (!fileUri && typeof Filesystem.getUri === 'function') {
-        var uriRes = await Filesystem.getUri({ path: fileName, directory: cacheDir });
-        fileUri = uriRes && uriRes.uri ? uriRes.uri : null;
-      }
 
       if (fileUri && Share && typeof Share.share === 'function') {
         await Share.share({
           title: '計程車記帳備份',
-          text: '備份檔：' + fileName,
+          text: '請選擇要儲存或分享備份檔的地點：',
           url: fileUri,
           dialogTitle: '分享備份檔'
         });
         return;
+      } else if (fileUri) {
+        showAlert('✅ 備份檔已建立！\n\n但您沒有安裝分享外掛。\n檔案暫存在 App 快取中：\n' + fileName);
+        return;
       }
     } catch (err) {
-      console.warn('分享流程失敗，改存 Documents：', err);
+      console.warn('快取寫入失敗，嘗試使用網頁下載：', err);
     }
-
-    var Directory2 = Filesystem.Directory || (Plugins.Filesystem && Plugins.Filesystem.Directory) || {};
-    var Encoding2 = Filesystem.Encoding || { UTF8: 'utf8' };
-    var candidates = [];
-    if (Directory2.Documents) candidates.push(Directory2.Documents);
-    if (Directory2.ExternalStorage) candidates.push(Directory2.ExternalStorage);
-    if (Directory2.Data) candidates.push(Directory2.Data);
-    if (!candidates.length) candidates.push('DOCUMENTS');
-
-    var lastErr = null;
-    for (var i = 0; i < candidates.length; i++) {
-      try {
-        await Filesystem.writeFile({
-          path: fileName,
-          data: jsonStr,
-          directory: candidates[i],
-          encoding: Encoding2.UTF8 || 'utf8'
-        });
-        showAlert(
-          '✅ 備份成功！\n\n檔案已儲存：' + fileName +
-          '\n\n您可用手機內建「檔案管理員」找到它，或再手動分享到 LINE / 雲端。'
-        );
-        return;
-      } catch (err) { lastErr = err; }
-    }
-    showAlert('❌ 儲存失敗：' + (lastErr && lastErr.message ? lastErr.message : '未知錯誤'));
-    return;
   }
 
   try {
