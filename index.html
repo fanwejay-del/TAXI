@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2563eb">
 <style>
 button[data-nf],[data-netlify],#netlify,div[class*="netlify"]{display:none!important;}
-:root{--fs-num:13;--fw-num:900;}
+:root{--fs-num:13;--fw-num:700;}
 *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;}
 body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:#1e293b;line-height:1.3;font-weight:var(--fw-num);display:flex;flex-direction:column;overflow:hidden;}
@@ -20,60 +20,98 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 
 .card{background:#fff;border-radius:10px;padding:4px 4px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:3px;}
 
-.global-nav{position:relative;z-index:50;background:#fff;border-radius:10px;padding:6px 6px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin:0 4px 3px;display:flex;justify-content:space-between;align-items:center;gap:2px;flex-shrink:0;min-width:0;}
-.global-nav .app-brand{display:flex;align-items:center;gap:4px;min-width:0;flex:1 1 auto;overflow:hidden;}
-.global-nav .app-logo{width:28px;height:28px;flex:0 0 28px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:transparent;overflow:hidden;}
+.global-nav{position:sticky;top:0;z-index:50;background:#fff;border-radius:10px;padding:4px 6px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin:0 4px 3px;display:flex;justify-content:space-between;align-items:center;gap:3px;flex-shrink:0;min-width:0;}
+.global-nav .app-brand{display:flex;align-items:center;gap:5px;min-width:0;flex:1 1 auto;padding:1px 3px 1px 0;}
+.global-nav .app-logo{width:32px;height:32px;flex:0 0 32px;display:flex;align-items:center;justify-content:center;border-radius:9px;background:transparent;overflow:hidden;}
 .global-nav .app-logo img{width:100%;height:100%;object-fit:contain;display:block;}
-.global-nav .app-name{font-size:18px;font-weight:900;color:#1e293b;white-space:nowrap;letter-spacing:0;line-height:1.1;overflow:hidden;text-overflow:ellipsis;}
-.global-nav .nav-icon{font-size:16px;padding:5px 6px;border-radius:10px;cursor:pointer;line-height:1;color:#475569;transition:background .15s,transform .1s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:0 0 auto;min-width:42px;}
-.global-nav .nav-symbol{font-size:22px;line-height:1;}
+.global-nav .app-name{font-size:clamp(17px,calc(1.5px * var(--fs-num)),22px);font-weight:900;color:#1e293b;white-space:nowrap;letter-spacing:.3px;line-height:1.1;}
+.global-nav .nav-icon{font-size:calc(1.3px * var(--fs-num));padding:5px 6px;border-radius:9px;cursor:pointer;line-height:1;color:#475569;transition:background .15s,transform .1s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;flex:0 0 auto;min-width:40px;}
+.global-nav .nav-symbol{font-size:1.15em;line-height:1;}
 .global-nav .nav-label{font-size:10px;line-height:1;white-space:nowrap;font-weight:700;}
 .global-nav .nav-icon:active{background:#e2e8f0;transform:scale(.95);}
 .global-nav .nav-icon.active{background:#dbeafe;color:#2563eb;}
-@media(max-width:380px){
-  .global-nav{padding:5px 5px;gap:1px}
-  .global-nav .app-logo{width:24px;height:24px;flex-basis:24px}
-  .global-nav .app-name{font-size:15px}
-  .global-nav .nav-icon{min-width:38px;padding:4px 4px}
-  .global-nav .nav-symbol{font-size:20px}
-  .global-nav .nav-label{font-size:9px}
-}
+@media(max-width:380px){.global-nav{padding:3px 5px;gap:2px}.global-nav .app-logo{width:28px;height:28px;flex-basis:28px}.global-nav .app-brand{gap:4px}.global-nav .app-name{font-size:15px}.global-nav .nav-icon{min-width:35px;padding:5px 4px}.global-nav .nav-label{font-size:9px}}
 
 .bigBtn,.numBtn,.payBtn,.navBtn,.editBtn,.delBtn,.sortBtn,.add-btn,.backup-btn,.stat-btn,.setBlock button{box-shadow:0 2px 6px rgba(0,0,0,.14);transition:filter .12s,box-shadow .12s,transform .1s,background .12s;}
 .bigBtn:active,.numBtn:active,.payBtn:active,.navBtn:active,.editBtn:active,.delBtn:active,.sortBtn:active,.add-btn:active,.backup-btn:active,.stat-btn:active,.setBlock button:active{filter:brightness(.88);box-shadow:0 1px 3px rgba(0,0,0,.18);transform:scale(.97);}
 .bigBtn{padding:0 3px;border:none;border-radius:10px;font-size:clamp(16px,calc(0.85px * var(--fs-num)),18px);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;height:calc(2.4px * var(--fs-num) + 10px);display:flex;align-items:center;justify-content:center;line-height:1;}
 
-.inputBox{width:100%;padding:8px 16px;font-size:28px;text-align:center;border:2px solid #e2e8f0;border-radius:12px;margin:4px 0 8px;background:#f8fafc;color:#0f172a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-variant-numeric:tabular-nums;line-height:1.2;}
+.inputBox{
+  width:100%;
+  padding:8px 16px;
+  font-size:28px;
+  text-align:center;
+  border:2px solid #e2e8f0;
+  border-radius:12px;
+  margin:4px 0 8px;
+  background:#f8fafc;
+  color:#0f172a;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+  line-height:1.2;
+}
 
 .numKey{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(5px,2vw,10px);width:100%;min-width:0;flex:0 0 auto;}
 
-.numBtn{width:100%;min-width:0;padding:clamp(10px,3.8vw,18px) 4px;font-size:clamp(17px,5.5vw,22px);border-radius:12px;border:none;background:#fff;color:#1e293b;overflow:hidden;}
+.numBtn{
+  width:100%;
+  min-width:0;
+  padding:clamp(10px,3.8vw,18px) 4px;
+  font-size:clamp(17px,5.5vw,22px);
+  border-radius:12px;
+  border:none;
+  background:#fff;
+  color:#1e293b;
+  overflow:hidden;
+}
 .numBtn:active{background:#e2e8f0;}
 
-.payKey{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(5px,2vw,10px);margin-top:8px;width:100%;min-width:0;overflow:hidden;}
-.payBtn{width:100%;min-width:0;padding:clamp(10px,3.5vw,16px) 4px;border:none;border-radius:12px;color:#fff;font-size:clamp(12px,calc(1.05px * var(--fs-num)),15px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.payKey{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(5px,2vw,10px);
+  margin-top:8px;
+  width:100%;
+  min-width:0;
+  overflow:hidden;
+}
+.payBtn{
+  width:100%;
+  min-width:0;
+  padding:clamp(10px,3.5vw,16px) 4px;
+  border:none;
+  border-radius:12px;
+  color:#fff;
+  font-size:clamp(12px,calc(1.05px * var(--fs-num)),15px);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
 .noteInput{width:100%;padding:10px 12px;margin-top:10px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:calc(1.05px * var(--fs-num));background:#f8fafc;}
 .noteInput:focus{outline:none;border-color:#2563eb;background:#fff;}
 .delBtn{color:#dc2626;border:none;background:#fef2f2;font-size:calc(.85px * var(--fs-num));padding:4px 8px;border-radius:6px;}
-
 .setBlock{margin:4px 0;padding:6px 8px;background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.05);}
 .setBlock h4{margin-bottom:4px;font-size:calc(1px * var(--fs-num));color:#0f172a;}
 .setBlock input[type="number"],.setBlock input[type="text"]{width:100%;padding:6px 8px;margin:2px 0 4px;border-radius:8px;border:1.5px solid #e2e8f0;font-size:calc(1px * var(--fs-num));background:#f8fafc;}
 .setBlock button{padding:6px 10px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-size:calc(1px * var(--fs-num));margin-top:4px;}
 .hour-preview{margin-top:4px;padding:6px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;font-size:calc(.9px * var(--fs-num));color:#0c4a6e;line-height:1.3;}
-
-.collapsible-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:4px 0;}
-.collapsible-header h4{margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;}
-.collapsible-header .arrow{transition:transform 0.2s;font-size:12px;color:#64748b;}
-.collapsible-header.active .arrow{transform:rotate(180deg);}
-.collapsible-content{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed #e2e8f0;}
-.collapsible-content.active{display:block;}
-
 .modal{position:fixed;top:0;left:0;width:100%;height:100%;height:100dvh;background:#fff;display:none;align-items:stretch;justify-content:center;padding:4px;z-index:100;overflow:hidden;}
 .modal.active{display:flex;}
 .modal-card{width:100%;height:100%;padding:4px;display:flex;flex-direction:column;overflow:hidden;background:#fff;}
 
-.modal-card .input-area {flex: 0 1 auto;display: flex;flex-direction: column;gap: 4px;min-height: 0;min-width: 0;width: 100%;overflow: hidden;transform: none !important;}
+.modal-card .input-area {
+  flex: 0 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
+  transform: none !important;
+}
 #inputModal .numKey, #expInputModal .numKey { flex: 0 0 auto; }
 #inputModal .payKey, #expInputModal .payKey { flex: 0 0 auto; min-height: 0; margin-top: 4px; }
 
@@ -87,37 +125,21 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .section-title .today-date{font-size:calc(.9px * var(--fs-num));color:#64748b;white-space:nowrap;flex-shrink:0;}
 .section-title .today-net{flex:1 1 auto;text-align:center;color:#059669;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:calc(1px * var(--fs-num));min-width:0;max-width:42%;}
 .sortBtn{border:none;background:#e0f2fe;color:#0369a1;font-size:calc(.85px * var(--fs-num));padding:4px 8px;border-radius:20px;flex-shrink:0;}
-
-#typeListSet input[type="text"],#typeListSet input[type="number"],
-#payListSet input[type="text"],#payListSet input[type="number"],
-#expListSet input[type="text"],#expListSet input[type="number"],
-.setBlock .item input[type="text"],.setBlock .item input[type="number"]{font-size:calc(.9px * var(--fs-num));padding:3px 6px;height:24px;border-radius:6px;border:1.2px solid #e2e8f0;background:#f8fafc;margin:0;}
+#typeListSet input,#payListSet input,#expListSet input,.setBlock .item input{font-size:calc(.9px * var(--fs-num));padding:3px 6px;height:24px;border-radius:6px;border:1.2px solid #e2e8f0;background:#f8fafc;margin:0;}
 #typeListSet input[type="number"],#payListSet input[type="number"],#expListSet input[type="number"],.setBlock .item input[type="number"]{width:4.5em;max-width:72px;text-align:center;flex-shrink:0;}
-#typeListSet input[type="text"],#payListSet input[type="text"],#expListSet input[type="text"],.setBlock .item input[type="text"]{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;}
-
+#typeListSet input:not([type="number"]),#payListSet input:not([type="number"]),#expListSet input:not([type="number"]),.setBlock .item input:not([type="number"]){flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;}
 .item{background:#fff;padding:2px;margin:2px 0;border-radius:10px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.05);gap:6px;}
 .color-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.15);cursor:pointer;position:relative;transition:transform .1s;}
 .color-dot:active{transform:scale(.88);}
 .color-dot::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px dashed transparent;}
 .color-dot:hover::after{border-color:#94a3b8;}
 
-.vs-toggle{position:relative;width:48px;height:26px;flex-shrink:0;cursor:pointer;display:inline-block;}
-.vs-toggle input[type="checkbox"]{position:absolute;opacity:0;width:0;height:0;margin:0;padding:0;border:none;background:none;appearance:none;-webkit-appearance:none;pointer-events:none;}
-.vs-toggle .vs-slider{position:absolute;inset:0;background:#cbd5e1;border-radius:26px;transition:background .2s;display:block;}
-.vs-toggle .vs-slider::before{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
-.vs-toggle input[type="checkbox"]:checked + .vs-slider{background:#2563eb;}
-.vs-toggle input[type="checkbox"]:checked + .vs-slider::before{transform:translateX(22px);}
-
-.voice-settings-bar .vs-toggle{margin-left:auto;}
-.setBlock .set-title-row .vs-toggle{margin-left:auto;}
-
 .pageHome-top{flex-shrink:0;}
-
 .home-detail-box{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-.home-detail-row{display:grid;grid-template-columns:36px 48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:1px 4px;border-top:1px solid #f1f5f9;font-size:calc(1px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.1;}
+.home-detail-row{display:grid;grid-template-columns:36px 48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:4px 4px;border-top:1px solid #f1f5f9;font-size:calc(.9px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.25;}
 .home-detail-row:active{background:#eff6ff;}
 .home-detail-row>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.home-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:2px 4px;position:sticky;top:0;z-index:2;font-size:calc(.95px * var(--fs-num));}
+.home-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:5px 4px;position:sticky;top:0;z-index:2;font-size:calc(.9px * var(--fs-num));}
 .home-detail-head .amount{text-align:right;}
 .home-detail-idx{text-align:center;color:#94a3b8;font-variant-numeric:tabular-nums;}
 .home-detail-amt{text-align:right;color:#2563eb;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
@@ -125,236 +147,435 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 .home-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 
 .stat-list-head,.stat-list-row{display:grid;grid-template-columns:72px 1fr 1fr 1fr;gap:4px;align-items:center;font-variant-numeric:tabular-nums;}
-.stat-list-head{background:#f8fafc;padding:2px 6px;color:#64748b;font-size:calc(.96px * var(--fs-num));font-weight:800;position:sticky;top:0;z-index:2;}
+.stat-list-head{background:#f8fafc;padding:4px 6px;color:#64748b;font-size:calc(.96px * var(--fs-num));font-weight:800;position:sticky;top:0;z-index:2;}
 .stat-list-head>div{text-align:right;}
 .stat-list-head>div:first-child{text-align:left;}
 .stat-list-head .head-amount{text-align:right;}
-.stat-list-row{padding:2px 6px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));min-width:0;cursor:pointer;line-height:1.15;}
+.stat-list-row{padding:4px 6px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));min-width:0;cursor:pointer;line-height:1.25;}
 .stat-list-row:active{background:#eff6ff;}
 .stat-list-row .item-name{color:#2563eb;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;}
 .stat-list-row .item-main{color:#2563eb;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;letter-spacing:-0.02em;}
 .stat-list-row .item-fee{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#dc2626;letter-spacing:-0.02em;}
 .stat-list-row .item-net{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#059669;letter-spacing:-0.02em;}
 
-.stat-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:2px 6px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.15;}
+.stat-detail-row{display:grid;grid-template-columns:48px 48px 1fr 1fr 1fr 1fr;gap:4px;align-items:center;padding:4px 6px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.25;}
 .stat-detail-row:active{background:#eff6ff;}
 .stat-detail-row>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:2px 6px;position:sticky;top:0;z-index:2;font-size:calc(.96px * var(--fs-num));}
+.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:4px 6px;position:sticky;top:0;z-index:2;font-size:calc(.96px * var(--fs-num));}
 .stat-detail-head .amount{text-align:right;}
 .stat-detail-amt{text-align:right;color:#2563eb;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 .stat-detail-fee{text-align:right;color:#dc2626;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 .stat-detail-net{text-align:right;color:#059669;font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
 
-.stat-detail-row-exp{display:grid;grid-template-columns:48px 48px 1fr 1fr;gap:4px;align-items:center;padding:2px 6px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.15;}
+.stat-detail-row-exp{display:grid;grid-template-columns:48px 48px 1fr 1fr;gap:4px;align-items:center;padding:4px 6px;border-top:1px solid #f1f5f9;font-size:calc(.96px * var(--fs-num));cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.25;}
 .stat-detail-row-exp:active{background:#eff6ff;}
 .stat-detail-row-exp>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.stat-detail-row-exp.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:2px 6px;position:sticky;top:0;z-index:2;font-size:calc(.96px * var(--fs-num));}
+.stat-detail-row-exp.stat-detail-head{font-weight:800;background:#f8fafc;color:#64748b;padding:4px 6px;position:sticky;top:0;z-index:2;font-size:calc(.96px * var(--fs-num));}
 .stat-detail-row-exp.stat-detail-head .amount{text-align:right;}
 
-.stat-type-card{background:#fff !important;border-radius:10px !important;padding:4px !important;box-shadow:0 1px 4px rgba(0,0,0,.06) !important;margin-bottom:3px !important;display:grid !important;grid-template-columns:repeat(5, minmax(0,1fr)) !important;gap:4px !important;flex-shrink:0;}
-.stat-type-btn{width:100% !important;min-width:0 !important;padding:6px 3px !important;border:none !important;border-radius:8px !important;background:#e2e8f0 !important;color:#475569 !important;font-size:clamp(10px, calc(.92px * var(--fs-num)), 15px) !important;font-weight:inherit !important;cursor:pointer !important;white-space:nowrap !important;overflow:hidden !important;text-overflow:ellipsis !important;transition:filter .12s,transform .1s,box-shadow .12s !important;box-shadow:0 1px 3px rgba(0,0,0,.12) !important;font-family:inherit !important;}
+.stat-type-card{
+  background:#fff !important;
+  border-radius:10px !important;
+  padding:4px !important;
+  box-shadow:0 1px 4px rgba(0,0,0,.06) !important;
+  margin-bottom:3px !important;
+  display:grid !important;
+  grid-template-columns:repeat(5, minmax(0,1fr)) !important;
+  gap:4px !important;
+  flex-shrink:0;
+}
+.stat-type-btn{
+  width:100% !important;
+  min-width:0 !important;
+  padding:6px 3px !important;
+  border:none !important;
+  border-radius:8px !important;
+  background:#e2e8f0 !important;
+  color:#475569 !important;
+  font-size:clamp(10px, calc(.92px * var(--fs-num)), 15px) !important;
+  font-weight:inherit !important;
+  cursor:pointer !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  transition:filter .12s,transform .1s,box-shadow .12s !important;
+  box-shadow:0 1px 3px rgba(0,0,0,.12) !important;
+  font-family:inherit !important;
+}
 .stat-type-btn:active{filter:brightness(.88) !important;transform:scale(.96) !important;}
 .stat-type-btn.active{color:#fff !important;box-shadow:0 2px 8px rgba(0,0,0,.25) !important;}
 .stat-type-btn.all-btn.active{background:#0f172a !important;}
 
-.stat-pay-card{background:#fff !important;border-radius:10px !important;padding:4px !important;box-shadow:0 1px 4px rgba(0,0,0,.06) !important;margin-bottom:3px !important;display:grid !important;grid-template-columns:repeat(6, minmax(0,1fr)) !important;gap:4px !important;flex-shrink:0;}
-.stat-pay-btn{width:100% !important;min-width:0 !important;padding:6px 3px !important;border:none !important;border-radius:8px !important;background:#e2e8f0 !important;color:#475569 !important;font-size:clamp(10px, calc(.92px * var(--fs-num)), 15px) !important;font-weight:inherit !important;cursor:pointer !important;white-space:nowrap !important;overflow:hidden !important;text-overflow:ellipsis !important;transition:filter .12s,transform .1s,box-shadow .12s !important;box-shadow:0 1px 3px rgba(0,0,0,.12) !important;font-family:inherit !important;}
+/* 付款方式查詢列（與營業類別按鈕同款，一行6個） */
+.stat-pay-card{
+  background:#fff !important;
+  border-radius:10px !important;
+  padding:4px !important;
+  box-shadow:0 1px 4px rgba(0,0,0,.06) !important;
+  margin-bottom:3px !important;
+  display:grid !important;
+  grid-template-columns:repeat(6, minmax(0,1fr)) !important;
+  gap:4px !important;
+  flex-shrink:0;
+}
+.stat-pay-btn{
+  width:100% !important;
+  min-width:0 !important;
+  padding:6px 3px !important;
+  border:none !important;
+  border-radius:8px !important;
+  background:#e2e8f0 !important;
+  color:#475569 !important;
+  font-size:clamp(10px, calc(.92px * var(--fs-num)), 15px) !important;
+  font-weight:inherit !important;
+  cursor:pointer !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  transition:filter .12s,transform .1s,box-shadow .12s !important;
+  box-shadow:0 1px 3px rgba(0,0,0,.12) !important;
+  font-family:inherit !important;
+}
 .stat-pay-btn:active{filter:brightness(.88) !important;transform:scale(.96) !important;}
 .stat-pay-btn.active{color:#fff !important;box-shadow:0 2px 8px rgba(0,0,0,.25) !important;}
 .stat-pay-btn.all-btn.active{background:#0f172a !important;}
 
-.exp-type-btn-card{background:#fff !important;border-radius:10px !important;padding:4px !important;box-shadow:0 1px 4px rgba(0,0,0,.06) !important;margin-bottom:3px !important;display:grid !important;grid-template-columns:repeat(5, minmax(0,1fr)) !important;gap:4px !important;flex-shrink:0;}
-.exp-type-btn-card .bigBtn{height:calc((2.4px * var(--fs-num) + 10px) * 0.75) !important;font-size:clamp(13px, calc(0.68px * var(--fs-num)), 15px) !important;}
+/* 支出頁面：支出類別按鈕（一行5個，高度3/4） */
+.exp-type-btn-card{
+  background:#fff !important;
+  border-radius:10px !important;
+  padding:4px !important;
+  box-shadow:0 1px 4px rgba(0,0,0,.06) !important;
+  margin-bottom:3px !important;
+  display:grid !important;
+  grid-template-columns:repeat(5, minmax(0,1fr)) !important;
+  gap:4px !important;
+  flex-shrink:0;
+}
+.exp-type-btn-card .bigBtn{
+  height:calc((2.4px * var(--fs-num) + 10px) * 0.75) !important;
+  font-size:clamp(13px, calc(0.68px * var(--fs-num)), 15px) !important;
+}
 
 .stat-breadcrumb{position:sticky;top:0;z-index:20;background:#fff;padding:3px 8px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:3px;font-size:calc(.92px * var(--fs-num));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;}
 .stat-breadcrumb button{border:0;background:none;color:#2563eb;font:inherit;font-weight:700;padding:0 3px;cursor:pointer;}
 .stat-breadcrumb .stat-current{color:#475569;font-weight:500;}
 .stat-muted{color:#94a3b8;}
 
-.date-range-bar{display:flex;align-items:center;gap:4px;background:#fff;border-radius:10px;padding:4px 6px;margin-bottom:3px;box-shadow:0 1px 4px rgba(0,0,0,.06);flex-shrink:0;flex-wrap:nowrap;overflow:hidden;}
-.date-range-bar .dr-label{font-size:calc(.85px * var(--fs-num));color:#64748b;flex-shrink:0;}
-.date-range-bar input[type="date"]{flex:1;min-width:0;padding:4px 4px;border:1.2px solid #e2e8f0;border-radius:6px;font-size:calc(.82px * var(--fs-num));background:#f8fafc;font-variant-numeric:tabular-nums;}
-.date-range-bar .dr-sep{font-size:calc(.85px * var(--fs-num));color:#94a3b8;flex-shrink:0;}
-.date-range-bar .dr-btn{padding:5px 8px;border:none;border-radius:6px;background:#2563eb;color:#fff;font-size:calc(.82px * var(--fs-num));font-weight:700;flex-shrink:0;}
-.date-range-bar .dr-clear{background:#e2e8f0;color:#475569;}
-
-.stat-summary-box{background:#fff;border-radius:10px;padding:2px 6px;margin-bottom:2px;box-shadow:0 1px 4px rgba(0,0,0,.06);flex-shrink:0;}
+.stat-summary-box{background:#fff;border-radius:10px;padding:4px 6px;margin-bottom:3px;box-shadow:0 1px 4px rgba(0,0,0,.06);flex-shrink:0;}
 .stat-summary-title{font-size:calc(.96px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:2px;}
 
-.stat-summary-grid{display:flex;flex-direction:column;gap:3px;line-height:1.15;width:100%;}
-.stat-summary-grid>div.row-main,.stat-summary-grid>div.row-sub{display:flex;flex-wrap:wrap;gap:4px 12px;width:100%;}
-.stat-summary-grid>div.row-main .pair,.stat-summary-grid>div.row-sub .pair{display:inline-flex;align-items:baseline;gap:3px;white-space:nowrap;}
-.stat-summary-grid>div.row-typedetail,.stat-summary-grid>div.row-paydetail{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;}
-.stat-summary-grid .row-paydetail .pair,.stat-summary-grid .row-typedetail .pair {display:inline-flex;align-items:baseline;gap:3px;white-space:nowrap;flex:0 0 auto;}
-.stat-summary-grid>div.row-cost{ display:inline-flex; align-items:baseline; gap:3px; }
-.stat-summary-grid span{ color:#64748b; font-size:calc(.84px * var(--fs-num)); white-space:nowrap; }
-.stat-summary-grid strong{ font-size:calc(.96px * var(--fs-num)); font-variant-numeric:tabular-nums; white-space:nowrap; min-width:2.4em; text-align:right;}
+.stat-summary-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:0 8px;
+  align-items:baseline;
+  line-height:1.25;
+}
+.stat-summary-grid>div{
+  display:inline-flex;
+  align-items:baseline;
+  gap:3px;
+  min-width:0;
+  flex:0 1 auto;
+  white-space:nowrap;
+}
+.stat-summary-grid>div.row-main{
+  flex:1 1 100%;
+  justify-content:flex-start;
+  gap:4px 12px;
+  padding-bottom:0;
+  margin-bottom:0;
+  border-bottom:none;
+}
+.stat-summary-grid>div.row-main .pair{
+  display:inline-flex;
+  align-items:baseline;
+  gap:3px;
+  min-width:0;
+  flex:0 1 auto;
+  white-space:nowrap;
+}
+.stat-summary-grid>div.row-sub{
+  flex:1 1 100%;
+  display:flex;
+  flex-wrap:wrap;
+  gap:0 8px;
+  align-items:baseline;
+}
+.stat-summary-grid>div.row-sub .pair{
+  display:inline-flex;
+  align-items:baseline;
+  gap:3px;
+  min-width:0;
+  flex:0 0 auto;
+  white-space:nowrap;
+}
+.stat-summary-grid>div.row-cost{
+  flex:1 1 100%;
+  display:inline-flex;
+  align-items:baseline;
+  gap:3px;
+}
+.stat-summary-grid span{
+  color:#64748b;
+  font-size:calc(.84px * var(--fs-num));
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.stat-summary-grid strong{
+  color:#2563eb;
+  font-size:calc(.96px * var(--fs-num));
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+  flex-shrink:1;
+  min-width:2.8em;
+  text-align:right;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
 .stat-summary-grid strong.fee{color:#dc2626;}
 .stat-summary-grid strong.net{color:#059669;}
 .stat-summary-grid strong.cost{color:#ea580c;}
 .stat-summary-grid strong.cash{color:#16a34a;}
 .stat-summary-grid strong.pay{color:#0891b2;}
-.stat-summary-grid .row-typedetail .sub{font-size:calc(.78px * var(--fs-num));color:#94a3b8;font-weight:700;margin-left:2px;}
-.stat-summary-grid .row-typedetail .sub.fee{color:#dc2626;}
 
 .stat-list-box{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 
 #pageSetting{overflow-y:auto;}
+
 #pageExpStat{overflow:hidden;}
 #expContent{overflow-y:auto;-webkit-overflow-scrolling:touch;}
+
 .hidden-color{display:none !important;position:absolute !important;width:1px !important;height:1px !important;opacity:0 !important;pointer-events:none !important;}
 
-.exp-summary-card{background:#fff;border-radius:10px;padding:2px 6px;margin-bottom:2px;box-shadow:0 1px 4px rgba(0,0,0,.06);flex-shrink:0;}
-.exp-summary-card .exp-summary-head{display:flex;flex-wrap:wrap;gap:2px 12px;align-items:baseline;margin-bottom:2px;}
-.exp-summary-card .exp-summary-head .title{font-size:calc(.96px * var(--fs-num));font-weight:800;color:#0f172a;white-space:nowrap;}
-.exp-summary-card .exp-summary-head .pair{display:inline-flex;align-items:baseline;gap:3px;white-space:nowrap;}
-.exp-summary-card .exp-summary-head span.label{color:#64748b;font-size:calc(.84px * var(--fs-num));}
-.exp-summary-card .exp-summary-head strong{color:#dc2626;font-size:calc(.96px * var(--fs-num));font-variant-numeric:tabular-nums;}
-.exp-summary-card .exp-summary-body{display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline;}
-.exp-summary-card .exp-summary-body .pair{display:inline-flex;align-items:baseline;gap:2px;white-space:nowrap;flex:0 0 auto;min-width:0;padding:1px 4px;border-radius:6px;background:#f8fafc;}
-.exp-summary-card .exp-summary-body .pair.total-pair{font-weight:800;background:transparent;padding:0;}
-.exp-summary-card .exp-summary-body .pair.total-pair span.label{color:#0f172a;}
-.exp-summary-card .exp-summary-body .pair.total-pair strong{color:#dc2626;}
-.exp-summary-card .exp-summary-body .pair span{color:#64748b;font-size:calc(.84px * var(--fs-num));overflow:hidden;text-overflow:ellipsis;min-width:0;}
-.exp-summary-card .exp-summary-body .pair strong{color:#dc2626;font-size:calc(.96px * var(--fs-num));font-variant-numeric:tabular-nums;display:inline-block;min-width:2em;text-align:right;flex-shrink:0;}
-.exp-summary-card .exp-summary-body .pair .sub{font-size:calc(.78px * var(--fs-num));color:#94a3b8;font-weight:700;}
+.exp-summary-card{background:#fff;border-radius:10px;padding:4px 6px;margin-bottom:3px;box-shadow:0 1px 4px rgba(0,0,0,.06);flex-shrink:0;}
+.exp-summary-card .stat-summary-title{font-size:calc(.96px * var(--fs-num));font-weight:800;color:#0f172a;margin-bottom:2px;}
+.exp-summary-card .stat-summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;}
+.exp-summary-card .stat-summary-grid>div{display:block;}
+.exp-summary-card .stat-summary-grid span{display:block;color:#64748b;font-size:calc(.84px * var(--fs-num));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.exp-summary-card .stat-summary-grid strong{display:block;text-align:right;color:#dc2626;font-size:calc(.96px * var(--fs-num));font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.exp-summary-card .stat-summary-grid strong.net{color:#059669;}
 
-#daySummaryCard{display:flex;flex-direction:column;gap:2px;width:100%;font-size:calc(1.1px * var(--fs-num));line-height:1.15;}
-#daySummaryCard .summary-line1,#daySummaryCard .summary-line2{display:flex;flex-wrap:wrap;align-items:baseline;gap:1px 8px;width:100%;}
-#daySummaryCard .stat-pair{display:inline-flex;align-items:baseline;gap:3px;white-space:nowrap;flex:0 1 auto;}
-#daySummaryCard .stat-pair > span:first-child{color:#64748b;font-size:calc(.95px * var(--fs-num));white-space:nowrap;flex-shrink:0;}
-#daySummaryCard .stat-pair > span:last-child{font-size:calc(.95px * var(--fs-num)) !important;font-variant-numeric:tabular-nums;white-space:nowrap;flex-shrink:0;}
-#daySummaryCard #dayTotal{color:#0f172a;font-weight:800;}
-#daySummaryCard #cashTotal{color:#2563eb;font-weight:800;}
-#daySummaryCard #nonCashTotal{color:#ea580c;font-weight:800;}
-#daySummaryCard #feeTotal{color:#dc2626;font-weight:800;}
-#daySummaryCard #deductTotal{color:#0f172a;font-weight:800;}
+.exp-cost-check{width:14px;height:14px;flex-shrink:0;cursor:pointer;accent-color:#ea580c;margin:0;}
+
+#daySummaryCard{
+  display:flex;
+  flex-direction:column;
+  gap:1px;
+  width:100%;
+  font-size:calc(.96px * var(--fs-num));
+  line-height:1.25;
+}
+
+#daySummaryCard .summary-line1{
+  display:flex;
+  flex-wrap:nowrap;
+  align-items:baseline;
+  gap:0;
+  width:100%;
+}
+#daySummaryCard .summary-line1 .stat-pair{
+  display:inline-flex;
+  align-items:baseline;
+  justify-content:center;
+  gap:2px;
+  white-space:nowrap;
+  flex:1 1 0;
+  min-width:0;
+  padding:0 2px;
+  box-sizing:border-box;
+}
+
+#daySummaryCard .summary-line2{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:2px 8px;
+  width:100%;
+}
+#daySummaryCard .summary-line2 .stat-pair{
+  display:inline-flex;
+  align-items:baseline;
+  justify-content:center;
+  gap:2px;
+  white-space:nowrap;
+  flex:0 0 auto;
+  min-width:0;
+  padding:0 2px;
+  box-sizing:border-box;
+}
+
+#daySummaryCard .stat-pair > span:first-child{
+  color:#64748b;
+  font-size:calc(.84px * var(--fs-num));
+  white-space:nowrap;
+  flex-shrink:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  min-width:0;
+}
+#daySummaryCard .stat-pair > span:last-child{
+  font-size:calc(.96px * var(--fs-num)) !important;
+  font-variant-numeric:tabular-nums;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  flex-shrink:0;
+  min-width:0;
+}
+
+#daySummaryCard #dayTotal{color:#0f172a;font-weight:700;}
+#daySummaryCard #cashTotal{color:#2563eb;font-weight:700;}
+#daySummaryCard #nonCashTotal{color:#ea580c;font-weight:700;}
+#daySummaryCard #feeTotal{color:#dc2626;font-weight:700;}
+#daySummaryCard #deductTotal{color:#0f172a;font-weight:700;}
 
 @media(max-width:400px){
   .stat-list-head,.stat-list-row{grid-template-columns:52px minmax(0,1fr) minmax(0,0.9fr) minmax(0,1fr);gap:3px;padding-left:4px;padding-right:4px}
   .stat-detail-row{grid-template-columns:36px 36px minmax(0,1fr) minmax(0,1fr) minmax(0,0.85fr) minmax(0,0.95fr);gap:2px;padding-left:3px;padding-right:3px;font-size:calc(.9px * var(--fs-num));}
   .stat-detail-row-exp{grid-template-columns:40px 40px 1fr 1fr;gap:3px;padding-left:3px;padding-right:3px;}
-  .home-detail-row{grid-template-columns:28px 36px 36px minmax(0,1.1fr) minmax(0,1fr) minmax(0,0.85fr) minmax(0,0.95fr);gap:2px;padding-left:3px;padding-right:3px;font-size:calc(.96px * var(--fs-num));}
+  .home-detail-row{grid-template-columns:28px 36px 36px minmax(0,1.1fr) minmax(0,1fr) minmax(0,0.85fr) minmax(0,0.95fr);gap:2px;padding-left:3px;padding-right:3px;font-size:calc(.86px * var(--fs-num));}
 }
+
 @media(max-width:600px){body{padding:4px 0;}.page{padding:0 4px;}}
 @media(max-width:400px){
   .stat-type-btn{font-size:clamp(9px, calc(.8px * var(--fs-num)), 13px) !important;padding:5px 3px !important;}
   .stat-pay-btn{font-size:clamp(9px, calc(.8px * var(--fs-num)), 13px) !important;padding:5px 3px !important;}
 }
 
-.numBtn, .payBtn {font-weight: 800 !important;letter-spacing: 0.03em;text-shadow: 0 1px 2px rgba(0,0,0,0.1);}
-.numBtn {background: #f8fafc;border: 1.5px solid #cbd5e1;box-shadow: 0 4px 0 #94a3b8, 0 6px 12px rgba(0,0,0,0.12) !important;font-size: clamp(20px, 6vw, 26px) !important;padding: clamp(12px, 4.5vw, 22px) 4px !important;color: #0f172a;transition: all 0.06s ease;}
-.numBtn:active {transform: translateY(2px) scale(0.98) !important;box-shadow: 0 2px 0 #64748b, 0 3px 8px rgba(0,0,0,0.2) !important;background: #e2e8f0;}
-.payBtn {font-size: clamp(14px, 4vw, 18px) !important;padding: clamp(12px, 4vw, 18px) 4px !important;border: 1.5px solid rgba(0,0,0,0.1);box-shadow: 0 4px 0 rgba(0,0,0,0.25), 0 6px 14px rgba(0,0,0,0.18) !important;text-shadow: 0 1px 3px rgba(0,0,0,0.3);transition: all 0.06s ease;}
-.payBtn:active {transform: translateY(3px) scale(0.97) !important;box-shadow: 0 1px 0 rgba(0,0,0,0.3), 0 3px 8px rgba(0,0,0,0.2) !important;filter: brightness(0.92);}
-.modal-card > button[onclick*="close"] {font-weight: 700;box-shadow: 0 3px 0 #64748b, 0 5px 10px rgba(0,0,0,0.15);transition: all 0.06s ease;}
-.modal-card > button[onclick*="close"]:active {transform: translateY(2px);box-shadow: 0 1px 0 #475569, 0 3px 8px rgba(0,0,0,0.15);}
+.numBtn, .payBtn {
+  font-weight: 800 !important;
+  letter-spacing: 0.03em;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+.numBtn {
+  background: #f8fafc;
+  border: 1.5px solid #cbd5e1;
+  box-shadow: 0 4px 0 #94a3b8, 0 6px 12px rgba(0,0,0,0.12) !important;
+  font-size: clamp(20px, 6vw, 26px) !important;
+  padding: clamp(12px, 4.5vw, 22px) 4px !important;
+  color: #0f172a;
+  transition: all 0.06s ease;
+}
+.numBtn:active {
+  transform: translateY(2px) scale(0.98) !important;
+  box-shadow: 0 2px 0 #64748b, 0 3px 8px rgba(0,0,0,0.2) !important;
+  background: #e2e8f0;
+}
+.payBtn {
+  font-size: clamp(14px, 4vw, 18px) !important;
+  padding: clamp(12px, 4vw, 18px) 4px !important;
+  border: 1.5px solid rgba(0,0,0,0.1);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.25), 0 6px 14px rgba(0,0,0,0.18) !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  transition: all 0.06s ease;
+}
+.payBtn:active {
+  transform: translateY(3px) scale(0.97) !important;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.3), 0 3px 8px rgba(0,0,0,0.2) !important;
+  filter: brightness(0.92);
+}
+#expCatWrap .payBtn {
+  font-size: clamp(14px, 4vw, 18px) !important;
+}
+.modal-card > button[onclick*="close"] {
+  font-weight: 700;
+  box-shadow: 0 3px 0 #64748b, 0 5px 10px rgba(0,0,0,0.15);
+  transition: all 0.06s ease;
+}
+.modal-card > button[onclick*="close"]:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #475569, 0 3px 8px rgba(0,0,0,0.15);
+}
+
 #expInputModal .noteInput { margin-top: 4px; }
 #expInputModal .modal-card > button[onclick*="close"] { margin-top: 3px; }
 
-#confirmModal{background:rgba(0,0,0,.45);align-items:center;justify-content:center;z-index:200;}
+/* ===== 自訂確認 / 提示 Modal ===== */
+#confirmModal{
+  background:rgba(0,0,0,.45);
+  align-items:center;
+  justify-content:center;
+  z-index:200;
+}
 #confirmModal.active{display:flex;}
-#confirmModal .confirm-box{background:#fff;border-radius:16px;padding:24px 20px;box-shadow:0 8px 30px rgba(0,0,0,.25);max-width:340px;width:100%;text-align:center;}
-#confirmModal .confirm-msg{font-size:16px;font-weight:700;color:#0f172a;margin-bottom:20px;line-height:1.6;white-space:pre-line;text-align:left;}
-#confirmModal .confirm-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-#confirmModal .confirm-btns.single{grid-template-columns:1fr;}
-#confirmModal .confirm-btns button{padding:12px;border:none;border-radius:10px;font-size:15px;font-weight:700;box-shadow:none;}
-#confirmModal .confirm-cancel{background:#e2e8f0;color:#475569;}
-#confirmModal .confirm-ok{background:#dc2626;color:#fff;}
-#confirmModal .confirm-ok-blue{background:#2563eb;color:#fff;}
+#confirmModal .confirm-box{
+  background:#fff;
+  border-radius:16px;
+  padding:24px 20px;
+  box-shadow:0 8px 30px rgba(0,0,0,.25);
+  max-width:340px;
+  width:100%;
+  text-align:center;
+}
+#confirmModal .confirm-msg{
+  font-size:16px;
+  font-weight:700;
+  color:#0f172a;
+  margin-bottom:20px;
+  line-height:1.6;
+  white-space:pre-line;
+  text-align:left;
+}
+#confirmModal .confirm-btns{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+#confirmModal .confirm-btns.single{
+  grid-template-columns:1fr;
+}
+#confirmModal .confirm-btns button{
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  font-size:15px;
+  font-weight:700;
+  box-shadow:none;
+}
+#confirmModal .confirm-cancel{
+  background:#e2e8f0;
+  color:#475569;
+}
+#confirmModal .confirm-ok{
+  background:#dc2626;
+  color:#fff;
+}
+#confirmModal .confirm-ok-blue{
+  background:#2563eb;
+  color:#fff;
+}
 
+/* 首頁間隙加寬 */
 .pageHome-top .card{margin-bottom:8px;}
 .pageHome-top .section-title{margin:8px 0 6px;}
 #typeBtnWrap{margin-bottom:6px;}
 
-.voice-input-btn{width:100%;height:calc(2.4px * var(--fs-num) + 10px);padding:0 3px;border:none;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;font-size:clamp(15px, calc(0.85px * var(--fs-num)), 18px);font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;margin-bottom:6px;box-shadow:0 2px 6px rgba(0,0,0,.14);transition:filter .12s, transform .1s;white-space:nowrap;overflow:hidden;}
-.voice-input-btn:active{filter:brightness(.88);transform:scale(.97);}
-.voice-input-btn .voice-icon{font-size:1.3em;line-height:1;}
-
-#voiceModal{background:transparent;align-items:center;justify-content:center;z-index:300;width:100%;height:100%;height:100dvh;padding:4px;}
-#voiceModal.active{display:flex;}
-#voiceModal .voice-box{background:#fff;border-radius:16px;padding:20px;box-shadow:0 8px 30px rgba(0,0,0,.3);max-width:340px;width:calc(100% - 32px);text-align:center;}
-#voiceModal .voice-countdown{font-size:48px;font-weight:900;color:#2563eb;font-variant-numeric:tabular-nums;margin-bottom:8px;line-height:1;}
-#voiceModal .voice-countdown.urgent{color:#dc2626;}
-#voiceModal .voice-countdown.done{color:#16a34a;font-size:36px;}
-#voiceModal .voice-status{font-size:13px;color:#64748b;margin-bottom:12px;}
-#voiceModal .voice-text{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;font-size:16px;color:#1e293b;min-height:60px;line-height:1.5;text-align:left;word-break:break-all;}
-#voiceModal .voice-text .kw-type{color:#2563eb;font-weight:800;background:#dbeafe;padding:0 3px;border-radius:3px;}
-#voiceModal .voice-text .kw-pay{color:#0891b2;font-weight:800;background:#cffafe;padding:0 3px;border-radius:3px;}
-#voiceModal .voice-text .kw-exp{color:#dc2626;font-weight:800;background:#fee2e2;padding:0 3px;border-radius:3px;}
-#voiceModal .voice-text .kw-amount{color:#16a34a;font-weight:800;background:#dcfce7;padding:0 3px;border-radius:3px;}
-#voiceModal .voice-hint{font-size:11px;color:#94a3b8;margin-top:10px;}
-#voiceModal .voice-cancel-btn {width: 100%; padding: 12px; margin-top: 14px; border: none; border-radius: 10px; background: #e2e8f0; color: #475569; font-size: 15px; font-weight: 700; cursor: pointer;}
-#voiceModal .voice-cancel-btn:active {filter: brightness(0.9);}
-
-.voice-settings-bar{display:flex;align-items:center;gap:6px;padding:8px 10px;background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.05);margin:4px 0;}
-.voice-settings-bar .vs-icon{font-size:18px;flex-shrink:0;}
-.voice-settings-bar .vs-label{font-size:calc(.95px * var(--fs-num));font-weight:700;color:#0f172a;flex-shrink:0;}
-.voice-settings-bar .vs-help-btn{font-size:calc(.85px * var(--fs-num));padding:5px 8px;border:none;border-radius:8px;background:#dbeafe;color:#2563eb;font-weight:700;cursor:pointer;flex-shrink:0;white-space:nowrap;}
-.voice-settings-bar .vs-help-btn:active{filter:brightness(.9);}
-
-.setBlock .set-title-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
-.setBlock .set-title-row h4{margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;flex-shrink:0;}
-
-#helpModal{background:rgba(0,0,0,.5);align-items:center;justify-content:center;z-index:400;}
-#helpModal.active{display:flex;}
-#helpModal .help-box{background:#fff;border-radius:16px;padding:20px;box-shadow:0 8px 30px rgba(0,0,0,.3);max-width:400px;width:calc(100% - 32px);max-height:80vh;display:flex;flex-direction:column;}
-#helpModal .help-title{font-size:17px;font-weight:800;color:#0f172a;margin-bottom:10px;text-align:center;flex-shrink:0;}
-#helpModal .help-body{overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1;min-height:0;font-size:13px;line-height:1.7;color:#1e293b;padding-right:4px;}
-#helpModal .help-body h4{font-size:13px;font-weight:800;color:#2563eb;margin:10px 0 4px;}
-#helpModal .help-body h4:first-child{margin-top:0;}
-#helpModal .help-body p{margin:0 0 6px;}
-#helpModal .help-body ul{margin:0 0 6px 18px;padding:0;}
-#helpModal .help-body li{margin-bottom:2px;}
-#helpModal .help-body .hl{color:#dc2626;font-weight:700;}
-#helpModal .help-close{width:100%;padding:12px;margin-top:12px;border:none;border-radius:10px;background:#2563eb;color:#fff;font-size:14px;font-weight:700;cursor:pointer;flex-shrink:0;}
-#helpModal .help-close:active{filter:brightness(.9);}
-
-#gameModal{background:rgba(0,0,0,.55);align-items:center;justify-content:center;z-index:500;}
-#gameModal.active{display:flex;}
-#gameModal .game-box{background:#fff;border-radius:16px;padding:20px;box-shadow:0 8px 30px rgba(0,0,0,.3);max-width:340px;width:calc(100% - 32px);text-align:center;}
-#gameModal .game-title{font-size:18px;font-weight:800;color:#0f172a;margin-bottom:6px;}
-#gameModal .game-sub{font-size:12px;color:#64748b;margin-bottom:16px;}
-#gameModal .game-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
-#gameModal .game-opt{padding:20px 8px;border:none;border-radius:12px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1e40af;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-weight:700;font-size:14px;transition:filter .12s, transform .1s;box-shadow:0 2px 8px rgba(37,99,235,.15);}
-#gameModal .game-opt:active{filter:brightness(.92);transform:scale(.97);}
-#gameModal .game-opt .game-opt-icon{font-size:34px;line-height:1;}
-#gameModal .game-close{width:100%;padding:12px;border:none;border-radius:10px;background:#e2e8f0;color:#475569;font-size:14px;font-weight:700;cursor:pointer;}
-#gameModal .game-close:active{filter:brightness(.9);}
-
-.footer-links{text-align:center;margin:8px 0 4px;padding:10px;background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.05);}
-.footer-links a{display:inline-block;margin:0 8px;color:#2563eb;text-decoration:none;font-weight:700;font-size:calc(1px * var(--fs-num));}
-.footer-links a:hover{text-decoration:underline;}
-
-.deduct-label{font-size:calc(.75px * var(--fs-num));color:#94a3b8;margin:0 0 1px 0;line-height:1.1;text-align:center;width:4.5em;max-width:72px;}
-
-.fs-slider-bar{display:flex;align-items:center;gap:8px;padding:6px 10px;background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin:4px 0;flex-shrink:0;}
-.fs-slider-bar span{font-size:calc(.9px * var(--fs-num));color:#64748b;flex-shrink:0;}
-.fs-slider-bar input[type="range"]{flex:1;min-width:0;accent-color:#2563eb;}
-
-#pwaUpgradeBanner {display: none;background-color: #ef4444;color: white;text-align: center;padding: 10px;font-size: 14px;font-weight: 700;position: sticky;top: 0;z-index: 999;box-shadow: 0 2px 4px rgba(0,0,0,0.2);cursor: pointer;line-height: 1.4;}
-#pwaUpgradeBanner:active {background-color: #dc2626;}
 </style>
 </head>
 <body>
-
+<input type="file" id="fileImport" style="display:none" accept=".json">
 <input type="color" id="colorPicker" class="hidden-color">
 
 <div class="global-nav">
   <div class="app-brand" aria-label="計程車記帳">
-    <span class="app-logo" aria-hidden="true"><img src="icon-192.png" alt="計程車圖標"></span>
+    <span class="app-logo" aria-hidden="true">
+      <img src="icon-192.png" alt="計程車圖標">
+    </span>
     <span class="app-name">計程車記帳</span>
   </div>
   <span class="nav-icon active" data-page="pageHome" onclick="showPage('pageHome')" aria-label="首頁"><span class="nav-symbol">🏠</span><span class="nav-label">首頁</span></span>
   <span class="nav-icon" data-page="pageStat" onclick="showPage('pageStat')" aria-label="統計"><span class="nav-symbol">📊</span><span class="nav-label">統計</span></span>
   <span class="nav-icon" data-page="pageExpStat" onclick="showPage('pageExpStat')" aria-label="支出"><span class="nav-symbol">💸</span><span class="nav-label">支出</span></span>
   <span class="nav-icon" data-page="pageSetting" onclick="showPage('pageSetting')" aria-label="設定"><span class="nav-symbol">⚙️</span><span class="nav-label">設定</span></span>
-  <span class="nav-icon" onclick="openGameModal()" aria-label="遊戲"><span class="nav-symbol">🎮</span><span class="nav-label">遊戲</span></span>
 </div>
 
+<!-- 收入輸入 Modal -->
 <div id="inputModal" class="modal"><div class="modal-card">
 <h3 id="modalTitle" style="text-align:center;margin-bottom:6px;font-size:22px;">路招</h3>
 <div id="amountShow" class="inputBox">0</div>
+
 <div class="input-area">
   <div class="numKey">
   <button class="numBtn" onclick="pressNum('1')">1</button><button class="numBtn" onclick="pressNum('2')">2</button><button class="numBtn" onclick="pressNum('3')">3</button>
@@ -364,12 +585,15 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </div>
   <div id="payBtnWrap" class="payKey"></div>
 </div>
+
 <button style="width:100%;padding:14px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:17px;flex-shrink:0;" onclick="closeInputModal()">取消</button>
 </div></div>
 
+<!-- 支出輸入 Modal（已移除支出類別按鈕，類別由外部決定） -->
 <div id="expInputModal" class="modal"><div class="modal-card">
 <h3 id="expModalTitle" style="text-align:center;margin-bottom:6px;font-size:22px;">支出</h3>
 <div id="expAmountShow" class="inputBox">0</div>
+
 <div class="input-area">
   <div class="numKey">
   <button class="numBtn" onclick="pressExpNum('1')">1</button><button class="numBtn" onclick="pressExpNum('2')">2</button><button class="numBtn" onclick="pressExpNum('3')">3</button>
@@ -378,11 +602,12 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   <button class="numBtn" onclick="clearExpNum()">清除</button><button class="numBtn" onclick="pressExpNum('0')">0</button><button class="numBtn" onclick="pressExpNum('00')">00</button>
   </div>
 </div>
+
 <input id="expNoteInput" class="noteInput" placeholder="備註（選填）" style="flex-shrink:0;">
-<button style="width:100%;padding:14px;background:#2563eb;color:#fff;border:none;border-radius:12px;font-size:17px;flex-shrink:0;margin-top:4px;font-weight:700;" onclick="saveExpense()">確定</button>
 <button style="width:100%;padding:14px;background:#94a3b8;color:#fff;border:none;border-radius:12px;font-size:17px;flex-shrink:0;margin-top:4px;" onclick="closeExpInputModal()">取消</button>
 </div></div>
 
+<!-- 修改收入 Modal -->
 <div id="editModal" class="modal"><div class="modal-card">
 <h3 style="text-align:center;margin-bottom:16px;font-size:18px;">修改紀錄</h3>
 <label style="font-size:13px;color:#64748b;">類別</label>
@@ -398,6 +623,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <button onclick="deleteRec()" style="width:100%;margin-top:12px;padding:12px;border:none;border-radius:12px;background:#dc2626;color:#fff;font-size:14px;">刪除此筆</button>
 </div></div>
 
+<!-- 修改支出 Modal -->
 <div id="editExpModal" class="modal"><div class="modal-card">
 <h3 style="text-align:center;margin-bottom:16px;font-size:18px;">修改支出</h3>
 <label style="font-size:13px;color:#64748b;">類型</label>
@@ -413,6 +639,7 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
 <button onclick="deleteExp()" style="width:100%;margin-top:12px;padding:12px;border:none;border-radius:12px;background:#dc2626;color:#fff;font-size:14px;">刪除此筆</button>
 </div></div>
 
+<!-- 自訂確認 Modal -->
 <div id="confirmModal" class="modal">
   <div class="confirm-box">
     <div id="confirmMsg" class="confirm-msg">確定要刪除這筆紀錄嗎？</div>
@@ -423,80 +650,8 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </div>
 </div>
 
-<div id="voiceModal" class="modal">
-  <div class="voice-box">
-    <div id="voiceCountdown" class="voice-countdown">5</div>
-    <div id="voiceStatus" class="voice-status">請開始說話，講完會自動記錄</div>
-    <div id="voiceText" class="voice-text">（等待語音⋯）</div>
-    <div class="voice-hint">說「類別 + 金額 + 付款方式」，三項都到齊會立刻記錄</div>
-    <button class="voice-cancel-btn" onclick="cancelVoiceInput()">取消</button>
-  </div>
-</div>
-
-<div id="helpModal" class="modal" onclick="if(event.target===this)closeHelpModal()">
-  <div class="help-box">
-    <div class="help-title">🎤 語音輸入使用說明</div>
-    <div class="help-body">
-      <h4>【基本用法】</h4>
-      <p>按下首頁最上方的「語音 🎤 輸入」按鈕，跳出視窗後直接說話。</p>
-      <p><span class="hl">類別 + 金額 + 付款方式都講到就會「立刻記錄」</span>，不用等停頓；三項還沒齊時才依秒數停頓收單。</p>
-      <h4>【怎麼說】</h4>
-      <p>說出「<b>類別 + 金額 + 付款方式</b>」，<b>順序不拘</b>，只要關鍵字有出現就好。</p>
-      <ul>
-        <li>派遣 100 信用卡 → 三項齊全，<b>立刻記錄</b></li>
-        <li>信用卡 150 路招 → 三項齊全，<b>立刻記錄</b></li>
-        <li>路招 200 → 只有類別+金額，停頓後用第一項付款記錄</li>
-        <li>加油 500 → 支出類別+金額，<b>立刻記錄</b>（不用付款）</li>
-      </ul>
-      <h4>【秒數代表什麼？】</h4>
-      <p>「秒數」是「<b>三要素還沒齊時，講完停頓多久</b>才自動記錄」。三要素一齊就立刻記錄，不受秒數影響。</p>
-      <p>系統另外會在「每一段話被判定講完」後給 <b>8 秒續講寬限</b>，讓你有時間繼續說下一段。</p>
-      <p>建議設定頁秒數設 <b>8～10 秒</b>。</p>
-      <h4>【關鍵字規則】</h4>
-      <ul>
-        <li>三項齊全 → 照你說的記錄</li>
-        <li>只有金額（例如「150」）→ 類別用第一項、付款用第一項</li>
-        <li>有類別 + 金額，沒說付款 → 停頓後付款用第一項</li>
-        <li>有支出類別（例如「加油」）+ 金額 → 記成<b>支出</b>，立刻記錄</li>
-        <li>只說類別，沒說金額 → 會提示「找不到金額」</li>
-      </ul>
-      <h4>【聽錯字也沒關係】</h4>
-      <p>語音辨識偶爾會出錯，例如「好孕券」聽成「好運卷」、「企業簽單」聽成「企業千單」。系統會自動修正常見的錯字。</p>
-      <h4>【注意事項】</h4>
-      <ul>
-        <li><b>Android Chrome</b> 才能正常使用，iOS 的 PWA 幾乎無法運作</li>
-        <li>第一次使用要<b>允許麥克風權限</b></li>
-        <li>需要<b>網路連線</b>（語音辨識會送到 Google 伺服器處理）</li>
-        <li>語速放慢一點、停頓清楚一點，辨識率會更高</li>
-      </ul>
-      <h4>【儲存後】</h4>
-      <ul>
-        <li>畫面中央會出現「✅ 已記錄⋯」提示，約 3 秒後自動消失</li>
-        <li>手機會發出「叮」聲並<b>語音唸出</b>「已記錄 500 元」</li>
-        <li>首頁列表馬上出現這筆記錄</li>
-      </ul>
-    </div>
-    <button class="help-close" onclick="closeHelpModal()">關閉</button>
-  </div>
-</div>
-
-<div id="gameModal" class="modal" onclick="if(event.target===this)closeGameModal()">
-  <div class="game-box">
-    <div class="game-title">🎮 選擇遊戲</div>
-    <div class="game-sub">排班等待時打發時間</div>
-    <div class="game-options">
-      <button class="game-opt" onclick="goToGame('2048.html')"><span class="game-opt-icon">🔢</span><span>2048</span></button>
-      <button class="game-opt" onclick="goToGame('minesweeper.html')"><span class="game-opt-icon">💣</span><span>踩地雷</span></button>
-    </div>
-    <button class="game-close" onclick="closeGameModal()">關閉</button>
-  </div>
-</div>
-
 <div id="pageHome" class="page active">
 <div class="pageHome-top">
-<button id="voiceInputBtn" class="voice-input-btn" onclick="openVoiceModal()">
-  <span>語音</span><span class="voice-icon">🎤</span><span>輸入</span>
-</button>
 <div id="typeBtnWrap" class="row2"></div>
 <div class="card">
 <div class="day-summary-card" id="daySummaryCard">
@@ -511,9 +666,6 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   </div>
 </div>
 </div>
-<div class="fs-slider-bar page-fs-bar">
-  <span>小</span><input type="range" id="fsSliderHome" min="11" max="20" step="1" value="13" oninput="onPageFontSizeChange(this.value)"><span>大</span>
-</div>
 <div class="section-title">
   <h3>今日明細</h3>
   <span class="today-net" id="todayNetTotal">淨收：0</span>
@@ -521,88 +673,58 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
   <button class="sortBtn" id="sortBtn" onclick="toggleSort()">排序</button>
 </div>
 </div>
-<div class="home-detail-box"><div id="listToday"></div></div>
+<div class="home-detail-box">
+  <div id="listToday"></div>
+</div>
 </div>
 
 <div id="pageStat" class="page">
   <div class="stat-type-card" id="statTypeCard"></div>
   <div class="stat-pay-card" id="statPayCard"></div>
   <div id="statBreadcrumb" class="stat-breadcrumb">
-    <span class="stat-muted">目前：</span><button onclick="statResetLevel()">全部年份</button>
+    <span class="stat-muted">目前：</span>
+    <button onclick="statResetLevel()">全部年份</button>
   </div>
-  <div class="date-range-bar" id="statDateRange">
-    <span class="dr-label">區間</span>
-    <input type="date" id="statDateFrom"><span class="dr-sep">～</span>
-    <input type="date" id="statDateTo">
-    <button class="dr-btn" onclick="applyStatDateRange()">查詢</button>
-    <button class="dr-btn dr-clear" onclick="clearStatDateRange()">清除</button>
-  </div>
+
   <div class="stat-summary-box">
     <div class="stat-summary-title" id="statSummaryTitle">全部年度合計</div>
     <div class="stat-summary-grid" id="statSummaryGrid"></div>
   </div>
-  <div class="fs-slider-bar page-fs-bar">
-    <span>小</span><input type="range" id="fsSliderStat" min="11" max="20" step="1" value="13" oninput="onPageFontSizeChange(this.value)"><span>大</span>
+
+  <div class="stat-list-box">
+    <div id="statContent"><div class="empty-tip">尚無營業紀錄</div></div>
   </div>
-  <div class="stat-list-box"><div id="statContent"><div class="empty-tip">尚無營業紀錄</div></div></div>
 </div>
 
+<!-- 支出統計頁面：新增支出類別按鈕（一行5個，高度3/4）+ 查詢按鈕 + 摘要 + 列表 -->
 <div id="pageExpStat" class="page">
+  <!-- 支出類別按鈕（點擊直接開啟支出輸入） -->
   <div class="exp-type-btn-card" id="expTypeBtnWrap"></div>
+  <!-- 支出類別查詢按鈕 -->
   <div class="stat-type-card" id="expTypeCard"></div>
+
   <div id="expBreadcrumb" class="stat-breadcrumb">
-    <span class="stat-muted">目前：</span><button onclick="expResetLevel()">全部年份</button>
+    <span class="stat-muted">目前：</span>
+    <button onclick="expResetLevel()">全部年份</button>
   </div>
-  <div class="date-range-bar" id="expDateRange">
-    <span class="dr-label">區間</span>
-    <input type="date" id="expDateFrom"><span class="dr-sep">～</span>
-    <input type="date" id="expDateTo">
-    <button class="dr-btn" onclick="applyExpDateRange()">查詢</button>
-    <button class="dr-btn dr-clear" onclick="clearExpDateRange()">清除</button>
-  </div>
+
   <div class="exp-summary-card stat-summary-box">
-    <div class="exp-summary-head" id="expSummaryHead"></div>
-    <div class="exp-summary-body" id="expSummaryBody"></div>
+    <div class="stat-summary-title" id="expSummaryTitle">全部年度支出合計</div>
+    <div class="stat-summary-grid">
+      <div><span>支出總額</span><strong id="expSummarySum">0</strong></div>
+      <div><span>筆數</span><strong id="expSummaryCount">0</strong></div>
+      <div><span>餘額（淨收-支出）</span><strong class="net" id="expSummaryBalance">0</strong></div>
+    </div>
   </div>
-  <div class="fs-slider-bar page-fs-bar">
-    <span>小</span><input type="range" id="fsSliderExp" min="11" max="20" step="1" value="13" oninput="onPageFontSizeChange(this.value)"><span>大</span>
+
+  <div class="stat-list-box">
+    <div id="expContent"><div class="empty-tip">尚無支出紀錄</div></div>
   </div>
-  <div class="stat-list-box"><div id="expContent"><div class="empty-tip">尚無支出紀錄</div></div></div>
 </div>
 
 <div id="pageSetting" class="page">
-<div class="voice-settings-bar">
-  <span class="vs-icon">🎤</span><span class="vs-label">語音輸入</span>
-  <button class="vs-help-btn" onclick="openHelpModal()">📖 說明</button>
-  <div style="display:flex;align-items:center;gap:4px;margin-left:auto;">
-    <label class="vs-toggle">
-      <input type="checkbox" id="voiceToggle" checked onchange="onVoiceToggleChange(this.checked)">
-      <span class="vs-slider"></span>
-    </label>
-  </div>
-</div>
-
-<div class="setBlock">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-    <h4 style="margin:0; font-size:calc(1px * var(--fs-num)); color:#0f172a;">字型大小</h4>
-    <h4 style="margin:0; font-size:calc(1px * var(--fs-num)); color:#0f172a;">全頁拉桿</h4>
-  </div>
-  <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
-    <div style="display:flex; align-items:center; gap:6px; flex:1;">
-      <span style="font-size:calc(.9px * var(--fs-num)); color:#64748b;">小</span>
-      <input type="range" id="fontSizeSlider" min="11" max="20" step="1" value="13" oninput="onFontSizeChange(this.value)" style="width:120px; flex-shrink:0; accent-color:#2563eb;">
-      <span style="font-size:calc(1.3px * var(--fs-num)); color:#64748b;">大</span>
-      <span id="fontSizeValue" class="fs-value" style="font-size:13px; color:#64748b; width:20px; text-align:right;">13</span>
-    </div>
-    <div style="flex-shrink:0; display:flex; align-items:center;">
-      <label class="vs-toggle" style="margin:0;">
-        <input type="checkbox" id="pageFsToggle" checked onchange="onPageFsToggleChange(this.checked)">
-        <span class="vs-slider"></span>
-      </label>
-    </div>
-  </div>
-</div>
-
+<div class="setBlock"><h4>字型大小</h4><div class="fs-wrap"><span style="font-size:calc(.9px * var(--fs-num));">小</span><input type="range" id="fontSizeSlider" min="11" max="20" step="1" value="13" oninput="onFontSizeChange(this.value)"><span style="font-size:calc(1.3px * var(--fs-num));">大</span><span id="fontSizeValue" class="fs-value">13</span></div></div>
+<div class="setBlock"><h4>字型粗細</h4><div class="fs-wrap"><span style="font-size:calc(.9px * var(--fs-num));">細</span><input type="range" id="fontWeightSlider" min="300" max="900" step="100" value="700" oninput="onFontWeightChange(this.value)"><span style="font-size:calc(1.3px * var(--fs-num));">粗</span><span id="fontWeightValue" class="fs-value">700</span></div></div>
 <div class="setBlock">
   <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
     <h4 style="margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;flex-shrink:0;">營業時間</h4>
@@ -613,53 +735,10 @@ body{background:#f1f5f9;padding:4px 0;font-size:calc(1px * var(--fs-num));color:
     <span>結束</span><input id="setEndHour" type="number" min="0" max="23" oninput="onHourChange()" style="width:52px;padding:5px;text-align:center;font-size:13px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;">
   </div>
 </div>
-
-<div class="setBlock">
-  <div class="collapsible-header" onclick="toggleSettingCollapse('typeSection')">
-    <h4>營業類別</h4>
-    <span class="arrow" id="typeSectionArrow">▼</span>
-  </div>
-  <div id="typeSection" class="collapsible-content">
-    <div class="set-title-row">
-      <span style="font-size:12px;color:#64748b;">開啟首頁顯示</span>
-      <label class="vs-toggle">
-        <input type="checkbox" id="typeBtnToggle" checked onchange="onTypeBtnToggleChange(this.checked)"><span class="vs-slider"></span>
-      </label>
-    </div>
-    <div id="typeListSet"></div>
-    <div style="display:flex;gap:5px;margin-top:5px;"><input id="newTypeName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newTypeDeduct" type="number" placeholder="扣除" style="width:52px;padding:5px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewTypeTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div>
-  </div>
-</div>
-
-<div class="setBlock">
-  <div class="collapsible-header" onclick="toggleSettingCollapse('paySection')">
-    <h4>付款方式</h4>
-    <span class="arrow" id="paySectionArrow">▼</span>
-  </div>
-  <div id="paySection" class="collapsible-content">
-    <div id="payListSet"></div>
-    <div style="display:flex;gap:5px;margin-top:5px;"><input id="newPayName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newPayRate" type="number" placeholder="%" style="width:52px;padding:5px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewPayTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div><div style="font-size:11px;color:#94a3b8;margin-top:4px;">※ 好孕卷自動扣除補助250輸入全額即可其餘視為現金</div>
-  </div>
-</div>
-
-<div class="setBlock">
-  <div class="collapsible-header" onclick="toggleSettingCollapse('expSection')">
-    <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:0;">
-      <h4 style="margin:0;">支出類型</h4>
-      <span style="font-size:calc(.8px * var(--fs-num)); color:#64748b; white-space:nowrap;">開啟為營業成本</span>
-    </div>
-    <span class="arrow" id="expSectionArrow">▼</span>
-  </div>
-  <div id="expSection" class="collapsible-content">
-    <div id="expListSet"></div>
-    <div style="display:flex;gap:5px;margin-top:5px;"><input id="newExpName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><button onclick="addNewExpTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div>
-  </div>
-</div>
-
-<div class="setBlock"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><h4 style="margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;">資料備份</h4><span style="font-size:calc(.85px * var(--fs-num));color:#64748b;flex:1;text-align:right;">僅紀錄，不含設定</span></div><div class="backup-bar"><button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出</button><button class="backup-btn importBtn" onclick="pickImportFile()">📥 匯入</button></div><input type="file" id="fileImport" style="display:none" accept=".json,application/json" onchange="handleImport(event)"><div style="margin-top:8px;font-size:calc(1.3px * var(--fs-num));"><a href="db-js.html" style="color:#2563eb;text-decoration:none;font-weight:700;">(DB轉JSON)</a></div>
-</div>
-<div class="footer-links">
-  <a href="about.html">關於我們</a><a href="privacy.html">隱私政策</a><a href="contact.html">聯絡我們</a>
+<div class="setBlock"><h4>營業類別</h4><div id="typeListSet"></div><div style="display:flex;gap:5px;margin-top:5px;"><input id="newTypeName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newTypeDeduct" type="number" placeholder="扣除" style="width:52px;padding:5px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewTypeTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div></div>
+<div class="setBlock"><h4>付款方式</h4><div id="payListSet"></div><div style="display:flex;gap:5px;margin-top:5px;"><input id="newPayName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><input id="newPayRate" type="number" placeholder="%" style="width:52px;padding:5px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;text-align:center;"><button onclick="addNewPayTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div><div style="font-size:11px;color:#94a3b8;margin-top:4px;">※ 好孕卷自動扣除補助250輸入全額即可其餘視為現金</div></div>
+<div class="setBlock"><h4>支出類型（打勾 = 營業成本）</h4><div id="expListSet"></div><div style="display:flex;gap:5px;margin-top:5px;"><input id="newExpName" placeholder="名稱" style="flex:1;padding:5px 7px;font-size:12px;border:1.5px solid #e2e8f0;border-radius:8px;background:#f8fafc;min-width:0;"><button onclick="addNewExpTemp()" style="padding:5px 9px;font-size:12px;border:none;border-radius:8px;background:#2563eb;color:#fff;">＋</button></div></div>
+<div class="setBlock"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><h4 style="margin:0;font-size:calc(1px * var(--fs-num));color:#0f172a;">資料備份</h4><span style="font-size:calc(.85px * var(--fs-num));color:#64748b;flex:1;text-align:right;">僅紀錄，不含設定</span></div><div class="backup-bar"><button class="backup-btn exportBtn" onclick="exportBackup()">📤 匯出</button><button class="backup-btn importBtn" onclick="document.getElementById('fileImport').click()">📥 匯入</button></div><div style="margin-top:8px;font-size:calc(.9px * var(--fs-num));"><a href="https://twplot01-code.github.io/DB-JS/" target="_blank" style="color:#2563eb;text-decoration:none;">DB轉JSON</a></div></div>
 </div>
 
 <script>
@@ -669,11 +748,9 @@ var currentType="",editId=null,editExpId=null,historyStack=[],modalAmount="",exp
 var statTypeFilter="";
 var expCatFilter="";
 var statPayFilter="";
-var currentExpCat=null;
+var currentExpCat=null; // 支出輸入時記錄目前選定的支出類別
 
-var statDateRange={from:'',to:''};
-var expDateRange={from:'',to:''};
-
+/* ===== 自訂確認 / 提示 Modal ===== */
 var _confirmResolve=null;
 
 function showConfirm(msg,callback,opts){
@@ -713,18 +790,12 @@ var config=JSON.parse(localStorage.getItem('taxiConfig'))||{
   typeList:[{name:"路招",deduct:0,color:"#2563eb"},{name:"派遣",deduct:10,color:"#ea580c"}],
   payList:[{name:"現金",rate:0,color:"#16a34a"},{name:"悠遊卡",rate:3,color:"#22aabb"},{name:"信用卡",rate:3,color:"#7c3aed"},{name:"企業簽單",rate:15,color:"#9333ea"},{name:"好孕券",rate:0,color:"#0891b2"}],
   expList:[{name:"加油",color:"#dc2626",isCost:false},{name:"維修",color:"#ea580c",isCost:false},{name:"餐費",color:"#9333ea",isCost:false},{name:"停車",color:"#0891b2",isCost:false},{name:"其他",color:"#475569",isCost:false}],
-  businessHour:{start:22,end:8},fontSize:13,fontWeight:900,
-  voiceEnabled:true,voiceSeconds:10,typeBtnEnabled:true,
-  pageFsEnabled:true
+  businessHour:{start:22,end:8},fontSize:13,fontWeight:700
 };
 if(!config.businessHour)config.businessHour={start:22,end:8};
 if(!config.fontSize)config.fontSize=13;
-config.fontWeight=900;
+if(!config.fontWeight)config.fontWeight=700;
 if(!config.expList)config.expList=[{name:"加油",color:"#dc2626",isCost:false},{name:"其他",color:"#475569",isCost:false}];
-if(typeof config.voiceEnabled==='undefined')config.voiceEnabled=true;
-if(typeof config.voiceSeconds==='undefined')config.voiceSeconds=10;
-if(typeof config.typeBtnEnabled==='undefined')config.typeBtnEnabled=true;
-if(typeof config.pageFsEnabled==='undefined')config.pageFsEnabled=true;
 config.expList.forEach(function(e){if(typeof e.isCost==='undefined')e.isCost=false;});
 
 var TYPE_COLORS=[
@@ -770,46 +841,11 @@ function ensureTypeColors(){
 
 function applyFontSize(v){document.documentElement.style.setProperty('--fs-num',v);}
 function applyFontWeight(v){document.documentElement.style.setProperty('--fw-num',v);}
-applyFontSize(config.fontSize);applyFontWeight(900);
+applyFontSize(config.fontSize);applyFontWeight(config.fontWeight);
 
-function onFontSizeChange(v){
-  document.getElementById('fontSizeValue').textContent=v;
-  applyFontSize(Number(v));
-  config.fontSize=Number(v)||13;
-  saveConfig();
-  syncPageSliders(Number(v));
-  fitAllStatText();
-  fitHomeButtons();
-  setTimeout(function(){fitModalContent('inputModal');fitModalContent('expInputModal');},50);
-}
-function onPageFontSizeChange(v){
-  applyFontSize(Number(v));
-  config.fontSize=Number(v)||13;
-  saveConfig();
-  syncPageSliders(Number(v));
-  document.getElementById('fontSizeSlider').value=v;
-  document.getElementById('fontSizeValue').textContent=v;
-  fitAllStatText();
-  fitHomeButtons();
-}
-function syncPageSliders(v){
-  var sliders=['fsSliderHome','fsSliderStat','fsSliderExp'];
-  sliders.forEach(function(id){
-    var el=document.getElementById(id);
-    if(el)el.value=v;
-  });
-}
+function onFontSizeChange(v){document.getElementById('fontSizeValue').textContent=v;applyFontSize(Number(v));config.fontSize=Number(v)||13;saveConfig();fitAllStatText();fitHomeButtons();setTimeout(function(){fitModalContent('inputModal');fitModalContent('expInputModal');},50);}
+function onFontWeightChange(v){document.getElementById('fontWeightValue').textContent=v;applyFontWeight(Number(v));config.fontWeight=Number(v)||700;saveConfig();setTimeout(function(){fitModalContent('inputModal');fitModalContent('expInputModal');},50);}
 function onHourChange(){updateHourPreview();var s=Number(document.getElementById('setStartHour').value),e=Number(document.getElementById('setEndHour').value);if(!Number.isInteger(s)||s<0||s>23)return;if(!Number.isInteger(e)||e<0||e>23)return;config.businessHour={start:s,end:e};saveConfig();}
-
-function onPageFsToggleChange(checked){
-  config.pageFsEnabled=!!checked;
-  saveConfig();
-  updatePageFsBars();
-}
-function updatePageFsBars(){
-  var bars=document.querySelectorAll('.page-fs-bar');
-  bars.forEach(function(bar){bar.style.display=config.pageFsEnabled?'':'none';});
-}
 
 function renameInRecords(oldName,newName,field){
   var recs=getRecords(),changed=false;
@@ -884,10 +920,25 @@ function fitOne(el, minSize){
 }
 function fitAllStatText(){
   var sels=[
-    '.fc-stat span','.sc-stat span','.stat-type-btn','.stat-pay-btn','.exp-type-btn-card .bigBtn',
-    '.stat-summary-grid strong','.stat-list-row .item-main','.stat-list-row .item-fee','.stat-list-row .item-net',
-    '.home-detail-amt','.home-detail-fee','.home-detail-net','.stat-detail-amt','.stat-detail-fee','.stat-detail-net',
-    '#todayNetTotal','#expSummaryHead strong','#expSummaryHead span.label','#expSummaryBody strong','#expSummaryBody span','#daySummaryCard .stat-pair > span:last-child'
+    '.fc-stat span',
+    '.sc-stat span',
+    '.stat-type-btn',
+    '.stat-pay-btn',
+    '.exp-type-btn-card .bigBtn',
+    '.stat-summary-grid strong',
+    '.stat-list-row .item-main',
+    '.stat-list-row .item-fee',
+    '.stat-list-row .item-net',
+    '.home-detail-amt',
+    '.home-detail-fee',
+    '.home-detail-net',
+    '.stat-detail-amt',
+    '.stat-detail-fee',
+    '.stat-detail-net',
+    '#todayNetTotal',
+    '#expSummarySum',
+    '#expSummaryCount',
+    '#expSummaryBalance'
   ];
   document.querySelectorAll(sels.join(',')).forEach(function(el){ fitOne(el,8); });
 }
@@ -920,7 +971,9 @@ function fitModalContent(modalId){
     inputArea.style.height='auto';
     inputArea.style.flex='0 1 auto';
   }
-  modal.querySelectorAll('.numBtn, .payBtn').forEach(function(btn){fitOne(btn, 11);});
+  modal.querySelectorAll('.numBtn, .payBtn').forEach(function(btn){
+    fitOne(btn, 11);
+  });
   var amountEl=modal.querySelector('.inputBox');
   if(amountEl) fitOne(amountEl, 16);
 }
@@ -950,7 +1003,9 @@ document.getElementById('colorPicker').addEventListener('input', function(e){
   renderExpTypeBtnWrap();
   calcTotal();
 });
-document.getElementById('colorPicker').addEventListener('change', function(){colorPickTarget=null;});
+document.getElementById('colorPicker').addEventListener('change', function(){
+  colorPickTarget=null;
+});
 
 function saveConfig(){localStorage.setItem('taxiConfig',JSON.stringify(config));}
 function getRecords(){return JSON.parse(localStorage.getItem('taxiRec'))||[];}
@@ -973,167 +1028,116 @@ function getTodayWeekdayText(){
   return (d.getMonth()+1)+'/'+String(d.getDate()).padStart(2,'0')+' 週'+wd;
 }
 
-async function exportBackup(){
-  var data = {
-    saveTime: new Date().toISOString(),
-    records: getRecords(),
-    expenses: getExpenses()
-  };
-  var jsonStr = JSON.stringify(data, null, 2);
-  var fileName = '計程車記帳備份_' + new Date().toISOString().slice(0,10) + '.json';
-
-  var Cap = window.Capacitor;
-  var Plugins = Cap && Cap.Plugins ? Cap.Plugins : {};
-  var Filesystem = Plugins.Filesystem;
-  var Share = Plugins.Share;
-
-  if (Filesystem && typeof Filesystem.writeFile === 'function') {
-    try {
-      var cacheDir = (Filesystem.Directory && Filesystem.Directory.Cache) ? Filesystem.Directory.Cache : 'CACHE';
-      var encoding = (Filesystem.Encoding && Filesystem.Encoding.UTF8) ? Filesystem.Encoding.UTF8 : 'utf8';
-      
-      var writeRes = await Filesystem.writeFile({
-        path: fileName,
-        data: jsonStr,
-        directory: cacheDir,
-        encoding: encoding
-      });
-
-      var fileUri = writeRes && writeRes.uri ? writeRes.uri : null;
-
-      if (fileUri && Share && typeof Share.share === 'function') {
-        await Share.share({
-          title: '計程車記帳備份',
-          text: '請選擇要儲存或分享備份檔的地點：',
-          url: fileUri,
-          dialogTitle: '分享備份檔'
-        });
-        return;
-      } else if (fileUri) {
-        showAlert('✅ 備份檔已建立！\n\n但您沒有安裝分享外掛。\n檔案暫存在 App 快取中：\n' + fileName);
-        return;
-      }
-    } catch (err) {
-      console.warn('快取寫入失敗，嘗試使用網頁下載：', err);
-    }
-  }
-
-  try {
-    var blob = new Blob([jsonStr], { type: 'application/json' });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
-    showAlert('✅ 備份檔已下載！\n（僅紀錄，不含設定）');
-  } catch (err) {
-    showAlert('❌ 匯出失敗：' + (err && err.message ? err.message : '未知錯誤'));
-  }
+function exportBackup(){
+  var data={saveTime:new Date().toISOString(),records:getRecords(),expenses:getExpenses()};
+  var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='計程車記帳備份_'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showAlert('✅ 備份檔已下載！\n（僅紀錄，不含設定）');
 }
 
 function isValidRecord(r){return r&&typeof r==='object'&&typeof r.id!=='undefined'&&typeof r.type==='string'&&typeof r.pay==='string'&&Number.isFinite(Number(r.raw))&&Number.isFinite(Number(r.net))&&typeof r.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(r.date);}
 function isValidExpense(e){return e&&typeof e==='object'&&typeof e.id!=='undefined'&&typeof e.cat==='string'&&Number.isFinite(Number(e.raw))&&typeof e.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(e.date);}
 
-function recFingerprint(r){return [r.date, r.time||'', r.type||'', Number(r.raw||0), r.pay||'', Number(r.net||0)].join('|');}
-function expFingerprint(e){return [e.date, e.time||'', e.cat||'', Number(e.raw||0), e.note||''].join('|');}
-
-function pickImportFile(){
-  var input = document.getElementById('fileImport');
-  if (!input) {
-    input = document.createElement('input');
-    input.type = 'file';
-    input.id = 'fileImportDynamic';
-    input.accept = '.json,application/json';
-    input.style.display = 'none';
-    input.onchange = function(ev){
-      var f = ev.target.files && ev.target.files[0];
-      if (f) readAndImportFile(f);
-      input.value = '';
-    };
-    document.body.appendChild(input);
-  }
-  input.click();
+function recFingerprint(r){
+  return [r.date, r.time||'', r.type||'', Number(r.raw||0), r.pay||'', Number(r.net||0)].join('|');
+}
+function expFingerprint(e){
+  return [e.date, e.time||'', e.cat||'', Number(e.raw||0), e.note||''].join('|');
 }
 
-function handleImport(e){
-  var f = e && e.target && e.target.files ? e.target.files[0] : null;
-  if (!f) return;
-  readAndImportFile(f);
-  if (e && e.target) e.target.value = null;
-}
-
-function readAndImportFile(f){
-  var r = new FileReader();
-  r.onload = function(ev){
-    try {
-      var d = JSON.parse(ev.target.result);
-      if (!Array.isArray(d.records)) { showAlert('❌ 備份檔格式錯誤（缺少 records）'); return; }
-      if (d.records.find(function(x){ return !isValidRecord(x); })) { showAlert('❌ 收入紀錄格式錯誤，已中止匯入'); return; }
-      if (d.expenses && !Array.isArray(d.expenses)) { showAlert('❌ 支出紀錄格式錯誤'); return; }
-      if (d.expenses && d.expenses.find(function(x){ return !isValidExpense(x); })) { showAlert('❌ 支出紀錄格式錯誤，已中止匯入'); return; }
+document.getElementById('fileImport').onchange=function(e){
+  var f=e.target.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(ev){
+    try{
+      var d=JSON.parse(ev.target.result);
+      if(!Array.isArray(d.records)){showAlert('❌ 備份檔格式錯誤（缺少 records）');return;}
+      if(d.records.find(function(x){return !isValidRecord(x);})){showAlert('❌ 收入紀錄格式錯誤，已中止匯入');return;}
+      if(d.expenses&&!Array.isArray(d.expenses)){showAlert('❌ 支出紀錄格式錯誤');return;}
+      if(d.expenses&&d.expenses.find(function(x){return !isValidExpense(x);})){showAlert('❌ 支出紀錄格式錯誤，已中止匯入');return;}
 
       showConfirm('📥 匯入將逐筆比對：\n· id 本機沒有 → 補上\n· id 本機已有且內容相同 → 跳過\n· id 撞到但內容不同 → 補上（自動配新 id）\n不會刪除任何紀錄，也不會改設定。\n確定繼續？', function(ok){
-        if (!ok) return;
+        if(!ok)return;
+
+        var backupNow = {saveTime:new Date().toISOString(),config:config,records:getRecords(),expenses:getExpenses()};
+        var blob = new Blob([JSON.stringify(backupNow,null,2)],{type:'application/json'});
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = '匯入前備份_'+new Date().toISOString().slice(0,10)+'.json';
+        a.click();
+        URL.revokeObjectURL(url);
 
         var curRecs = getRecords();
-        var curRecById = {}, curRecFp = {};
-        curRecs.forEach(function(x){ curRecById[x.id] = x; curRecFp[recFingerprint(x)] = 1; });
+        var curRecById = {};
+        var curRecFp = {};
+        curRecs.forEach(function(x){
+          curRecById[x.id] = x;
+          curRecFp[recFingerprint(x)] = 1;
+        });
+
         var addRecs = [], skipRecs = 0;
         d.records.forEach(function(r){
           var nr = JSON.parse(JSON.stringify(r));
           var fp = recFingerprint(nr);
           var exist = curRecById[nr.id];
-          if (exist) {
-            if (recFingerprint(exist) === fp) { skipRecs++; return; }
+          if(exist){
+            if(recFingerprint(exist) === fp){ skipRecs++; return; }
             nr.id = nextId();
           }
-          if (curRecFp[fp]) { skipRecs++; return; }
-          curRecFp[fp] = 1; curRecById[nr.id] = nr; addRecs.push(nr);
+          if(curRecFp[fp]){ skipRecs++; return; }
+          curRecFp[fp] = 1;
+          curRecById[nr.id] = nr;
+          addRecs.push(nr);
         });
         saveRecords(curRecs.concat(addRecs));
 
         var curExps = getExpenses();
-        var curExpById = {}, curExpFp = {};
-        curExps.forEach(function(x){ curExpById[x.id] = x; curExpFp[expFingerprint(x)] = 1; });
+        var curExpById = {};
+        var curExpFp = {};
+        curExps.forEach(function(x){
+          curExpById[x.id] = x;
+          curExpFp[expFingerprint(x)] = 1;
+        });
+
         var addExps = [], skipExps = 0;
-        (Array.isArray(d.expenses) ? d.expenses : []).forEach(function(x){
+        (Array.isArray(d.expenses)?d.expenses:[]).forEach(function(x){
           var nx = JSON.parse(JSON.stringify(x));
           var fp = expFingerprint(nx);
           var exist = curExpById[nx.id];
-          if (exist) {
-            if (expFingerprint(exist) === fp) { skipExps++; return; }
+          if(exist){
+            if(expFingerprint(exist) === fp){ skipExps++; return; }
             nx.id = nextId();
           }
-          if (curExpFp[fp]) { skipExps++; return; }
-          curExpFp[fp] = 1; curExpById[nx.id] = nx; addExps.push(nx);
+          if(curExpFp[fp]){ skipExps++; return; }
+          curExpFp[fp] = 1;
+          curExpById[nx.id] = nx;
+          addExps.push(nx);
         });
         saveExpenses(curExps.concat(addExps));
 
         var msg = '✅ 匯入完成（逐筆比對）！\n\n'
           + '收入：新增 ' + addRecs.length + ' 筆，跳過 ' + skipRecs + ' 筆（已存在）\n'
           + '支出：新增 ' + addExps.length + ' 筆，跳過 ' + skipExps + ' 筆（已存在）\n'
-          + '設定維持不變。';
+          + '設定維持不變。\n'
+          + '匯入前資料已自動備份到「下載」資料夾。';
         showAlert(msg);
-        renderHomeTypeBtn(); calcTotal(); renderTodayList(); refreshStatCards();
-        refreshExpCards(); renderStatTypeCard(); renderExpTypeCard();
-        renderStatPayCard(); renderExpTypeBtnWrap();
+
+        renderHomeTypeBtn();calcTotal();renderTodayList();refreshStatCards();refreshExpCards();renderStatTypeCard();renderExpTypeCard();renderStatPayCard();renderExpTypeBtnWrap();
       });
-    } catch (err) {
-      showAlert('❌ 檔案讀取失敗');
-    }
+    }catch(err){showAlert('❌ 檔案讀取失敗');}
   };
-  r.readAsText(f);
-}
+  r.readAsText(f);this.value=null;
+};
 
 function renderHomeTypeBtn(){
   var wrap=document.getElementById('typeBtnWrap');
-  if(!wrap)return;
   wrap.innerHTML='';
-  if(!config.typeBtnEnabled){wrap.style.display='none';return;}
-  wrap.style.display='';
   config.typeList.forEach(function(t){
     var btn=document.createElement('button');
     btn.className='bigBtn';
@@ -1145,12 +1149,7 @@ function renderHomeTypeBtn(){
   setTimeout(fitHomeButtons,0);
 }
 
-function onTypeBtnToggleChange(checked) {
-  config.typeBtnEnabled = !!checked;
-  saveConfig();
-  renderHomeTypeBtn();
-}
-
+/* 支出頁面的支出類別按鈕（一行5個，高度3/4，點擊直接開啟支出輸入） */
 function renderExpTypeBtnWrap(){
   var wrap=document.getElementById('expTypeBtnWrap');
   if(!wrap)return;
@@ -1193,30 +1192,35 @@ function showPage(id, skipHistory){
     document.getElementById('setEndHour').value=config.businessHour.end;
     document.getElementById('fontSizeSlider').value=config.fontSize;
     document.getElementById('fontSizeValue').textContent=config.fontSize;
-    document.getElementById('voiceToggle').checked=config.voiceEnabled;
-    document.getElementById('typeBtnToggle').checked=config.typeBtnEnabled;
-    document.getElementById('pageFsToggle').checked=config.pageFsEnabled;
+    document.getElementById('fontWeightSlider').value=config.fontWeight;
+    document.getElementById('fontWeightValue').textContent=config.fontWeight;
     updateHourPreview();renderSetting();
   }
   if(id==='pageStat')showStatDefault();
   if(id==='pageExpStat')showExpDefault();
-  if(id==='pageHome'){renderHomeTypeBtn();updateTodayDateText();updateVoiceBtnVisibility();setTimeout(fitAllStatText,0);}
+  if(id==='pageHome'){renderHomeTypeBtn();updateTodayDateText();setTimeout(fitAllStatText,0);}
 
   if(!skipHistory){
     _pageHistory.push(id);
-    try{history.pushState({page:id, ts:Date.now()}, '', location.href);}catch(e){}
+    try{
+      history.pushState({page:id, ts:Date.now()}, '', location.href);
+    }catch(e){}
   }
 }
 
 window.addEventListener('popstate', function(e){
   if(_isPopping) return;
+
   if(_pageHistory.length > 1){
     _isPopping = true;
     _pageHistory.pop();
     var prev = _pageHistory[_pageHistory.length-1] || 'pageHome';
     showPage(prev, true);
     _isPopping = false;
-    try{history.pushState({page:prev, ts:Date.now()}, '', location.href);}catch(e){}
+
+    try{
+      history.pushState({page:prev, ts:Date.now()}, '', location.href);
+    }catch(e){}
   }
 });
 
@@ -1298,11 +1302,13 @@ function calcDayStats(recs,targetDate){
     daySum+=Number(r.raw||0);
     feeSum+=Number(r.fee||0);
     typeCount[r.type]=(typeCount[r.type]||0)+1;
+
     if(Number.isFinite(Number(r.deduct))) deductSum+=Number(r.deduct||0);
     else{
       var ti=config.typeList.find(function(t){return t.name===r.type;});
       if(ti)deductSum+=Number(ti.deduct||0);
     }
+
     if(r.splits&&Array.isArray(r.splits)){
       r.splits.forEach(function(s){
         if(isCashPay(s.pay))cashSum+=Number(s.amount||0);
@@ -1357,17 +1363,16 @@ function getPayDisplay(r){
 }
 
 function getRawDisplay(r){
-  if(r.pay==='好孕券'&&Number(r.raw)>250){return '250+'+(Number(r.raw)-250);}
+  if(r.pay==='好孕券'&&Number(r.raw)>250){
+    return '250+'+(Number(r.raw)-250);
+  }
   if(r.splits&&Array.isArray(r.splits)&&r.splits.length){
     var hasGood=r.splits.some(function(s){return s.pay==='好孕券';});
-    if(hasGood&&Number(r.raw)>250){return '250+'+(Number(r.raw)-250);}
+    if(hasGood&&Number(r.raw)>250){
+      return '250+'+(Number(r.raw)-250);
+    }
   }
   return statMoney(r.raw);
-}
-
-function getPayColor(payName){
-  var item=config.payList.find(function(p){return p.name===payName;});
-  return item&&item.color?item.color:'#475569';
 }
 
 function renderTodayList(){
@@ -1386,7 +1391,6 @@ function renderTodayList(){
     var typeItem=config.typeList.find(function(t){return t.name===r.type;});
     var typeColor=typeItem?typeItem.color:'#2563eb';
     var pay=getPayDisplay(r);
-    var payColor=getPayColor(r.pay);
     var rawDisplay=getRawDisplay(r);
     var feeN=Math.round(r.fee||0);
     var idx=idToNo[r.id];
@@ -1394,7 +1398,7 @@ function renderTodayList(){
       +'<span class="home-detail-idx">'+idx+'</span>'
       +'<span>'+escapeHtml(r.time||'--')+'</span>'
       +'<span style="color:'+escapeHtml(typeColor)+';font-weight:700;">'+escapeHtml(r.type||'')+'</span>'
-      +'<span style="color:'+escapeHtml(payColor)+';font-weight:700;">'+escapeHtml(pay)+'</span>'
+      +'<span>'+escapeHtml(pay)+'</span>'
       +'<span class="home-detail-amt">'+rawDisplay+'</span>'
       +'<span class="home-detail-fee">'+feeN+'</span>'
       +'<span class="home-detail-net">'+statMoney(r.net)+'</span>'
@@ -1407,40 +1411,42 @@ function renderTodayList(){
 function getFilteredRecords(){
   var recs=getRecords();
   var out=recs;
-  if(statTypeFilter) out=out.filter(function(r){return r.type===statTypeFilter;});
+  if(statTypeFilter){
+    out=out.filter(function(r){return r.type===statTypeFilter;});
+  }
   if(statPayFilter){
     out=out.filter(function(r){
-      if(r.splits&&Array.isArray(r.splits)&&r.splits.length){return r.splits.some(function(s){return s.pay===statPayFilter;});}
+      if(r.splits&&Array.isArray(r.splits)&&r.splits.length){
+        return r.splits.some(function(s){return s.pay===statPayFilter;});
+      }
       return r.pay===statPayFilter;
     });
   }
   return out;
 }
 
-function getCostExpenses(prefix, rangeFrom, rangeTo){
+function getCostExpenses(prefix){
   var costCats={};
   config.expList.forEach(function(e){if(e.isCost)costCats[e.name]=1;});
   return getExpenses().filter(function(e){
     if(!costCats[e.cat])return false;
-    if(rangeFrom && rangeTo){return e.date >= rangeFrom && e.date <= rangeTo;}
     return String(e.date||'').indexOf(prefix||'')===0;
   });
 }
 
-function calcIncomeStat(prefix, rangeFrom, rangeTo){
-  var recs;
-  if(rangeFrom && rangeTo){recs = getFilteredRecords().filter(function(r){return r.date >= rangeFrom && r.date <= rangeTo;});}
-  else {recs = getFilteredRecords().filter(function(r){return String(r.date||'').indexOf(prefix)===0;});}
+function calcIncomeStat(prefix){
+  var recs=getFilteredRecords().filter(function(r){return String(r.date||'').indexOf(prefix)===0;});
   var sum=0,fee=0,net=0,typeCount={};
-  var typeFeeSum={};
   var cashSum=0, nonCashSum=0;
   var paySum={};
   config.payList.forEach(function(p){paySum[p.name]=0;});
-  config.typeList.forEach(function(t){typeCount[t.name]=0;typeFeeSum[t.name]=0;});
+  config.typeList.forEach(function(t){typeCount[t.name]=0;});
   recs.forEach(function(r){
-    sum+=Number(r.raw||0);fee+=Number(r.fee||0);net+=Number(r.net||0);
+    sum+=Number(r.raw||0);
+    fee+=Number(r.fee||0);
+    net+=Number(r.net||0);
     typeCount[r.type]=(typeCount[r.type]||0)+1;
-    typeFeeSum[r.type]=(typeFeeSum[r.type]||0)+Number(r.fee||0);
+
     if(r.splits&&Array.isArray(r.splits)){
       r.splits.forEach(function(s){
         if(isCashPay(s.pay))cashSum+=Number(s.amount||0);
@@ -1453,21 +1459,18 @@ function calcIncomeStat(prefix, rangeFrom, rangeTo){
       paySum[r.pay]=(paySum[r.pay]||0)+Number(r.raw||0);
     }
   });
-  var costList=getCostExpenses(prefix, rangeFrom, rangeTo);
+  var costList=getCostExpenses(prefix);
   var cost=costList.reduce(function(s,e){return s+Number(e.raw||0);},0);
   return{
     sum:sum,fee:fee,net:net,cnt:recs.length,
-    typeCount:typeCount,typeFeeSum:typeFeeSum,cost:cost,
+    typeCount:typeCount,cost:cost,
     cashSum:cashSum, nonCashSum:nonCashSum, paySum:paySum
   };
 }
 
-function calcExpStat(prefix, rangeFrom, rangeTo){
-  var list;
-  if(rangeFrom && rangeTo){list = getFilteredExpenses().filter(function(e){return e.date >= rangeFrom && e.date <= rangeTo;});}
-  else {list = getFilteredExpenses().filter(function(e){return String(e.date||'').indexOf(prefix)===0;});}
-  var sum=list.reduce(function(s,e){return s+Number(e.raw||0);},0);
-  var net=calcIncomeStat(prefix, rangeFrom, rangeTo).net||0;
+function calcExpStat(prefix){
+  var list=getFilteredExpenses().filter(function(e){return String(e.date||'').indexOf(prefix)===0;});
+  var sum=list.reduce(function(s,e){return s+Number(e.raw||0);},0),net=calcIncomeStat(prefix).net||0;
   return{sum:sum,count:list.length,net:net,balance:net-sum};
 }
 
@@ -1493,6 +1496,7 @@ function renderStatTypeCard(){
   setTimeout(fitAllStatText,0);
 }
 
+/* 付款方式查詢列 */
 function renderStatPayCard(){
   var card=document.getElementById('statPayCard');
   if(!card)return;
@@ -1517,6 +1521,7 @@ function renderStatPayCard(){
 
 function setStatPayFilter(name){
   statPayFilter=name;
+  statViewStack=[];
   renderStatPayCard();
   renderStatView();
 }
@@ -1545,6 +1550,7 @@ function renderExpTypeCard(){
 
 function setExpCatFilter(name){
   expCatFilter=name;
+  expViewStack=[];
   renderExpTypeCard();
   renderExpView();
 }
@@ -1559,8 +1565,8 @@ function statMoney(n){return Math.round(Number(n||0)).toLocaleString('zh-TW');}
 function statTypeTitle(){return statTypeFilter?statTypeFilter+'｜':'';}
 function statPayTitle(){return statPayFilter?statPayFilter+'｜':'';}
 
-function updateStatSummary(title,prefix,rangeFrom,rangeTo){
-  var s=calcIncomeStat(prefix||'', rangeFrom, rangeTo);
+function updateStatSummary(title,prefix){
+  var s=calcIncomeStat(prefix||'');
   document.getElementById('statSummaryTitle').textContent=title;
   var hasCost=config.expList.some(function(e){return e.isCost;});
   var grid=document.getElementById('statSummaryGrid');
@@ -1572,33 +1578,18 @@ function updateStatSummary(title,prefix,rangeFrom,rangeTo){
     +'<span class="pair"><span>'+(hasCost?'淨收入(扣成本)':'淨收入')+'</span><strong class="net">'+statMoney(hasCost?netAfterCost:s.net)+'</strong></span>'
     +'</div>';
 
-  html+='<div class="row-sub">'
-    +'<span class="pair"><span>現金</span><strong class="cash">'+statMoney(s.cashSum)+'</strong></span>'
-    +'<span class="pair"><span>非現金</span><strong class="pay">'+statMoney(s.nonCashSum)+'</strong></span>'
-    +'</div>';
-
-  html+='<div class="row-paydetail">';
+  html+='<div class="row-sub">';
+  html+='<span class="pair"><span>手續費</span><strong class="fee">'+statMoney(s.fee)+'</strong></span>';
+  html+='<span class="pair"><span>現金</span><strong class="cash">'+statMoney(s.cashSum)+'</strong></span>';
   config.payList.forEach(function(p){
     if(isCashPay(p.name))return;
-    if(statPayFilter && statPayFilter!==p.name)return;
+    if(statPayFilter && statPayFilter!==p.name)return; // 有付款篩選時只顯示該付款
     var amt=s.paySum[p.name]||0;
     html+='<span class="pair"><span>'+escapeHtml(p.name)+'</span><strong class="pay">'+statMoney(amt)+'</strong></span>';
   });
-  
-  if(s.fee > 0){
-    html+='<span class="pair"><span>手續費</span><strong class="fee">'+statMoney(s.fee)+'</strong></span>';
-  }
-  
-  html+='</div>';
-
-  html+='<div class="row-typedetail">';
   config.typeList.forEach(function(t){
-    if(statTypeFilter && statTypeFilter!==t.name)return;
-    var cnt=s.typeCount[t.name]||0;
-    html+='<span class="pair">'
-      +'<span style="color:'+escapeHtml(t.color||'#2563eb')+';font-weight:700;">'+escapeHtml(t.name)+'</span>'
-      +'<strong>'+cnt+'次</strong>'
-      +'</span>';
+    if(statTypeFilter && statTypeFilter!==t.name)return; // 有類別篩選時只顯示該類別
+    html+='<span class="pair"><span>'+escapeHtml(t.name)+'</span><strong>'+ (s.typeCount[t.name]||0) +'</strong></span>';
   });
   html+='</div>';
 
@@ -1616,9 +1607,6 @@ function updateStatBreadcrumb(){
   var html='<span class="stat-muted">目前：</span><button onclick="statResetLevel()">全部年份</button>';
   if(stack.length){
     var top=stack[stack.length-1];
-    if(top.type==='range'){
-      html+=' <span>/</span> <span class="stat-current">'+escapeHtml(top.from.slice(5))+'～'+escapeHtml(top.to.slice(5))+'</span>';
-    }
     if(top.type==='monthList'||top.type==='dayList'||top.type==='dayDetail'){
       var y=top.year||String((top.month||top.date).slice(0,4));
       html+=' <span>/</span> <button onclick="statBreadcrumbYear(\''+y+'\')">'+y+'年</button>';
@@ -1636,6 +1624,7 @@ function updateStatBreadcrumb(){
 
 function setStatTypeFilter(name){
   statTypeFilter=name;
+  statViewStack=[];
   renderStatTypeCard();
   renderStatView();
 }
@@ -1653,36 +1642,13 @@ function refreshStatCards(){
   if(document.getElementById('pageStat')&&document.getElementById('pageStat').classList.contains('active'))renderStatView();
 }
 
-function statResetLevel(){
-  statViewStack=[];
-  statDateRange={from:'',to:''};
-  var f=document.getElementById('statDateFrom');if(f)f.value='';
-  var t=document.getElementById('statDateTo');if(t)t.value='';
-  renderStatView();
-}
+function statResetLevel(){statViewStack=[];renderStatView();}
 function statBreadcrumbYear(year){statViewStack=[{type:'monthList',year:year}];renderStatView();}
 function statBreadcrumbMonth(month){statViewStack=[{type:'dayList',month:month}];renderStatView();}
 
 function statDrillToMonthList(year){statViewStack=[{type:'monthList',year:String(year)}];renderStatView();}
 function statDrillToDayList(month){statViewStack=[{type:'dayList',month:String(month)}];renderStatView();}
 function statDrillToDayDetail(date){statViewStack=[{type:'dayDetail',date:String(date)}];renderStatView();}
-
-function applyStatDateRange(){
-  var f=document.getElementById('statDateFrom').value;
-  var t=document.getElementById('statDateTo').value;
-  if(!f||!t){showAlert('請選擇開始與結束日期');return;}
-  if(f>t){showAlert('開始日期不可大於結束日期');return;}
-  statDateRange={from:f,to:t};
-  statViewStack=[{type:'range',from:f,to:t}];
-  renderStatView();
-}
-function clearStatDateRange(){
-  statDateRange={from:'',to:''};
-  document.getElementById('statDateFrom').value='';
-  document.getElementById('statDateTo').value='';
-  statViewStack=[];
-  renderStatView();
-}
 
 function renderStatView(){
   var wrap=document.getElementById('statContent');
@@ -1693,30 +1659,7 @@ function renderStatView(){
   else if(top.type==='monthList')renderStatMonthList(top.year);
   else if(top.type==='dayList')renderStatDayList(top.month);
   else if(top.type==='dayDetail')renderStatDayDetail(top.date);
-  else if(top.type==='range')renderStatRange(top.from,top.to);
   updateStatBreadcrumb();
-}
-
-function renderStatRange(from,to){
-  var recs=getFilteredRecords().filter(function(r){return r.date>=from&&r.date<=to;});
-  updateStatSummary(statTypeTitle()+statPayTitle()+from+'～'+to+' 合計','',from,to);
-  var html='<div class="stat-list-head"><div>日期</div><div class="head-amount">營業收入</div><div class="head-amount">手續費</div><div class="head-amount">淨收入</div></div>';
-  var dayMap={};
-  recs.forEach(function(r){dayMap[r.date]=(dayMap[r.date]||0)+1;});
-  var days=Object.keys(dayMap).sort().reverse();
-  if(!days.length){html+='<div class="empty-tip">此區間尚無紀錄</div>';}
-  days.forEach(function(d){
-    var st=calcIncomeStat(d);
-    html+='<div class="stat-list-row" onclick="statDrillToDayDetail(\''+d+'\')">'
-      +'<div class="item-name">'+d.slice(5)+'</div>'
-      +'<div class="item-main">'+statMoney(st.sum)+'</div>'
-      +'<div class="item-fee">'+statMoney(st.fee)+'</div>'
-      +'<div class="item-net">'+statMoney(st.net)+'</div>'
-      +'</div>';
-  });
-  document.getElementById('statContent').innerHTML=html;
-  updateStatBreadcrumb();
-  setTimeout(fitAllStatText,0);
 }
 
 function renderStatYearList(){
@@ -1795,13 +1738,12 @@ function renderStatDayDetail(dateStr){
   list.forEach(function(r){
     var typeItem=config.typeList.find(function(t){return t.name===r.type;}),typeColor=typeItem?typeItem.color:'#2563eb';
     var pay=getPayDisplay(r);
-    var payColor=getPayColor(r.pay);
     var rawDisplay=getRawDisplay(r);
     var feeN=Math.round(r.fee||0);
     html+='<div class="stat-detail-row" onclick="openEdit('+Number(r.id)+')">'
       +'<span>'+escapeHtml(r.time||'--')+'</span>'
       +'<span style="color:'+escapeHtml(typeColor)+';font-weight:700;">'+escapeHtml(r.type||'')+'</span>'
-      +'<span style="color:'+escapeHtml(payColor)+';font-weight:700;">'+escapeHtml(pay)+'</span>'
+      +'<span>'+escapeHtml(pay)+'</span>'
       +'<span class="stat-detail-amt">'+rawDisplay+'</span>'
       +'<span class="stat-detail-fee">'+feeN+'</span>'
       +'<span class="stat-detail-net">'+statMoney(r.net)+'</span>'
@@ -1812,39 +1754,12 @@ function renderStatDayDetail(dateStr){
   setTimeout(fitAllStatText,0);
 }
 
-function updateExpSummary(title,prefix,rangeFrom,rangeTo){
-  var s=calcExpStat(prefix||'', rangeFrom, rangeTo);
-  var head=document.getElementById('expSummaryHead');
-  var headHtml='';
-  headHtml+='<span class="title">'+escapeHtml(title)+'</span>';
-  headHtml+='<span class="pair"><span class="label">支出總額</span><strong>'+statMoney(s.sum)+'</strong></span>';
-  head.innerHTML=headHtml;
-
-  var list;
-  if(rangeFrom && rangeTo){list = getFilteredExpenses().filter(function(e){return e.date >= rangeFrom && e.date <= rangeTo;});}
-  else {list = getFilteredExpenses().filter(function(e){return String(e.date||'').indexOf(prefix||'') === 0;});}
-  
-  var catCount={},catSum={};
-  config.expList.forEach(function(c){catCount[c.name]=0;catSum[c.name]=0;});
-  list.forEach(function(e){
-    catCount[e.cat]=(catCount[e.cat]||0)+1;
-    catSum[e.cat]=(catSum[e.cat]||0)+Number(e.raw||0);
-  });
-
-  var body=document.getElementById('expSummaryBody');
-  var bodyHtml='';
-  bodyHtml+='<span class="pair total-pair"><span class="label">合計</span><strong>'+s.count+'筆 / '+statMoney(s.sum)+'</strong></span>';
-  config.expList.forEach(function(c){
-    var cnt=catCount[c.name]||0;
-    if(cnt===0)return;
-    var amt=catSum[c.name]||0;
-    bodyHtml+='<span class="pair exp-pair">'
-      +'<span style="color:'+escapeHtml(c.color||'#dc2626')+';font-weight:700;">'+escapeHtml(c.name)+'</span>'
-      +'<strong>'+cnt+'筆</strong>'
-      +'<span class="sub">'+statMoney(amt)+'</span>'
-      +'</span>';
-  });
-  body.innerHTML=bodyHtml;
+function updateExpSummary(title,prefix){
+  var s=calcExpStat(prefix||'');
+  document.getElementById('expSummaryTitle').textContent=title;
+  document.getElementById('expSummarySum').textContent=statMoney(s.sum);
+  document.getElementById('expSummaryCount').textContent=s.count;
+  document.getElementById('expSummaryBalance').textContent=statMoney(s.balance);
   setTimeout(fitAllStatText,0);
 }
 
@@ -1855,9 +1770,6 @@ function updateExpBreadcrumb(){
   var html='<span class="stat-muted">目前：</span><button onclick="expResetLevel()">全部年份</button>';
   if(stack.length){
     var top=stack[stack.length-1];
-    if(top.type==='range'){
-      html+=' <span>/</span> <span class="stat-current">'+escapeHtml(top.from.slice(5))+'～'+escapeHtml(top.to.slice(5))+'</span>';
-    }
     if(top.type==='monthList'||top.type==='dayList'||top.type==='dayDetail'){
       var y=top.year||String((top.month||top.date).slice(0,4));
       html+=' <span>/</span> <button onclick="expBreadcrumbYear(\''+y+'\')">'+y+'年</button>';
@@ -1873,13 +1785,7 @@ function updateExpBreadcrumb(){
   el.innerHTML=html;
 }
 
-function expResetLevel(){
-  expViewStack=[];
-  expDateRange={from:'',to:''};
-  var f=document.getElementById('expDateFrom');if(f)f.value='';
-  var t=document.getElementById('expDateTo');if(t)t.value='';
-  renderExpView();
-}
+function expResetLevel(){expViewStack=[];renderExpView();}
 function expBreadcrumbYear(year){expViewStack=[{type:'monthList',year:String(year)}];renderExpView();}
 function expBreadcrumbMonth(month){expViewStack=[{type:'dayList',month:String(month)}];renderExpView();}
 
@@ -1896,23 +1802,6 @@ function refreshExpCards(){
   if(document.getElementById('pageExpStat')&&document.getElementById('pageExpStat').classList.contains('active'))renderExpView();
 }
 
-function applyExpDateRange(){
-  var f=document.getElementById('expDateFrom').value;
-  var t=document.getElementById('expDateTo').value;
-  if(!f||!t){showAlert('請選擇開始與結束日期');return;}
-  if(f>t){showAlert('開始日期不可大於結束日期');return;}
-  expDateRange={from:f,to:t};
-  expViewStack=[{type:'range',from:f,to:t}];
-  renderExpView();
-}
-function clearExpDateRange(){
-  expDateRange={from:'',to:''};
-  document.getElementById('expDateFrom').value='';
-  document.getElementById('expDateTo').value='';
-  expViewStack=[];
-  renderExpView();
-}
-
 function renderExpView(){
   var wrap=document.getElementById('expContent');
   if(!wrap)return;
@@ -1922,28 +1811,6 @@ function renderExpView(){
   else if(top.type==='monthList')renderExpMonthList(top.year);
   else if(top.type==='dayList')renderExpDayList(top.month);
   else if(top.type==='dayDetail')renderExpDayDetail(top.date);
-  else if(top.type==='range')renderExpRange(top.from,top.to);
-  updateExpBreadcrumb();
-  setTimeout(fitAllStatText,0);
-}
-
-function renderExpRange(from,to){
-  var list=getFilteredExpenses().filter(function(e){return e.date>=from&&e.date<=to;});
-  updateExpSummary(from+'～'+to+' 支出合計','',from,to);
-  var html='<div class="stat-list-head" style="grid-template-columns:72px 1fr 1fr;"><div>日期</div><div class="head-amount">支出金額</div><div class="head-amount">筆數</div></div>';
-  var dayMap={};
-  list.forEach(function(e){if(!dayMap[e.date])dayMap[e.date]=[];dayMap[e.date].push(e);});
-  var days=Object.keys(dayMap).sort().reverse();
-  if(!days.length){html+='<div class="empty-tip">此區間尚無支出</div>';}
-  days.forEach(function(d){
-    var st=calcExpStat(d),arr=dayMap[d];
-    html+='<div class="stat-list-row" style="grid-template-columns:72px 1fr 1fr;" onclick="expDrillToDayDetail(\''+d+'\')">'
-      +'<div class="item-name">'+d.slice(5)+'</div>'
-      +'<div class="item-main">'+statMoney(st.sum)+'</div>'
-      +'<div class="item-fee">'+arr.length+'筆</div>'
-      +'</div>';
-  });
-  document.getElementById('expContent').innerHTML=html;
   updateExpBreadcrumb();
   setTimeout(fitAllStatText,0);
 }
@@ -1956,13 +1823,14 @@ function renderExpYearList(){
   updateExpSummary('全部年度支出合計','');
   var html='';
   if(!years.length){html='<div class="empty-tip">尚無支出紀錄</div>';document.getElementById('expContent').innerHTML=html;updateExpBreadcrumb();return;}
-  html+='<div class="stat-list-head" style="grid-template-columns:72px 1fr 1fr;"><div>年份</div><div class="head-amount">支出金額</div><div class="head-amount">筆數</div></div>';
+  html+='<div class="stat-list-head"><div>年份</div><div class="head-amount">支出金額</div><div class="head-amount">筆數</div><div class="head-amount">餘額</div></div>';
   years.forEach(function(y){
     var st=calcExpStat(y);
-    html+='<div class="stat-list-row" style="grid-template-columns:72px 1fr 1fr;" onclick="expDrillToMonthList(\''+y+'\')">'
+    html+='<div class="stat-list-row" onclick="expDrillToMonthList(\''+y+'\')">'
       +'<div class="item-name">'+y+'年</div>'
       +'<div class="item-main">'+statMoney(st.sum)+'</div>'
       +'<div class="item-fee">'+st.count+'筆</div>'
+      +'<div class="item-net">餘'+statMoney(st.balance)+'</div>'
       +'</div>';
   });
   document.getElementById('expContent').innerHTML=html;
@@ -1977,13 +1845,14 @@ function renderExpMonthList(yearStr){
   updateExpSummary(yearStr+'年支出合計',yearStr);
   var html='';
   if(!months.length){html='<div class="empty-tip">此年尚無支出</div>';document.getElementById('expContent').innerHTML=html;updateExpBreadcrumb();return;}
-  html+='<div class="stat-list-head" style="grid-template-columns:72px 1fr 1fr;"><div>月份</div><div class="head-amount">支出金額</div><div class="head-amount">筆數</div></div>';
+  html+='<div class="stat-list-head"><div>月份</div><div class="head-amount">支出金額</div><div class="head-amount">筆數</div><div class="head-amount">餘額</div></div>';
   months.forEach(function(m){
     var st=calcExpStat(m);
-    html+='<div class="stat-list-row" style="grid-template-columns:72px 1fr 1fr;" onclick="expDrillToDayList(\''+m+'\')">'
+    html+='<div class="stat-list-row" onclick="expDrillToDayList(\''+m+'\')">'
       +'<div class="item-name">'+parseInt(m.slice(5),10)+'月</div>'
       +'<div class="item-main">'+statMoney(st.sum)+'</div>'
       +'<div class="item-fee">'+st.count+'筆</div>'
+      +'<div class="item-net">餘'+statMoney(st.balance)+'</div>'
       +'</div>';
   });
   document.getElementById('expContent').innerHTML=html;
@@ -1998,13 +1867,14 @@ function renderExpDayList(monthStr){
   updateExpSummary(monthStr+'支出合計',monthStr);
   var html='';
   if(!days.length){html='<div class="empty-tip">此月尚無支出</div>';document.getElementById('expContent').innerHTML=html;updateExpBreadcrumb();return;}
-  html+='<div class="stat-list-head" style="grid-template-columns:72px 1fr 1fr;"><div>日期</div><div class="head-amount">支出金額</div><div class="head-amount">筆數</div></div>';
+  html+='<div class="stat-list-head"><div>日期</div><div class="head-amount">支出金額</div><div class="head-amount">筆數</div><div class="head-amount">餘額</div></div>';
   days.forEach(function(d){
     var st=calcExpStat(d),arr=dayMap[d];
-    html+='<div class="stat-list-row" style="grid-template-columns:72px 1fr 1fr;" onclick="expDrillToDayDetail(\''+d+'\')">'
+    html+='<div class="stat-list-row" onclick="expDrillToDayDetail(\''+d+'\')">'
       +'<div class="item-name">'+parseInt(d.slice(8),10)+'日</div>'
       +'<div class="item-main">'+statMoney(st.sum)+'</div>'
       +'<div class="item-fee">'+arr.length+'筆</div>'
+      +'<div class="item-net">餘'+statMoney(st.balance)+'</div>'
       +'</div>';
   });
   document.getElementById('expContent').innerHTML=html;
@@ -2090,11 +1960,8 @@ function renderSetting(){
   config.typeList.forEach(function(t,i){
     var d=document.createElement('div');d.className='item';
     d.innerHTML='<span class="color-dot" style="background:'+escapeHtml(t.color||'#5577aa')+'" onclick="openColorPicker(\'type\','+i+')" title="點我改色"></span>'
-      +'<input type="text" value="'+escapeHtml(t.name)+'" oninput="onTypeNameChange('+i+',this.value)" placeholder="類別名稱">'
-      +'<div style="display:flex;flex-direction:column;align-items:center;gap:0;">'
-      +'<span class="deduct-label">固定扣款</span>'
+      +'<input value="'+escapeHtml(t.name)+'" oninput="onTypeNameChange('+i+',this.value)" placeholder="類別名稱">'
       +'<input type="number" value="'+t.deduct+'" oninput="onTypeDeductChange('+i+',this.value)" placeholder="扣除">'
-      +'</div>'
       +'<button class="delBtn" onclick="delTypeTemp('+i+')">刪除</button>';
     tw.appendChild(d);
   });
@@ -2102,7 +1969,7 @@ function renderSetting(){
   config.payList.forEach(function(p,i){
     var d=document.createElement('div');d.className='item';
     d.innerHTML='<span class="color-dot" style="background:'+escapeHtml(p.color||'#557799')+'" onclick="openColorPicker(\'pay\','+i+')" title="點我改色"></span>'
-      +'<input type="text" value="'+escapeHtml(p.name)+'" oninput="onPayNameChange('+i+',this.value)" placeholder="付款名稱">'
+      +'<input value="'+escapeHtml(p.name)+'" oninput="onPayNameChange('+i+',this.value)" placeholder="付款名稱">'
       +'<input type="number" value="'+p.rate+'" oninput="onPayRateChange('+i+',this.value)" placeholder="趴數">'
       +'<button class="delBtn" onclick="delPayTemp('+i+')">刪除</button>';
     pw.appendChild(d);
@@ -2111,11 +1978,8 @@ function renderSetting(){
   config.expList.forEach(function(e,i){
     var d=document.createElement('div');d.className='item';
     d.innerHTML='<span class="color-dot" style="background:'+escapeHtml(e.color||'#dc2626')+'" onclick="openColorPicker(\'exp\','+i+')" title="點我改色"></span>'
-      +'<input type="text" value="'+escapeHtml(e.name)+'" oninput="onExpNameChange('+i+',this.value)" placeholder="支出名稱">'
-      +'<label class="vs-toggle" style="flex-shrink:0;">'
-      +'<input type="checkbox" '+(e.isCost?'checked':'')+' onchange="onExpIsCostChange('+i+',this.checked)">'
-      +'<span class="vs-slider"></span>'
-      +'</label>'
+      +'<input value="'+escapeHtml(e.name)+'" oninput="onExpNameChange('+i+',this.value)" placeholder="支出名稱">'
+      +'<input type="checkbox" class="exp-cost-check" '+(e.isCost?'checked':'')+' onchange="onExpIsCostChange('+i+',this.checked)" title="打勾 = 營業成本">'
       +'<button class="delBtn" onclick="delExpTemp('+i+')">刪除</button>';
     ew.appendChild(d);
   });
@@ -2128,704 +1992,6 @@ function delPayTemp(i){config.payList.splice(i,1);saveConfig();renderSetting();r
 function addNewExpTemp(){var n=document.getElementById('newExpName').value.trim();if(!n){showAlert('請輸入名稱');return;}config.expList.push({name:n,color:pickUnusedColorFromList(config.expList),isCost:false});saveConfig();renderSetting();renderExpTypeBtnWrap();renderExpTypeCard();document.getElementById('newExpName').value='';}
 function delExpTemp(i){config.expList.splice(i,1);saveConfig();renderSetting();renderExpTypeBtnWrap();renderExpTypeCard();}
 
-function openHelpModal() {document.getElementById('helpModal').classList.add('active');}
-function closeHelpModal() {document.getElementById('helpModal').classList.remove('active');}
-function openGameModal() {document.getElementById('gameModal').classList.add('active');}
-function closeGameModal() {document.getElementById('gameModal').classList.remove('active');}
-function goToGame(url) {closeGameModal();window.location.href = url;}
-
-/* ================= 語音輸入 v5（三要素齊全立刻記錄） ================= */
-var voiceIdleTimer = null;
-var voiceDisplayTimer = null;
-var voiceTotalTimer = null;
-var voiceRecognizedText = '';
-var voiceAllText = '';
-var voiceLastInterim = '';
-var voiceAutoSaveDone = false;
-var voiceRecognition = null;
-var voiceModalActive = false;
-var voiceNativeListener = null;
-var voiceNativeHasResult = false;
-var voiceGotAnyResult = false;
-var voiceRestartCount = 0;
-var voiceRestarting = false;
-var voiceMaxRestarts = 60;
-var voiceTotalMaxMs = 20000;
-
-var voiceHasFinal = false;
-var voiceGraceMs = 8000;
-var voiceIdleDeadline = 0;
-
-var VOICE_FIX = {
-  '運':'孕','韵':'孕','蕴':'孕','晕':'孕',
-  '捲':'券','卷':'券','拳':'券','勸':'券','眷':'券','倦':'券',
-  '簽':'签','千':'签','遷':'签',
-  '佑':'悠','優':'悠','幽':'悠',
-  '新':'信','芯':'信',
-  '昭':'招','找':'招','召':'招',
-  '拍':'派','排':'派',
-  '家':'加','佳':'加'
-};
-
-var VOICE_WORD_FIX = {
-  '太淺':'派遣', '太遣':'派遣', '台淺':'派遣', '派淺':'派遣',
-  '太前':'派遣', '台前':'派遣', '派前':'派遣', '太籤':'派遣',
-  '路昭':'路招', '路找':'路招', '路召':'路招',
-  '好運卷':'好孕券', '好運券':'好孕券', '好孕卷':'好孕券', '好運眷':'好孕券',
-  '企業千單':'企業簽單', '企業牽單':'企業簽單', '企業籤單':'企業簽單',
-  '優遊卡':'悠遊卡', '幽遊卡':'悠遊卡', '悠游卡':'悠遊卡'
-};
-
-function fixVoiceText(text) {
-  var words = Object.keys(VOICE_WORD_FIX).sort(function(a,b){return b.length-a.length;});
-  words.forEach(function(w){
-    if (text.indexOf(w) >= 0) text = text.split(w).join(VOICE_WORD_FIX[w]);
-  });
-  var out = '';
-  for (var i = 0; i < text.length; i++) out += VOICE_FIX[text[i]] || text[i];
-  return out;
-}
-
-function fuzzyMatch(text, keyword) {
-  if (!text || !keyword) return false;
-  if (text.indexOf(keyword) !== -1) return true;
-  if (keyword.length <= 1) return false;
-  if (keyword.length === 2) return text.indexOf(keyword) !== -1;
-  for (var i = 0; i <= keyword.length - 2; i++) {
-    var pair = keyword.slice(i, i + 2);
-    if (text.indexOf(pair) !== -1) return true;
-  }
-  return false;
-}
-
-/* 三要素齊全檢查：
-   收入 → 類別 + 金額 + 付款
-   支出 → 支出類別 + 金額（且不能同時有收入類別） */
-function isVoiceCommandComplete(text) {
-  if (!text) return false;
-  var cleaned = text.replace(/[\s，,。、！!？?]/g, '');
-  cleaned = fixVoiceText(cleaned);
-
-  var amount = extractAmount(cleaned);
-  if (!amount || amount <= 0) return false;
-
-  var hasIncomeType = config.typeList.some(function(t) {
-    return fuzzyMatch(cleaned, t.name);
-  });
-  var hasExpType = config.expList.some(function(e) {
-    return fuzzyMatch(cleaned, e.name);
-  });
-
-  if (hasExpType && !hasIncomeType) return true;
-
-  if (hasIncomeType) {
-    var hasPay = config.payList.some(function(p) {
-      return fuzzyMatch(cleaned, p.name);
-    });
-    return hasPay;
-  }
-
-  return false;
-}
-
-function mergeVoiceText(existing, newText) {
-  if (!existing) return newText || '';
-  if (!newText) return existing;
-  if (existing.indexOf(newText) >= 0) return existing;
-  if (newText.indexOf(existing) >= 0) return newText;
-  for (var len = Math.min(existing.length, newText.length); len > 0; len--) {
-    if (existing.slice(-len) === newText.slice(0, len)) {
-      return existing + newText.slice(len);
-    }
-  }
-  return existing + newText;
-}
-
-function speakText(text) {
-  _playDing();
-  setTimeout(function() {
-    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.TextToSpeech) {
-      var ttsResult = window.Capacitor.Plugins.TextToSpeech.speak({
-        text: text, lang: 'zh-TW', rate: 1.0, pitch: 1.0, volume: 1.0
-      });
-      if (ttsResult && typeof ttsResult.catch === 'function') {
-        ttsResult.catch(function(err) { console.log('原生 TTS 失敗:', err); });
-      }
-    } else {
-      if (!('speechSynthesis' in window)) return;
-      try {
-        speechSynthesis.cancel();
-        var msg = new SpeechSynthesisUtterance(text);
-        msg.lang = 'zh-TW';
-        msg.rate = 1.0;
-        var voices = speechSynthesis.getVoices();
-        var zhVoice = voices.find(function(v) { return v.lang.indexOf('zh') === 0; });
-        if (zhVoice) msg.voice = zhVoice;
-        speechSynthesis.speak(msg);
-      } catch(e) {}
-    }
-  }, 1000);
-}
-
-var _audioCtx = null;
-function _unlockSpeech() {
-  try {
-    if (!_audioCtx) {
-      var AC = window.AudioContext || window.webkitAudioContext;
-      if (AC) _audioCtx = new AC();
-    }
-    if (_audioCtx && _audioCtx.state === 'suspended') _audioCtx.resume();
-  } catch (e) {}
-}
-function _playDing() {
-  try {
-    if (!_audioCtx) {
-      var AC = window.AudioContext || window.webkitAudioContext;
-      if (!AC) return;
-      _audioCtx = new AC();
-    }
-    if (_audioCtx.state === 'suspended') _audioCtx.resume();
-    var now = _audioCtx.currentTime;
-    var osc = _audioCtx.createOscillator();
-    var gain = _audioCtx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(880, now);
-    osc.frequency.exponentialRampToValueAtTime(1320, now + 0.12);
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(0.5, now + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.25);
-    osc.connect(gain);
-    gain.connect(_audioCtx.destination);
-    osc.start(now);
-    osc.stop(now + 0.3);
-  } catch (e) {}
-}
-
-function onVoiceToggleChange(checked) {
-  config.voiceEnabled = !!checked;
-  saveConfig();
-  updateVoiceBtnVisibility();
-}
-
-function onVoiceSecondsChange() {
-  var el = document.getElementById('setVoiceSeconds');
-  if (!el) return;
-  var v = Number(el.value);
-  if (!Number.isInteger(v) || v < 1 || v > 30) return;
-  config.voiceSeconds = v;
-  saveConfig();
-}
-
-function resetVoiceIdleTimer(isFromFinal) {
-  voiceGotAnyResult = true;
-  if (voiceIdleTimer) clearTimeout(voiceIdleTimer);
-
-  // 強制設定為 3 秒，無視之前的設定值
-  var configured = 3;
-  var idleMs = isFromFinal ? voiceGraceMs : (configured * 1000);
-
-  voiceIdleDeadline = Date.now() + idleMs;
-
-  voiceIdleTimer = setTimeout(function () {
-    voiceIdleTimer = null;
-    voiceIdleDeadline = 0;
-    if (!voiceRecognizedText && !voiceAllText) return;
-    finishVoiceInput();
-  }, idleMs);
-}
-
-function startVoiceDisplayCountdown() {
-  if (voiceDisplayTimer) clearInterval(voiceDisplayTimer);
-  var el = document.getElementById('voiceCountdown');
-  if (el) {
-    el.textContent = '...';
-    el.classList.remove('urgent');
-    el.classList.remove('done');
-    el.style.color = '#2563eb';
-  }
-  voiceDisplayTimer = setInterval(function () {
-    if (!voiceIdleDeadline) return;
-    var remain = Math.max(0, Math.ceil((voiceIdleDeadline - Date.now()) / 1000));
-    if (el) {
-      el.textContent = remain;
-      if (remain <= 2) el.classList.add('urgent');
-      else el.classList.remove('urgent');
-    }
-  }, 200);
-}
-
-function cleanupVoice() {
-  if (voiceIdleTimer) { clearTimeout(voiceIdleTimer); voiceIdleTimer = null; }
-  if (voiceDisplayTimer) { clearInterval(voiceDisplayTimer); voiceDisplayTimer = null; }
-  if (voiceTotalTimer) { clearTimeout(voiceTotalTimer); voiceTotalTimer = null; }
-  voiceIdleDeadline = 0;
-  voiceModalActive = false;
-  if (voiceNativeListener && voiceNativeListener.remove) {
-    try { voiceNativeListener.remove(); } catch(e) {}
-  }
-  voiceNativeListener = null;
-  if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SpeechRecognition) {
-    try { window.Capacitor.Plugins.SpeechRecognition.stop().catch(function(){}); } catch(e) {}
-  }
-  if (voiceRecognition) {
-    try { voiceRecognition.abort(); } catch(e) {}
-    voiceRecognition = null;
-  }
-}
-
-function restartRecognition() {
-  if (!voiceModalActive || voiceAutoSaveDone) return;
-  if (voiceRestarting) return;
-  if (voiceRestartCount >= voiceMaxRestarts) {
-    finishVoiceInput();
-    return;
-  }
-  voiceRestartCount++;
-  voiceRestarting = true;
-  setTimeout(function() {
-    voiceRestarting = false;
-    if (!voiceModalActive || voiceAutoSaveDone) return;
-    if (!voiceRecognition) return;
-    try {
-      voiceRecognition.start();
-    } catch (e) {
-      setTimeout(function() {
-        if (!voiceModalActive || voiceAutoSaveDone) return;
-        try { voiceRecognition.start(); } catch (e2) {
-          finishVoiceInput();
-        }
-      }, 400);
-    }
-  }, 200);
-}
-
-/* 三要素齊全時立刻收單 */
-function triggerImmediateFinish(statusEl, countdownEl) {
-  if (statusEl) statusEl.textContent = '✅ 已辨識完整，記錄中⋯';
-  if (countdownEl) {
-    countdownEl.textContent = '✅';
-    countdownEl.classList.add('done');
-    countdownEl.style.color = '#16a34a';
-    countdownEl.classList.remove('urgent');
-  }
-  if (voiceIdleTimer) { clearTimeout(voiceIdleTimer); voiceIdleTimer = null; }
-  voiceIdleDeadline = 0;
-  try { if (voiceRecognition) voiceRecognition.stop(); } catch(e) {}
-  setTimeout(function(){ finishVoiceInput(); }, 250);
-}
-
-function openVoiceModal() {
-  if (!config.voiceEnabled) return;
-  if (voiceModalActive) return;
-
-  _unlockSpeech();
-  cleanupVoice();
-
-  voiceRecognizedText = '';
-  voiceAllText = '';
-  voiceLastInterim = '';
-  voiceAutoSaveDone = false;
-  voiceNativeHasResult = false;
-  voiceGotAnyResult = false;
-  voiceRestartCount = 0;
-  voiceRestarting = false;
-  voiceHasFinal = false;
-  voiceIdleDeadline = 0;
-  voiceModalActive = true;
-
-  var modal = document.getElementById('voiceModal');
-  var countdownEl = document.getElementById('voiceCountdown');
-  var statusEl = document.getElementById('voiceStatus');
-  var textEl = document.getElementById('voiceText');
-
-  countdownEl.textContent = '...';
-  countdownEl.classList.remove('urgent');
-  countdownEl.classList.remove('done');
-  countdownEl.style.color = '#2563eb';
-  statusEl.textContent = '請開始說話，講完會自動記錄';
-  textEl.innerHTML = '<span style="color:#94a3b8;">（請開始說話⋯）</span>';
-  modal.classList.add('active');
-
-  if (voiceTotalTimer) clearTimeout(voiceTotalTimer);
-  voiceTotalTimer = setTimeout(function () {
-    if (voiceModalActive && !voiceAutoSaveDone) {
-      finishVoiceInput();
-    }
-  }, voiceTotalMaxMs);
-
-  /* ===== A：Capacitor 原生 ===== */
-  if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SpeechRecognition) {
-    var SR_Native = window.Capacitor.Plugins.SpeechRecognition;
-
-    voiceNativeListener = SR_Native.addListener('partialResults', function (data) {
-      if (!voiceModalActive) return;
-      if (data && data.matches && data.matches.length > 0) {
-        var text = data.matches[0];
-        if (text && text !== voiceRecognizedText) {
-          voiceRecognizedText = text;
-          voiceNativeHasResult = true;
-          renderVoiceText(voiceRecognizedText);
-          statusEl.textContent = '辨識中⋯（講完會自動記錄）';
-          if (isVoiceCommandComplete(voiceRecognizedText)) {
-            triggerImmediateFinish(statusEl, countdownEl);
-            return;
-          }
-          resetVoiceIdleTimer(false);
-        }
-      }
-    });
-
-    SR_Native.stop().catch(function(){}).finally(function() {
-      SR_Native.start({
-        language: 'zh-TW',
-        maxResults: 1,
-        prompt: '請說出類別與金額',
-        partialResults: true
-      }).catch(function (err) {
-        if (!voiceModalActive) return;
-        statusEl.textContent = '⚠️ 無法啟動語音：' + err;
-        setTimeout(function(){ finishVoiceInput(); }, 1500);
-      });
-    });
-    startVoiceDisplayCountdown();
-    return;
-  }
-
-  /* ===== B：AndroidSpeech 原生 ===== */
-  if (window.AndroidSpeech) {
-    statusEl.textContent = '請在系統視窗說話...';
-    try {
-      window.AndroidSpeech.startListening();
-    } catch(e) {
-      statusEl.textContent = '⚠️ 無法啟動語音';
-      setTimeout(function(){ finishVoiceInput(); }, 1000);
-    }
-    startVoiceDisplayCountdown();
-    return;
-  }
-
-  /* ===== C：Web Speech API ===== */
-  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) {
-    modal.classList.remove('active');
-    voiceModalActive = false;
-    showToast('⚠️ 此瀏覽器不支援語音輸入\n請使用 Android Chrome 或安裝 App');
-    return;
-  }
-
-  voiceRecognition = new SR();
-  voiceRecognition.lang = 'zh-TW';
-  voiceRecognition.interimResults = true;
-  voiceRecognition.continuous = true;
-  voiceRecognition.maxAlternatives = 1;
-
-  voiceRecognition.onresult = function(event) {
-    if (!voiceModalActive || voiceAutoSaveDone) return;
-
-    var finalChunk = '';
-    var interimChunk = '';
-    for (var i = event.resultIndex; i < event.results.length; i++) {
-      if (event.results[i].isFinal) {
-        finalChunk += event.results[i][0].transcript;
-      } else {
-        interimChunk += event.results[i][0].transcript;
-      }
-    }
-
-    var candidate = '';
-    if (finalChunk) {
-      voiceAllText = mergeVoiceText(voiceAllText, finalChunk);
-      voiceLastInterim = '';
-      voiceRecognizedText = voiceAllText;
-      voiceHasFinal = true;
-      candidate = voiceRecognizedText;
-    } else if (interimChunk) {
-      voiceLastInterim = interimChunk;
-      voiceRecognizedText = mergeVoiceText(voiceAllText, interimChunk);
-      candidate = voiceRecognizedText;
-    }
-
-    if (!candidate) return;
-
-    renderVoiceText(candidate);
-    statusEl.textContent = '辨識中⋯（講完會自動記錄）';
-
-    /* ★ 三要素齊全 → 立刻記錄，不等停頓 */
-    if (isVoiceCommandComplete(candidate)) {
-      triggerImmediateFinish(statusEl, countdownEl);
-      return;
-    }
-
-    resetVoiceIdleTimer(!!finalChunk);
-  };
-
-  voiceRecognition.onerror = function(e) {
-    if (!voiceModalActive || voiceAutoSaveDone) return;
-    if (e.error === 'aborted') return;
-    if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
-      statusEl.textContent = '⚠️ 請允許麥克風權限';
-    } else if (e.error === 'network') {
-      statusEl.textContent = '⚠️ 網路連線異常';
-    } else if (e.error === 'no-speech') {
-      statusEl.textContent = '⚠️ 沒有聽到聲音';
-    }
-  };
-
-  voiceRecognition.onend = function() {
-    if (!voiceModalActive || voiceAutoSaveDone) return;
-    restartRecognition();
-  };
-
-  try {
-    voiceRecognition.start();
-  } catch (e) {
-    statusEl.textContent = '⚠️ 無法啟動語音辨識';
-    setTimeout(function(){ finishVoiceInput(); }, 1000);
-    return;
-  }
-
-  startVoiceDisplayCountdown();
-}
-
-function renderVoiceText(text) {
-  if (!text) {
-    document.getElementById('voiceText').innerHTML = '<span style="color:#94a3b8;">（等待語音⋯）</span>';
-    return;
-  }
-  var html = escapeHtml(text);
-  var keywords = [];
-  config.typeList.forEach(function(t) { keywords.push({ name: t.name, cls: 'kw-type' }); });
-  config.payList.forEach(function(p) { keywords.push({ name: p.name, cls: 'kw-pay' }); });
-  config.expList.forEach(function(e) { keywords.push({ name: e.name, cls: 'kw-exp' }); });
-  keywords.sort(function(a, b) { return b.name.length - a.name.length; });
-  keywords.forEach(function(k) {
-    if (!k.name) return;
-    var escaped = escapeHtml(k.name);
-    var regex = new RegExp(escaped, 'g');
-    html = html.replace(regex, '<span class="' + k.cls + '">' + escaped + '</span>');
-  });
-  html = html.replace(/(\d+)/g, function(m) {
-    return '<span class="kw-amount">' + m + '</span>';
-  });
-  document.getElementById('voiceText').innerHTML = html;
-}
-
-function finishVoiceInput() {
-  if (voiceAutoSaveDone) return;
-  voiceAutoSaveDone = true;
-  voiceModalActive = false;
-
-  if (voiceIdleTimer) { clearTimeout(voiceIdleTimer); voiceIdleTimer = null; }
-  if (voiceDisplayTimer) { clearInterval(voiceDisplayTimer); voiceDisplayTimer = null; }
-  if (voiceTotalTimer) { clearTimeout(voiceTotalTimer); voiceTotalTimer = null; }
-  voiceIdleDeadline = 0;
-
-  if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SpeechRecognition) {
-    try { window.Capacitor.Plugins.SpeechRecognition.stop().catch(function(){}); } catch(e) {}
-  }
-  if (voiceRecognition) {
-    try { voiceRecognition.abort(); } catch(e) {}
-    voiceRecognition = null;
-  }
-  if (voiceNativeListener && voiceNativeListener.remove) {
-    try { voiceNativeListener.remove(); } catch(e) {}
-  }
-  voiceNativeListener = null;
-
-  document.getElementById('voiceModal').classList.remove('active');
-
-  var text = voiceRecognizedText || voiceAllText || '';
-  if (!text) {
-    showToast('⚠️ 沒有聽到聲音\n請再試一次');
-    return;
-  }
-  processVoiceCommand(text);
-}
-
-function cancelVoiceInput() {
-  if (!voiceModalActive && !voiceAutoSaveDone) return;
-  voiceAutoSaveDone = true;
-  voiceModalActive = false;
-
-  if (voiceIdleTimer) { clearTimeout(voiceIdleTimer); voiceIdleTimer = null; }
-  if (voiceDisplayTimer) { clearInterval(voiceDisplayTimer); voiceDisplayTimer = null; }
-  if (voiceTotalTimer) { clearTimeout(voiceTotalTimer); voiceTotalTimer = null; }
-
-  if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.SpeechRecognition) {
-    try { window.Capacitor.Plugins.SpeechRecognition.stop().catch(function(){}); } catch(e) {}
-  }
-  if (voiceRecognition) {
-    try { voiceRecognition.abort(); } catch(e) {}
-    voiceRecognition = null;
-  }
-  if (voiceNativeListener && voiceNativeListener.remove) {
-    try { voiceNativeListener.remove(); } catch(e) {}
-  }
-  voiceNativeListener = null;
-
-  document.getElementById('voiceModal').classList.remove('active');
-}
-
-var _voiceProcessing = false;
-function processVoiceCommand(text) {
-  if (_voiceProcessing) return false;
-  _voiceProcessing = true;
-  setTimeout(function() { _voiceProcessing = false; }, 2000);
-
-  text = (text || '').replace(/[\s，,。、！!？?]/g, '');
-  text = fixVoiceText(text);
-  if (!text) { showToast('⚠️ 沒有聽到聲音，請再試一次'); return; }
-
-  var amount = extractAmount(text);
-  if (!amount || amount <= 0) { showToast('⚠️ 找不到金額\n辨識：「' + text + '」'); return; }
-
-  var matchedType = null, typeLen = 0;
-  config.typeList.forEach(function(t) {
-    if (fuzzyMatch(text, t.name) && t.name.length > typeLen) { matchedType = t; typeLen = t.name.length; }
-  });
-  var matchedExp = null, expLen = 0;
-  config.expList.forEach(function(e) {
-    if (fuzzyMatch(text, e.name) && e.name.length > expLen) { matchedExp = e; expLen = e.name.length; }
-  });
-  var matchedPay = null, payLen = 0;
-  config.payList.forEach(function(p) {
-    if (fuzzyMatch(text, p.name) && p.name.length > payLen) { matchedPay = p; payLen = p.name.length; }
-  });
-
-  var isExpense = false;
-  if (matchedExp && !matchedType) { isExpense = true; }
-  else if (matchedExp && matchedType) {
-    var expPos = text.indexOf(matchedExp.name.slice(0, 2));
-    var typePos = text.indexOf(matchedType.name.slice(0, 2));
-    isExpense = expPos >= 0 && (typePos < 0 || expPos < typePos);
-  }
-
-  if (isExpense) {
-    var noteText = text;
-    noteText = noteText.replace(/[0-9零〇一二兩三四五六七八九十百千萬]+/g, '');
-    if (matchedExp && matchedExp.name) noteText = noteText.replace(matchedExp.name, '');
-    noteText = noteText.replace(/備註|备注|說|说/g, '').trim();
-
-    saveVoiceExpense(matchedExp, amount, text, noteText);
-    speakText('已記錄支出 ' + matchedExp.name + ' ' + amount + ' 元');
-    var toastMsg = '✅ 已記錄支出\n' + matchedExp.name + ' / ' + amount + ' 元';
-    if (noteText) toastMsg += '\n備註：' + noteText;
-    showToast(toastMsg, 3000);
-    return;
-  }
-
-  if (!matchedType) matchedType = config.typeList[0];
-  if (!matchedPay) matchedPay = config.payList[0];
-  if (!matchedType || !matchedPay) { showToast('⚠️ 設定缺少類別或付款方式'); return; }
-
-  saveVoiceIncome(matchedType, matchedPay, amount, text);
-  speakText('已記錄 ' + matchedType.name + ' ' + matchedPay.name + ' ' + amount + ' 元');
-  showToast('✅ 已記錄\n' + matchedType.name + ' / ' + matchedPay.name + ' / ' + amount + ' 元', 3000);
-}
-
-function saveVoiceIncome(typeItem, payItem, amount, originalText) {
-  var now = new Date();
-  var fee = amount * Number(payItem.rate || 0) / 100;
-  var net = amount - fee - Number(typeItem.deduct || 0);
-  if (net < 0) net = 0;
-  var record = {
-    id: nextId(), type: typeItem.name, pay: payItem.name, raw: amount, fee: fee, net: Math.round(net),
-    deduct: Number(typeItem.deduct || 0), date: getBizDate(now), time: fmtTime()
-  };
-  if (payItem.name === '好孕券' && amount > 250) {
-    record.fee = 0;
-    record.net = amount - Number(typeItem.deduct || 0);
-    if (record.net < 0) record.net = 0;
-    record.splits = [
-      { pay: '好孕券', amount: 250 },
-      { pay: (config.payList[0] && config.payList[0].name) || '現金', amount: amount - 250 }
-    ];
-  }
-  var list = getRecords();
-  list.unshift(record);
-  saveRecords(list);
-  calcTotal(); renderTodayList(); refreshStatCards(); refreshExpCards();
-}
-
-function saveVoiceExpense(expItem, amount, originalText, noteText) {
-  var now = new Date();
-  var list = getExpenses();
-  list.unshift({
-    id: nextId(), cat: expItem.name, color: expItem.color, raw: amount, note: noteText || '語音輸入',
-    date: getBizDate(now), time: fmtTime()
-  });
-  saveExpenses(list);
-  renderExpView(); refreshExpCards(); refreshStatCards();
-}
-
-function extractAmount(text) {
-  if (!text) return null;
-  var match = text.match(/\d+/);
-  if (match) {
-    var amount = Number(match[0]);
-    return Number.isFinite(amount) && amount > 0 ? amount : null;
-  }
-  var cnPattern = /[零〇一二兩三四五六七八九十百千萬]+/g;
-  var matches = text.match(cnPattern);
-  if (!matches) return null;
-  for (var i = 0; i < matches.length; i++) {
-    var number = cnToNumber(matches[i]);
-    if (number > 0) return number;
-  }
-  return null;
-}
-
-function cnToNumber(str) {
-  if (!str) return 0;
-  var digitMap = {
-    '零': 0, '〇': 0, '一': 1, '二': 2, '兩': 2,
-    '三': 3, '四': 4, '五': 5, '六': 6, '七': 7, '八': 8, '九': 9
-  };
-  var unitMap = { '十': 10, '百': 100, '千': 1000 };
-  var total = 0, section = 0, number = 0;
-  for (var i = 0; i < str.length; i++) {
-    var ch = str[i];
-    if (digitMap[ch] !== undefined) {
-      number = digitMap[ch];
-    } else if (unitMap[ch]) {
-      var unit = unitMap[ch];
-      section += (number || 1) * unit;
-      number = 0;
-    } else if (ch === '萬') {
-      section += number;
-      total += (section || 1) * 10000;
-      section = 0;
-      number = 0;
-    }
-  }
-  return total + section + number;
-}
-
-function showToast(msg, duration) {
-  duration = duration || 2500;
-  var toast = document.getElementById('voiceToast');
-  if (!toast) {
-    toast = document.createElement('div');
-    toast.id = 'voiceToast';
-    toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(15,23,42,0.95);color:#fff;padding:16px 22px;border-radius:12px;font-size:14px;line-height:1.6;z-index:99999;white-space:pre-line;text-align:center;max-width:85%;box-shadow:0 10px 40px rgba(0,0,0,0.4);transition:opacity .25s;pointer-events:none;opacity:0;visibility:hidden;';
-    document.body.appendChild(toast);
-  }
-  toast.textContent = msg;
-  toast.style.visibility = 'visible';
-  toast.style.opacity = '1';
-  clearTimeout(toast._timer);
-  toast._timer = setTimeout(function() {
-    toast.style.opacity = '0';
-    setTimeout(function() { toast.style.visibility = 'hidden'; }, 250);
-  }, duration);
-}
-
-function initVoiceModule() {
-  var vsToggle = document.getElementById('voiceToggle');
-  if (vsToggle) vsToggle.checked = config.voiceEnabled;
-  updateVoiceBtnVisibility();
-}
-
 window.addEventListener('resize', function(){
   setTimeout(fitAllStatText, 50);
   setTimeout(fitHomeButtons, 50);
@@ -2835,7 +2001,7 @@ window.addEventListener('resize', function(){
 window.onload=function(){
   ensureTypeColors();
   applyFontSize(config.fontSize);
-  applyFontWeight(900);
+  applyFontWeight(config.fontWeight);
   renderHomeTypeBtn();
   calcTotal();
   renderTodayList();
@@ -2847,30 +2013,8 @@ window.onload=function(){
   renderExpTypeBtnWrap();
   updateNavActive('pageHome');
   updateTodayDateText();
-  updateVoiceBtnVisibility();
-  var vsToggle = document.getElementById('voiceToggle');
-  var tbToggle = document.getElementById('typeBtnToggle');
-  var pfToggle = document.getElementById('pageFsToggle');
-  if (vsToggle) vsToggle.checked = config.voiceEnabled;
-  if (tbToggle) tbToggle.checked = config.typeBtnEnabled;
-  if (pfToggle) pfToggle.checked = config.pageFsEnabled;
-  syncPageSliders(config.fontSize);
-  updatePageFsBars();
-  initVoiceModule();
   setTimeout(fitAllStatText, 100);
 };
-
-function toggleSettingCollapse(id) {
-  var content = document.getElementById(id);
-  var arrow = document.getElementById(id + 'Arrow');
-  if (content.classList.contains('active')) {
-    content.classList.remove('active');
-    arrow.classList.remove('active');
-  } else {
-    content.classList.add('active');
-    arrow.classList.add('active');
-  }
-}
 </script>
 </body>
 </html>
